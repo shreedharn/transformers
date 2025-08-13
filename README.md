@@ -14,15 +14,19 @@ This repository provides a comprehensive exploration of transformer architecture
 |----------|---------|----------|-----------|
 | **[transformers.md](./transformers.md)** | Complete technical reference | Researchers & Engineers | Mathematical rigor, implementation details |
 | **[sequencing_history.md](./sequencing_history.md)** | Historical evolution | Students & Practitioners | From MLPs to Transformers |
+| **[mlp_intro.md](./mlp_intro.md)** | MLP step-by-step tutorial | Beginners & Students | Neural network fundamentals |
+| **[rnn_intro.md](./rnn_intro.md)** | RNN step-by-step tutorial | Beginners & Students | Sequential modeling basics |
 | **[transformers_math.md](./transformers_math.md)** | Mathematical foundations | Advanced users | Theoretical underpinnings |
 | **[pytorch_reference.md](./pytorch_reference.md)** | PyTorch implementation guide | Practitioners & Developers | Code patterns, practical examples |
 
 ## 🚀 Getting Started
 
 ### For Beginners
-1. **Start with**: [Historical Context](./sequencing_history.md) to understand why transformers exist
-2. **Then read**: [Transformer Flow Overview](./transformers.md#1-overview-the-complete-pipeline) for the big picture
-3. **Dive deeper**: Explore specific sections based on your interests
+1. **Start with**: [MLP Tutorial](./mlp_intro.md) to learn neural network fundamentals
+2. **Then learn**: [RNN Tutorial](./rnn_intro.md) for sequential modeling basics
+3. **Understand context**: [Historical Evolution](./sequencing_history.md) from MLPs to Transformers
+4. **Get the big picture**: [Transformer Flow Overview](./transformers.md#1-overview-the-complete-pipeline)
+5. **Dive deeper**: Explore specific sections based on your interests
 
 ### For Practitioners
 1. **PyTorch implementation**: [From tensors to transformers](./pytorch_reference.md) - hands-on coding guide
@@ -74,6 +78,30 @@ This repository provides a comprehensive exploration of transformer architecture
 - Optimization theory and gradient methods
 - Detailed derivations of transformer components
 
+### [MLP Step-by-Step Tutorial](./mlp_intro.md)
+**Beginner-friendly neural network guide** - Learn the foundation of all deep learning with worked examples.
+
+**Key Features:**
+- **Core concepts**: Layer transformations, weights, biases, and activations
+- **Tiny examples**: Email spam detection with hand-calculated numbers
+- **Visual breakdowns**: Matrix operations and data flow diagrams
+- **Practical guidance**: Architecture design, training tips, and debugging
+- **Modern context**: How MLPs connect to RNNs, CNNs, and Transformers
+
+**Prerequisites:** Basic linear algebra (vectors, matrices). No prior neural network experience needed.
+
+### [RNN Step-by-Step Tutorial](./rnn_intro.md)
+**Beginner-friendly RNN guide** - Learn recurrent neural networks with worked examples.
+
+**Key Features:**
+- **Intuitive explanations**: Core RNN equation broken down step-by-step
+- **Tiny examples**: Follow calculations by hand with small numbers
+- **Visual diagrams**: Text-based flow charts showing data movement
+- **Worked example**: Complete "cat sat here" sequence processing
+- **Gradient challenges**: Understanding vanishing/exploding gradients
+
+**Prerequisites:** Basic linear algebra (vectors, matrices). No prior RNN experience needed.
+
 ### [PyTorch Reference: From MLPs to Transformers](./pytorch_reference.md)
 **Practical implementation guide** - Hands-on PyTorch patterns for sequence modeling.
 
@@ -90,12 +118,14 @@ This repository provides a comprehensive exploration of transformer architecture
 
 ### Path 1: Complete Beginner → Expert
 ```
-1. sequencing_history.md (Sections 1-4: MLPs to LSTMs)
-2. transformers.md (Section 1: Overview)
-3. sequencing_history.md (Sections 5-8: Attention to Transformers)
-4. transformers.md (Sections 2-9: Core Architecture)
-5. transformers.md (Sections 10-16: Advanced Topics)
-6. transformers_math.md (As needed for deeper understanding)
+1. mlp_intro.md (Complete tutorial: neural network fundamentals)
+2. rnn_intro.md (Complete tutorial: sequential modeling basics)
+3. sequencing_history.md (Sections 1-4: MLPs to LSTMs context)
+4. transformers.md (Section 1: Overview)
+5. sequencing_history.md (Sections 5-8: Attention to Transformers)
+6. transformers.md (Sections 2-9: Core Architecture)
+7. transformers.md (Sections 10-16: Advanced Topics)
+8. transformers_math.md (As needed for deeper understanding)
 ```
 
 ### Path 2: Practitioner Focus
@@ -159,6 +189,8 @@ This repository provides a comprehensive exploration of transformer architecture
 |----------|--------|--------|--------|
 | transformers.md | 1,700+ | Technical Implementation | Deep |
 | sequencing_history.md | 800+ | Historical Context | Comprehensive |
+| mlp_intro.md | 500+ | MLP Tutorial | Beginner-friendly |
+| rnn_intro.md | 410+ | RNN Tutorial | Beginner-friendly |
 | transformers_math.md | Variable | Mathematical Theory | Rigorous |
 | pytorch_reference.md | 2,000+ | Practical Implementation | Hands-on |
 
@@ -168,6 +200,9 @@ Documents are extensively cross-referenced:
 - **Mathematical concepts**: transformers.md → transformers_math.md
 - **Historical context**: transformers.md → sequencing_history.md  
 - **Implementation details**: sequencing_history.md → transformers.md
+- **Neural network basics**: sequencing_history.md → mlp_intro.md
+- **Sequential modeling**: mlp_intro.md → rnn_intro.md
+- **RNN fundamentals**: sequencing_history.md → rnn_intro.md
 - **Code patterns**: pytorch_reference.md → transformers_math.md
 - **Practical examples**: transformers.md → pytorch_reference.md
 
@@ -178,6 +213,8 @@ transformers/
 ├── README.md                    # This file - main navigation
 ├── transformers.md              # Complete technical reference
 ├── sequencing_history.md        # Historical evolution narrative  
+├── mlp_intro.md                 # Step-by-step MLP tutorial
+├── rnn_intro.md                 # Step-by-step RNN tutorial
 ├── transformers_math.md          # Mathematical foundations
 └── pytorch_reference.md          # Practical PyTorch implementation guide
 ```

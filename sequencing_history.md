@@ -31,9 +31,15 @@
 
 This document traces the 30-year journey from early neural networks to modern transformers, showing how each innovation solved specific limitations while introducing new ones.
 
+> **🎯 Companion Tutorials**: For hands-on understanding before diving into history:
+> - **[mlp_intro.md](./mlp_intro.md)** - Neural network fundamentals with worked examples
+> - **[rnn_intro.md](./rnn_intro.md)** - Sequential modeling basics with step-by-step calculations
+
 ---
 
 ## Early Approaches: MLPs and Fixed-Size Inputs
+
+> **📚 Deep Dive**: For a complete step-by-step tutorial on MLPs with worked examples like email spam detection, see **[mlp_intro.md](./mlp_intro.md)**. This section focuses on historical context and limitations for sequence modeling.
 
 ### Multi-Layer Perceptrons (MLPs): The Foundation
 
@@ -90,6 +96,8 @@ MLPs require inputs of exactly the same dimensionality. For sequences, this crea
 ---
 
 ## The Dawn of Recurrence: Vanilla RNNs
+
+> **📚 Deep Dive**: For a complete step-by-step tutorial on RNNs with worked examples and tiny calculations you can follow by hand, see **[rnn_intro.md](./rnn_intro.md)**. This section provides the historical context, while the tutorial offers hands-on understanding.
 
 ### The RNN Innovation
 
@@ -172,6 +180,8 @@ The **vanishing gradient problem** is perhaps the most critical limitation that 
 ### Backpropagation Through Time (BPTT)
 
 **RNN Training**: RNNs are trained using **Backpropagation Through Time (BPTT)**, which "unrolls" the recurrent network across time steps and applies standard backpropagation.
+
+> **💡 Hands-on Learning**: See **[rnn_intro.md](./rnn_intro.md) Section 6** for a detailed comparison between MLP and RNN training, including visual diagrams of how gradients flow through time.
 
 **Unrolled RNN Computation**:
 $$h_1 = \tanh(W_{hh}h_0 + W_{xh}x_1 + b_h)$$
