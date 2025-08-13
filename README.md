@@ -15,6 +15,7 @@ This repository provides a comprehensive exploration of transformer architecture
 | **[transformers.md](./transformers.md)** | Complete technical reference | Researchers & Engineers | Mathematical rigor, implementation details |
 | **[sequencing_history.md](./sequencing_history.md)** | Historical evolution | Students & Practitioners | From MLPs to Transformers |
 | **[transformers_math.md](./transformers_math.md)** | Mathematical foundations | Advanced users | Theoretical underpinnings |
+| **[pytorch_reference.md](./pytorch_reference.md)** | PyTorch implementation guide | Practitioners & Developers | Code patterns, practical examples |
 
 ## 🚀 Getting Started
 
@@ -24,9 +25,10 @@ This repository provides a comprehensive exploration of transformer architecture
 3. **Dive deeper**: Explore specific sections based on your interests
 
 ### For Practitioners
-1. **Architecture variants**: [Encoder vs Decoder vs Encoder-Decoder](./transformers.md#5-architectural-variants-encoder-decoder-and-encoder-decoder)
-2. **Implementation details**: [Self-Attention Deep Dive](./transformers.md#6-stage-4-self-attention-deep-dive)
-3. **Deployment**: [Quantization](./transformers.md#14-quantization-for-practical-deployment) and [Parameter-Efficient Fine-tuning](./transformers.md#13-parameter-efficient-fine-tuning-methods)
+1. **PyTorch implementation**: [From tensors to transformers](./pytorch_reference.md) - hands-on coding guide
+2. **Architecture variants**: [Encoder vs Decoder vs Encoder-Decoder](./transformers.md#5-architectural-variants-encoder-decoder-and-encoder-decoder)
+3. **Implementation details**: [Self-Attention Deep Dive](./transformers.md#6-stage-4-self-attention-deep-dive)
+4. **Deployment**: [Quantization](./transformers.md#14-quantization-for-practical-deployment) and [Parameter-Efficient Fine-tuning](./transformers.md#13-parameter-efficient-fine-tuning-methods)
 
 ### For Researchers
 1. **Mathematical foundations**: [transformers_math.md](./transformers_math.md) (referenced throughout)
@@ -63,7 +65,7 @@ This repository provides a comprehensive exploration of transformer architecture
 - **Concrete examples**: Real-world analogies and intuitive explanations
 - **Timeline and impact**: Historical context and societal implications
 
-### [Mathematical Foundations](./transformers.md)
+### [Mathematical Foundations](./transformers_math.md)
 **Theoretical underpinnings** - Deep mathematical analysis supporting the main documents.
 
 **Coverage:**
@@ -71,6 +73,18 @@ This repository provides a comprehensive exploration of transformer architecture
 - Probability theory and information theory foundations
 - Optimization theory and gradient methods
 - Detailed derivations of transformer components
+
+### [PyTorch Reference: From MLPs to Transformers](./pytorch_reference.md)
+**Practical implementation guide** - Hands-on PyTorch patterns for sequence modeling.
+
+**Key Features:**
+- **Tensor operations**: Core PyTorch operations with shape analysis
+- **Model architectures**: MLPs, RNNs, LSTMs, and Transformers from scratch
+- **Training patterns**: Complete training loops, loss functions, optimizers
+- **Common gotchas**: Debugging tips and best practices
+- **End-to-end example**: Character-level language model implementation
+
+**Prerequisites:** Basic Python knowledge, some familiarity with neural networks
 
 ## 🎓 Learning Paths
 
@@ -86,11 +100,13 @@ This repository provides a comprehensive exploration of transformer architecture
 
 ### Path 2: Practitioner Focus
 ```
-1. transformers.md (Section 1: Overview)
-2. transformers.md (Section 5: Architectural Variants)
-3. transformers.md (Sections 6-9: Core Components)
-4. transformers.md (Sections 13-15: Deployment)
-5. sequencing_history.md (For historical context)
+1. pytorch_reference.md (Sections 1-7: PyTorch basics and patterns)
+2. transformers.md (Section 1: Overview)
+3. pytorch_reference.md (Sections 8-10: Model implementations)
+4. transformers.md (Section 5: Architectural Variants)
+5. transformers.md (Sections 6-9: Core Components)
+6. transformers.md (Sections 13-15: Deployment)
+7. sequencing_history.md (For historical context)
 ```
 
 ### Path 3: Research Deep Dive
@@ -144,6 +160,7 @@ This repository provides a comprehensive exploration of transformer architecture
 | transformers.md | 1,700+ | Technical Implementation | Deep |
 | sequencing_history.md | 800+ | Historical Context | Comprehensive |
 | transformers_math.md | Variable | Mathematical Theory | Rigorous |
+| pytorch_reference.md | 2,000+ | Practical Implementation | Hands-on |
 
 ## 🔗 Cross-References
 
@@ -151,15 +168,18 @@ Documents are extensively cross-referenced:
 - **Mathematical concepts**: transformers.md → transformers_math.md
 - **Historical context**: transformers.md → sequencing_history.md  
 - **Implementation details**: sequencing_history.md → transformers.md
+- **Code patterns**: pytorch_reference.md → transformers_math.md
+- **Practical examples**: transformers.md → pytorch_reference.md
 
 ## 🏗️ Repository Structure
 
 ```
 transformers/
 ├── README.md                    # This file - main navigation
-├── transformers.md         # Complete technical reference
+├── transformers.md              # Complete technical reference
 ├── sequencing_history.md        # Historical evolution narrative  
-└── transformers_math.md          # Mathematical foundations
+├── transformers_math.md          # Mathematical foundations
+└── pytorch_reference.md          # Practical PyTorch implementation guide
 ```
 
 ## 🎉 Key Features
