@@ -12,30 +12,30 @@ This repository provides a comprehensive exploration of transformer architecture
 
 | Document | Purpose | Audience | Key Focus |
 |----------|---------|----------|-----------|
-| **[transformers_flow.md](./transformers_flow.md)** | Complete technical reference | Researchers & Engineers | Mathematical rigor, implementation details |
+| **[transformers.md](./transformers.md)** | Complete technical reference | Researchers & Engineers | Mathematical rigor, implementation details |
 | **[sequencing_history.md](./sequencing_history.md)** | Historical evolution | Students & Practitioners | From MLPs to Transformers |
-| **[transformer_math.md](./transformer_math.md)** | Mathematical foundations | Advanced users | Theoretical underpinnings |
+| **[transformers_math.md](./transformers_math.md)** | Mathematical foundations | Advanced users | Theoretical underpinnings |
 
 ## 🚀 Getting Started
 
 ### For Beginners
 1. **Start with**: [Historical Context](./sequencing_history.md) to understand why transformers exist
-2. **Then read**: [Transformer Flow Overview](./transformers_flow.md#1-overview-the-complete-pipeline) for the big picture
+2. **Then read**: [Transformer Flow Overview](./transformers.md#1-overview-the-complete-pipeline) for the big picture
 3. **Dive deeper**: Explore specific sections based on your interests
 
 ### For Practitioners
-1. **Architecture variants**: [Encoder vs Decoder vs Encoder-Decoder](./transformers_flow.md#5-architectural-variants-encoder-decoder-and-encoder-decoder)
-2. **Implementation details**: [Self-Attention Deep Dive](./transformers_flow.md#6-stage-4-self-attention-deep-dive)
-3. **Deployment**: [Quantization](./transformers_flow.md#14-quantization-for-practical-deployment) and [Parameter-Efficient Fine-tuning](./transformers_flow.md#13-parameter-efficient-fine-tuning-methods)
+1. **Architecture variants**: [Encoder vs Decoder vs Encoder-Decoder](./transformers.md#5-architectural-variants-encoder-decoder-and-encoder-decoder)
+2. **Implementation details**: [Self-Attention Deep Dive](./transformers.md#6-stage-4-self-attention-deep-dive)
+3. **Deployment**: [Quantization](./transformers.md#14-quantization-for-practical-deployment) and [Parameter-Efficient Fine-tuning](./transformers.md#13-parameter-efficient-fine-tuning-methods)
 
 ### For Researchers
-1. **Mathematical foundations**: [transformer_math.md](./transformer_math.md) (referenced throughout)
-2. **Training dynamics**: [Backpropagation Flow](./transformers_flow.md#11-training-backpropagation-flow)
-3. **Evaluation methods**: [Diagnostics and Evaluation](./transformers_flow.md#15-evaluation-and-diagnostics)
+1. **Mathematical foundations**: [transformers_math.md](./transformers_math.md) (referenced throughout)
+2. **Training dynamics**: [Backpropagation Flow](./transformers.md#11-training-backpropagation-flow)
+3. **Evaluation methods**: [Diagnostics and Evaluation](./transformers.md#15-evaluation-and-diagnostics)
 
 ## 📖 Document Details
 
-### [Transformer Flow: From Text Input to Output Generation](./transformers_flow.md)
+### [Transformer Flow: From Text Input to Output Generation](./transformers.md)
 **The comprehensive technical reference** - 1,700+ lines covering every aspect of transformer operation.
 
 **Key Sections:**
@@ -63,7 +63,7 @@ This repository provides a comprehensive exploration of transformer architecture
 - **Concrete examples**: Real-world analogies and intuitive explanations
 - **Timeline and impact**: Historical context and societal implications
 
-### [Mathematical Foundations](./transformer_math.md)
+### [Mathematical Foundations](./transformers.md)
 **Theoretical underpinnings** - Deep mathematical analysis supporting the main documents.
 
 **Coverage:**
@@ -77,26 +77,26 @@ This repository provides a comprehensive exploration of transformer architecture
 ### Path 1: Complete Beginner → Expert
 ```
 1. sequencing_history.md (Sections 1-4: MLPs to LSTMs)
-2. transformers_flow.md (Section 1: Overview)
+2. transformers.md (Section 1: Overview)
 3. sequencing_history.md (Sections 5-8: Attention to Transformers)
-4. transformers_flow.md (Sections 2-9: Core Architecture)
-5. transformers_flow.md (Sections 10-16: Advanced Topics)
-6. transformer_math.md (As needed for deeper understanding)
+4. transformers.md (Sections 2-9: Core Architecture)
+5. transformers.md (Sections 10-16: Advanced Topics)
+6. transformers_math.md (As needed for deeper understanding)
 ```
 
 ### Path 2: Practitioner Focus
 ```
-1. transformers_flow.md (Section 1: Overview)
-2. transformers_flow.md (Section 5: Architectural Variants)
-3. transformers_flow.md (Sections 6-9: Core Components)
-4. transformers_flow.md (Sections 13-15: Deployment)
+1. transformers.md (Section 1: Overview)
+2. transformers.md (Section 5: Architectural Variants)
+3. transformers.md (Sections 6-9: Core Components)
+4. transformers.md (Sections 13-15: Deployment)
 5. sequencing_history.md (For historical context)
 ```
 
 ### Path 3: Research Deep Dive
 ```
-1. transformer_math.md (Mathematical foundations)
-2. transformers_flow.md (Complete technical reference)
+1. transformers_math.md (Mathematical foundations)
+2. transformers.md (Complete technical reference)
 3. sequencing_history.md (Section 9: Mathematical progression)
 4. Cross-reference mathematical derivations across documents
 ```
@@ -141,25 +141,25 @@ This repository provides a comprehensive exploration of transformer architecture
 
 | Document | Lines | Focus | Depth |
 |----------|--------|--------|--------|
-| transformers_flow.md | 1,700+ | Technical Implementation | Deep |
+| transformers.md | 1,700+ | Technical Implementation | Deep |
 | sequencing_history.md | 800+ | Historical Context | Comprehensive |
-| transformer_math.md | Variable | Mathematical Theory | Rigorous |
+| transformers_math.md | Variable | Mathematical Theory | Rigorous |
 
 ## 🔗 Cross-References
 
 Documents are extensively cross-referenced:
-- **Mathematical concepts**: transformers_flow.md → transformer_math.md
-- **Historical context**: transformers_flow.md → sequencing_history.md  
-- **Implementation details**: sequencing_history.md → transformers_flow.md
+- **Mathematical concepts**: transformers.md → transformers_math.md
+- **Historical context**: transformers.md → sequencing_history.md  
+- **Implementation details**: sequencing_history.md → transformers.md
 
 ## 🏗️ Repository Structure
 
 ```
 transformers/
 ├── README.md                    # This file - main navigation
-├── transformers_flow.md         # Complete technical reference
+├── transformers.md         # Complete technical reference
 ├── sequencing_history.md        # Historical evolution narrative  
-└── transformer_math.md          # Mathematical foundations
+└── transformers_math.md          # Mathematical foundations
 ```
 
 ## 🎉 Key Features

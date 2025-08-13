@@ -14,9 +14,9 @@ Transformer architectures represent a fundamental paradigm shift in sequence mod
 ## Prerequisites
 
 **Mathematical Foundations:**
-- **Linear Algebra**: Matrix operations, eigenvalues, vector spaces (📚 See [Linear Algebra Essentials](./transformer_math.md#21-linear-algebra-essentials))
-- **Probability Theory**: Distributions, information theory, maximum likelihood estimation (📚 See [Probability & Information Theory](./transformer_math.md#23-probability--information-theory))
-- **Calculus**: Gradients, chain rule, optimization theory (📚 See [Matrix Calculus](./transformer_math.md#22-matrix-calculus-essentials))
+- **Linear Algebra**: Matrix operations, eigenvalues, vector spaces (📚 See [Linear Algebra Essentials](./transformers_math.md#21-linear-algebra-essentials))
+- **Probability Theory**: Distributions, information theory, maximum likelihood estimation (📚 See [Probability & Information Theory](./transformers_math.md#23-probability--information-theory))
+- **Calculus**: Gradients, chain rule, optimization theory (📚 See [Matrix Calculus](./transformers_math.md#22-matrix-calculus-essentials))
 - **Machine Learning**: Backpropagation, gradient descent, regularization techniques
 
 **This document assumes familiarity with deep learning fundamentals and focuses on the mathematical rigor and computational details specific to transformer architectures.**
@@ -25,7 +25,7 @@ Transformer architectures represent a fundamental paradigm shift in sequence mod
 
 This document provides a comprehensive analysis of transformer architecture data flow, from tokenization through output generation. We examine the mathematical formulations, computational complexity, and implementation details of each component, with emphasis on the attention mechanism, layer composition, and training dynamics. The treatment assumes undergraduate-level mathematical sophistication and focuses on the rigorous understanding necessary for research and advanced implementation.
 
-**📚 Mathematical Foundations:** Core mathematical concepts and derivations are detailed in [transformer_math.md](./transformer_math.md), providing the theoretical foundation for the computational procedures described here.
+**📚 Mathematical Foundations:** Core mathematical concepts and derivations are detailed in [transformers_math.md](./transformers_math.md), providing the theoretical foundation for the computational procedures described here.
 
 ---
 
@@ -221,7 +221,7 @@ $$\text{tokenize}(s) = [\text{vocab}[\tau_i] \mid \tau_i \in \text{BPE\_segment}
 
 where $\text{BPE\_segment}$ applies the learned merge rules to produce subword tokens $\tau_i$.
 
-**📖 Detailed Algorithm:** See [Tokenization Mathematics](./transformer_math.md#102-embedding-mathematics) for BPE training and inference procedures.
+**📖 Detailed Algorithm:** See [Tokenization Mathematics](./transformers_math.md#102-embedding-mathematics) for BPE training and inference procedures.
 
 ### Tokenization Challenges and Considerations
 
@@ -289,7 +289,7 @@ $$X = X_{\text{tok}} + X_{\text{pos}} \in \mathbb{R}^{n \times d_{\text{model}}}
 
 where $n$ is the sequence length and $d_{\text{model}}$ is the model dimension.
 
-**📖 Theoretical Foundation:** See [Embedding Mathematics](./transformer_math.md#102-embedding-mathematics) and [Positional Encodings](./transformer_math.md#82-positional-encodings) for detailed analysis of learned vs. fixed position encodings.
+**📖 Theoretical Foundation:** See [Embedding Mathematics](./transformers_math.md#102-embedding-mathematics) and [Positional Encodings](./transformers_math.md#82-positional-encodings) for detailed analysis of learned vs. fixed position encodings.
 
 ### Concrete Example with Actual Numbers
 
@@ -407,7 +407,7 @@ $$X^{(l)} = X'^{(l)} + F^{(l)} \quad \text{(residual connection)}$$
 - **Residual connections**: Address vanishing gradient problem via identity shortcuts
 - **Two-sublayer structure**: Separates relationship modeling (attention) from feature transformation (FFN)
 
-**📖 Theoretical Analysis:** See [Transformer Block Mathematics](./transformer_math.md#91-complete-block-equations) and [Residual Connections as Dynamical Systems](./transformer_math.md#32-residual-connections-as-discretized-dynamics) for detailed mathematical foundations.
+**📖 Theoretical Analysis:** See [Transformer Block Mathematics](./transformers_math.md#91-complete-block-equations) and [Residual Connections as Dynamical Systems](./transformers_math.md#32-residual-connections-as-discretized-dynamics) for detailed mathematical foundations.
 
 ---
 
@@ -622,7 +622,7 @@ $$\text{head}_i = \text{Attention}(XW_i^Q, XW_i^K, XW_i^V)$$
 3. **Concatenation**: Head outputs concatenated along feature dimension
 4. **Output projection**: Single linear transformation of concatenated heads
 
-**📖 Derivation and Analysis:** See [Multi-Head Attention Theory](./transformer_math.md#81-multi-head-as-subspace-projections) and [Scaling Analysis](./transformer_math.md#72-why-the-sqrt_dk-scaling) for mathematical foundations.
+**📖 Derivation and Analysis:** See [Multi-Head Attention Theory](./transformers_math.md#81-multi-head-as-subspace-projections) and [Scaling Analysis](./transformers_math.md#72-why-the-sqrt_dk-scaling) for mathematical foundations.
 
 **Causal Masking for Autoregressive Models:**
 $$\text{mask}[i, j] = \begin{cases} 
@@ -815,7 +815,7 @@ where $\Phi(x)$ is the standard normal CDF. GELU provides smooth, differentiable
 
 **Approximation**: $\text{GELU}(x) \approx 0.5x\left(1 + \tanh\left(\sqrt{\frac{2}{\pi}}(x + 0.044715x^3)\right)\right)$
 
-**📖 Activation Function Analysis:** See [GELU vs ReLU](./transformer_math.md#92-why-gelu-over-relu) and [SwiGLU Variants](./transformer_math.md#91-complete-block-equations) for detailed comparisons.
+**📖 Activation Function Analysis:** See [GELU vs ReLU](./transformers_math.md#92-why-gelu-over-relu) and [SwiGLU Variants](./transformers_math.md#91-complete-block-equations) for detailed comparisons.
 
 **SwiGLU Variant (Gated FFN):**
 $$\text{SwiGLU}(x) = (W_1 x + b_1) \odot \text{SiLU}(W_2 x + b_2)$$
@@ -1070,7 +1070,7 @@ Total loss:
   L = (1/n) × Σ L_i = -(1/n) × Σ log(softmax(logits[i])[t_{i+1}])
 ```
 
-**📖 Mathematical Details:** See [Cross-Entropy Loss](./transformer_math.md#23-probability--information-theory) in transformer_math.md for detailed intuitive explanation
+**📖 Mathematical Details:** See [Cross-Entropy Loss](./transformers_math.md#23-probability--information-theory) in transformers_math.md for detailed intuitive explanation
 
 ### Backward Pass Flow
 
@@ -1126,7 +1126,7 @@ dH1 = dH2 ⊙ φ'(W1 @ x + b1)
 
 **Attention Backward:**
 
-Rewrite using $S,P,O$ factoring and the row-wise softmax Jacobian; match the equations in **transformer_math.md** (Section D above).
+Rewrite using $S,P,O$ factoring and the row-wise softmax Jacobian; match the equations in **transformers_math.md** (Section D above).
 
 Let $S = QK^T/\sqrt{d_k}$, $P=\mathrm{softmax}(S)$ (row-wise), $O = PV$. Given $G_O=\partial \mathcal{L}/\partial O$:
 
@@ -1148,7 +1148,7 @@ $$
 ∂L/∂β = sum(∂L/∂y, dim=0)
 ```
 
-**📖 Mathematical Details:** See [LayerNorm Mathematics](./transformer_math.md#53-normalization-techniques) in transformer_math.md for intuitive explanation of normalization
+**📖 Mathematical Details:** See [LayerNorm Mathematics](./transformers_math.md#53-normalization-techniques) in transformers_math.md for intuitive explanation of normalization
 
 ---
 
@@ -1177,7 +1177,7 @@ v̂_t = v_t / (1 - β₂^t)
 θ_{t+1} = θ_t - α × m̂_t / (√v̂_t + ε)
 ```
 
-**📖 Mathematical Details:** See [Adam Optimizer](./transformer_math.md#41-from-sgd-to-adam) in transformer_math.md for intuitive explanations
+**📖 Mathematical Details:** See [Adam Optimizer](./transformers_math.md#41-from-sgd-to-adam) in transformers_math.md for intuitive explanations
 
 ### Learning Rate Scheduling
 
@@ -1193,7 +1193,7 @@ def learning_rate_schedule(step, warmup_steps, max_steps, max_lr):
         return max_lr * 0.5 * (1 + cos(π * progress))
 ```
 
-**📖 Mathematical Details:** See [Learning Rate Schedules](./transformer_math.md#42-learning-rate-schedules) in transformer_math.md for detailed explanations
+**📖 Mathematical Details:** See [Learning Rate Schedules](./transformers_math.md#42-learning-rate-schedules) in transformers_math.md for detailed explanations
 
 ### Gradient Clipping
 
@@ -1205,7 +1205,7 @@ for param in parameters:
     param.grad *= clip_coef
 ```
 
-**📖 Mathematical Details:** See [Gradient Clipping](./transformer_math.md#43-gradient-clipping) in transformer_math.md for intuitive explanations
+**📖 Mathematical Details:** See [Gradient Clipping](./transformers_math.md#43-gradient-clipping) in transformers_math.md for intuitive explanations
 
 ### Parameter Update Flow
 
