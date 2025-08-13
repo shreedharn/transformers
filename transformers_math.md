@@ -331,12 +331,20 @@ $$\begin{align}
 $$\frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} = \frac{\partial \mathcal{L}}{\partial \hat{\mathbf{y}}} \quad (16)$$
 
 **Weight Gradients:**
+
+**Weight Gradients:**
+
+**Weight Gradients:**
+
 $$
-\begin{align}
-\frac{\partial \mathcal{L}}{\partial W^{(2)}} &= (\mathbf{h}^{(1)})^T \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} \tag{17} \\
-\frac{\partial \mathcal{L}}{\partial W^{(1)}} &= \mathbf{x}^T \left[ \left( \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} (W^{(2)})^T \right) \odot \sigma'(\mathbf{z}^{(1)}) \right] \tag{18}
-\end{align}
+\begin{aligned}
+\frac{\partial \mathcal{L}}{\partial W^{(2)}} &= (\mathbf{h}^{(1)})^T \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} \\
+\frac{\partial \mathcal{L}}{\partial W^{(1)}} &= \mathbf{x}^T \left[ \left( \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} W^{(2)T} \right) \odot \sigma'(\mathbf{z}^{(1)}) \right]
+\end{aligned}
 $$
+
+
+
 
 - Where $\odot$ denotes element-wise multiplication.
 - $\sigma'(\mathbf{z}^{(1)})$ is the derivative of the activation function applied elementwise.
