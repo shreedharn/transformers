@@ -4,24 +4,34 @@
 
 This tutorial builds the mathematical foundations of Transformer architectures from first principles, targeting motivated high school students with basic algebra and geometry background. We progress systematically from optimization theory and high-dimensional geometry through attention mechanisms to complete Transformer blocks, emphasizing mathematical intuition, worked derivations, and practical implementation considerations. Every mathematical concept is explained with real-world analogies and intuitive reasoning before diving into the formal mathematics.
 
+## Assumptions & Conventions
+
+**Mathematical Notation:**
+- Vectors are row-major; matrices multiply on the right
+- Shapes annotated as [seq, dim] or [batch, seq, heads, dim]
+- Masking uses additive large negative values (-∞) before softmax
+- Row-wise softmax normalization
+- Token/position numbering starts from 0
+- Default dtype is fp32 unless specified
+- Equations numbered sequentially throughout document
+
 ## Table of Contents
 
 1. [Roadmap](#1-roadmap)
 2. [Mathematical Preliminaries](#2-mathematical-preliminaries)
-3. [Calculus to Differential Equations](#3-calculus-to-differential-equations)
-4. [Optimization for Deep Networks](#4-optimization-for-deep-networks)
-5. [Multilayer Perceptrons as a Warm-Up](#5-multilayer-perceptrons-as-a-warm-up)
-6. [High-Dimensional Geometry & Similarity](#6-high-dimensional-geometry--similarity)
-7. [From Similarity to Attention](#7-from-similarity-to-attention)
-8. [Multi-Head Attention & Positional Information](#8-multi-head-attention--positional-information)
-9. [Transformer Block Mathematics](#9-transformer-block-mathematics)
-10. [Training Objective & Tokenization/Embeddings](#10-training-objective--tokenizationembeddings)
-11. [Efficient Attention & Scaling](#11-efficient-attention--scaling)
-12. [Regularization, Generalization, and Calibration](#12-regularization-generalization-and-calibration)
-13. [Practical Numerics & Implementation Notes](#13-practical-numerics--implementation-notes)
-14. [Worked Mini-Examples](#14-worked-mini-examples)
-15. [Common Pitfalls & Misconceptions](#15-common-pitfalls--misconceptions)
-16. [Summary & What to Learn Next](#16-summary--what-to-learn-next)
+3. [Multilayer Perceptrons as a Warm-Up](#3-multilayer-perceptrons-as-a-warm-up)
+4. [High-Dimensional Geometry & Similarity](#4-high-dimensional-geometry--similarity)
+5. [From Similarity to Attention](#5-from-similarity-to-attention)
+6. [Multi-Head Attention & Positional Information](#6-multi-head-attention--positional-information)
+7. [Transformer Block Mathematics](#7-transformer-block-mathematics)
+8. [Practical Numerics & Implementation Notes](#8-practical-numerics--implementation-notes)
+9. [Optimization for Deep Networks](#9-optimization-for-deep-networks)
+10. [Efficient Attention & Scaling](#10-efficient-attention--scaling)
+11. [Regularization, Generalization, and Calibration](#11-regularization-generalization-and-calibration)
+12. [Training Objective & Tokenization/Embeddings](#12-training-objective--tokenizationembeddings)
+13. [Worked Mini-Examples](#13-worked-mini-examples)
+14. [Common Pitfalls & Misconceptions](#14-common-pitfalls--misconceptions)
+15. [Summary & What to Learn Next](#15-summary--what-to-learn-next)
 
 **Appendices:**
 - [A. Symbol/Shape Reference](#appendix-a-symbolshape-reference)
@@ -118,9 +128,9 @@ $$\mathcal{L} = -\sum_{i=1}^n y_i \log p_i \quad (2)$$
 
 where $y_i$ are true labels (what the answer actually is) and $p_i$ are predicted probabilities (what the model thinks the answer is).
 
-## 3. Calculus to Differential Equations
+## 2.1 Calculus to Differential Equations
 
-### 3.1 Gradient Fields and Optimization
+### 2.1.1 Gradient Fields and Optimization
 
 **Gradient Descent as Continuous Flow:** Parameter updates $\theta_{t+1} = \theta_t - \eta \nabla_\theta \mathcal{L}$ approximate the ODE:
 $$\frac{d\theta}{dt} = -\nabla_\theta \mathcal{L}(\theta) \quad (3)$$
@@ -137,7 +147,7 @@ This connects discrete optimization to continuous dynamical systems.
 
 **Why This Matters:** Understanding optimization as flow helps explain momentum methods, learning rate schedules, and convergence behavior.
 
-### 3.2 Residual Connections as Discretized Dynamics
+### 2.1.2 Residual Connections as Discretized Dynamics
 
 **Residual Block:** $\mathbf{h}_{l+1} = \mathbf{h}_l + F(\mathbf{h}_l)$ approximates:
 $$\frac{d\mathbf{h}}{dt} = F(\mathbf{h}) \quad (4)$$
@@ -161,9 +171,9 @@ def residual_block(x, transform_fn):
     return x + transform_fn(x)  # Skip connection is crucial
 ```
 
-## 4. Optimization for Deep Networks
+## 9. Optimization for Deep Networks
 
-### 4.1 From SGD to Adam
+### 9.1 From SGD to Adam
 
 **SGD with Momentum:**
 $$\begin{align}
@@ -215,7 +225,31 @@ Adam is like having a smart GPS that adjusts your driving based on two things:
 - Adjusts speed based on road conditions (adaptive learning rate)
 - Starts cautiously but gets more confident over time (bias correction)
 
-### 4.2 Learning Rate Schedules
+### 9.2 Advanced Optimizers
+
+**AdamW vs Adam:** AdamW decouples weight decay from gradient-based updates:
+
+**Adam with L2 regularization:**
+$$\theta_t = \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon} - \eta \lambda \theta_{t-1}$$
+
+**AdamW (decoupled weight decay):**
+$$\theta_t = (1 - \eta \lambda) \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}$$
+
+**Why AdamW is better:** Weight decay is applied regardless of gradient magnitude, leading to better generalization.
+
+**$\beta_2$ Warmup:** Start with high $\beta_2$ (e.g., 0.99) and gradually decrease to final value (e.g., 0.999) over first few thousand steps. Helps with training stability.
+
+**Gradient Accumulation:** Simulate larger batch sizes:
+```python
+for step in range(num_accumulation_steps):
+    loss = model(batch[step]) / num_accumulation_steps
+    loss.backward()
+
+optimizer.step()
+optimizer.zero_grad()
+```
+
+### 9.3 Learning Rate Schedules
 
 **Why do we need schedules?** Think of learning to drive: you start slow in the parking lot (warmup), drive at normal speed on the highway (main training), then slow down carefully when approaching your destination (decay).
 
@@ -241,6 +275,11 @@ $$\eta_t = \eta_{\text{max}} \cdot 0.5 \left(1 + \cos\left(\pi \cdot \frac{t - T
 
 **Real-world analogy:** Like landing an airplane - you approach fast, then gradually slow down for a smooth landing, not a crash.
 
+**Original Transformer Schedule:** Combines warmup with inverse square root decay:
+$$\eta_t = d_{\text{model}}^{-0.5} \cdot \min(t^{-0.5}, t \cdot T_{\text{warmup}}^{-1.5})$$
+
+**When to use cosine vs original:** Cosine for fine-tuning and shorter training; original schedule for training from scratch with very large models.
+
 ### 4.3 Gradient Clipping
 
 **The Problem:** Sometimes gradients become extremely large (exploding gradients), causing the model to make huge, destructive updates.
@@ -264,16 +303,16 @@ $$\tilde{g} = \min\left(1, \frac{c}{\|\mathbf{g}\|_2}\right) \mathbf{g} \quad (1
 - Scaling factor: $\min(1, 5/50) = 0.1$  
 - All gradients get multiplied by 0.1 (reduced to 10% of original size)
 
-### 4.4 Numerical Stability
+### 9.4 Numerical Stability
 
 **Log-Sum-Exp Trick:** For numerical stability in softmax:
 $$\log\left(\sum_{i=1}^n e^{x_i}\right) = c + \log\left(\sum_{i=1}^n e^{x_i - c}\right) \quad (12)$$
 
 where $c = \max_i x_i$ prevents overflow.
 
-## 5. Multilayer Perceptrons as a Warm-Up
+## 3. Multilayer Perceptrons as a Warm-Up
 
-### 5.1 Forward Pass
+### 3.1 Forward Pass
 
 **Two-layer MLP:**
 $$\begin{align}
@@ -286,7 +325,7 @@ $$\begin{align}
 - $W^{(1)} \in \mathbb{R}^{d_{\text{in}} \times d_{\text{hidden}}}$
 - $W^{(2)} \in \mathbb{R}^{d_{\text{hidden}} \times d_{\text{out}}}$
 
-### 5.2 Backpropagation Derivation
+### 3.2 Backpropagation Derivation
 
 **Loss Gradient w.r.t. Output:**
 $$\frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} = \frac{\partial \mathcal{L}}{\partial \hat{\mathbf{y}}} \quad (16)$$
@@ -299,10 +338,12 @@ $$\begin{align}
 
 where $\odot$ denotes element-wise multiplication.
 
-### 5.3 Normalization Techniques
+### 3.3 Advanced Normalization Techniques
 
 **LayerNorm:** Normalizes across features within each sample:
 $$\text{LayerNorm}(\mathbf{x}) = \gamma \odot \frac{\mathbf{x} - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta \quad (19)$$
+
+**Shape Analysis:** For $\mathbf{x} \in \mathbb{R}^{n \times d}$: $\gamma, \beta \in \mathbb{R}^{d}$ (learnable per-feature parameters)
 
 **Understanding the Greek letters:**
 - $\mu$ (mu): The mean (average) of all the numbers
@@ -317,9 +358,26 @@ where $\mu = \frac{1}{d}\sum_{i=1}^d x_i$ and $\sigma^2 = \frac{1}{d}\sum_{i=1}^
 
 **Why LayerNorm for Sequences:** Unlike BatchNorm, it doesn't depend on batch statistics, making it suitable for variable-length sequences.
 
-## 6. High-Dimensional Geometry & Similarity
+### 3.4 Alternative Normalization Methods
 
-### 6.1 Distance Metrics in High Dimensions
+**RMSNorm (Root Mean Square Norm):** Simplifies LayerNorm by removing the mean:
+$$\text{RMSNorm}(\mathbf{x}) = \gamma \odot \frac{\mathbf{x}}{\sqrt{\frac{1}{d}\sum_{i=1}^d x_i^2 + \epsilon}}$$
+
+**Benefits:** Faster computation, similar performance to LayerNorm.
+
+**Scaled Residuals:** In very deep networks, scale residual connections:
+$$\mathbf{h}_{l+1} = \mathbf{h}_l + \alpha \cdot F(\mathbf{h}_l)$$
+where $\alpha < 1$ prevents residual explosion.
+
+**Pre-LN vs Post-LN:**
+- **Pre-LN (modern):** $\mathbf{h}_{l+1} = \mathbf{h}_l + F(\text{LN}(\mathbf{h}_l))$
+- **Post-LN (original):** $\mathbf{h}_{l+1} = \text{LN}(\mathbf{h}_l + F(\mathbf{h}_l))$
+
+**Pre-LN advantages:** Better gradient flow, more stable training, enables training deeper models.
+
+## 4. High-Dimensional Geometry & Similarity
+
+### 4.1 Distance Metrics in High Dimensions
 
 **Euclidean Distance:** $d_2(\mathbf{u}, \mathbf{v}) = \|\mathbf{u} - \mathbf{v}\|_2$
 
@@ -327,7 +385,7 @@ where $\mu = \frac{1}{d}\sum_{i=1}^d x_i$ and $\sigma^2 = \frac{1}{d}\sum_{i=1}^
 
 **Concentration of Measure:** In high dimensions, most random vectors are approximately orthogonal, making cosine similarity more discriminative than Euclidean distance.
 
-### 6.2 Maximum Inner Product Search (MIPS)
+### 4.2 Maximum Inner Product Search (MIPS)
 
 **Problem:** Find $\mathbf{v}^* = \arg\max_{\mathbf{v} \in \mathcal{V}} \mathbf{q}^T \mathbf{v}$
 
@@ -347,9 +405,9 @@ def compare_similarities(q, k_list, normalize=True):
     return similarities
 ```
 
-## 7. From Similarity to Attention
+## 5. From Similarity to Attention
 
-### 7.1 Deriving Scaled Dot-Product Attention
+### 5.1 Deriving Scaled Dot-Product Attention
 
 **Step 1:** Start with similarity search between query $\mathbf{q}$ and keys $\{\mathbf{k}_i\}$:
 $$s_i = \mathbf{q}^T \mathbf{k}_i \quad (20)$$
@@ -376,6 +434,8 @@ $$\mathbf{o} = \sum_{i=1}^n \alpha_i \mathbf{v}_i \quad (22)$$
 **Matrix Form:** For sequences, this becomes:
 $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V \quad (23)$$
 
+**Shape Analysis:** $Q \in \mathbb{R}^{n \times d_k}, K \in \mathbb{R}^{n \times d_k}, V \in \mathbb{R}^{n \times d_v} \Rightarrow \text{Output} \in \mathbb{R}^{n \times d_v}$
+
 **What this equation accomplishes step-by-step:**
 1. $QK^T$ creates a "compatibility matrix" - every query checks against every key
 2. $\frac{1}{\sqrt{d_k}}$ scales the scores to prevent them from getting too large
@@ -384,7 +444,28 @@ $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)
 
 **Library analogy:** Think of attention like a smart librarian. Q is your question ("I need books about neural networks"), K represents the subject tags of all books, V contains the actual book contents. The librarian (attention mechanism) looks at your question, checks which books are most relevant (QK^T), decides how much attention to give each book (softmax), and gives you a summary that's mostly from the most relevant books but includes a little from others (weighted sum with V).
 
-### 7.2 Why the $\sqrt{d_k}$ Scaling?
+### 5.4 Masked Attention
+
+**Causal Masking:** For autoregressive models, prevent attention to future tokens:
+$$P = \text{softmax}\left(\frac{QK^T + M}{\sqrt{d_k}}\right) \quad (24)$$
+
+where mask $M_{ij} \in \{0, -\infty\}$ with $M_{ij} = -\infty$ if $i < j$ (future positions).
+
+**Numerical Stability:** Instead of $-\infty$, use large negative values (e.g., $-10^9$) to prevent NaN gradients:
+
+```python
+# Causal mask implementation
+def create_causal_mask(seq_len):
+    mask = torch.triu(torch.ones(seq_len, seq_len), diagonal=1)
+    mask = mask.masked_fill(mask == 1, -1e9)
+    return mask
+```
+
+**Padding Masks:** Mask out padding tokens by setting their attention scores to $-\infty$ before softmax. This ensures padding tokens receive zero attention weight.
+
+**Key Insight:** Additive masking (adding $-\infty$) is preferred over multiplicative masking because it works naturally with softmax normalization.
+
+### 5.2 Why the $\sqrt{d_k}$ Scaling?
 
 **Variance Analysis:** If $Q, K$ have i.i.d. entries with variance $\sigma^2$, then:
 $$\text{Var}(QK^T) = d_k \sigma^4 \quad (24)$$
@@ -393,11 +474,11 @@ $$\text{Var}(QK^T) = d_k \sigma^4 \quad (24)$$
 
 **What "i.i.d." means:** Independent and identically distributed - each number is random and doesn't depend on the others, like rolling dice multiple times.
 
-Without scaling, attention weights become too sharp as $d_k$ increases, leading to poor gradients.
+Without scaling, attention weights become too peaked (sharp) as $d_k$ increases, leading to poor gradients and attention collapse.
 
-**Pitfall:** Forgetting this scaling leads to attention collapse in high dimensions.
+**Pitfall:** Forgetting this scaling leads to attention collapse - weights become too concentrated rather than appropriately distributed.
 
-### 7.3 Backpropagation Through Attention
+### 5.3 Backpropagation Through Attention
 
 **Softmax Gradient:** For $\mathbf{p} = \text{softmax}(\mathbf{z})$:
 $$\frac{\partial p_i}{\partial z_j} = p_i(\delta_{ij} - p_j) \quad (25)$$
@@ -422,15 +503,15 @@ $$
 **Parameters:** $Q,K\in\mathbb{R}^{n\times d_k}$, $V\in\mathbb{R}^{n\times d_v}$.
 **Intuition:** Backprop splits into (i) linear parts, (ii) softmax Jacobian per row.
 
-## 8. Multi-Head Attention & Positional Information
+## 6. Multi-Head Attention & Positional Information
 
-### 8.1 Multi-Head as Subspace Projections
+### 6.1 Multi-Head as Subspace Projections
 
 **Single Head:** Projects to subspace of dimension $d_k = d_{\text{model}}/h$:
-$$\text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V) \quad (29)$$
+$$\text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V) \quad (26)$$
 
 **Multi-Head Combination:**
-$$\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^O \quad (30)$$
+$$\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^O \quad (27)$$
 
 **Why multiple heads instead of one big head?** Different heads can specialize in different types of relationships:
 - **Head 1 might focus on syntax:** "What words are grammatically related?"
@@ -463,12 +544,12 @@ Instead of computing each head separately, implementations often:
 - **Output projection**: $W^O \in \mathbb{R}^{d_{\text{model}} \times d_{\text{model}}}$ adds $d_{\text{model}}^2$ parameters
 - **Total multi-head parameters**: $4d_{\text{model}}^2$
 
-### 8.2 Positional Encodings
+### 6.2 Advanced Positional Encodings
 
 **Sinusoidal Encoding:** Provides absolute position information:
 $$\begin{align}
-PE_{(pos,2i)} &= \sin(pos/10000^{2i/d_{\text{model}}}) \quad (31)\\
-PE_{(pos,2i+1)} &= \cos(pos/10000^{2i/d_{\text{model}}}) \quad (32)
+PE_{(pos,2i)} &= \sin(pos/10000^{2i/d_{\text{model}}}) \quad (28)\\
+PE_{(pos,2i+1)} &= \cos(pos/10000^{2i/d_{\text{model}}}) \quad (29)
 \end{align}$$
 
 **Mathematical Properties of Sinusoidal Encoding:**
@@ -478,8 +559,8 @@ PE_{(pos,2i+1)} &= \cos(pos/10000^{2i/d_{\text{model}}}) \quad (32)
 
 **RoPE (Rotary Position Embedding):** Rotates query-key pairs by position-dependent angles:
 $$\begin{align}
-\mathbf{q}_m^{(i)} &= R_{\Theta,m}^{(i)} \mathbf{q}^{(i)} \quad (33)\\
-\mathbf{k}_n^{(i)} &= R_{\Theta,n}^{(i)} \mathbf{k}^{(i)} \quad (34)
+\mathbf{q}_m^{(i)} &= R_{\Theta,m}^{(i)} \mathbf{q}^{(i)} \quad (30)\\
+\mathbf{k}_n^{(i)} &= R_{\Theta,n}^{(i)} \mathbf{k}^{(i)} \quad (31)
 \end{align}$$
 
 **RoPE Rotation Matrix:**
@@ -524,20 +605,44 @@ def apply_rope(x, position, dim):
     return result
 ```
 
-## 9. Transformer Block Mathematics
+### 6.3 Alternative Position Encodings
 
-### 9.1 Complete Block Equations
+**ALiBi (Attention with Linear Biases):** Adds position-dependent bias to attention scores:
+$$\text{ALiBi-Attention} = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}} + \text{bias}_{ij}\right)V$$
+
+where $\text{bias}_{ij} = -m \cdot |i - j|$ and $m$ is a head-specific slope.
+
+**Benefits of ALiBi:**
+- No position embeddings needed
+- Excellent extrapolation to longer sequences
+- Linear relationship between position distance and attention bias
+
+**T5 Relative Position Bias:** Learns relative position embeddings:
+$$A_{ij} = \frac{q_i^T k_j}{\sqrt{d_k}} + b_{\text{rel}(i,j)}$$
+
+where $b_{\text{rel}(i,j)}$ is a learned bias based on relative distance $\text{rel}(i,j)$.
+
+**RoPE Scaling Variants:**
+- **Base scaling:** Increase base frequency: $\theta_i = \alpha^{-2i/d} \cdot 10000^{-2i/d}$
+- **NTK scaling:** Interpolate frequencies for better long-context performance
+- **When to use:** Base scaling for modest extensions (2-4x), NTK for extreme length
+
+## 7. Transformer Block Mathematics
+
+### 7.1 Complete Block Equations
 
 **Pre-LayerNorm Architecture:**
 $$\begin{align}
-\mathbf{h}_1 &= \text{LayerNorm}(\mathbf{x}) \quad (35)\\
-\mathbf{h}_2 &= \mathbf{x} + \text{MultiHeadAttn}(\mathbf{h}_1, \mathbf{h}_1, \mathbf{h}_1) \quad (36)\\
-\mathbf{h}_3 &= \text{LayerNorm}(\mathbf{h}_2) \quad (37)\\
-\mathbf{y} &= \mathbf{h}_2 + \text{FFN}(\mathbf{h}_3) \quad (38)
+\mathbf{h}_1 &= \text{LayerNorm}(\mathbf{x}) \quad (32)\\
+\mathbf{h}_2 &= \mathbf{x} + \text{MultiHeadAttn}(\mathbf{h}_1, \mathbf{h}_1, \mathbf{h}_1) \quad (33)\\
+\mathbf{h}_3 &= \text{LayerNorm}(\mathbf{h}_2) \quad (34)\\
+\mathbf{y} &= \mathbf{h}_2 + \text{FFN}(\mathbf{h}_3) \quad (35)
 \end{align}$$
 
 **Feed-Forward Network:**
-$$\text{FFN}(\mathbf{x}) = \text{GELU}(\mathbf{x}W_1 + \mathbf{b}_1)W_2 + \mathbf{b}_2 \quad (39)$$
+$$\text{FFN}(\mathbf{x}) = \text{GELU}(\mathbf{x}W_1 + \mathbf{b}_1)W_2 + \mathbf{b}_2 \quad (36)$$
+
+**Shape Analysis:** $\mathbf{x} \in \mathbb{R}^{n \times d_{\text{model}}}, W_1 \in \mathbb{R}^{d_{\text{model}} \times d_{\text{ffn}}}, W_2 \in \mathbb{R}^{d_{\text{ffn}} \times d_{\text{model}}}$
 
 **What the FFN does intuitively:** Think of it as a "thinking step" for each word individually. After attention has mixed information between words, the FFN lets each word "process" and transform its representation. It's like giving each word some individual processing time to digest the information it received from other words.
 
@@ -547,10 +652,10 @@ $$\text{FFN}(\mathbf{x}) = \text{GELU}(\mathbf{x}W_1 + \mathbf{b}_1)W_2 + \mathb
 - $W_1 \in \mathbb{R}^{d_{\text{model}} \times d_{\text{ffn}}}$ (typically $d_{\text{ffn}} = 4d_{\text{model}}$) - "expansion layer"
 - $W_2 \in \mathbb{R}^{d_{\text{ffn}} \times d_{\text{model}}}$ - "contraction layer"
 
-### 9.2 Why GELU over ReLU?
+### 7.2 Why GELU over ReLU?
 
 **GELU Definition:**
-$$\text{GELU}(x) = x \cdot \Phi(x) \quad (40)$$
+$$\text{GELU}(x) = x \cdot \Phi(x) \quad (37)$$
 
 **What GELU does intuitively:** GELU is like a "smooth switch." Unlike ReLU which harshly cuts off negative values to zero, GELU gradually transitions from "mostly off" to "mostly on." It asks "how much should I activate this neuron?" and gives a smooth answer between 0 and the input value.
 
@@ -563,31 +668,37 @@ $$\text{GELU}(x) = x \cdot \Phi(x) \quad (40)$$
 
 where $\Phi(x)$ is the standard normal CDF (cumulative distribution function - tells you the probability that a normal random variable is less than x). GELU provides smoother gradients than ReLU, improving optimization.
 
-## 10. Training Objective & Tokenization/Embeddings
+## 12. Training Objective & Tokenization/Embeddings
 
-### 10.1 Next-Token Prediction
+### 12.1 Next-Token Prediction
 
 **Autoregressive Objective:**
-$$\mathcal{L} = -\sum_{t=1}^T \log P(x_t | x_1, ..., x_{t-1}) \quad (41)$$
+$$\mathcal{L} = -\sum_{t=1}^T \log P(x_t | x_1, ..., x_{t-1}) \quad (38)$$
+
+**Shape Analysis:** For batch size $B$, sequence length $T$: loss computed per sequence, averaged over batch
 
 **Implementation:** Use causal mask in attention to prevent information leakage from future tokens.
 
-### 10.2 Embedding Mathematics
+### 12.2 Embedding Mathematics
 
 **Token Embeddings:** Map discrete tokens to continuous vectors:
-$$\mathbf{e}_i = E[i] \in \mathbb{R}^{d_{\text{model}}} \quad (42)$$
+$$\mathbf{e}_i = E[i] \in \mathbb{R}^{d_{\text{model}}} \quad (39)$$
 
 where $E \in \mathbb{R}^{V \times d_{\text{model}}}$ is the embedding matrix.
 
 **Weight Tying:** Share embedding matrix $E$ with output projection to reduce parameters:
-$$P(w_t | \text{context}) = \text{softmax}(E \mathbf{h}_t) \quad (43)$$
+$$P(w_t | \text{context}) = \text{softmax}(\mathbf{h}_t E^T) \quad (40)$$
+
+**Shape Analysis:** For $\mathbf{h}_t \in \mathbb{R}^{1 \times d_{\text{model}}}$ and $E \in \mathbb{R}^{V \times d_{\text{model}}}$:
+- $\mathbf{h}_t E^T \in \mathbb{R}^{1 \times V}$ (logits over vocabulary)
+- Consistent with row-vector convention
 
 **Perplexity:** Measures model uncertainty:
-$$\text{PPL} = \exp\left(-\frac{1}{T}\sum_{t=1}^T \log P(x_t | x_{<t})\right) \quad (44)$$
+$$\text{PPL} = \exp\left(-\frac{1}{T}\sum_{t=1}^T \log P(x_t | x_{<t})\right) \quad (41)$$
 
-## 11. Efficient Attention & Scaling
+## 10. Efficient Attention & Scaling
 
-### 11.1 Complexity Analysis
+### 10.1 Complexity Analysis
 
 **Standard Attention Complexity:**
 - Time: $O(n^2 d)$ for sequence length $n$, model dimension $d$
@@ -606,15 +717,49 @@ $$\text{PPL} = \exp\left(-\frac{1}{T}\sum_{t=1}^T \log P(x_t | x_{<t})\right) \q
 - Memory requirements grow quadratically with sequence length
 - Computational cost increases quadratically even with parallelization
 
-### 11.2 KV Caching for Autoregressive Generation
+### 10.2 FlashAttention: Memory-Efficient Attention
+
+**Core Idea:** Compute attention without materializing the full $n \times n$ attention matrix.
+
+**Tiling Strategy:**
+1. Divide $Q$, $K$, $V$ into blocks
+2. Compute attention scores block by block
+3. Use online softmax to maintain numerical stability
+4. Accumulate results without storing intermediate attention weights
+
+**Memory Reduction:** From $O(n^2)$ to $O(n)$ memory complexity for the attention computation.
+
+**Speed Improvement:** Better GPU utilization through reduced memory bandwidth requirements.
+
+**Key Insight:** Trade computational redundancy for memory efficiency - recompute rather than store.
+
+### 10.3 Multi-Query and Grouped-Query Attention
+
+**Multi-Query Attention (MQA):** Share key and value projections across heads:
+- Queries: $Q \in \mathbb{R}^{B \times H \times n \times d_k}$ (per-head)
+- Keys/Values: $K, V \in \mathbb{R}^{B \times 1 \times n \times d_k}$ (shared)
+
+**Grouped-Query Attention (GQA):** Intermediate approach - group heads:
+- Divide $H$ heads into $G$ groups
+- Each group shares K, V projections
+- Reduces KV cache size by factor $H/G$
+
+**KV Cache Memory Analysis:**
+- **Standard MHA:** $2 \cdot B \cdot H \cdot n \cdot d_k$ parameters
+- **MQA:** $2 \cdot B \cdot 1 \cdot n \cdot d_k$ parameters (H× reduction)
+- **GQA:** $2 \cdot B \cdot G \cdot n \cdot d_k$ parameters
+
+**Quantization:** Reduce memory further with int8/fp16 KV cache storage.
+
+### 10.4 KV Caching for Autoregressive Generation
 
 **Key Insight:** During generation, keys and values for previous tokens don't change.
 
 **Cache Update:**
 $$\begin{align}
-K_{\text{cache}} &= [K_{\text{cache}}; k_{\text{new}}] \quad (45)\\
-V_{\text{cache}} &= [V_{\text{cache}}; v_{\text{new}}] \quad (46)\\
-\text{Attention} &= \text{softmax}(q_{\text{new}} K_{\text{cache}}^T / \sqrt{d_k}) V_{\text{cache}} \quad (47)
+K_{\text{cache}} &= [K_{\text{cache}}; k_{\text{new}}] \quad (42)\\
+V_{\text{cache}} &= [V_{\text{cache}}; v_{\text{new}}] \quad (43)\\
+\text{Attention} &= \text{softmax}(q_{\text{new}} K_{\text{cache}}^T / \sqrt{d_k}) V_{\text{cache}} \quad (44)
 \end{align}$$
 
 **Memory Trade-off:** Cache size grows as $O(nd)$ but eliminates $O(n^2)$ recomputation.
@@ -637,42 +782,75 @@ class KVCache:
         return self.keys, self.values
 ```
 
-### 11.3 Linear Attention Approximations
+### 10.5 Linear Attention Approximations
 
 **Kernel Method View:** Approximate $\text{softmax}(\mathbf{q}^T\mathbf{k})$ with $\phi(\mathbf{q})^T \phi(\mathbf{k})$ for feature map $\phi$.
 
 **Linear Attention:**
-$$\text{LinAttn}(Q,K,V) = \frac{\phi(Q)(\phi(K)^T V)}{\phi(Q)(\phi(K)^T \mathbf{1})} \quad (48)$$
+$$\text{LinAttn}(Q,K,V) = \frac{\phi(Q)(\phi(K)^T V)}{\phi(Q)(\phi(K)^T \mathbf{1})} \quad (45)$$
 
 **Complexity Reduction:** Reduces from $O(n^2 d)$ to $O(nd^2)$ when $d < n$.
 
-## 12. Regularization, Generalization, and Calibration
+## 11. Regularization, Generalization, and Calibration
 
-### 12.1 Dropout in Transformers
+### 11.1 Dropout in Transformers
 
 **Attention Dropout:** Applied to attention weights:
-$$A_{\text{dropped}} = \text{Dropout}(\text{softmax}(QK^T/\sqrt{d_k})) \quad (49)$$
+$$A_{\text{dropped}} = \text{Dropout}(\text{softmax}(QK^T/\sqrt{d_k})) \quad (46)$$
 
 **FFN Dropout:** Applied after first linear transformation:
-$$\text{FFN}(\mathbf{x}) = W_2 \cdot \text{Dropout}(\text{GELU}(W_1 \mathbf{x})) \quad (50)$$
+$$\text{FFN}(\mathbf{x}) = W_2 \cdot \text{Dropout}(\text{GELU}(W_1 \mathbf{x})) \quad (47)$$
 
-### 12.2 Label Smoothing
+### 11.2 Evaluation and Calibration
+
+**Expected Calibration Error (ECE):** Measures how well predicted probabilities match actual outcomes:
+$$\text{ECE} = \sum_{m=1}^M \frac{|B_m|}{n} |\text{acc}(B_m) - \text{conf}(B_m)|$$
+where $B_m$ are probability bins, $\text{acc}$ is accuracy, $\text{conf}$ is confidence.
+
+**Temperature Scaling:** Post-training calibration method:
+$$P_{\text{cal}}(y|x) = \text{softmax}(\mathbf{z}/T)$$
+where $T > 1$ makes predictions less confident, $T < 1$ more confident.
+
+**Perplexity Dependence on Tokenizer:** PPL comparisons only valid with same tokenizer. Different tokenizers create different sequence lengths and vocabulary sizes.
+
+**Example:** "hello world" might be:
+- GPT tokenizer: ["hel", "lo", " wor", "ld"] (4 tokens)
+- Character-level: ["h", "e", "l", "l", "o", " ", "w", "o", "r", "l", "d"] (11 tokens)
+
+### 11.3 Advanced Tokenization
+
+**Byte-Level BPE vs Unigram:**
+- **BPE:** Greedily merges frequent character pairs, handles any Unicode
+- **Unigram:** Probabilistic model, often better for morphologically rich languages
+
+**Special Token Handling:**
+- **BOS (Beginning of Sequence):** Often used for unconditional generation
+- **EOS (End of Sequence):** Signals completion, crucial for proper training
+- **PAD:** For batching variable-length sequences
+
+**Embedding/LM-Head Tying Caveats:**
+When sharing weights, ensure shape compatibility:
+- Embedding: $E \in \mathbb{R}^{V \times d_{\text{model}}}$
+- LM head: needs $\mathbb{R}^{d_{\text{model}} \times V}$
+- Solution: Use $E^T$ for output projection (as shown in equation 40)
+
+### 11.4 Label Smoothing
 
 **Smooth Labels:** Replace one-hot targets with:
-$$y_{\text{smooth}} = (1-\alpha) y_{\text{true}} + \frac{\alpha}{V} \mathbf{1} \quad (51)$$
+$$y_{\text{smooth}} = (1-\alpha) y_{\text{true}} + \frac{\alpha}{V} \mathbf{1} \quad (48)$$
 
 **Effect on Gradients:** Prevents overconfident predictions and improves calibration.
 
-## 13. Practical Numerics & Implementation Notes
+## 8. Practical Numerics & Implementation Notes
 
-### 13.1 Initialization Strategies
+### 8.1 Initialization Strategies
 
 **Xavier/Glorot for Linear Layers:**
-$$W \sim \mathcal{N}\left(0, \frac{2}{n_{\text{in}} + n_{\text{out}}}\right) \quad (52)$$
+$$W \sim \mathcal{N}\left(0, \frac{2}{n_{\text{in}} + n_{\text{out}}}\right) \quad (49)$$
 
-**Attention-Specific:** Initialize query/key projections with smaller variance to prevent attention collapse.
+**Attention-Specific:** Initialize query/key projections with smaller variance to prevent attention collapse (overly peaked attention distributions).
 
-### 13.2 Mixed Precision Training
+### 8.2 Mixed Precision Training
 
 **FP16 Forward, FP32 Gradients:** Use half precision for speed, full precision for numerical stability:
 ```python
@@ -685,16 +863,13 @@ scaler.scale(loss).backward()
 scaler.step(optimizer)
 ```
 
-### 13.3 Gradient Clipping
+### 8.3 Gradient Clipping
 
-**Global Norm Clipping:**
-$$\tilde{g} = \min\left(1, \frac{c}{\|\mathbf{g}\|_2}\right) \mathbf{g} \quad (53)$$
+**Global Norm Clipping:** As detailed in equation (11), we clip gradients to prevent explosive updates.
 
-where $c$ is the clip threshold. Prevents exploding gradients in deep networks.
+## 13. Worked Mini-Examples
 
-## 14. Worked Mini-Examples
-
-### 14.1 Tiny Attention Forward Pass
+### 13.1 Tiny Attention Forward Pass
 
 **Setup:** $n=2$ tokens, $d_k=d_v=3$, single head.
 
@@ -704,60 +879,130 @@ Q = [[1, 0, 1],    K = [[1, 1, 0],    V = [[2, 0, 1],
      [0, 1, 1]]         [1, 0, 1]]         [1, 1, 0]]
 ```
 
-**Step 1:** Compute scores $S = QK^T/\sqrt{3}$:
-$$S = \frac{1}{\sqrt{3}}\begin{bmatrix}1 \cdot 1 + 0 \cdot 1 + 1 \cdot 0 & 1 \cdot 1 + 0 \cdot 0 + 1 \cdot 1\\0 \cdot 1 + 1 \cdot 1 + 1 \cdot 0 & 0 \cdot 1 + 1 \cdot 0 + 1 \cdot 1\end{bmatrix} = \frac{1}{\sqrt{3}}\begin{bmatrix}1 & 2\\1 & 1\end{bmatrix}$$
+**Step 1:** Compute raw scores $QK^T$:
+$$QK^T = \begin{bmatrix}1 & 0 & 1\\0 & 1 & 1\end{bmatrix} \begin{bmatrix}1 & 1\\1 & 0\\0 & 1\end{bmatrix} = \begin{bmatrix}1 & 2\\1 & 1\end{bmatrix}$$
 
-**Step 2:** Apply softmax:
-$$A = \begin{bmatrix}e^{1/\sqrt{3}}/(e^{1/\sqrt{3}}+e^{2/\sqrt{3}}) & e^{2/\sqrt{3}}/(e^{1/\sqrt{3}}+e^{2/\sqrt{3}})\\e^{1/\sqrt{3}}/(e^{1/\sqrt{3}}+e^{1/\sqrt{3}}) & e^{1/\sqrt{3}}/(e^{1/\sqrt{3}}+e^{1/\sqrt{3}})\end{bmatrix} \approx \begin{bmatrix}0.38 & 0.62\\0.5 & 0.5\end{bmatrix}$$
+**Step 2:** Scale by $1/\sqrt{d_k} = 1/\sqrt{3} \approx 0.577$:
+$$S = \frac{QK^T}{\sqrt{3}} = \begin{bmatrix}0.577 & 1.155\\0.577 & 0.577\end{bmatrix}$$
 
-**Step 3:** Compute output $O = AV$:
-$$O \approx \begin{bmatrix}0.38 \times 2 + 0.62 \times 1 & 0.38 \times 0 + 0.62 \times 1 & 0.38 \times 1 + 0.62 \times 0\\0.5 \times 2 + 0.5 \times 1 & 0.5 \times 0 + 0.5 \times 1 & 0.5 \times 1 + 0.5 \times 0\end{bmatrix} = \begin{bmatrix}1.38 & 0.62 & 0.38\\1.5 & 0.5 & 0.5\end{bmatrix}$$
+**Step 3:** Apply softmax (row-wise, rounded to 3 d.p.):
+- Row 1: $e^{0.577} = 1.781, e^{1.155} = 3.173$, sum $= 4.954$
+- Row 2: $e^{0.577} = 1.781, e^{0.577} = 1.781$, sum $= 3.562$
 
-### 14.2 Backprop Through Simple Attention
+$$A = \begin{bmatrix}0.359 & 0.641\\0.500 & 0.500\end{bmatrix}$$
+
+**Step 4:** Compute output $O = AV$:
+$$O = \begin{bmatrix}0.359 & 0.641\\0.500 & 0.500\end{bmatrix} \begin{bmatrix}2 & 0 & 1\\1 & 1 & 0\end{bmatrix} = \begin{bmatrix}1.359 & 0.641 & 0.359\\1.500 & 0.500 & 0.500\end{bmatrix}$$
+
+**Verification Code:**
+```python
+import torch
+import torch.nn.functional as F
+
+# Set seed for reproducibility
+torch.manual_seed(42)
+
+# Define inputs
+Q = torch.tensor([[1., 0., 1.], [0., 1., 1.]])
+K = torch.tensor([[1., 1., 0.], [1., 0., 1.]])
+V = torch.tensor([[2., 0., 1.], [1., 1., 0.]])
+
+# Compute attention
+scores = torch.mm(Q, K.t()) / (3**0.5)
+A = F.softmax(scores, dim=1)
+O = torch.mm(A, V)
+
+print(f"Scores: {scores}")
+print(f"Attention weights: {A}")
+print(f"Output: {O}")
+
+# Verify shapes
+print(f"Q shape: {Q.shape}, K shape: {K.shape}, V shape: {V.shape}")
+print(f"Output shape: {O.shape}")
+```
+
+### 13.2 Backprop Through Simple Attention
 
 **Given:** $\frac{\partial \mathcal{L}}{\partial O} = \begin{bmatrix}1 & 0 & 1\\0 & 1 & 0\end{bmatrix}$
 
 **Gradient w.r.t. Values:**
-$$\frac{\partial \mathcal{L}}{\partial V} = A^T \frac{\partial \mathcal{L}}{\partial O} = \begin{bmatrix}0.38 & 0.5\\0.62 & 0.5\end{bmatrix}\begin{bmatrix}1 & 0 & 1\\0 & 1 & 0\end{bmatrix} = \begin{bmatrix}0.38 & 0.5 & 0.38\\0.62 & 0.5 & 0.62\end{bmatrix}$$
+$$\frac{\partial \mathcal{L}}{\partial V} = A^T \frac{\partial \mathcal{L}}{\partial O} = \begin{bmatrix}0.359 & 0.500\\0.641 & 0.500\end{bmatrix}\begin{bmatrix}1 & 0 & 1\\0 & 1 & 0\end{bmatrix} = \begin{bmatrix}0.359 & 0.500 & 0.359\\0.641 & 0.500 & 0.641\end{bmatrix}$$
+
+**Gradient Verification:** Using finite differences with $\epsilon = 10^{-5}$:
+```python
+# Verify gradients using finite differences
+def finite_diff_check(Q, K, V, grad_output, epsilon=1e-5):
+    def attention_forward(Q, K, V):
+        scores = torch.mm(Q, K.t()) / (K.shape[1]**0.5)
+        A = F.softmax(scores, dim=1)
+        return torch.mm(A, V)
+    
+    # Analytical gradient (simplified)
+    scores = torch.mm(Q, K.t()) / (K.shape[1]**0.5)
+    A = F.softmax(scores, dim=1)
+    grad_V_analytical = A.t() @ grad_output
+    
+    # Finite difference gradient
+    grad_V_fd = torch.zeros_like(V)
+    for i in range(V.shape[0]):
+        for j in range(V.shape[1]):
+            V_plus = V.clone()
+            V_plus[i, j] += epsilon
+            V_minus = V.clone()
+            V_minus[i, j] -= epsilon
+            
+            out_plus = attention_forward(Q, K, V_plus)
+            out_minus = attention_forward(Q, K, V_minus)
+            
+            grad_V_fd[i, j] = torch.sum(grad_output * (out_plus - out_minus)) / (2 * epsilon)
+    
+    print(f"Analytical grad_V: {grad_V_analytical}")
+    print(f"Finite diff grad_V: {grad_V_fd}")
+    print(f"Max difference: {torch.max(torch.abs(grad_V_analytical - grad_V_fd)).item()}")
+
+# Test with example
+grad_output = torch.tensor([[1., 0., 1.], [0., 1., 0.]])
+finite_diff_check(Q, K, V, grad_output)
+```
 
 **Check for Understanding:** Verify that gradient shapes match parameter shapes and that the chain rule is applied correctly.
 
-## 15. Common Pitfalls & Misconceptions
+## 14. Common Pitfalls & Misconceptions
 
-### 15.1 High-Dimensional Distance Misconceptions
+### 14.1 High-Dimensional Distance Misconceptions
 
 **Pitfall:** Using Euclidean distance instead of cosine similarity in high dimensions.
 **Fix:** In $d > 100$, most vectors are approximately orthogonal, making cosine similarity more discriminative.
 
-### 15.2 Attention Scaling Mistakes
+### 14.2 Attention Scaling Mistakes
 
 **Pitfall:** Forgetting $1/\sqrt{d_k}$ scaling or using wrong dimension.
 **Symptom:** Attention weights become too peaked, leading to poor gradients.
 **Fix:** Always scale by $\sqrt{d_k}$ where $d_k$ is the key dimension. Note that $d_k=d_{\text{model}}/h$ under common implementations.
 
-### 15.3 LayerNorm Placement
+### 14.3 LayerNorm Placement
 
 **Pitfall:** Using post-LayerNorm (original) instead of pre-LayerNorm (modern).
 **Issue:** Post-LN can lead to training instability in deep models.
 **Modern Practice:** Apply LayerNorm before attention and FFN blocks.
 
-### 15.4 Softmax Temperature Misuse
+### 14.4 Softmax Temperature Misuse
 
 **Pitfall:** Applying temperature scaling inconsistently.
 **Correct Usage:** Temperature $\tau$ in $\text{softmax}(\mathbf{z}/\tau)$ controls sharpness:
 - $\tau > 1$: Smoother distribution
 - $\tau < 1$: Sharper distribution
 
-## 16. Summary & What to Learn Next
+## 15. Summary & What to Learn Next
 
-### 16.1 Key Mathematical Insights
+### 15.1 Key Mathematical Insights
 
 1. **Attention as Similarity Search:** Q/K/V framework emerges naturally from maximum inner product search
-2. **Scaling Laws:** $1/\sqrt{d_k}$ scaling prevents attention collapse in high dimensions  
+2. **Scaling Laws:** $1/\sqrt{d_k}$ scaling prevents attention collapse (overly peaked distributions) in high dimensions  
 3. **Residual Connections:** Enable gradient flow through deep networks via skip connections
 4. **Multi-Head Architecture:** Parallel subspace projections enable diverse attention patterns
 
-### 16.2 Next Steps
+### 15.2 Next Steps
 
 **Scaling Laws:** Study how performance scales with model size, data, and compute (Kaplan et al., 2020)
 
@@ -769,8 +1014,31 @@ $$\frac{\partial \mathcal{L}}{\partial V} = A^T \frac{\partial \mathcal{L}}{\par
 
 ---
 
+## Further Reading
+
+**Core Papers:**
+[1] Vaswani, A., et al. "Attention is all you need." *Advances in Neural Information Processing Systems*, 2017.
+[2] Devlin, J., et al. "BERT: Pre-training of deep bidirectional transformers for language understanding." *NAACL-HLT*, 2019.
+[3] Brown, T., et al. "Language models are few-shot learners." *Advances in Neural Information Processing Systems*, 2020.
+
+**Mathematical Foundations:**
+[4] Kaplan, J., et al. "Scaling laws for neural language models." *arXiv preprint arXiv:2001.08361*, 2020.
+[5] Su, J., et al. "RoFormer: Enhanced transformer with rotary position embedding." *arXiv preprint arXiv:2104.09864*, 2021.
+
+**Efficiency & Scaling:**
+[6] Dao, T., et al. "FlashAttention: Fast and memory-efficient exact attention with IO-awareness." *Advances in Neural Information Processing Systems*, 2022.
+[7] Shazeer, N. "Fast transformer decoding: One write-head is all you need." *arXiv preprint arXiv:1911.02150*, 2019.
+
+**Training & Optimization:**
+[8] Loshchilov, I., & Hutter, F. "Decoupled weight decay regularization." *ICLR*, 2019.
+[9] Xiong, R., et al. "On layer normalization in the transformer architecture." *ICML*, 2020.
+[10] Press, O., & Wolf, L. "Using the output embedding to improve language models." *EACL*, 2017.
+
+---
+
 ## Appendix A: Symbol/Shape Reference
 
+### Single-Head Attention Shapes
 | Symbol | Meaning | Typical Shape |
 |--------|---------|---------------|
 | $Q, K, V$ | Query, Key, Value matrices | $[n \times d_k], [n \times d_k], [n \times d_v]$ |
@@ -778,8 +1046,18 @@ $$\frac{\partial \mathcal{L}}{\partial V} = A^T \frac{\partial \mathcal{L}}{\par
 | $d_{\text{model}}$ | Model dimension | Scalar (512, 768, 1024, etc.) |
 | $d_k, d_v$ | Key, value dimensions | Usually $d_{\text{model}}/h$ |
 | $h$ | Number of attention heads | Scalar (8, 12, 16, etc.) |
+
+### Multi-Head & Batched Shapes
+| Symbol | Meaning | Batched Multi-Head Shape |
+|--------|---------|-------------------------|
+| $Q, K, V$ | Projected queries, keys, values | $[B, H, n, d_k], [B, H, n, d_k], [B, H, n, d_v]$ |
+| $A$ | Attention weights matrix | $[B, H, n, n]$ |
+| $O$ | Attention output (pre-concat) | $[B, H, n, d_v]$ |
+| $O_{\text{proj}}$ | Final output (post-concat) | $[B, n, d_{\text{model}}]$ |
 | $W^Q, W^K, W^V$ | Attention projection matrices | $[d_{\text{model}} \times d_k]$ per head |
 | $W^O$ | Output projection | $[d_{\text{model}} \times d_{\text{model}}]$ |
+
+**Convention:** $B$ = batch size, $H$ = number of heads, $n$ = sequence length, $d_k = d_v = d_{\text{model}}/H$
 
 ## Appendix B: Key Derivations
 
@@ -802,7 +1080,7 @@ p_i(1 - p_i) & \text{if } i = j \\
 
 ## Appendix C: Glossary
 
-**Attention Collapse:** Phenomenon where attention weights become uniform, losing discriminative power.
+**Attention Collapse:** Phenomenon where attention weights become too peaked (concentrated on few tokens) rather than uniform, leading to poor gradient flow and reduced model expressiveness.
 
 **Causal Mask:** Lower-triangular mask preventing attention to future tokens in autoregressive models.
 
