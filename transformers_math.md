@@ -756,11 +756,17 @@ $$\text{PPL} = \exp\left(-\frac{1}{T}\sum_{t=1}^T \log P(x_t | x_{<t})\right) \q
 **Key Insight:** During generation, keys and values for previous tokens don't change.
 
 **Cache Update:**
-$$\begin{align}
-K_{\text{cache}} &= [K_{\text{cache}}; k_{\text{new}}] \quad (42)\\
-V_{\text{cache}} &= [V_{\text{cache}}; v_{\text{new}}] \quad (43)\\
-\text{Attention} &= \text{softmax}(q_{\text{new}} K_{\text{cache}}^T / \sqrt{d_k}) V_{\text{cache}} \quad (44)
-\end{align}$$
+
+```math
+K_{\text{cache}} \gets \operatorname{concat}(K_{\text{cache}},\ k_{\text{new}}) \tag{42}
+```
+
+- **$K_{\text{cache}}$**: Cached keys from previous tokens.
+- **$V_{\text{cache}}$**: Cached values from previous tokens.
+- **$k_{\text{new}}, v_{\text{new}}$**: Key and value for the new token.
+- **$q_{\text{new}}$**: Query for the new token.
+
+At each generation step, append the new key and value to the cache, then compute attention using the full cache.
 
 **Memory Trade-off:** Cache size grows as $O(nd)$ but eliminates $O(n^2)$ recomputation.
 
@@ -889,7 +895,12 @@ $$S = \frac{QK^T}{\sqrt{3}} = \begin{bmatrix}0.577 & 1.155\\0.577 & 0.577\end{bm
 - Row 1: $e^{0.577} = 1.781, e^{1.155} = 3.173$, sum $= 4.954$
 - Row 2: $e^{0.577} = 1.781, e^{0.577} = 1.781$, sum $= 3.562$
 
-$$A = \begin{bmatrix}0.359 & 0.641\\0.500 & 0.500\end{bmatrix}$$
+```math
+A = \begin{bmatrix}
+0.359 & 0.641 \\
+0.500 & 0.500
+\end{bmatrix}
+```
 
 **Step 4:** Compute output $O = AV$:
 $$O = \begin{bmatrix}0.359 & 0.641\\0.500 & 0.500\end{bmatrix} \begin{bmatrix}2 & 0 & 1\\1 & 1 & 0\end{bmatrix} = \begin{bmatrix}1.359 & 0.641 & 0.359\\1.500 & 0.500 & 0.500\end{bmatrix}$$

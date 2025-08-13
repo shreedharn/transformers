@@ -616,6 +616,8 @@ $$\text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)$$
 **Solution**: Add positional information to input embeddings:
 $$\text{input} = \text{token\_embedding} + \text{positional\_encoding}$$
 
+Each token's embedding is combined with a positional encoding vector, ensuring the model can distinguish between different positions in the sequence.
+
 **Sinusoidal Encoding**:
 $$PE_{pos, 2i} = \sin(pos / 10000^{2i/d_{model}})$$
 $$PE_{pos, 2i+1} = \cos(pos / 10000^{2i/d_{model}})$$

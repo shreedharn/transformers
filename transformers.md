@@ -903,15 +903,21 @@ $$p_i = \frac{\exp(\text{logits}_i / \tau)}{\sum_{j=1}^{|V|} \exp(\text{logits}_
 
 **Decoding Strategies:**
 
-**Greedy Decoding:**
-$$\text{next\_token} = \arg\max_{i} p_i$$
-- **Advantages**: Deterministic, computationally efficient
-- **Disadvantages**: Can produce repetitive or low-quality text
+**Greedy Decoding**
 
-**Top-k Sampling:**
-$$\text{next\_token} \sim \text{Categorical}(\text{top-k}(p, k))$$
-- **Process**: Select from k most probable tokens, renormalize, then sample
-- **Effect**: Truncates long tail of distribution while preserving diversity
+```math
+\text{next\_token} = \arg\max_{i} p_i
+```
+- **Advantages:** Deterministic, fast, and simple to implement.
+- **Disadvantages:** Often produces repetitive or generic text; lacks diversity.
+
+**Top-k Sampling**
+
+```math
+\text{next\_token} \sim \text{Categorical}(\text{top-k}(p, k))
+```
+- **Process:** Select the $k$ tokens with the highest probabilities, renormalize their probabilities to sum to 1, and sample the next token from this subset.
+- **Effect:** Limits sampling to the most likely $k$ options, balancing diversity and quality by truncating the long tail of unlikely tokens.
 
 **Nucleus (Top-p) Sampling:**
 $$\text{next\_token} \sim \text{Categorical}(\{i : \sum_{j \in \text{top}(p)} p_j \leq p\})$$
