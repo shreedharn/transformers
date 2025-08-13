@@ -331,10 +331,17 @@ $$\begin{align}
 $$\frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} = \frac{\partial \mathcal{L}}{\partial \hat{\mathbf{y}}} \quad (16)$$
 
 **Weight Gradients:**
-$$\begin{align}
-\frac{\partial \mathcal{L}}{\partial W^{(2)}} &= (\mathbf{h}^{(1)})^T \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} \quad (17)\\
-\frac{\partial \mathcal{L}}{\partial W^{(1)}} &= \mathbf{x}^T \left(\frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} (W^{(2)})^T \odot \sigma'(\mathbf{z}^{(1)})\right) \quad (18)
-\end{align}$$
+$$
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial W^{(2)}} &= (\mathbf{h}^{(1)})^T \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} \tag{17} \\
+\frac{\partial \mathcal{L}}{\partial W^{(1)}} &= \mathbf{x}^T \left[ \left( \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} (W^{(2)})^T \right) \odot \sigma'(\mathbf{z}^{(1)}) \right] \tag{18}
+\end{align}
+$$
+
+- Where $\odot$ denotes element-wise multiplication.
+- $\sigma'(\mathbf{z}^{(1)})$ is the derivative of the activation function applied elementwise.
+- $\frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}}$ is the gradient of the loss with respect to the pre-activation output of the second layer.
+
 
 where $\odot$ denotes element-wise multiplication.
 
