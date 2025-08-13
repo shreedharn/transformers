@@ -332,10 +332,6 @@ $$\frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} = \frac{\partial \mathc
 
 **Weight Gradients:**
 
-**Weight Gradients:**
-
-**Weight Gradients:**
-
 $$
 \begin{aligned}
 \frac{\partial \mathcal{L}}{\partial W^{(2)}} &= (\mathbf{h}^{(1)})^T \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} \\
