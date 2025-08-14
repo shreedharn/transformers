@@ -237,13 +237,13 @@ $$b_{\text{new}} = b_{\text{old}} - \alpha \frac{\partial L}{\partial b}$$
 **Forward Pass Equations:**
 
 $$
-Z_1 = XW_1 + b_1 \quad \text{(shape: samples × hidden\_units)}
+Z_1 = X W_1 + b_1 \quad \text{(shape: samples $\times$ hidden units)}
 $$
 $$
 A_1 = \sigma(Z_1) \quad \text{(apply activation function element-wise)}
 $$
 $$
-Z_2 = A_1 W_2 + b_2 \quad \text{(shape: samples × outputs)}
+Z_2 = A_1 W_2 + b_2 \quad \text{(shape: samples $\times$ outputs)}
 $$
 $$
 Y_{\text{hat}} = Z_2 \quad \text{(final predictions)}
@@ -505,11 +505,6 @@ where $c = \max_i x_i$ prevents overflow.
 ### 3.1 Forward Pass
 
 **Two-layer MLP:**
-$$\begin{align}
-\mathbf{z}^{(1)} &= \mathbf{x} W^{(1)} + \mathbf{b}^{(1)} \quad (13)\\
-\mathbf{h}^{(1)} &= \sigma(\mathbf{z}^{(1)}) \quad (14)\\
-\mathbf{z}^{(2)} &= \mathbf{h}^{(1)} W^{(2)} + \mathbf{b}^{(2)} \quad (15)
-\end{align}$$
 
 **Shape Analysis:** If input $\mathbf{x} \in \mathbb{R}^{1 \times d_{\text{in}}}$:
 - $W^{(1)} \in \mathbb{R}^{d_{\text{in}} \times d_{\text{hidden}}}$
@@ -959,7 +954,7 @@ $$\text{PPL} = \exp\left(-\frac{1}{T}\sum_{t=1}^T \log P(x_t | x_{<t})\right) \q
 **Cache Update:**
 
 ```math
-K_{\text{cache}} \gets \operatorname{concat}(K_{\text{cache}},\ k_{\text{new}}) \tag{42}
+K_{\text{cache}} \gets \mathrm{concat}(K_{\text{cache}},\ k_{\text{new}}) \tag{42}
 ```
 
 - **$K_{\text{cache}}$**: Cached keys from previous tokens.
