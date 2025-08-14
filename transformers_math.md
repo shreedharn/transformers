@@ -19,6 +19,7 @@ This tutorial builds the mathematical foundations of Transformer architectures f
 
 1. [Roadmap](#1-roadmap)
 2. [Mathematical Preliminaries](#2-mathematical-preliminaries)
+   - [2.1.0 From Line Slopes to Neural Network Training](#210-from-line-slopes-to-neural-network-training)
 3. [Multilayer Perceptrons as a Warm-Up](#3-multilayer-perceptrons-as-a-warm-up)
 4. [High-Dimensional Geometry & Similarity](#4-high-dimensional-geometry--similarity)
 5. [From Similarity to Attention](#5-from-similarity-to-attention)
@@ -129,6 +130,195 @@ $$\mathcal{L} = -\sum_{i=1}^n y_i \log p_i \quad (2)$$
 where $y_i$ are true labels (what the answer actually is) and $p_i$ are predicted probabilities (what the model thinks the answer is).
 
 ## 2.1 Calculus to Differential Equations
+
+### 2.1.0 From Line Slopes to Neural Network Training
+
+**Building Intuition: Slope of a Line**
+
+Let's start with something familiar - the equation of a straight line:
+$$y = mx + b$$
+
+where:
+- $m$ is the **slope** - tells us how steep the line is
+- $b$ is the **y-intercept** - where the line crosses the y-axis
+
+**What does slope mean intuitively?** Slope tells us "for every step I move right, how much do I move up or down?" If the slope is 2, then moving 1 step right means moving 2 steps up. If the slope is -0.5, then moving 1 step right means moving 0.5 steps down.
+
+**Connecting to Optimization:** In machine learning, we want to find the "bottom of a valley" - the point where our error is smallest. To do this, we need to know which direction is "downhill."
+
+#### From 2D Slopes to Gradient Descent
+
+**The Derivative as Slope:** For any function $f(x)$, the derivative $\frac{df}{dx}$ tells us the slope at any point:
+
+$$\frac{df}{dx} = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$
+
+**What this equation means:** "If I move a tiny amount h to the right, how much does f change?" The derivative is the limit as that tiny amount approaches zero.
+
+**Gradient Descent in One Dimension:** If we want to minimize $f(x)$, we update $x$ using:
+
+$$x_{\text{new}} = x_{\text{old}} - \alpha \frac{df}{dx}$$
+
+where $\alpha$ (alpha) is the **learning rate** - how big steps we take.
+
+**The key insight:** The negative sign makes us go *opposite* to the slope direction. If the slope is positive (going uphill to the right), we move left. If the slope is negative (going downhill to the right), we move right.
+
+#### Worked Example: f(x) = x²
+
+Let's minimize $f(x) = x^2$ starting from $x = 3$:
+
+**Step 1:** Compute the derivative: $\frac{df}{dx} = 2x$
+
+**Step 2:** Choose learning rate: $\alpha = 0.1$
+
+**Step 3:** Update step by step:
+
+```
+Iteration 0: x = 3.0, f(x) = 9.0, df/dx = 6.0
+             x_new = 3.0 - 0.1 × 6.0 = 2.4
+
+Iteration 1: x = 2.4, f(x) = 5.76, df/dx = 4.8  
+             x_new = 2.4 - 0.1 × 4.8 = 1.92
+
+Iteration 2: x = 1.92, f(x) = 3.69, df/dx = 3.84
+             x_new = 1.92 - 0.1 × 3.84 = 1.54
+
+...continuing...
+
+Iteration 10: x ≈ 0.27, f(x) ≈ 0.07
+```
+
+**What's happening:** We're taking steps toward x = 0 (the minimum of x²), and each step gets smaller as we approach the bottom.
+
+#### Extending to Multiple Variables: Gradients as Vectors
+
+**From Derivatives to Gradients:** When we have multiple variables, like $f(x, y) = x^2 + y^2$, we need **partial derivatives**:
+
+- $\frac{\partial f}{\partial x} = 2x$ (rate of change with respect to x, holding y fixed)
+- $\frac{\partial f}{\partial y} = 2y$ (rate of change with respect to y, holding x fixed)
+
+**The Gradient Vector:** We combine these into a **gradient vector**:
+
+$$\nabla f = \begin{bmatrix} \frac{\partial f}{\partial x} \\ \frac{\partial f}{\partial y} \end{bmatrix} = \begin{bmatrix} 2x \\ 2y \end{bmatrix}$$
+
+**Vector Gradient Descent:** Now our update rule becomes:
+
+$$\begin{bmatrix} x_{\text{new}} \\ y_{\text{new}} \end{bmatrix} = \begin{bmatrix} x_{\text{old}} \\ y_{\text{old}} \end{bmatrix} - \alpha \begin{bmatrix} 2x_{\text{old}} \\ 2y_{\text{old}} \end{bmatrix}$$
+
+**Intuition:** The gradient vector points in the direction of steepest *ascent*. By moving in the *opposite* direction (negative gradient), we go downhill most quickly.
+
+#### Matrix Form for Machine Learning
+
+**Setting up the Problem:** In machine learning, we have:
+- **X**: Input matrix with shape (samples × features) - each row is one data point
+- **W**: Weight matrix with shape (features × outputs) - the parameters we want to learn  
+- **b**: Bias vector with shape (outputs,) - additional adjustable parameters
+- **Y_hat**: Predictions with shape (samples × outputs), computed as Y_hat = XW + b
+
+**Loss Function:** We measure how wrong our predictions are using mean squared error:
+
+$$L = \frac{1}{N} \sum_{i=1}^N \|Y_{\text{true}}^{(i)} - Y_{\text{hat}}^{(i)}\|^2$$
+
+**Matrix Gradients:** To minimize the loss, we need gradients with respect to W and b:
+
+$$\frac{\partial L}{\partial W} = \frac{2}{N} X^T (Y_{\text{hat}} - Y_{\text{true}})$$
+
+$$\frac{\partial L}{\partial b} = \frac{2}{N} \sum_{i=1}^N (Y_{\text{hat}}^{(i)} - Y_{\text{true}}^{(i)})$$
+
+**Matrix Gradient Descent Updates:**
+
+$$W_{\text{new}} = W_{\text{old}} - \alpha \frac{\partial L}{\partial W}$$
+
+$$b_{\text{new}} = b_{\text{old}} - \alpha \frac{\partial L}{\partial b}$$
+
+**Key Insight:** The same learning rate $\alpha$ controls the step size for all parameters, just like in our simple 1D case.
+
+#### Single Hidden Layer MLP: Putting It All Together
+
+**Forward Pass Equations:**
+
+$$
+Z_1 = XW_1 + b_1 \quad \text{(shape: samples × hidden\_units)}
+$$
+$$
+A_1 = \sigma(Z_1) \quad \text{(apply activation function element-wise)}
+$$
+$$
+Z_2 = A_1 W_2 + b_2 \quad \text{(shape: samples × outputs)}
+$$
+$$
+Y_{\text{hat}} = Z_2 \quad \text{(final predictions)}
+$$
+
+where $\sigma$ is an activation function like ReLU or sigmoid.
+
+**Backward Pass (Backpropagation):**
+
+**Step 1:** Compute the error at the output:
+$$\delta_2 = Y_{\text{hat}} - Y_{\text{true}} \quad \text{(shape: samples × outputs)}$$
+
+**Step 2:** Compute gradients for output layer:
+$$\frac{\partial L}{\partial W_2} = \frac{1}{N} A_1^T \delta_2$$
+$$\frac{\partial L}{\partial b_2} = \frac{1}{N} \sum_{i=1}^N \delta_2^{(i)}$$
+
+**Step 3:** Backpropagate error to hidden layer:
+$$\delta_1 = (\delta_2 W_2^T) \odot \sigma'(Z_1) \quad \text{(element-wise multiplication)}$$
+
+**Step 4:** Compute gradients for hidden layer:
+$$\frac{\partial L}{\partial W_1} = \frac{1}{N} X^T \delta_1$$
+$$\frac{\partial L}{\partial b_1} = \frac{1}{N} \sum_{i=1}^N \delta_1^{(i)}$$
+
+**Step 5:** Update all parameters using the same learning rate:
+$$W_1 \leftarrow W_1 - \alpha \frac{\partial L}{\partial W_1}$$
+$$b_1 \leftarrow b_1 - \alpha \frac{\partial L}{\partial b_1}$$
+$$W_2 \leftarrow W_2 - \alpha \frac{\partial L}{\partial W_2}$$
+$$b_2 \leftarrow b_2 - \alpha \frac{\partial L}{\partial b_2}$$
+
+**Understanding the δ terms:**
+- $\delta_2$: "How much does changing each output neuron's value affect the loss?"
+- $\delta_1$: "How much does changing each hidden neuron's value affect the loss?"
+
+The $\delta$ terms flow backwards through the network, carrying error information from the output back to earlier layers.
+
+#### The Learning Rate α: Universal Step Size Controller
+
+**Same Role Everywhere:** Notice that $\alpha$ plays the identical role in:
+- 1D gradient descent: $x \leftarrow x - \alpha \frac{df}{dx}$
+- Vector gradient descent: $\mathbf{x} \leftarrow \mathbf{x} - \alpha \nabla f$
+- Matrix gradient descent: $W \leftarrow W - \alpha \frac{\partial L}{\partial W}$
+- Neural network training: All parameters use the same $\alpha$
+
+**Choosing α:**
+- **Too large:** Updates overshoot the minimum, causing oscillation or divergence
+- **Too small:** Updates are tiny, causing very slow convergence
+- **Just right:** Steady progress toward the minimum without overshooting
+
+#### Visual Connection: From Slopes to Networks
+
+```
+1D Slope:          2D Gradient:           Matrix Gradients:        MLP Training:
+                                                                         
+    f(x)             f(x,y)                    L(W,b)                Forward:
+     /|                 /|\                      /|\               X→Z₁→A₁→Z₂→Ŷ
+    / |                / | \                    / | \                   
+   /  |               /  |  \                  /  |  \             Backward:
+slope  |             ∇f   |   ∇f             ∇L   |   ∇L           δ₂←δ₁←∇W₁,∇b₁
+   \   |               \  |  /                  \  |  /               
+    \  |                \ | /                    \ | /             Update:
+     \ |                  \|/                     \|/              W,b ← W,b-α∇
+      \|                   x                       θ               (same α!)
+       x                                                               
+                                                                         
+Update: x₁ = x₀ - α(df/dx)   [x,y]₁ = [x,y]₀ - α∇f    θ₁ = θ₀ - α∇L    All params use α
+```
+
+**The Big Picture:** Whether we're finding the bottom of a simple parabola or training a neural network with millions of parameters, we're doing the same fundamental thing:
+
+1. **Measure the slope** (derivative, gradient, or backpropagated error)
+2. **Take a step in the opposite direction** (negative sign)
+3. **Control step size** (learning rate α)
+4. **Repeat until we reach the bottom**
+
+This is why understanding the simple case of line slopes gives us insight into the most sophisticated neural network training algorithms.
 
 ### 2.1.1 Gradient Fields and Optimization
 

@@ -10,14 +10,15 @@ This repository provides a comprehensive exploration of transformer architecture
 
 ### 🎯 Core Documents
 
-| Document | Purpose | Audience | Key Focus |
-|----------|---------|----------|-----------|
-| **[transformers.md](./transformers.md)** | Complete technical reference | Researchers & Engineers | Mathematical rigor, implementation details |
-| **[sequencing_history.md](./sequencing_history.md)** | Historical evolution | Students & Practitioners | From MLPs to Transformers |
-| **[mlp_intro.md](./mlp_intro.md)** | MLP step-by-step tutorial | Beginners & Students | Neural network fundamentals |
-| **[rnn_intro.md](./rnn_intro.md)** | RNN step-by-step tutorial | Beginners & Students | Sequential modeling basics |
-| **[transformers_math.md](./transformers_math.md)** | Mathematical foundations | Advanced users | Theoretical underpinnings |
-| **[pytorch_reference.md](./pytorch_reference.md)** | PyTorch implementation guide | Practitioners & Developers | Code patterns, practical examples |
+| Document | Purpose | Key Focus |
+|----------|---------|-----------|
+| **[transformers.md](./transformers.md)** | Complete technical reference | Mathematical rigor, implementation details |
+| **[sequencing_history.md](./sequencing_history.md)** | Historical evolution | From MLPs to Transformers |
+| **[mlp_intro.md](./mlp_intro.md)** | MLP step-by-step tutorial | Neural network fundamentals |
+| **[rnn_intro.md](./rnn_intro.md)** | RNN step-by-step tutorial | Sequential modeling basics |
+| **[transformers_math.md](./transformers_math.md)** | Mathematical foundations | Theoretical underpinnings |
+| **[embedding_store.md](./embedding_store.md)** | LLM weights vs vector stores | Knowledge storage, similarity calculations |
+| **[pytorch_reference.md](./pytorch_reference.md)** | PyTorch implementation guide | Code patterns, practical examples |
 
 ## 🚀 Getting Started
 
@@ -192,6 +193,7 @@ This repository provides a comprehensive exploration of transformer architecture
 | mlp_intro.md | 500+ | MLP Tutorial | Beginner-friendly |
 | rnn_intro.md | 410+ | RNN Tutorial | Beginner-friendly |
 | transformers_math.md | Variable | Mathematical Theory | Rigorous |
+| embedding_store.md | 300+ | Knowledge Storage Analysis | Intermediate |
 | pytorch_reference.md | 2,000+ | Practical Implementation | Hands-on |
 
 ## 🔗 Cross-References
@@ -216,6 +218,7 @@ transformers/
 ├── mlp_intro.md                 # Step-by-step MLP tutorial
 ├── rnn_intro.md                 # Step-by-step RNN tutorial
 ├── transformers_math.md          # Mathematical foundations
+├── embedding_store.md           # LLM weights vs vector stores guide
 └── pytorch_reference.md          # Practical PyTorch implementation guide
 ```
 
