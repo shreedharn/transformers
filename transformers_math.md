@@ -581,7 +581,45 @@ where $\alpha < 1$ prevents residual explosion.
 
 **Concentration of Measure:** In high dimensions, most random vectors are approximately orthogonal, making cosine similarity more discriminative than Euclidean distance.
 
-### 4.2 Maximum Inner Product Search (MIPS)
+### 4.2 Distance Calculations with Concrete Examples
+
+Using simple example vectors to illustrate the concepts:
+- "cat" vector: [0.8, 0.2, 0.1]
+- "dog" vector: [0.7, 0.3, 0.2]
+
+#### 4.2.1 Cosine Similarity
+
+**Formula:** `cos(θ) = (A·B)/(||A||×||B||)`
+
+**Step-by-step calculation:**
+
+1. **Dot product:** A·B = (0.8×0.7) + (0.2×0.3) + (0.1×0.2) = 0.56 + 0.06 + 0.02 = 0.64
+
+2. **Magnitudes:**
+   - ||A|| = √(0.8² + 0.2² + 0.1²) = √(0.64 + 0.04 + 0.01) = √0.69 ≈ 0.83
+   - ||B|| = √(0.7² + 0.3² + 0.2²) = √(0.49 + 0.09 + 0.04) = √0.62 ≈ 0.79
+
+3. **Cosine similarity:** 0.64 / (0.83 × 0.79) ≈ 0.64 / 0.66 ≈ **0.97**
+
+**Interpretation:** Values range from -1 (opposite) to 1 (identical). 0.97 indicates high similarity - "cat" and "dog" point in nearly the same direction in semantic space.
+
+#### 4.2.2 Euclidean Distance
+
+**Formula:** `d = √[(x₁-x₂)² + (y₁-y₂)² + (z₁-z₂)²]`
+
+**Step-by-step calculation:**
+
+1. **Differences:** (0.8-0.7)² + (0.2-0.3)² + (0.1-0.2)² = 0.01 + 0.01 + 0.01 = 0.03
+
+2. **Distance:** √0.03 ≈ **0.17**
+
+**Interpretation:** Lower values indicate closer proximity. 0.17 is small, confirming "cat" and "dog" are close in space.
+
+**When to use each:**
+- **Cosine:** When direction matters more than magnitude (text similarity, semantic relationships)
+- **Euclidean:** When absolute distance matters (image features, exact matching)
+
+### 4.3 Maximum Inner Product Search (MIPS)
 
 **Problem:** Find $\mathbf{v}^* = \arg\max_{\mathbf{v} \in \mathcal{V}} \mathbf{q}^T \mathbf{v}$
 
