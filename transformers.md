@@ -291,9 +291,9 @@ where:
 - Output is a variable-length sequence of discrete token indices
 
 **BPE Algorithm**: Given text $s$ and learned merge operations $M$:
-$$\text{tokenize}(s) = [\text{vocab}[\tau_i] \mid \tau_i \in \text{BPE\_segment}(s, M)]$$
+$$\text{tokenize}(s) = [\text{vocab}[\tau_i] \mid \tau_i \in \mathrm{BPE\_segment}(s, M)]$$
 
-where $\text{BPE\_segment}$ applies the learned merge rules to produce subword tokens $\tau_i$.
+where $\mathrm{BPE\_segment}$ applies the learned merge rules to produce subword tokens $\tau_i$.
 
 **📖 Detailed Algorithm:** See [Tokenization Mathematics](./transformers_math.md#102-embedding-mathematics) for BPE training and inference procedures.
 
