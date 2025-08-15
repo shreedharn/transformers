@@ -2,8 +2,6 @@
 
 A complete educational resource covering transformer architectures from historical foundations to practical implementation, designed for researchers, practitioners, and students seeking deep understanding of modern AI systems.
 
-> **Note**: This repository's documents were created by Large Language Models (LLMs) to provide comprehensive educational content on transformer architectures. The content has been structured and organized to ensure accuracy, completeness, and educational value.
-
 ## 📚 Repository Overview
 
 This repository provides a comprehensive exploration of transformer architectures through multiple interconnected documents, each serving a specific pedagogical purpose:
@@ -17,6 +15,7 @@ This repository provides a comprehensive exploration of transformer architecture
 | **[mlp_intro.md](./mlp_intro.md)** | MLP step-by-step tutorial | Neural network fundamentals |
 | **[rnn_intro.md](./rnn_intro.md)** | RNN step-by-step tutorial | Sequential modeling basics |
 | **[transformers_math.md](./transformers_math.md)** | Mathematical foundations | Theoretical underpinnings |
+| **[math_quick_ref.md](./math_quick_ref.md)** | Mathematical reference table | Formulas, intuitions, neural network applications |
 | **[knowledge_store.md](./knowledge_store.md)** | LLM weights vs vector stores | Knowledge storage, similarity calculations |
 | **[pytorch_reference.md](./pytorch_reference.md)** | PyTorch implementation guide | Code patterns, practical examples |
 
@@ -36,7 +35,7 @@ This repository provides a comprehensive exploration of transformer architecture
 4. **Deployment**: [Quantization](./transformers.md#14-quantization-for-practical-deployment) and [Parameter-Efficient Fine-tuning](./transformers.md#13-parameter-efficient-fine-tuning-methods)
 
 ### For Researchers
-1. **Mathematical foundations**: [transformers_math.md](./transformers_math.md) (referenced throughout)
+1. **Mathematical foundations**: [transformers_math.md](./transformers_math.md) with [quick reference table](./math_quick_ref.md)
 2. **Training dynamics**: [Backpropagation Flow](./transformers.md#11-training-backpropagation-flow)
 3. **Evaluation methods**: [Diagnostics and Evaluation](./transformers.md#15-evaluation-and-diagnostics)
 
@@ -78,6 +77,15 @@ This repository provides a comprehensive exploration of transformer architecture
 - Probability theory and information theory foundations
 - Optimization theory and gradient methods
 - Detailed derivations of transformer components
+
+### [Mathematical Quick Reference](./math_quick_ref.md)
+**Comprehensive reference table** - All mathematical concepts used in neural networks with formulas and intuitive explanations.
+
+**Features:**
+- **Organized by category**: Linear Algebra → Calculus → Optimization → Information Theory
+- **Complete formulas**: LaTeX-formatted equations for each concept
+- **Neural network context**: Why each concept matters specifically for deep learning
+- **Intuitive explanations**: Clear descriptions of what each formula does and why
 
 ### [MLP Step-by-Step Tutorial](./mlp_intro.md)
 **Beginner-friendly neural network guide** - Learn the foundation of all deep learning with worked examples.
@@ -193,13 +201,15 @@ This repository provides a comprehensive exploration of transformer architecture
 | mlp_intro.md | 500+ | MLP Tutorial | Beginner-friendly |
 | rnn_intro.md | 410+ | RNN Tutorial | Beginner-friendly |
 | transformers_math.md | Variable | Mathematical Theory | Rigorous |
+| math_quick_ref.md | 50+ | Mathematical Reference | Quick Reference |
 | knowledge_store.md | 300+ | Knowledge Storage Analysis | Intermediate |
 | pytorch_reference.md | 2,000+ | Practical Implementation | Hands-on |
 
 ## 🔗 Cross-References
 
 Documents are extensively cross-referenced:
-- **Mathematical concepts**: transformers.md → transformers_math.md
+- **Mathematical concepts**: transformers.md → transformers_math.md → math_quick_ref.md
+- **Quick formulas**: transformers_math.md → math_quick_ref.md
 - **Historical context**: transformers.md → sequencing_history.md  
 - **Implementation details**: sequencing_history.md → transformers.md
 - **Neural network basics**: sequencing_history.md → mlp_intro.md
@@ -218,6 +228,7 @@ transformers/
 ├── mlp_intro.md                 # Step-by-step MLP tutorial
 ├── rnn_intro.md                 # Step-by-step RNN tutorial
 ├── transformers_math.md          # Mathematical foundations
+├── math_quick_ref.md            # Mathematical reference table
 ├── knowledge_store.md           # LLM weights vs vector stores guide
 └── pytorch_reference.md          # Practical PyTorch implementation guide
 ```
@@ -281,5 +292,8 @@ This repository serves as an educational resource. For improvements or correctio
 - Start with historical context if new to transformers
 - Jump directly to technical sections if you have ML background
 - Reference mathematical foundations when encountering complex equations
+
+
+> **Note**: This repository's documents were created with the help of Large Language Models (LLMs) to provide comprehensive educational content on transformer architectures. 
 
 **Happy Learning! 🚀**

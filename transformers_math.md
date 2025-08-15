@@ -45,6 +45,8 @@ We begin with optimization fundamentals and high-dimensional geometry, then buil
 
 ## 2. Mathematical Preliminaries
 
+📚 **Quick Reference**: For a comprehensive table of all mathematical concepts used in neural networks, see [Mathematical Quick Reference](./math_quick_ref.md).
+
 ### 2.1 Linear Algebra Essentials
 
 **What is a vector?** Think of it as an arrow in space that has both direction and length. In transformers, vectors represent word meanings - words with similar meanings point in similar directions.
@@ -365,6 +367,8 @@ def residual_block(x, transform_fn):
 
 ### 9.1 From SGD to Adam
 
+📚 **Quick Reference**: See [Adam Optimizer](./math_quick_ref.md#mathematical-quick-reference-for-neural-networks) and [Gradient Descent](./math_quick_ref.md#mathematical-quick-reference-for-neural-networks) in the mathematical reference table.
+
 **SGD with Momentum:**
 $$\begin{align}
 \mathbf{v}_t &= \beta \mathbf{v}_{t-1} + (1-\beta) \nabla_\theta \mathcal{L} \quad (5)\\
@@ -641,6 +645,8 @@ def compare_similarities(q, k_list, normalize=True):
 
 ## 5. From Similarity to Attention
 
+📚 **Quick Reference**: See [Scaled Dot-Product Attention](./math_quick_ref.md#mathematical-quick-reference-for-neural-networks) in the mathematical reference table.
+
 ### 5.1 Deriving Scaled Dot-Product Attention
 
 **Step 1:** Start with similarity search between query $\mathbf{q}$ and keys $\{\mathbf{k}_i\}$:
@@ -738,6 +744,8 @@ $$
 **Intuition:** Backprop splits into (i) linear parts, (ii) softmax Jacobian per row.
 
 ## 6. Multi-Head Attention & Positional Information
+
+📚 **Quick Reference**: See [Multi-Head Attention](./math_quick_ref.md#mathematical-quick-reference-for-neural-networks) and [Positional Encoding](./math_quick_ref.md#mathematical-quick-reference-for-neural-networks) in the mathematical reference table.
 
 ### 6.1 Multi-Head as Subspace Projections
 
