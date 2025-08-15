@@ -87,62 +87,70 @@ Throughout this document, we use **3-dimensional vectors** like [0.8, 0.2, 0.1] 
    - Goal: Similar words (cat, dog, animal) get similar vectors
    ```
    
-   **Why these specific numbers?** The exact values aren't meaningful individually. What matters is their **relationships**:
+   The exact values aren't meaningful individually. What matters is their **relationships**:
    - `cat=[0.8, 0.2, 0.1]` and `dog=[0.7, 0.3, 0.2]` are close (similar animals)
    - `cat=[0.8, 0.2, 0.1]` and `house=[0.1, 0.8, 0.3]` are distant (different concepts)
 
 2. **Attention Weight Computation: The Communication Protocol**
 
-   **The Library Analogy - A Gentle Introduction**
-   
-   Imagine you're a librarian helping people find books. Each person asks a question, and you need to decide which books to recommend based on:
-   1. What they're asking for (Query)
-   2. What each book advertises it contains (Key)  
-   3. The actual content of each book (Value)
+   **The Library Analogy: Understanding Query, Key, and Value**
 
-   **What are Query, Key, Value? (The Three-Step Communication)**
-   
-   - **Query (Q)**: "What am I looking for?" - The current word's formatted question
-   - **Key (K)**: "What do I offer?" - Other words' formatted advertisements
-   - **Value (V)**: "Here's my information" - Other words' actual useful content
+   Imagine you're a librarian matching readers with books. For each question:
+
+   - **Query (Q):** What the reader is looking for (the current word's request)
+   - **Key (K):** What each book claims to offer (how other words describe themselves)
+   - **Value (V):** The actual content inside each book (the information other words provide)
+
+   The attention mechanism compares the Query to all Keys to decide which Values (information) are most relevant to the current word.
 
    **Step-by-Step Attention Computation:**
 
-   ```
    Context: "The big cat runs"
    Current focus: "cat" wants to understand its context
-   
+
    Starting point: h_cat = [0.8, 0.2, 0.1] (3D embedding from previous layer)
-   
+```
    Step 1: Create the Question (Query Formation)
    Query creation: Q_cat = h_cat · W_q
-   
-   Why 3×3 matrix in our example?
-   - Input: 3-dimensional word representation [0.8, 0.2, 0.1]  
-   - Output: 3-dimensional question vector
-   - W_q is [3×3] to transform 3D input → 3D question
-   
-   W_q = [[0.9, 0.1, 0.2],    ← learned "question-forming" weights
-          [0.2, 0.8, 0.3],    ← each row learns different question patterns  
-          [0.1, 0.3, 0.7]]    ← e.g., "what modifies me?", "what do I modify?"
-   
-   Q_cat = [0.8, 0.2, 0.1] · W_q = [0.9, 0.3, 0.2]
-   
+
+   W_q = [[0.9, 0.1, 0.2],   ← learned "question-forming" weights
+         [0.2, 0.8, 0.3],    ← each column learns different question patterns  
+         [0.1, 0.3, 0.7]]    ← e.g., col1: "animal properties", col2: "size attributes", col3: "location context"
+
+   Q_cat = [0.8, 0.2, 0.1] · W_q = [0.77, 0.27, 0.29]
+
    What is a "Question Vector"?
-   Q_cat = [0.9, 0.3, 0.2] encodes "cat's search intent":
-   - Dimension 0 (0.9): Strongly looking for "animal properties"  
-   - Dimension 1 (0.3): Moderately looking for "size attributes"
-   - Dimension 2 (0.2): Weakly looking for "location context"
-   ```
+   Q_cat = [0.77, 0.27, 0.29] encodes "cat's search intent":
+   - Dimension 0 (0.77): Strongly looking for "animal properties"  
+   - Dimension 1 (0.27): Moderately looking for "size attributes"
+   - Dimension 2 (0.29): Moderately looking for "location context"
+```
+
+   **Matrix Multiplication Details:**
+   Each column of W_q creates one dimension of the query vector:
+   - Q_cat[0] = 0.8×0.9 + 0.2×0.2 + 0.1×0.1 = 0.77 (column 1 → "animal properties")
+   - Q_cat[1] = 0.8×0.1 + 0.2×0.8 + 0.1×0.3 = 0.27 (column 2 → "size attributes")  
+   - Q_cat[2] = 0.8×0.2 + 0.2×0.3 + 0.1×0.7 = 0.29 (column 3 → "location context")
+
+   **Analogy:** Think of W_q columns as "question templates"—each column extracts a different aspect of the word's meaning to help the model decide what information to seek from other words.
+
+   In real models, both the input and output dimensions are much larger (e.g., 768 or 4096), but the principle is the same: the weight matrix transforms the input embedding into a query vector for attention.
+
+   **Why Question-Forming Matrix Matters:**
+   Different words need different types of questions:
+   - Nouns ask: "What describes me?" "What category am I?"
+   - Verbs ask: "Who is my subject?" "What is my object?"
+   - W_q learns these question patterns during training
 
    ```
+
    Step 2: Create Advertisements (Key Formation)
    
    For word "animal": K_animal = h_animal · W_k
    
    W_k = [[0.8, 0.2, 0.1],    ← learned "advertisement-forming" weights
-          [0.3, 0.7, 0.4],    ← each row learns different ad strategies
-          [0.2, 0.1, 0.8]]    ← e.g., "I offer animal info", "I offer size info"
+          [0.3, 0.7, 0.4],    ← each column learns different ad strategies
+          [0.2, 0.1, 0.8]]    ← e.g., col1: "animal info", col2: "size info", col3: "location info"
    
    K_animal = [0.7, 0.3, 0.2] · W_k = [0.8, 0.4, 0.1]
    
@@ -152,7 +160,7 @@ Throughout this document, we use **3-dimensional vectors** like [0.8, 0.2, 0.1] 
    - Dimension 1 (0.4): "I moderately provide size info"  
    - Dimension 2 (0.1): "I weakly provide location context"
    
-   Perfect match! Cat asks [0.9, ?, ?] for animal properties, 
+   Perfect match! Cat asks [0.77, ?, ?] for animal properties, 
                   Animal offers [0.8, ?, ?] animal properties
    ```
 
@@ -160,40 +168,33 @@ Throughout this document, we use **3-dimensional vectors** like [0.8, 0.2, 0.1] 
    Step 3: Calculate Compatibility (Attention Scores)
    
    Attention Score = Q_cat · K_animal 
-                   = [0.9, 0.3, 0.2] · [0.8, 0.4, 0.1] 
-                   = (0.9×0.8) + (0.3×0.4) + (0.2×0.1)
-                   = 0.72 + 0.12 + 0.02 = 0.86
+                   = [0.77, 0.27, 0.29] · [0.8, 0.4, 0.1] 
+                   = (0.77×0.8) + (0.27×0.4) + (0.29×0.1)
+                   = 0.616 + 0.108 + 0.029 = 0.753
    
-   High score (0.86) means "cat's question matches animal's advertisement well"
+   High score (0.753) means "cat's question matches animal's advertisement well"
    
    For all words:
-   Q_cat · K_the = [0.9, 0.3, 0.2] · [0.1, 0.2, 0.4] = 0.23
-   Q_cat · K_big = [0.9, 0.3, 0.2] · [0.2, 0.8, 0.1] = 0.44  
-   Q_cat · K_animal = [0.9, 0.3, 0.2] · [0.8, 0.4, 0.1] = 0.86
-   Q_cat · K_runs = [0.9, 0.3, 0.2] · [0.3, 0.2, 0.7] = 0.47
+   Q_cat · K_the = [0.77, 0.27, 0.29] · [0.1, 0.2, 0.4] = 0.247
+   Q_cat · K_big = [0.77, 0.27, 0.29] · [0.2, 0.8, 0.1] = 0.399  
+   Q_cat · K_animal = [0.77, 0.27, 0.29] · [0.8, 0.4, 0.1] = 0.753
+   Q_cat · K_runs = [0.77, 0.27, 0.29] · [0.3, 0.2, 0.7] = 0.488
    
-   Raw scores: [the: 0.23, big: 0.44, animal: 0.86, runs: 0.47]
+   Raw scores: [the: 0.247, big: 0.399, animal: 0.753, runs: 0.488]
    ```
 
    **Why Softmax Here? (Creating Fair Attention Distribution)**
    ```
-   Problem: Raw scores [0.23, 0.44, 0.86, 0.47] don't sum to 1
+   Problem: Raw scores [0.247, 0.399, 0.753, 0.488] don't sum to 1
    Solution: Softmax converts to probabilities that sum to 1.0
    
-   Softmax([0.23, 0.44, 0.86, 0.47]) = [0.09, 0.16, 0.59, 0.16]
+   Softmax([0.247, 0.399, 0.753, 0.488]) = [0.20, 0.23, 0.33, 0.25]
    
    Interpretation: Cat pays attention to:
-   - 59% to "animal" (highest compatibility)
-   - 16% to "big" and "runs" (moderate compatibility)  
-   - 9% to "the" (lowest compatibility)
+   - 33% to "animal" (highest compatibility)
+   - 25% to "runs" and 23% to "big" (moderate compatibility)  
+   - 20% to "the" (lowest compatibility)
    ```
-   
-   **Why Question-Forming Matrix Matters:**
-   Different words need different types of questions:
-   - Nouns ask: "What describes me?" "What category am I?"
-   - Verbs ask: "Who is my subject?" "What is my object?"
-   - W_q learns these question patterns during training
-
 3. **Feed-Forward Weight Computation: Pattern Recognition and Refinement**
 
    **What happens after attention?**
@@ -205,10 +206,10 @@ Throughout this document, we use **3-dimensional vectors** like [0.8, 0.2, 0.1] 
    FFN(x) = W_2 · ReLU(W_1 · x + b_1) + b_2
    
    Input: x = [0.75, 0.28, 0.15] (enriched cat representation after attention)
-            ↑     ↑     ↑
-            │     │     └── location context (from "runs")
-            │     └────────── size info (from "big")  
-            └──────────────── animal properties (from context)
+                │      │      │
+                │      │      └── location context (from "runs")
+                │      └────────── size info (from "big")  
+                └───────────────── animal properties (from context)
    
    Stage 1: Pattern Detection (Expansion)
    z = W_1 · x + b_1 = [2048×768] · [0.75, 0.28, 0.15] + bias
@@ -221,8 +222,8 @@ Throughout this document, we use **3-dimensional vectors** like [0.8, 0.2, 0.1] 
      * Neuron 891: "pet in house context" pattern
    
    z = [0.9, -0.3, 0.7, -0.1, 0.8, ..., 0.4] (2048 values)
-        ↑     ↑     ↑     ↑     ↑          ↑
-        │     │     │     │     │          └── pattern 2048
+        ↑     ↑     ↑     ↑     ↑         ↑
+        │     │     │     │     │         └── pattern 2048
         │     │     │     │     └─────────────── "domestic pet" detected
         │     │     │     └───────────────────── irrelevant pattern
         │     │     └─────────────────────────── "animal movement" detected  
@@ -491,11 +492,22 @@ Final "cat" representation now contains:
 3. **Complementary Views**: Different heads capture different aspects
 4. **Rich Integration**: Final representation combines all perspectives
 
+**Multi-Head Attention Summary:**
+
+| Head Type | Specialization | Example Relationships | Why Important |
+|-----------|----------------|----------------------|---------------|
+| **Grammar Heads (1,5)** | Subject-verb-object patterns | cat ↔ runs, animal ↔ is | Syntactic understanding |
+| **Modifier Heads (2,4)** | Adjective-noun relationships | big ↔ cat, small ↔ pet | Descriptive attributes |
+| **Semantic Heads (3,7,11)** | Category hierarchies | cat ↔ animal, pet ↔ domestic | Conceptual relationships |
+| **Position Heads (6,8)** | Sequential dependencies | nearby words, sentence structure | Word order importance |
+
+**Why Concatenation Matters:** Each head contributes specialized knowledge (64 dimensions each), and concatenating all 12 heads (12×64=768) creates a rich representation that combines grammatical, semantic, and positional understanding.
+
 **Knowledge Encoding Patterns:**
-The relationship "cats are animals" emerges through specialized heads:
-- **Head 3,7,11**: Learn hierarchical category relationships (cat→animal)
-- **Head 1,5**: Learn grammatical patterns ("cat is", "animal that")
-- **Head 2,9**: Learn contextual associations (pets, domestic, wild)
+The relationship "cats are animals" emerges through distributed processing:
+- **Semantic heads**: Learn hierarchical category relationships (cat→animal)
+- **Grammar heads**: Learn syntactic patterns ("cat is", "animal that")
+- **Modifier heads**: Learn contextual associations (pets, domestic, wild)
 - **FFN layers**: Integrate these multi-head insights into refined understanding
 
 #### Understanding Scale: What Does "Billion Parameters" Actually Mean?
@@ -509,20 +521,22 @@ Think of parameters as the "knobs" that control how information flows through th
 ```
 Embedding Layer:
 - Vocabulary: 50,000 tokens
-- Embedding size: 4,096 dimensions  
-- Parameters: 50,000 × 4,096 = 204.8 million
+- Embedding size: 12,288 dimensions (actual GPT-3.5 size)
+- Parameters: 50,000 × 12,288 = 614.4 million
 
 96 Transformer Layers × Weight Matrices per layer:
-- Attention matrices (Q,K,V,O): 4 × (4,096 × 4,096) = 67.1 million per layer
-- Feed-forward matrices (W1,W2): 2 × (4,096 × 16,384) = 134.2 million per layer
-- Per layer total: 67.1M + 134.2M = 201.3 million
-- All layers: 96 × 201.3M = 19.3 billion
+- Attention matrices (Q,K,V,O): 4 × (12,288 × 12,288) = 603.9 million per layer
+- Feed-forward matrices (W1,W2): (12,288 × 49,152) + (49,152 × 12,288) = 1.2 billion per layer
+- Layer normalization: 2 × 12,288 = 24,576 parameters per layer
+- Per layer total: ~1.8 billion parameters
+- All layers: 96 × 1.8B = 172.8 billion
 
 Output Layer:
-- Linear projection: 4,096 × 50,000 = 204.8 million
+- Linear projection: 12,288 × 50,000 = 614.4 million
+- Layer normalization: 12,288 parameters
 
-Total: ~204.8M + 19.3B + 204.8M ≈ 19.7 billion
-(Actual 175B includes additional components like layer norms, biases, etc.)
+Total Core Parameters: 614.4M + 172.8B + 614.4M + 0.012M ≈ 174.0 billion
+Remaining ~1B parameters: Position embeddings, additional biases, etc.
 
 Storage Requirements:
 - 175 billion parameters × 4 bytes/float = 700 GB of raw weights
@@ -557,6 +571,10 @@ Imagine a massive digital library where instead of organizing books by subject o
 
 Given a query like "What animals make good pets?", how do we find relevant documents from millions of stored vectors? This is the core challenge vector databases solve.
 
+#### Vector Indexing Methods
+
+Understanding how vector databases achieve fast similarity search at scale requires examining different indexing strategies. Each method represents a different trade-off between speed, accuracy, and memory usage.
+
 **Method 1: Brute Force Search (The Simple Approach)**
 
 ```
@@ -589,7 +607,7 @@ The solution: **Approximate Nearest Neighbor (ANN)** methods that trade a small 
 
 **Method 2: HNSW - The Highway System for Vectors**
 
-Think of HNSW (Hierarchical Navigable Small World) like a highway system with multiple levels:
+**Analogy:** Think of HNSW (Hierarchical Navigable Small World) like a highway system with multiple levels:
 
 ```
 Analogy: Finding a restaurant in a city
@@ -614,7 +632,7 @@ Why it's fast: O(log n) instead of O(n)
 
 **Method 3: IVF - The Clustering Approach**
 
-Think of IVF (Inverted File) like organizing a library by topic:
+**Analogy:** Think of IVF (Inverted File) like organizing a library by topic:
 
 ```
 Traditional Library Organization:
@@ -643,8 +661,7 @@ Speedup: From O(n) to O(n/k) where k = number of clusters
 
 **Method 4: Product Quantization - The Compression Master**
 
-**What is Quantization?**
-Think of quantization like converting a detailed painting into a paint-by-numbers version. Instead of infinite color gradations, you use a limited palette that approximates the original while using much less information.
+**Analogy:** Think of quantization like converting a detailed painting into a paint-by-numbers version. Instead of infinite color gradations, you use a limited palette that approximates the original while using much less information.
 
 PQ is like creating a "summary" of each vector to save memory:
 
@@ -676,11 +693,14 @@ chunk_2 closest to centroid_156 → store ID: 156 (1 byte)
 chunk_8 closest to centroid_73 → store ID: 73 (1 byte)
 
 Step 4: Compressed representation
-Original: 768 dimensions × 32 bits = 24,576 bits per vector
-Compressed: 8 chunks × 8 bits = 64 bits per vector
-Compression ratio: 384× smaller!
+Original: 768 dimensions × 32 bits/float = 24,576 bits per vector (3,072 bytes)
+Compressed: 8 chunks × 8 bits/chunk = 64 bits per vector (8 bytes)
+Compression ratio: 24,576 ÷ 64 = 384× smaller!
 
-Memory savings: 24.6 GB → 64 MB (same 1M documents)
+Memory savings calculation:
+- Original: 1M vectors × 3,072 bytes = 3.072 GB
+- Compressed: 1M vectors × 8 bytes = 8 MB  
+- Actual reduction: 3.072 GB → 8 MB (384× compression)
 
 Quantization Trade-offs:
 ✓ Massive memory reduction (384×)
@@ -688,6 +708,15 @@ Quantization Trade-offs:
 ✗ Small accuracy loss (~2-5% recall drop)
 ✗ Requires training phase to learn centroids
 ```
+
+**Summary of Vector Indexing Methods:**
+
+| Method | Complexity | Pros | Cons |
+|--------|------------|------|------|
+| **Brute Force** | O(n·d) | Perfect accuracy, simple | Too slow for large datasets |
+| **HNSW** | O(log n) | Fast search, high accuracy | Complex construction, memory overhead |
+| **IVF** | O(n/k) | Good speed/accuracy balance | Requires clustering, parameter tuning |
+| **Product Quantization** | O(n·d/m) | Massive memory savings | Accuracy loss, training complexity |
 
 #### Understanding Index Performance Trade-offs
 
@@ -948,18 +977,6 @@ Real-time Chat: Medium threshold (0.7), Top-K=10
 - Sufficient context without overwhelming LLM
 ```
 
-### 4. Critical Question: Are They the Same Concept?
-
-**NO** - These are fundamentally different approaches:
-
-| Aspect | LLM Weights | Vector Stores |
-|--------|-------------|---------------|
-| **Storage** | Distributed patterns | Discrete vectors |
-| **Knowledge Access** | Generated through computation | Retrieved through search |
-| **Updates** | Requires retraining | Add/remove vectors |
-| **Capacity** | Limited by parameter count | Unlimited external storage |
-| **Latency** | Fixed computation cost | Variable search cost |
-
 ---
 
 ## PART III: Mathematical Foundations
@@ -990,53 +1007,86 @@ Please refer to the dedicated mathematics guide.
 | **Capacity** | Limited by parameter count | Unlimited external storage |
 | **Latency** | Fixed computation cost | Variable search cost |
 
-### 5. Relevance Across Contexts
+### 5. Similarity Calculations Across Systems
 
-#### During LLM Training
+Both LLM weights and vector stores fundamentally rely on similarity calculations, but they use them in distinctly different ways:
 
-**Yes, transformers use similarity calculations internally:**
+#### How LLMs Use Similarity
 
-1. **Attention Mechanism:** Uses dot products (related to cosine similarity)
-   ```
-   Attention(Q,K,V) = softmax(QK^T/√d)V
-   ```
-   The QK^T operation computes similarity between query and key vectors.
+**During Training:**
+- **Attention Mechanism:** Uses dot products (related to cosine similarity)
+  ```
+  Attention(Q,K,V) = softmax(QK^T/√d)V
+  ```
+  The QK^T operation computes similarity between query and key vectors.
+- **Gradient Flow:** Backpropagation updates weights based on similarity between predicted and actual tokens.
+- **Example:** When processing "The big cat ___", attention weights learn that "cat" tokens should attend strongly to "animal" tokens.
 
-2. **Gradient Flow:** Backpropagation updates weights based on similarity between predicted and actual tokens.
+**During Inference:**
+- **No explicit similarity search** - knowledge emerges from distributed computation
+- **Next-token prediction:** Computes probability distributions over vocabulary
+- **Example:** For "The big cat ___", the model outputs P("runs") = 0.3, P("sleeps") = 0.25 through learned weight patterns
 
-3. **Example during training:**
-   When processing "The big cat ___", attention weights learn that "cat" tokens should attend strongly to "animal" tokens, encoded through weight updates.
-
-#### During LLM Inference
-
-**Knowledge retrieval happens through distributed computation:**
-
-1. **Next-token prediction:** The model doesn't "search" for knowledge - it computes probability distributions over the vocabulary.
-
-2. **Example:** For "The big cat ___"
-   - Input embeddings flow through attention layers
-   - Each layer refines representations using learned weight patterns
-   - Final layer outputs probabilities: P("runs") = 0.3, P("sleeps") = 0.25, P("house") = 0.05
-
-3. **No explicit similarity search** - knowledge emerges from the computational graph.
-
-#### In Vector Store Operations
+#### How Vector Stores Use Similarity
 
 **Explicit similarity search for retrieval:**
 
-1. **Query embedding:** "What do cats do?" → [0.75, 0.25, 0.15]
+**Unified Example - Query: "What animals make good pets?"**
+```
+Step 1: Query → Embedding
+"What animals make good pets?" → [0.72, 0.31, 0.18]
 
-2. **Search process:**
-   ```
-   For each stored vector:
-     similarity = cosine(query, stored_vector)
-     if similarity > threshold: add to results
-   ```
+Step 2: Compare Against All Documents
+doc1: "Cats are popular pets" → [0.82, 0.31, 0.15]
+doc2: "Dogs make loyal companions" → [0.79, 0.33, 0.18]  
+doc3: "Houses need maintenance" → [0.12, 0.85, 0.43]
 
-3. **RAG Pipeline:**
-   - Retrieve: Find relevant documents using similarity search
-   - Augment: Add retrieved content to LLM prompt
-   - Generate: LLM produces response with external knowledge
+Step 3: Calculate Similarities
+cosine(query, doc1) = 0.94 ← High relevance
+cosine(query, doc2) = 0.96 ← Highest relevance  
+cosine(query, doc3) = 0.32 ← Low relevance
+
+Step 4: Apply Thresholds and Ranking
+threshold = 0.5 → docs 1&2 pass, doc3 filtered out
+Final ranking: doc2 (0.96), doc1 (0.94)
+```
+
+**Key Distinction:**
+- **LLMs**: Internal similarity for attention → generates new content
+- **Vector Stores**: External similarity for retrieval → finds existing content
+
+3. **RAG Pipeline (Retrieval-Augmented Generation):**
+
+**Complete Workflow:**
+```
+Step 1: User Query Processing
+User: "What do cats eat in the wild?"
+↓
+LLM creates query embedding: [0.75, 0.25, 0.15, ...]
+
+Step 2: Vector Store Retrieval  
+Query embedding → Vector database search
+↓
+Top matching documents:
+- Doc A: "Wild cats hunt small mammals..." (similarity: 0.94)
+- Doc B: "Feline dietary patterns in nature..." (similarity: 0.87)
+- Doc C: "Natural hunting behaviors of cats..." (similarity: 0.82)
+
+Step 3: Context Augmentation
+Retrieved documents + Original query → Enhanced prompt
+"Context: [Doc A, Doc B, Doc C content]
+Question: What do cats eat in the wild?
+Answer:"
+
+Step 4: LLM Generation
+LLM processes augmented prompt → Generates informed response
+"Based on the provided sources, wild cats primarily hunt small mammals..."
+```
+
+**Key Benefits:**
+- **Current information**: Vector store provides up-to-date facts
+- **Source attribution**: Clear traceability to retrieved documents  
+- **Reduced hallucination**: LLM responses grounded in real data
 
 ### 6. Practical Integration
 
@@ -1073,6 +1123,55 @@ Please refer to the dedicated mathematics guide.
 
 **Key Difference:** LLM generates the relationship through learned patterns, while vector store retrieves pre-existing representations.
 
+#### System Limitations and Considerations
+
+| System | Key Limitations | Mitigation Strategies |
+|--------|----------------|----------------------|
+| **LLM Weights** | • Hallucinations and confabulation<br>• Outdated information (training cutoff)<br>• Expensive retraining for updates<br>• Fixed knowledge capacity | • Use confidence scoring<br>• Combine with retrieval systems<br>• Regular model updates<br>• Parameter-efficient fine-tuning |
+| **Vector Stores** | • Dependent on embedding quality<br>• Potential stale/outdated data<br>• Limited semantic understanding<br>• Retrieval relevance challenges | • High-quality embedding models<br>• Regular data refreshing<br>• Hybrid search (semantic + keyword)<br>• Query expansion techniques |
+
+#### Use Case Mapping Guide
+
+| Task Type | Best Storage Method | Rationale | Example Applications |
+|-----------|--------------------|-----------|--------------------|
+| **Legal Document Retrieval** | Vector Store | Need exact citations, current laws | Contract analysis, case law research |
+| **Creative Writing** | LLM Weights | Requires imagination, style generation | Story writing, poetry, character development |
+| **Technical Q&A** | Hybrid (RAG) | Need current facts + reasoning | Documentation chatbots, technical support |
+| **General Conversation** | LLM Weights | Requires broad knowledge, reasoning | Personal assistants, casual chat |
+| **Scientific Research** | Vector Store + LLM | Current papers + analysis capability | Literature review, hypothesis generation |
+| **Code Generation** | LLM Weights | Pattern recognition, syntax knowledge | IDE assistants, code completion |
+| **News Summarization** | Vector Store + LLM | Current events + synthesis ability | News aggregation, trend analysis |
+
+---
+
+## Glossary
+
+**Attention Head**: A specialized component of multi-head attention that focuses on specific types of relationships (e.g., grammar, semantics, position).
+
+**Centroid**: The center point of a cluster in vector space, representing the average position of all vectors in that cluster.
+
+**Embedding**: A dense numerical vector representation of text, images, or other data that captures semantic meaning in high-dimensional space.
+
+**HNSW (Hierarchical Navigable Small World)**: A graph-based indexing method that creates multiple navigation layers for fast approximate nearest neighbor search.
+
+**IVF (Inverted File)**: A clustering-based indexing method that groups similar vectors together and searches only within relevant clusters.
+
+**Product Quantization (PQ)**: A compression technique that splits vectors into chunks and replaces each chunk with a representative centroid ID.
+
+**Query Vector**: In attention mechanisms, the vector representing "what information is being sought" from other positions.
+
+**RAG (Retrieval-Augmented Generation)**: A system that combines vector store retrieval with LLM generation to provide informed, grounded responses.
+
+**Similarity Threshold**: A minimum similarity score required for a document to be considered relevant in vector search.
+
+**Temperature**: A parameter controlling randomness in text generation; lower values make outputs more focused, higher values more creative.
+
+**Top-K**: A parameter limiting selection to the K most likely tokens (in LLMs) or K most similar documents (in vector stores).
+
+**Top-P (Nucleus Sampling)**: A parameter that dynamically selects tokens based on cumulative probability until reaching threshold P.
+
+**Vector Store**: A database optimized for storing and searching high-dimensional numerical vectors representing semantic content.
+
 ---
 
 ## Conclusion
@@ -1095,9 +1194,7 @@ This comprehensive exploration reveals that LLM weights and vector stores repres
 
 ### Unified Understanding
 
-Both systems leverage **similarity calculations** but in different ways:
-- **LLMs**: Internal dot products for attention mechanisms during generation
-- **Vector stores**: External cosine/Euclidean similarity for document retrieval
+As explored in Section 5, both systems leverage similarity calculations but serve different purposes - LLMs use internal similarity for attention-based generation while vector stores use external similarity for document retrieval.
 
 Both benefit from **generation control parameters**:
 - **LLMs**: Temperature, top-k, top-p for creativity vs. consistency

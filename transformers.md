@@ -1,5 +1,120 @@
 # Transformer Flow: From Text Input to Output Generation
 
+## Prerequisites
+
+**Mathematical Foundations:**
+- **Linear Algebra**: Matrix operations, eigenvalues, vector spaces (📚 See [Linear Algebra Essentials](./transformers_math.md#21-linear-algebra-essentials))
+- **Probability Theory**: Distributions, information theory, maximum likelihood estimation (📚 See [Probability & Information Theory](./transformers_math.md#23-probability--information-theory))
+- **Calculus**: Gradients, chain rule, optimization theory (📚 See [Matrix Calculus](./transformers_math.md#22-matrix-calculus-essentials))
+- **Machine Learning**: Backpropagation, gradient descent, regularization techniques
+
+**This document assumes familiarity with deep learning fundamentals and focuses on the mathematical rigor and computational details specific to transformer architectures.**
+---
+
+## Table of Contents
+
+1. [Prerequisites](#prerequisites)
+2. [Overview](#overview)
+3. [Historical Context: The Evolution to Transformers](#historical-context-the-evolution-to-transformers)
+4. [Pipeline](#pipeline)
+   - [Computational Pipeline Overview](#computational-pipeline-overview)
+   - [Detailed Process Flow](#detailed-process-flow)
+   - [Training: How Models Learn (Optional Detail)](#training-how-models-learn-optional-detail)
+   - [Model Hyperparameters and Complexity](#model-hyperparameters-and-complexity)
+5. [Stage 1: Text to Tokens](#2-stage-1-text-to-tokens)
+   - [🎯 Intuition: Breaking Text into Computer-Friendly Pieces](#-intuition-breaking-text-into-computer-friendly-pieces)
+   - [Process Flow](#process-flow)
+   - [Simple Example with Real Numbers](#simple-example-with-real-numbers)
+   - [Mathematical Formulation](#mathematical-formulation)
+   - [Tokenization Challenges and Considerations](#tokenization-challenges-and-considerations)
+   - [Implementation Considerations](#implementation-considerations)
+6. [Stage 2: Tokens to Embeddings](#3-stage-2-tokens-to-embeddings)
+   - [Dense Vector Representation Learning](#dense-vector-representation-learning)
+   - [Embedding Computation Pipeline](#embedding-computation-pipeline)
+   - [Mathematical Formulation](#mathematical-formulation-1)
+   - [Concrete Example with Actual Numbers](#concrete-example-with-actual-numbers)
+   - [Tensor Shapes Example](#tensor-shapes-example)
+   - [🛠️ What Could Go Wrong?](#️-what-could-go-wrong)
+7. [Stage 3: Through the Transformer Stack](#4-stage-3-through-the-transformer-stack)
+   - [Hierarchical Representation Learning](#hierarchical-representation-learning)
+   - [Architecture Overview](#architecture-overview)
+   - [Single Layer Mathematical Flow](#single-layer-mathematical-flow)
+8. [Architectural Variants: Encoder, Decoder, and Encoder-Decoder](#5-architectural-variants-encoder-decoder-and-encoder-decoder)
+   - [Understanding Different Transformer Architectures](#understanding-different-transformer-architectures)
+   - [Encoder-Only: BERT Family](#encoder-only-bert-family)
+   - [Decoder-Only: GPT Family](#decoder-only-gpt-family)
+   - [Encoder-Decoder: T5 Family](#encoder-decoder-t5-family)
+   - [Modern Architectural Innovations](#modern-architectural-innovations)
+   - [Choosing the Right Architecture](#choosing-the-right-architecture)
+9. [Stage 4: Self-Attention Deep Dive](#6-stage-4-self-attention-deep-dive)
+   - [Attention as Differentiable Key-Value Retrieval](#attention-as-differentiable-key-value-retrieval)
+   - [Attention Weight Interpretation](#attention-weight-interpretation)
+   - [Attention Computation Steps](#attention-computation-steps)
+   - [Multi-Head Attention Mathematical Formulation](#multi-head-attention-mathematical-formulation)
+10. [Stage 5: KV Cache Operations](#7-stage-5-kv-cache-operations)
+    - [Autoregressive Generation Optimization](#autoregressive-generation-optimization)
+    - [Computational Efficiency Analysis](#computational-efficiency-analysis)
+    - [KV Cache Implementation](#kv-cache-implementation)
+11. [Stage 6: Feed-Forward Networks](#8-stage-6-feed-forward-networks)
+    - [Position-wise Nonlinear Transformations](#position-wise-nonlinear-transformations)
+    - [FFN Architecture and Computation](#ffn-architecture-and-computation)
+    - [Mathematical Formulation](#mathematical-formulation-2)
+12. [Stage 7: Output Generation](#9-stage-7-output-generation)
+    - [🎯 Intuition: Making the Final Decision](#-intuition-making-the-final-decision)
+    - [Output Generation Pipeline](#output-generation-pipeline)
+    - [Mathematical Formulation](#mathematical-formulation-3)
+13. [Training Objectives and Data Curriculum](#10-training-objectives-and-data-curriculum)
+    - [Core Pre-training Objectives](#core-pre-training-objectives)
+    - [Supervised Fine-Tuning and Instruction Tuning](#supervised-fine-tuning-and-instruction-tuning)
+    - [Alignment: RLHF and Beyond](#alignment-rlhf-and-beyond)
+    - [Data Curriculum and Scaling Considerations](#data-curriculum-and-scaling-considerations)
+    - [Multi-Task Learning and Meta-Learning](#multi-task-learning-and-meta-learning)
+14. [Training: Backpropagation Flow](#11-training-backpropagation-flow)
+    - [🎯 Intuition: How AI Models Learn from Mistakes](#-intuition-how-ai-models-learn-from-mistakes)
+    - [Loss Computation](#loss-computation)
+    - [Backward Pass Flow](#backward-pass-flow)
+    - [Transformer Layer Backward Pass](#transformer-layer-backward-pass)
+15. [Weight Updates and Optimization](#12-weight-updates-and-optimization)
+    - [Adam Optimizer Mathematics](#adam-optimizer-mathematics)
+    - [Learning Rate Scheduling](#learning-rate-scheduling)
+    - [Gradient Clipping](#gradient-clipping)
+    - [Parameter Update Flow](#parameter-update-flow)
+16. [Parameter-Efficient Fine-Tuning Methods](#13-parameter-efficient-fine-tuning-methods)
+    - [The Challenge of Full Fine-Tuning](#the-challenge-of-full-fine-tuning)
+    - [Low-Rank Adaptation (LoRA)](#low-rank-adaptation-lora)
+    - [QLoRA: Quantized Base + Low-Rank Adapters](#qlora-quantized-base--low-rank-adapters)
+    - [Other Parameter-Efficient Methods](#other-parameter-efficient-methods)
+    - [Choosing the Right Method](#choosing-the-right-method)
+    - [Training Best Practices](#training-best-practices)
+17. [Quantization for Practical Deployment](#14-quantization-for-practical-deployment)
+    - [The Precision vs. Efficiency Trade-off](#the-precision-vs-efficiency-trade-off)
+    - [Post-Training vs. Quantization-Aware Training](#post-training-vs-quantization-aware-training)
+    - [Common Quantization Schemes](#common-quantization-schemes)
+    - [Where Quantization Helps Most](#where-quantization-helps-most)
+    - [Implementation Example](#implementation-example)
+    - [Mixed-Precision Strategies](#mixed-precision-strategies)
+    - [Deployment Considerations](#deployment-considerations)
+18. [Evaluation and Diagnostics](#15-evaluation-and-diagnostics)
+    - [Intrinsic vs. Extrinsic Evaluation](#intrinsic-vs-extrinsic-evaluation)
+    - [Long-Context Evaluation](#long-context-evaluation)
+    - [Performance Metrics](#performance-metrics)
+    - [Common Failure Modes and Diagnostics](#common-failure-modes-and-diagnostics)
+    - [Debugging Checklist](#debugging-checklist)
+19. [Complete Mathematical Summary](#16-complete-mathematical-summary)
+    - [Forward Pass Equations](#forward-pass-equations)
+    - [Training Equations](#training-equations)
+    - [Key Computational Complexities](#key-computational-complexities)
+20. [Summary: From Mathematical Foundations to Practical Implementation](#summary-from-mathematical-foundations-to-practical-implementation)
+    - [Core Architecture Components](#core-architecture-components)
+    - [Architectural Variants and Applications](#architectural-variants-and-applications)
+    - [Training and Learning Dynamics](#training-and-learning-dynamics)
+    - [Practical Deployment Considerations](#practical-deployment-considerations)
+    - [Key Mathematical Insights](#key-mathematical-insights)
+    - [Future Directions and Emerging Techniques](#future-directions-and-emerging-techniques)
+    - [The Transformer Revolution](#the-transformer-revolution)
+
+---
+
 ## Overview
 
 Transformer architectures represent a fundamental paradigm shift in sequence modeling, replacing recurrent and convolutional approaches with attention-based mechanisms for parallel processing of sequential data. The architecture's core innovation lies in the self-attention mechanism, which enables direct modeling of dependencies between any two positions in a sequence, regardless of their distance.
@@ -10,24 +125,6 @@ Transformer architectures represent a fundamental paradigm shift in sequence mod
 - **Parallelizable attention computation:** Unlike RNNs, all positions can be processed simultaneously
 - **Direct dependency modeling:** Attention weights explicitly model relationships between any pair of sequence positions
 - **Position-invariant processing:** The base attention mechanism is permutation-equivariant, requiring explicit positional encoding
-
-## Prerequisites
-
-**Mathematical Foundations:**
-- **Linear Algebra**: Matrix operations, eigenvalues, vector spaces (📚 See [Linear Algebra Essentials](./transformers_math.md#21-linear-algebra-essentials))
-- **Probability Theory**: Distributions, information theory, maximum likelihood estimation (📚 See [Probability & Information Theory](./transformers_math.md#23-probability--information-theory))
-- **Calculus**: Gradients, chain rule, optimization theory (📚 See [Matrix Calculus](./transformers_math.md#22-matrix-calculus-essentials))
-- **Machine Learning**: Backpropagation, gradient descent, regularization techniques
-
-**This document assumes familiarity with deep learning fundamentals and focuses on the mathematical rigor and computational details specific to transformer architectures.**
-
-## Abstract
-
-This document provides a comprehensive analysis of transformer architecture data flow, from tokenization through output generation. We examine the mathematical formulations, computational complexity, and implementation details of each component, with emphasis on the attention mechanism, layer composition, and training dynamics. The treatment assumes undergraduate-level mathematical sophistication and focuses on the rigorous understanding necessary for research and advanced implementation.
-
-**📚 Mathematical Foundations:** Core mathematical concepts and derivations are detailed in [transformers_math.md](./transformers_math.md), providing the theoretical foundation for the computational procedures described here.
-
----
 
 ## Historical Context: The Evolution to Transformers
 
@@ -44,30 +141,7 @@ The transformer architecture represents the culmination of decades of research i
 
 The transformer's revolutionary insight was asking: *"What if we remove recurrence entirely and rely purely on attention?"* This question led to the realization that self-attention could serve as the primary mechanism for sequence processing, enabling parallel computation and direct modeling of long-range dependencies.
 
----
-
-## Table of Contents
-
-1. [Overview: The Complete Pipeline](#1-overview-the-complete-pipeline)
-2. [Stage 1: Text to Tokens](#2-stage-1-text-to-tokens)
-3. [Stage 2: Tokens to Embeddings](#3-stage-2-tokens-to-embeddings)
-4. [Stage 3: Through the Transformer Stack](#4-stage-3-through-the-transformer-stack)
-5. [Architectural Variants: Encoder, Decoder, and Encoder-Decoder](#5-architectural-variants-encoder-decoder-and-encoder-decoder)
-6. [Stage 4: Self-Attention Deep Dive](#6-stage-4-self-attention-deep-dive)
-7. [Stage 5: KV Cache Operations](#7-stage-5-kv-cache-operations)
-8. [Stage 6: Feed-Forward Networks](#8-stage-6-feed-forward-networks)
-9. [Stage 7: Output Generation](#9-stage-7-output-generation)
-10. [Training Objectives and Data Curriculum](#10-training-objectives-and-data-curriculum)
-11. [Training: Backpropagation Flow](#11-training-backpropagation-flow)
-12. [Weight Updates and Optimization](#12-weight-updates-and-optimization)
-13. [Parameter-Efficient Fine-Tuning Methods](#13-parameter-efficient-fine-tuning-methods)
-14. [Quantization for Practical Deployment](#14-quantization-for-practical-deployment)
-15. [Evaluation and Diagnostics](#15-evaluation-and-diagnostics)
-16. [Complete Mathematical Summary](#16-complete-mathematical-summary)
-
----
-
-## 1. Overview: The Complete Pipeline
+## Pipeline
 
 **Let's trace through what happens when you type "The cat sat on" and the AI predicts the next word.**
 

@@ -1,7 +1,5 @@
 # PyTorch Reference: From MLPs to Transformers
 
-**What PyTorch is for this document:** PyTorch is a tensor computation library with automatic differentiation that lets us implement neural networks from MLPs to Transformers with clean, debuggable code. We focus on the essential patterns for sequence modeling.
-
 ## Table of Contents
 
 1. [Title & Quickstart](#1-title--quickstart)

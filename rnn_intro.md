@@ -1,8 +1,38 @@
 # Recurrent Neural Networks (RNNs): A Step-by-Step Tutorial
 
-**What you'll learn:** How RNNs process sequences step-by-step, carry memory through hidden states, and differ from regular feedforward networks. We'll work through math and intuition together, with tiny examples you can follow by hand.
 
-**Prerequisites:** Basic linear algebra (vectors, matrices, dot products). No prior RNN experience needed.
+
+## Table of Contents
+
+1. [What is an RNN?](#1-what-is-an-rnn)
+   - [RNN vs Regular Neural Network (MLP)](#rnn-vs-regular-neural-network-mlp)
+2. [The Core RNN Equation](#2-the-core-rnn-equation)
+   - [Visual Breakdown](#visual-breakdown)
+3. [Where These Weights Come From](#3-where-these-weights-come-from)
+   - [Weight Initialization](#weight-initialization)
+   - [Training Process: Backpropagation Through Time (BPTT)](#training-process-backpropagation-through-time-bptt)
+   - [Weight Sharing vs MLPs](#weight-sharing-vs-mlps)
+4. [Hidden Size and Embedding Size](#4-hidden-size-and-embedding-size)
+   - [Embedding Size (E): Input Detail](#embedding-size-e-input-detail)
+   - [Hidden Size (H): Memory Capacity](#hidden-size-h-memory-capacity)
+   - [Weight Matrix Shapes](#weight-matrix-shapes)
+5. [Worked Example: "cat sat here"](#5-worked-example-cat-sat-here)
+   - [Step 0: Initialize](#step-0-initialize)
+   - [Step 1: Process "cat"](#step-1-process-cat)
+   - [Step 2: Process "sat"](#step-2-process-sat)
+   - [Step 3: Process "here"](#step-3-process-here)
+   - [Summary: Memory Evolution](#summary-memory-evolution)
+6. [RNN vs MLP Training](#6-rnn-vs-mlp-training)
+   - [MLP Training: Layer-by-Layer](#mlp-training-layer-by-layer)
+   - [RNN Training: Backpropagation Through Time (BPTT)](#rnn-training-backpropagation-through-time-bptt)
+   - [The Gradient Flow Challenge](#the-gradient-flow-challenge)
+7. [Summary: The Big Picture](#7-summary-the-big-picture)
+   - [How RNNs Work](#how-rnns-work)
+   - [Key Components Working Together](#key-components-working-together)
+   - [Capacity Control](#capacity-control)
+   - [Training Differences from MLPs](#training-differences-from-mlps)
+8. [Final Visualization: "cat sat here" Through Time](#8-final-visualization-cat-sat-here-through-time)
+9. [Next Steps](#next-steps)
 
 ---
 
