@@ -17,7 +17,7 @@ This repository provides a comprehensive exploration of transformer architecture
 | **[transformers_math.md](./transformers_math.md)** | Mathematical foundations | Theoretical underpinnings |
 | **[math_quick_ref.md](./math_quick_ref.md)** | Mathematical reference table | Formulas, intuitions, neural network applications |
 | **[knowledge_store.md](./knowledge_store.md)** | LLM weights vs vector stores | Knowledge storage, similarity calculations |
-| **[pytorch_reference.md](./pytorch_reference.md)** | PyTorch implementation guide | Code patterns, practical examples |
+| **[pytorch_ref.md](./pytorch_ref.md)** | PyTorch implementation guide | Code patterns, practical examples |
 
 ## 🚀 Getting Started
 
@@ -25,19 +25,19 @@ This repository provides a comprehensive exploration of transformer architecture
 1. **Start with**: [MLP Tutorial](./mlp_intro.md) to learn neural network fundamentals
 2. **Then learn**: [RNN Tutorial](./rnn_intro.md) for sequential modeling basics
 3. **Understand context**: [Historical Evolution](./sequencing_history.md) from MLPs to Transformers
-4. **Get the big picture**: [Transformer Flow Overview](./transformers.md#1-overview-the-complete-pipeline)
+4. **Get the big picture**: [Transformer Flow Overview](./transformers.md#2-overview)
 5. **Dive deeper**: Explore specific sections based on your interests
 
 ### For Practitioners
-1. **PyTorch implementation**: [From tensors to transformers](./pytorch_reference.md) - hands-on coding guide
-2. **Architecture variants**: [Encoder vs Decoder vs Encoder-Decoder](./transformers.md#5-architectural-variants-encoder-decoder-and-encoder-decoder)
-3. **Implementation details**: [Self-Attention Deep Dive](./transformers.md#6-stage-4-self-attention-deep-dive)
-4. **Deployment**: [Quantization](./transformers.md#14-quantization-for-practical-deployment) and [Parameter-Efficient Fine-tuning](./transformers.md#13-parameter-efficient-fine-tuning-methods)
+1. **PyTorch implementation**: [From tensors to transformers](./pytorch_ref.md) - hands-on coding guide
+2. **Architecture variants**: [Encoder vs Decoder vs Encoder-Decoder](./transformers.md#8-architectural-variants-encoder-decoder-and-encoder-decoder)
+3. **Implementation details**: [Self-Attention Deep Dive](./transformers.md#9-stage-4-self-attention-deep-dive)
+4. **Deployment**: [Quantization](./transformers.md#17-quantization-for-practical-deployment) and [Parameter-Efficient Fine-tuning](./transformers.md#16-parameter-efficient-fine-tuning-methods)
 
 ### For Researchers
 1. **Mathematical foundations**: [transformers_math.md](./transformers_math.md) with [quick reference table](./math_quick_ref.md)
-2. **Training dynamics**: [Backpropagation Flow](./transformers.md#11-training-backpropagation-flow)
-3. **Evaluation methods**: [Diagnostics and Evaluation](./transformers.md#15-evaluation-and-diagnostics)
+2. **Training dynamics**: [Backpropagation Flow](./transformers.md#14-training-backpropagation-flow)
+3. **Evaluation methods**: [Diagnostics and Evaluation](./transformers.md#18-evaluation-and-diagnostics)
 
 ## 📖 Document Details
 
@@ -111,7 +111,7 @@ This repository provides a comprehensive exploration of transformer architecture
 
 **Prerequisites:** Basic linear algebra (vectors, matrices). No prior RNN experience needed.
 
-### [PyTorch Reference: From MLPs to Transformers](./pytorch_reference.md)
+### [PyTorch Reference: From MLPs to Transformers](./pytorch_ref.md)
 **Practical implementation guide** - Hands-on PyTorch patterns for sequence modeling.
 
 **Key Features:**
@@ -130,21 +130,21 @@ This repository provides a comprehensive exploration of transformer architecture
 1. mlp_intro.md (Complete tutorial: neural network fundamentals)
 2. rnn_intro.md (Complete tutorial: sequential modeling basics)
 3. sequencing_history.md (Sections 1-4: MLPs to LSTMs context)
-4. transformers.md (Section 1: Overview)
+4. transformers.md (Section 2: Overview)
 5. sequencing_history.md (Sections 5-8: Attention to Transformers)
-6. transformers.md (Sections 2-9: Core Architecture)
-7. transformers.md (Sections 10-16: Advanced Topics)
+6. transformers.md (Sections 5-12: Core Architecture)
+7. transformers.md (Sections 13-20: Advanced Topics)
 8. transformers_math.md (As needed for deeper understanding)
 ```
 
 ### Path 2: Practitioner Focus
 ```
-1. pytorch_reference.md (Sections 1-7: PyTorch basics and patterns)
-2. transformers.md (Section 1: Overview)
-3. pytorch_reference.md (Sections 8-10: Model implementations)
-4. transformers.md (Section 5: Architectural Variants)
-5. transformers.md (Sections 6-9: Core Components)
-6. transformers.md (Sections 13-15: Deployment)
+1. pytorch_ref.md (Sections 1-7: PyTorch basics and patterns)
+2. transformers.md (Section 2: Overview)
+3. pytorch_ref.md (Sections 8-10: Model implementations)
+4. transformers.md (Section 8: Architectural Variants)
+5. transformers.md (Sections 9-12: Core Components)
+6. transformers.md (Sections 16-18: Deployment)
 7. sequencing_history.md (For historical context)
 ```
 
@@ -203,7 +203,7 @@ This repository provides a comprehensive exploration of transformer architecture
 | transformers_math.md | Variable | Mathematical Theory | Rigorous |
 | math_quick_ref.md | 50+ | Mathematical Reference | Quick Reference |
 | knowledge_store.md | 300+ | Knowledge Storage Analysis | Intermediate |
-| pytorch_reference.md | 2,000+ | Practical Implementation | Hands-on |
+| pytorch_ref.md | 2,000+ | Practical Implementation | Hands-on |
 
 ## 🔗 Cross-References
 
@@ -215,8 +215,8 @@ Documents are extensively cross-referenced:
 - **Neural network basics**: sequencing_history.md → mlp_intro.md
 - **Sequential modeling**: mlp_intro.md → rnn_intro.md
 - **RNN fundamentals**: sequencing_history.md → rnn_intro.md
-- **Code patterns**: pytorch_reference.md → transformers_math.md
-- **Practical examples**: transformers.md → pytorch_reference.md
+- **Code patterns**: pytorch_ref.md → transformers_math.md
+- **Practical examples**: transformers.md → pytorch_ref.md
 
 ## 🏗️ Repository Structure
 
@@ -230,7 +230,7 @@ transformers/
 ├── transformers_math.md          # Mathematical foundations
 ├── math_quick_ref.md            # Mathematical reference table
 ├── knowledge_store.md           # LLM weights vs vector stores guide
-└── pytorch_reference.md          # Practical PyTorch implementation guide
+└── pytorch_ref.md          # Practical PyTorch implementation guide
 ```
 
 ## 🎉 Key Features

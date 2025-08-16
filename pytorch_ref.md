@@ -58,243 +58,44 @@ After reading this guide, you'll be able to:
 
 ## 2. Tensors: Vectors & Matrices in PyTorch
 
+📓 **Interactive Examples**: [Tensor Basics Notebook](./pynb/basic/tensors_basics.ipynb)
+
 ### Core Mental Model
 
 Tensors are n-dimensional arrays that carry data and gradients through neural networks. Think of them as generalized matrices that know how to compute derivatives.
 
-```python
-# Basic tensor creation
-x = torch.tensor([1.0, 2.0, 3.0])  # 1D tensor (vector)
-print(f"x: {x}, shape: {x.shape}, dtype: {x.dtype}")
+The notebook covers:
+- Basic tensor creation and manipulation
+- Vector/matrix operations and broadcasting  
+- One-hot vs embedding vectors
+- Batch operations and shape handling
 
-# Common creation patterns
-zeros = torch.zeros(3, 4)  # 3x4 matrix of zeros
-ones = torch.ones(2, 3, 4)  # 2x3x4 tensor of ones  
-randn = torch.randn(2, 5)  # Random normal distribution
-arange = torch.arange(0, 10, 2)  # [0, 2, 4, 6, 8]
-
-# Inspect tensor properties
-print(f"zeros shape: {zeros.shape}")
-print(f"zeros device: {zeros.device}")  
-print(f"zeros requires_grad: {zeros.requires_grad}")
-```
-
-### Vector/Matrix Operations
-
-```python
-# Matrix multiplication and broadcasting
-batch_size, d_input, d_hidden = 4, 6, 8
-X = torch.randn(batch_size, d_input)  # Batch of inputs [B, D_in]
-W = torch.randn(d_input, d_hidden)    # Weight matrix [D_in, D_out]
-b = torch.randn(d_hidden)             # Bias vector [D_out]
-
-# Linear transformation: y = XW + b
-y = X @ W + b  # Broadcasting handles bias addition
-print(f"X shape: {X.shape}, W shape: {W.shape}, y shape: {y.shape}")
-
-# Indexing and slicing
-first_sample = X[0]      # First sample: [D_in]
-first_two = X[:2]        # First two samples: [2, D_in]
-last_dim = X[..., -1]    # Last feature across all samples: [B]
-
-# Stacking and concatenation
-X1 = torch.randn(4, 6)
-X2 = torch.randn(4, 6)
-stacked = torch.stack([X1, X2], dim=0)  # [2, 4, 6]
-concat = torch.cat([X1, X2], dim=0)     # [8, 6]
-```
-
-### One-Hot vs Embedding Vectors
-
-```python
-# One-hot: sparse, large, inefficient for large vocabularies
-vocab_size = 1000
-token_id = 42
-onehot = torch.zeros(vocab_size)
-onehot[token_id] = 1.0
-print(f"One-hot vector size: {onehot.shape}, mostly zeros: {torch.sum(onehot == 0).item()}")
-
-# Embedding: dense, learnable, efficient
-embedding_dim = 64
-embedding_layer = nn.Embedding(vocab_size, embedding_dim)
-embedded = embedding_layer(torch.tensor([token_id]))
-print(f"Embedding vector size: {embedded.shape}, all meaningful values")
-
-# Why embeddings are better:
-# 1. Memory: 64 floats vs 1000 floats
-# 2. Computation: Dense ops vs sparse ops
-# 3. Learning: Embeddings learn representations, one-hot is fixed
-```
-
-**Math** Cross-Reference to `./transformers_math.md`:
-> Inner products and matrix shapes: When we compute `X @ W`, we're applying the matrix multiplication rule from **Mathematical Preliminaries (Section 2.1)**. The gradient `∂L/∂W = X^T ∂L/∂y` follows from the chain rule identities shown in equations around **matrix calculus essentials**.
-
-### Tiny Exercise: Batch Operations
-
-```python
-# Construct batch data
-batch_size, d_model = 3, 4
-X_batch = torch.randn(batch_size, d_model)  # [B, D]
-W_linear = torch.randn(d_model, d_model)    # [D, D]
-b_linear = torch.randn(d_model)             # [D]
-
-# Compute linear transformation
-y_batch = X_batch @ W_linear + b_linear     # [B, D]
-
-# Verify shapes
-assert X_batch.shape == (batch_size, d_model)
-assert y_batch.shape == (batch_size, d_model)
-print("✓ Shape assertions passed")
-
-# Element-wise operations
-activations = torch.relu(y_batch)
-normalized = F.layer_norm(activations, (d_model,))
-print(f"After ReLU and LayerNorm: {normalized.shape}")
-```
+**Math** Cross-Reference to `./math_quick_ref.md`:
+> Inner products and matrix shapes: When we compute `X @ W`, we're applying the matrix multiplication rule from **Mathematical Preliminaries**. The gradient `∂L/∂W = X^T ∂L/∂y` follows from the chain rule identities.
 
 ## 3. Autograd (Finding Gradients)
 
-### Basic Gradient Computation
+📓 **Interactive Examples**: [Autograd Notebook](./pynb/basic/autograd.ipynb)
 
-```python
-# Scalar function: f(w) = w^2 + 2w + 1
-w = torch.tensor(3.0, requires_grad=True)
-f = w**2 + 2*w + 1
-print(f"f(w) = {f.item()}")
-
-# Compute gradient: df/dw = 2w + 2
-f.backward()
-print(f"df/dw = {w.grad.item()}, expected: {2*3 + 2}")
-
-# Gradient accumulation (be careful!)
-f2 = w**3
-f2.backward()
-print(f"After second backward: {w.grad.item()}")  # Accumulated!
-
-# Clear gradients
-w.grad = None  # or w.grad.zero_()
-print(f"After clearing: {w.grad}")
-```
-
-### Optimizer Integration
-
-```python
-# Typical training pattern
-model = nn.Linear(2, 1)
-optimizer = optim.SGD(model.parameters(), lr=0.1)
-x = torch.randn(10, 2)
-y_true = torch.randn(10, 1)
-
-for epoch in range(3):
-    # Forward pass
-    y_pred = model(x)
-    loss = F.mse_loss(y_pred, y_true)
-    
-    # Backward pass
-    optimizer.zero_grad()     # Clear gradients
-    loss.backward()           # Compute gradients
-    optimizer.step()          # Update parameters
-    
-    print(f"Epoch {epoch}: Loss = {loss.item():.4f}")
-```
-
-### No-Grad Context and Detach
-
-```python
-x = torch.randn(5, requires_grad=True)
-y = x * 2
-
-# No gradient computation (faster, less memory)
-with torch.no_grad():
-    z = x * 3
-    print(f"z requires_grad: {z.requires_grad}")  # False
-
-# Detach from computation graph
-w = y.detach()  # Same values, no gradients
-print(f"y requires_grad: {y.requires_grad}, w requires_grad: {w.requires_grad}")
-
-# Use cases:
-# - Inference: wrap in torch.no_grad()
-# - Stop gradient flow: use .detach()
-# - Logging/metrics: detach before converting to numpy
-```
-
-### Gradient Clipping Demo
-
-```python
-# Model that might have exploding gradients
-class DeepNet(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.layers = nn.ModuleList([nn.Linear(10, 10) for _ in range(5)])
-    
-    def forward(self, x):
-        for layer in self.layers:
-            x = torch.tanh(layer(x))  # Can cause vanishing gradients
-        return x
-
-model = DeepNet()
-optimizer = optim.SGD(model.parameters(), lr=1.0)  # High LR for demo
-x = torch.randn(4, 10)
-y_true = torch.randn(4, 10)
-
-# Before clipping
-y_pred = model(x)
-loss = F.mse_loss(y_pred, y_true)
-loss.backward()
-
-# Check gradient norms
-total_norm = 0
-for p in model.parameters():
-    if p.grad is not None:
-        total_norm += p.grad.data.norm(2).item() ** 2
-total_norm = total_norm ** 0.5
-print(f"Gradient norm before clipping: {total_norm:.4f}")
-
-# Apply gradient clipping
-max_norm = 1.0
-torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm)
-
-# Check gradient norms after clipping
-clipped_norm = 0
-for p in model.parameters():
-    if p.grad is not None:
-        clipped_norm += p.grad.data.norm(2).item() ** 2
-clipped_norm = clipped_norm ** 0.5
-print(f"Gradient norm after clipping: {clipped_norm:.4f}")
-```
+This notebook covers:
+- Basic gradient computation and the chain rule
+- Optimizer integration patterns
+- No-grad context and detach operations  
+- Gradient clipping demonstrations
+- Higher-order derivatives
 
 **Math** Cross-Reference to `./transformers_math.md`:
 > The softmax gradient `∂p_i/∂z_j = p_i(δ_{ij} - p_j)` from **equation (25)** explains why PyTorch's `CrossEntropyLoss` yields the clean gradient `(p - y)` at the logits. The **log-sum-exp trick (12)** prevents overflow in softmax computation, which PyTorch handles automatically in `F.softmax()`.
 
 ## 4. Modules, Parameters, Initialization
 
-### Basic Module Structure
+📓 **Interactive Examples**: [Modules & Parameters Notebook](./pynb/basic/modules_parameters.ipynb)
 
-```python
-class SimpleNet(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size):
-        super().__init__()
-        self.fc1 = nn.Linear(input_size, hidden_size)
-        self.fc2 = nn.Linear(hidden_size, output_size)
-        
-    def forward(self, x):
-        x = F.relu(self.fc1(x))
-        x = self.fc2(x)
-        return x
-
-# Create and inspect
-model = SimpleNet(10, 20, 5)
-print(model)
-
-# Access parameters
-for name, param in model.named_parameters():
-    print(f"{name}: {param.shape}")
-
-# State dict for saving/loading
-state_dict = model.state_dict()
-print(f"State dict keys: {list(state_dict.keys())}")
-```
+This notebook covers:
+- Basic module structure and inheritance from nn.Module
+- Parameter counting formulas for different layer types
+- Initialization strategies (Xavier, Kaiming, custom)
+- Advanced module patterns and parameter sharing
 
 ### Parameter Counting Formulas
 
@@ -370,111 +171,17 @@ for name, param in model.named_parameters():
 
 ## 5. Optimization Loop & Losses
 
-### Canonical Training Loop
+📓 **Interactive Examples**: [Optimization & Training Notebook](./pynb/basic/optimization_training.ipynb)
 
-```python
-def train_model(model, train_loader, num_epochs=5, lr=0.001):
-    """Universal training loop skeleton"""
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
-    
-    model.train()  # Set to training mode
-    
-    for epoch in range(num_epochs):
-        total_loss = 0
-        num_batches = 0
-        
-        for batch_idx, (data, target) in enumerate(train_loader):
-            # Move to device (if using GPU)
-            data, target = data.to(device), target.to(device)
-            
-            # Forward pass
-            output = model(data)
-            loss = criterion(output, target)
-            
-            # Backward pass
-            optimizer.zero_grad()
-            loss.backward()
-            
-            # Optional: gradient clipping
-            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
-            
-            # Update parameters
-            optimizer.step()
-            
-            total_loss += loss.item()
-            num_batches += 1
-        
-        avg_loss = total_loss / num_batches
-        print(f"Epoch {epoch+1}/{num_epochs}: Avg Loss = {avg_loss:.4f}")
+This notebook covers:
+- Canonical training loop patterns
+- Optimizer comparison (SGD vs Adam vs AdamW)
+- Common loss functions for different tasks
+- Train vs eval modes with practical examples
+- Learning rate scheduling strategies
 
-# This skeleton works for MLPs, RNNs, and Transformers!
-```
-
-### Optimizers: SGD vs AdamW
-
-```python
-# SGD with momentum
-sgd = optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=1e-4)
-
-# AdamW: Adam with decoupled weight decay (preferred for most cases)
-adamw = optim.AdamW(model.parameters(), lr=0.001, betas=(0.9, 0.999), 
-                    weight_decay=1e-4, eps=1e-8)
-
-# Why AdamW over Adam?
-# - Decouples weight decay from gradient-based updates
-# - Better generalization, especially for Transformers
-# - Less sensitive to weight_decay hyperparameter
-```
-
-### Common Loss Functions
-
-```python
-# For classification: CrossEntropyLoss
-# Input: logits [batch_size, num_classes], Target: class indices [batch_size]
-ce_loss = nn.CrossEntropyLoss()
-logits = torch.randn(4, 10)  # 4 samples, 10 classes
-targets = torch.randint(0, 10, (4,))  # Class indices
-loss = ce_loss(logits, targets)
-print(f"CrossEntropyLoss: {loss.item()}")
-
-# For regression: MSELoss
-mse_loss = nn.MSELoss()
-predictions = torch.randn(4, 1)
-true_values = torch.randn(4, 1)
-loss = mse_loss(predictions, true_values)
-print(f"MSELoss: {loss.item()}")
-
-# For binary classification: BCEWithLogitsLoss (more numerically stable)
-bce_loss = nn.BCEWithLogitsLoss()
-binary_logits = torch.randn(4, 1)
-binary_targets = torch.randint(0, 2, (4, 1)).float()
-loss = bce_loss(binary_logits, binary_targets)
-print(f"BCEWithLogitsLoss: {loss.item()}")
-```
-
-### Train vs Eval Modes
-
-```python
-# Training mode: enables dropout, updates batch norm stats
-model.train()
-dropout_output1 = F.dropout(torch.ones(5), p=0.5, training=True)
-print(f"Training mode - dropout active: {dropout_output1}")
-
-# Evaluation mode: disables dropout, uses fixed batch norm stats  
-model.eval()
-dropout_output2 = F.dropout(torch.ones(5), p=0.5, training=False)
-print(f"Eval mode - dropout disabled: {dropout_output2}")
-
-# Always remember:
-# model.train() before training
-# model.eval() before inference
-```
-
-**Math** Cross-Reference to `./transformers_math.md`:
-> **Adam Updates (7-9)**: `m_t = β₁m_{t-1} + (1-β₁)∇L`, `v_t = β₂v_{t-1} + (1-β₂)(∇L)²`, `θ_t = θ_{t-1} - η m̂_t/√v̂_t + ε`
->
-> **Learning Rate Warmup (10)**: `η_t = η_max · min(t/T_warmup, 1)` prevents early training instability
+**Math** Cross-Reference to `./math_quick_ref.md`:
+> **Adam Updates**: Adaptive learning rates with momentum. **Learning Rate Warmup** prevents early training instability in large models.
 
 ## 6. Vanishing/Exploding Gradients
 
@@ -643,9 +350,12 @@ print(f"Gradient norm with clipping: {clipped_norm:.2f}")
 
 ## 8. MLPs in PyTorch
 
-### From Equation to Code
+📓 **Interactive Examples**: [MLPs Notebook](./pynb/dl/mlps.ipynb)
 
-Let's implement the 2-layer MLP equation: `y = σ(W₂ σ(W₁x + b₁) + b₂)`
+This notebook demonstrates:
+- From equations to PyTorch code
+- Training MLPs on synthetic datasets
+- Common gotchas and debugging tips
 
 ```python
 # Method 1: Using nn.Sequential (simplest)
@@ -779,6 +489,14 @@ targets_correct = torch.tensor([0, 1, 2])      # Long - correct
 > **MLP Forward/Backprop (13-18)**: The code above implements `z^(1) = xW^(1) + b^(1)`, `h^(1) = σ(z^(1))`, `z^(2) = h^(1)W^(2) + b^(2)` with automatic gradient computation for the backward pass.
 
 ## 9. RNNs, LSTMs, GRUs
+
+📓 **Interactive Examples**: [RNNs, LSTMs, GRUs Notebook](./pynb/dl/rnns.ipynb)
+
+This notebook covers:
+- Why gating mechanisms are needed
+- LSTM sequence classifier implementation
+- Variable length sequence handling with packing
+- RNN vs LSTM vs GRU comparisons
 
 ### Why Gating Mechanisms?
 
@@ -938,6 +656,14 @@ compare_rnn_architectures()
 **Gotcha**: Always use gradient clipping with RNNs to prevent exploding gradients, especially for long sequences.
 
 ## 10. Transformers in PyTorch
+
+📓 **Interactive Examples**: [Transformers Notebook](./pynb/dl/transformers.ipynb)
+
+This notebook demonstrates:
+- Self-attention mechanisms from scratch
+- Using PyTorch's built-in Transformer layers
+- Causal and padding masks
+- Next-token prediction with character-level models
 
 > **See also**: `./transformers.md` explains the complete Transformer block flow: multi-head self-attention → residual connection → layer norm → feed-forward network → residual connection → layer norm.
 
@@ -1349,6 +1075,15 @@ tensor = tensor.to(device)
 
 ## 12. Common Gotchas & How to Avoid Them
 
+📓 **Interactive Examples**: [Debugging & Gotchas Notebook](./pynb/basic/debugging_gotchas.ipynb)
+
+This notebook covers:
+- Training mode vs eval mode issues
+- Autograd pitfalls and gradient accumulation
+- Data type and shape mismatches
+- Memory and device problems
+- Effective debugging techniques
+
 ### Training Mode Gotchas
 
 ```python
@@ -1539,7 +1274,7 @@ epoch = checkpoint['epoch']
 
 ### Character-Level Next-Token Prediction
 
-We'll build a character-level language model that learns to predict the next character in a sequence. This demonstrates the complete pipeline from data preparation to training and generation.
+We'll build a character-level language model that learns to predict the next character in a sequence. This demonstrates the complete pipeline from data preparation to training and generation, using an efficient parallel training approach.
 
 ```python
 import string
@@ -1549,19 +1284,21 @@ import random
 def create_char_dataset(text_samples, seq_length=20):
     """Create character-level dataset from text samples"""
     # Create character vocabulary
-    chars = sorted(list(set(''.join(text_samples))))
+    chars = sorted(list(set("".join(text_samples))))
     char_to_idx = {ch: i for i, ch in enumerate(chars)}
     idx_to_char = {i: ch for ch, i in char_to_idx.items()}
     vocab_size = len(chars)
     
-    # Create sequences
+    # Create input and target sequences
     sequences = []
-    for text in text_samples:
-        for i in range(len(text) - seq_length):
-            seq = text[i:i + seq_length]
-            target = text[i + seq_length]
-            sequences.append((seq, target))
-    
+    full_text = "".join(text_samples)
+    for i in range(0, len(full_text) - seq_length, seq_length):
+        # Input sequence
+        input_seq = full_text[i : i + seq_length]
+        # Target sequence (shifted by 1)
+        target_seq = full_text[i + 1 : i + seq_length + 1]
+        sequences.append((input_seq, target_seq))
+
     return sequences, char_to_idx, idx_to_char, vocab_size
 
 # Generate synthetic text data (fairy tale style)
@@ -1648,11 +1385,11 @@ class CharDataset(torch.utils.data.Dataset):
         return len(self.sequences)
     
     def __getitem__(self, idx):
-        seq, target = self.sequences[idx]
+        input_seq, target_seq = self.sequences[idx]
         # Convert to indices
-        seq_indices = torch.tensor([self.char_to_idx[ch] for ch in seq], dtype=torch.long)
-        target_idx = torch.tensor(self.char_to_idx[target], dtype=torch.long)
-        return seq_indices, target_idx
+        input_indices = torch.tensor([self.char_to_idx[ch] for ch in input_seq], dtype=torch.long)
+        target_indices = torch.tensor([self.char_to_idx[ch] for ch in target_seq], dtype=torch.long)
+        return input_indices, target_indices
 
 # Training function
 def train_char_model():
@@ -1665,7 +1402,7 @@ def train_char_model():
     print(f"📝 Sample text: '{texts[0][:50]}...'")
     
     # Create dataset
-    seq_length = 15
+    seq_length = 30 # Using a slightly longer sequence
     sequences, char_to_idx, idx_to_char, vocab_size = create_char_dataset(texts, seq_length)
     print(f"📊 Vocabulary size: {vocab_size}")
     print(f"📊 Number of training sequences: {len(sequences)}")
@@ -1673,7 +1410,7 @@ def train_char_model():
     
     # Create DataLoader
     dataset = CharDataset(sequences, char_to_idx)
-    train_loader = DataLoader(dataset, batch_size=16, shuffle=True)
+    train_loader = DataLoader(dataset, batch_size=32, shuffle=True)
     
     # Model setup
     model = CharTransformer(
@@ -1698,18 +1435,17 @@ def train_char_model():
         total_loss = 0
         num_batches = 0
         
-        for batch_sequences, batch_targets in train_loader:
+        for input_batch, target_batch in train_loader:
             optimizer.zero_grad()
             
             # Forward pass
-            logits = model(batch_sequences)  # [batch, seq_len, vocab_size]
+            logits = model(input_batch)  # [batch, seq_len, vocab_size]
             
-            # For next-token prediction, we predict each position
-            # Input:  [a, b, c, d, e]
-            # Target: [b, c, d, e, f] (shifted by 1)
-            # But we have target for entire sequence, so we use last position
-            last_logits = logits[:, -1, :]  # [batch, vocab_size]
-            loss = criterion(last_logits, batch_targets)
+            # For efficient parallel training, we predict all tokens at once.
+            # We need to reshape the logits and targets for CrossEntropyLoss.
+            # Logits: [batch, seq_len, vocab] -> [batch * seq_len, vocab]
+            # Target: [batch, seq_len] -> [batch * seq_len]
+            loss = criterion(logits.reshape(-1, vocab_size), target_batch.reshape(-1))
             
             # Backward pass
             loss.backward()
@@ -1737,12 +1473,11 @@ def generate_text(model, char_to_idx, idx_to_char, start_text="once upon", max_l
     
     with torch.no_grad():
         for _ in range(max_length):
-            # Prepare input (last seq_length characters)
-            input_seq = current_seq[-15:]  # Use last 15 chars (seq_length from training)
-            input_tensor = torch.tensor(input_seq).unsqueeze(0)  # [1, seq_len]
+            # Prepare input
+            input_tensor = torch.tensor(current_seq).unsqueeze(0)  # [1, current_len]
             
             # Generate next character
-            logits = model(input_tensor)  # [1, seq_len, vocab_size]
+            logits = model(input_tensor)  # [1, current_len, vocab_size]
             last_logits = logits[0, -1, :]  # [vocab_size]
             
             # Sample next character (with some randomness)
