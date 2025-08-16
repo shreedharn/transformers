@@ -1274,7 +1274,7 @@ epoch = checkpoint['epoch']
 
 ### Character-Level Next-Token Prediction
 
-We'll build a character-level language model that learns to predict the next character in a sequence. This demonstrates the complete pipeline from data preparation to training and generation.
+We'll build a character-level language model that learns to predict the next character in a sequence. This demonstrates the complete pipeline from data preparation to training and generation, using an efficient parallel training approach.
 
 ```python
 import string
@@ -1284,19 +1284,21 @@ import random
 def create_char_dataset(text_samples, seq_length=20):
     """Create character-level dataset from text samples"""
     # Create character vocabulary
-    chars = sorted(list(set(''.join(text_samples))))
+    chars = sorted(list(set("".join(text_samples))))
     char_to_idx = {ch: i for i, ch in enumerate(chars)}
     idx_to_char = {i: ch for ch, i in char_to_idx.items()}
     vocab_size = len(chars)
     
-    # Create sequences
+    # Create input and target sequences
     sequences = []
-    for text in text_samples:
-        for i in range(len(text) - seq_length):
-            seq = text[i:i + seq_length]
-            target = text[i + seq_length]
-            sequences.append((seq, target))
-    
+    full_text = "".join(text_samples)
+    for i in range(0, len(full_text) - seq_length, seq_length):
+        # Input sequence
+        input_seq = full_text[i : i + seq_length]
+        # Target sequence (shifted by 1)
+        target_seq = full_text[i + 1 : i + seq_length + 1]
+        sequences.append((input_seq, target_seq))
+
     return sequences, char_to_idx, idx_to_char, vocab_size
 
 # Generate synthetic text data (fairy tale style)
@@ -1383,11 +1385,11 @@ class CharDataset(torch.utils.data.Dataset):
         return len(self.sequences)
     
     def __getitem__(self, idx):
-        seq, target = self.sequences[idx]
+        input_seq, target_seq = self.sequences[idx]
         # Convert to indices
-        seq_indices = torch.tensor([self.char_to_idx[ch] for ch in seq], dtype=torch.long)
-        target_idx = torch.tensor(self.char_to_idx[target], dtype=torch.long)
-        return seq_indices, target_idx
+        input_indices = torch.tensor([self.char_to_idx[ch] for ch in input_seq], dtype=torch.long)
+        target_indices = torch.tensor([self.char_to_idx[ch] for ch in target_seq], dtype=torch.long)
+        return input_indices, target_indices
 
 # Training function
 def train_char_model():
@@ -1400,7 +1402,7 @@ def train_char_model():
     print(f"📝 Sample text: '{texts[0][:50]}...'")
     
     # Create dataset
-    seq_length = 15
+    seq_length = 30 # Using a slightly longer sequence
     sequences, char_to_idx, idx_to_char, vocab_size = create_char_dataset(texts, seq_length)
     print(f"📊 Vocabulary size: {vocab_size}")
     print(f"📊 Number of training sequences: {len(sequences)}")
@@ -1408,7 +1410,7 @@ def train_char_model():
     
     # Create DataLoader
     dataset = CharDataset(sequences, char_to_idx)
-    train_loader = DataLoader(dataset, batch_size=16, shuffle=True)
+    train_loader = DataLoader(dataset, batch_size=32, shuffle=True)
     
     # Model setup
     model = CharTransformer(
@@ -1433,18 +1435,17 @@ def train_char_model():
         total_loss = 0
         num_batches = 0
         
-        for batch_sequences, batch_targets in train_loader:
+        for input_batch, target_batch in train_loader:
             optimizer.zero_grad()
             
             # Forward pass
-            logits = model(batch_sequences)  # [batch, seq_len, vocab_size]
+            logits = model(input_batch)  # [batch, seq_len, vocab_size]
             
-            # For next-token prediction, we predict each position
-            # Input:  [a, b, c, d, e]
-            # Target: [b, c, d, e, f] (shifted by 1)
-            # But we have target for entire sequence, so we use last position
-            last_logits = logits[:, -1, :]  # [batch, vocab_size]
-            loss = criterion(last_logits, batch_targets)
+            # For efficient parallel training, we predict all tokens at once.
+            # We need to reshape the logits and targets for CrossEntropyLoss.
+            # Logits: [batch, seq_len, vocab] -> [batch * seq_len, vocab]
+            # Target: [batch, seq_len] -> [batch * seq_len]
+            loss = criterion(logits.reshape(-1, vocab_size), target_batch.reshape(-1))
             
             # Backward pass
             loss.backward()
@@ -1472,12 +1473,11 @@ def generate_text(model, char_to_idx, idx_to_char, start_text="once upon", max_l
     
     with torch.no_grad():
         for _ in range(max_length):
-            # Prepare input (last seq_length characters)
-            input_seq = current_seq[-15:]  # Use last 15 chars (seq_length from training)
-            input_tensor = torch.tensor(input_seq).unsqueeze(0)  # [1, seq_len]
+            # Prepare input
+            input_tensor = torch.tensor(current_seq).unsqueeze(0)  # [1, current_len]
             
             # Generate next character
-            logits = model(input_tensor)  # [1, seq_len, vocab_size]
+            logits = model(input_tensor)  # [1, current_len, vocab_size]
             last_logits = logits[0, -1, :]  # [vocab_size]
             
             # Sample next character (with some randomness)
