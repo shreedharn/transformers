@@ -353,16 +353,23 @@ At this stage, each word has its basic dictionary meaning, with no context.
 
 ```
 Layer 1 (After Self-Attention - Words Start Talking):
-h_cat' = Attention(h_cat, [h_the, h_big, h_cat, h_runs])
+`h_cat'` is the output of the attention mechanism for the token "cat". This is calculated as a weighted sum of the **Value (V)** vectors of all tokens in the sequence.
 
-How attention weights are computed:
-- Cat asks: "Who should I pay attention to?"
-- Attention scores: [the: 0.05, big: 0.35, cat: 0.40, runs: 0.20]
-- Weighted combination: 
-  h_cat' = 0.05·h_the + 0.35·h_big + 0.40·h_cat + 0.20·h_runs
-         = 0.05·[0.1,0.9,0.2] + 0.35·[0.6,0.1,0.8] + 0.40·[0.8,0.2,0.1] + 0.20·[0.3,0.7,0.4]
-         = [0.005,0.045,0.01] + [0.21,0.035,0.28] + [0.32,0.08,0.04] + [0.06,0.14,0.08]
-         = [0.595, 0.3, 0.41] → after normalization: [0.52, 0.37, 0.31]
+How it's computed:
+1.  **Create Value vectors**: First, each token's hidden state `h` is projected into a Value vector `v` using a learned weight matrix `W_v`.
+    *   `v_the = h_the · W_v`
+    *   `v_big = h_big · W_v`
+    *   `v_cat = h_cat · W_v`
+    *   `v_runs = h_runs · W_v`
+    These `v` vectors represent the information each token offers.
+
+2.  **Compute attention weights**: The model calculates attention weights (as shown previously) that determine how much "cat" should pay attention to every other token.
+    *   Attention weights for "cat": `[the: 0.05, big: 0.35, cat: 0.40, runs: 0.20]`
+
+3.  **Calculate the weighted sum of Value vectors**: The new representation for "cat", `h_cat'`, is the sum of all Value vectors in the sequence, weighted by their respective attention scores.
+    `h_cat' = 0.05·v_the + 0.35·v_big + 0.40·v_cat + 0.20·v_runs`
+
+This process mixes information from the entire sequence into each token's representation, guided by the learned attention patterns. The result is that `h_cat'` is no longer just the generic embedding for "cat", but a new vector that has absorbed context—it now "knows" it's a "big cat".
 ```
 
 Now "cat" understands it's a "big cat" (not just any cat).

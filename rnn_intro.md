@@ -42,6 +42,8 @@ Imagine you're reading a sentence word by word. As you read each word, you remem
 
 ### RNN vs Regular Neural Network (MLP)
 
+> **📚 Foundational Knowledge**: For a complete step-by-step tutorial on MLPs, see **[mlp_intro.md](./mlp_intro.md)**.
+
 **Regular MLP (Multi-Layer Perceptron):**
 ```
 Input → Hidden Layer → Output
@@ -338,6 +340,8 @@ Backprop Through Time:
 
 ### The Gradient Flow Challenge
 
+> **📚 Historical Context**: The vanishing gradient problem was a major obstacle in early sequence modeling. For a detailed explanation of its impact and how it led to the development of LSTMs, see **[The Vanishing Gradient Problem in `sequencing_history.md`](./sequencing_history.md#the-vanishing-gradient-problem)**.
+
 In deep RNNs or long sequences, gradients can:
 
 **Vanish (become too small):**
@@ -431,9 +435,9 @@ Final Memory: [0.74, 0.84] encodes "cat sat here"
 
 Now that you understand the fundamentals:
 
-1. **Limitations:** RNNs struggle with very long sequences (vanishing gradients)
-2. **Solutions:** LSTM and GRU architectures address these issues  
-3. **Modern Alternatives:** Transformers have largely replaced RNNs for many tasks
-4. **Implementation:** Try building an RNN in PyTorch or TensorFlow
+1. **Limitations:** RNNs struggle with very long sequences (vanishing gradients).
+2. **Solutions:** Gating mechanisms like LSTMs and GRUs were developed to solve this. Learn more in the **[Gating Mechanisms: LSTMs and GRUs section of `sequencing_history.md`](./sequencing_history.md#gating-mechanisms-lstms-and-grus)**.
+3. **Modern Alternatives:** Transformers have largely replaced RNNs for many tasks by removing recurrence entirely. Get the full story in **[The Transformer Breakthrough section of `sequencing_history.md`](./sequencing_history.md#the-transformer-breakthrough)** or dive deep into the architecture in **[transformers.md](./transformers.md)**.
+4. **Implementation:** Try building an RNN in PyTorch or TensorFlow.
 
 **Remember:** RNNs taught us that neural networks could have memory. This insight paved the way for all modern sequence models, including the Transformers that power today's language models.

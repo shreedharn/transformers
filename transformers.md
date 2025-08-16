@@ -1,11 +1,11 @@
 # Transformer Flow: From Text Input to Output Generation
 
-## Prerequisites
+## 1. Prerequisites
 
 **Mathematical Foundations:**
 - **Linear Algebra**: Matrix operations, eigenvalues, vector spaces (📚 See [Linear Algebra Essentials](./transformers_math.md#21-linear-algebra-essentials))
 - **Probability Theory**: Distributions, information theory, maximum likelihood estimation (📚 See [Probability & Information Theory](./transformers_math.md#23-probability--information-theory))
-- **Calculus**: Gradients, chain rule, optimization theory (📚 See [Matrix Calculus](./transformers_math.md#22-matrix-calculus-essentials))
+- **Calculus**: Gradients, chain rule, optimization theory (📚 See [Matrix Calculus Essentials](./transformers_math.md#22-matrix-calculus-essentials))
 - **Machine Learning**: Backpropagation, gradient descent, regularization techniques
 
 **This document assumes familiarity with deep learning fundamentals and focuses on the mathematical rigor and computational details specific to transformer architectures.**
@@ -13,80 +13,80 @@
 
 ## Table of Contents
 
-1. [Prerequisites](#prerequisites)
-2. [Overview](#overview)
-3. [Historical Context: The Evolution to Transformers](#historical-context-the-evolution-to-transformers)
-4. [Pipeline](#pipeline)
+1. [Prerequisites](#1-prerequisites)
+2. [Overview](#2-overview)
+3. [Historical Context: The Evolution to Transformers](#3-historical-context-the-evolution-to-transformers)
+4. [Pipeline](#4-pipeline)
    - [Computational Pipeline Overview](#computational-pipeline-overview)
    - [Detailed Process Flow](#detailed-process-flow)
    - [Training: How Models Learn (Optional Detail)](#training-how-models-learn-optional-detail)
    - [Model Hyperparameters and Complexity](#model-hyperparameters-and-complexity)
-5. [Stage 1: Text to Tokens](#2-stage-1-text-to-tokens)
+5. [Stage 1: Text to Tokens](#5-stage-1-text-to-tokens)
    - [🎯 Intuition: Breaking Text into Computer-Friendly Pieces](#-intuition-breaking-text-into-computer-friendly-pieces)
    - [Process Flow](#process-flow)
    - [Simple Example with Real Numbers](#simple-example-with-real-numbers)
    - [Mathematical Formulation](#mathematical-formulation)
    - [Tokenization Challenges and Considerations](#tokenization-challenges-and-considerations)
    - [Implementation Considerations](#implementation-considerations)
-6. [Stage 2: Tokens to Embeddings](#3-stage-2-tokens-to-embeddings)
+6. [Stage 2: Tokens to Embeddings](#6-stage-2-tokens-to-embeddings)
    - [Dense Vector Representation Learning](#dense-vector-representation-learning)
    - [Embedding Computation Pipeline](#embedding-computation-pipeline)
    - [Mathematical Formulation](#mathematical-formulation-1)
    - [Concrete Example with Actual Numbers](#concrete-example-with-actual-numbers)
    - [Tensor Shapes Example](#tensor-shapes-example)
    - [🛠️ What Could Go Wrong?](#️-what-could-go-wrong)
-7. [Stage 3: Through the Transformer Stack](#4-stage-3-through-the-transformer-stack)
+7. [Stage 3: Through the Transformer Stack](#7-stage-3-through-the-transformer-stack)
    - [Hierarchical Representation Learning](#hierarchical-representation-learning)
    - [Architecture Overview](#architecture-overview)
    - [Single Layer Mathematical Flow](#single-layer-mathematical-flow)
-8. [Architectural Variants: Encoder, Decoder, and Encoder-Decoder](#5-architectural-variants-encoder-decoder-and-encoder-decoder)
+8. [Architectural Variants: Encoder, Decoder, and Encoder-Decoder](#8-architectural-variants-encoder-decoder-and-encoder-decoder)
    - [Understanding Different Transformer Architectures](#understanding-different-transformer-architectures)
    - [Encoder-Only: BERT Family](#encoder-only-bert-family)
    - [Decoder-Only: GPT Family](#decoder-only-gpt-family)
    - [Encoder-Decoder: T5 Family](#encoder-decoder-t5-family)
    - [Modern Architectural Innovations](#modern-architectural-innovations)
    - [Choosing the Right Architecture](#choosing-the-right-architecture)
-9. [Stage 4: Self-Attention Deep Dive](#6-stage-4-self-attention-deep-dive)
+9. [Stage 4: Self-Attention Deep Dive](#9-stage-4-self-attention-deep-dive)
    - [Attention as Differentiable Key-Value Retrieval](#attention-as-differentiable-key-value-retrieval)
    - [Attention Weight Interpretation](#attention-weight-interpretation)
    - [Attention Computation Steps](#attention-computation-steps)
    - [Multi-Head Attention Mathematical Formulation](#multi-head-attention-mathematical-formulation)
-10. [Stage 5: KV Cache Operations](#7-stage-5-kv-cache-operations)
+10. [Stage 5: KV Cache Operations](#10-stage-5-kv-cache-operations)
     - [Autoregressive Generation Optimization](#autoregressive-generation-optimization)
     - [Computational Efficiency Analysis](#computational-efficiency-analysis)
     - [KV Cache Implementation](#kv-cache-implementation)
-11. [Stage 6: Feed-Forward Networks](#8-stage-6-feed-forward-networks)
+11. [Stage 6: Feed-Forward Networks](#11-stage-6-feed-forward-networks)
     - [Position-wise Nonlinear Transformations](#position-wise-nonlinear-transformations)
     - [FFN Architecture and Computation](#ffn-architecture-and-computation)
     - [Mathematical Formulation](#mathematical-formulation-2)
-12. [Stage 7: Output Generation](#9-stage-7-output-generation)
+12. [Stage 7: Output Generation](#12-stage-7-output-generation)
     - [🎯 Intuition: Making the Final Decision](#-intuition-making-the-final-decision)
     - [Output Generation Pipeline](#output-generation-pipeline)
     - [Mathematical Formulation](#mathematical-formulation-3)
-13. [Training Objectives and Data Curriculum](#10-training-objectives-and-data-curriculum)
+13. [Training Objectives and Data Curriculum](#13-training-objectives-and-data-curriculum)
     - [Core Pre-training Objectives](#core-pre-training-objectives)
     - [Supervised Fine-Tuning and Instruction Tuning](#supervised-fine-tuning-and-instruction-tuning)
     - [Alignment: RLHF and Beyond](#alignment-rlhf-and-beyond)
     - [Data Curriculum and Scaling Considerations](#data-curriculum-and-scaling-considerations)
     - [Multi-Task Learning and Meta-Learning](#multi-task-learning-and-meta-learning)
-14. [Training: Backpropagation Flow](#11-training-backpropagation-flow)
+14. [Training: Backpropagation Flow](#14-training-backpropagation-flow)
     - [🎯 Intuition: How AI Models Learn from Mistakes](#-intuition-how-ai-models-learn-from-mistakes)
     - [Loss Computation](#loss-computation)
     - [Backward Pass Flow](#backward-pass-flow)
     - [Transformer Layer Backward Pass](#transformer-layer-backward-pass)
-15. [Weight Updates and Optimization](#12-weight-updates-and-optimization)
+15. [Weight Updates and Optimization](#15-weight-updates-and-optimization)
     - [Adam Optimizer Mathematics](#adam-optimizer-mathematics)
     - [Learning Rate Scheduling](#learning-rate-scheduling)
     - [Gradient Clipping](#gradient-clipping)
     - [Parameter Update Flow](#parameter-update-flow)
-16. [Parameter-Efficient Fine-Tuning Methods](#13-parameter-efficient-fine-tuning-methods)
+16. [Parameter-Efficient Fine-Tuning Methods](#16-parameter-efficient-fine-tuning-methods)
     - [The Challenge of Full Fine-Tuning](#the-challenge-of-full-fine-tuning)
     - [Low-Rank Adaptation (LoRA)](#low-rank-adaptation-lora)
     - [QLoRA: Quantized Base + Low-Rank Adapters](#qlora-quantized-base--low-rank-adapters)
     - [Other Parameter-Efficient Methods](#other-parameter-efficient-methods)
     - [Choosing the Right Method](#choosing-the-right-method)
     - [Training Best Practices](#training-best-practices)
-17. [Quantization for Practical Deployment](#14-quantization-for-practical-deployment)
+17. [Quantization for Practical Deployment](#17-quantization-for-practical-deployment)
     - [The Precision vs. Efficiency Trade-off](#the-precision-vs-efficiency-trade-off)
     - [Post-Training vs. Quantization-Aware Training](#post-training-vs-quantization-aware-training)
     - [Common Quantization Schemes](#common-quantization-schemes)
@@ -94,17 +94,17 @@
     - [Implementation Example](#implementation-example)
     - [Mixed-Precision Strategies](#mixed-precision-strategies)
     - [Deployment Considerations](#deployment-considerations)
-18. [Evaluation and Diagnostics](#15-evaluation-and-diagnostics)
+18. [Evaluation and Diagnostics](#18-evaluation-and-diagnostics)
     - [Intrinsic vs. Extrinsic Evaluation](#intrinsic-vs-extrinsic-evaluation)
     - [Long-Context Evaluation](#long-context-evaluation)
     - [Performance Metrics](#performance-metrics)
     - [Common Failure Modes and Diagnostics](#common-failure-modes-and-diagnostics)
     - [Debugging Checklist](#debugging-checklist)
-19. [Complete Mathematical Summary](#16-complete-mathematical-summary)
+19. [Complete Mathematical Summary](#19-complete-mathematical-summary)
     - [Forward Pass Equations](#forward-pass-equations)
     - [Training Equations](#training-equations)
     - [Key Computational Complexities](#key-computational-complexities)
-20. [Summary: From Mathematical Foundations to Practical Implementation](#summary-from-mathematical-foundations-to-practical-implementation)
+20. [Summary: From Mathematical Foundations to Practical Implementation](#20-summary-from-mathematical-foundations-to-practical-implementation)
     - [Core Architecture Components](#core-architecture-components)
     - [Architectural Variants and Applications](#architectural-variants-and-applications)
     - [Training and Learning Dynamics](#training-and-learning-dynamics)
@@ -115,7 +115,7 @@
 
 ---
 
-## Overview
+## 2. Overview
 
 Transformer architectures represent a fundamental paradigm shift in sequence modeling, replacing recurrent and convolutional approaches with attention-based mechanisms for parallel processing of sequential data. The architecture's core innovation lies in the self-attention mechanism, which enables direct modeling of dependencies between any two positions in a sequence, regardless of their distance.
 
@@ -126,7 +126,7 @@ Transformer architectures represent a fundamental paradigm shift in sequence mod
 - **Direct dependency modeling:** Attention weights explicitly model relationships between any pair of sequence positions
 - **Position-invariant processing:** The base attention mechanism is permutation-equivariant, requiring explicit positional encoding
 
-## Historical Context: The Evolution to Transformers
+## 3. Historical Context: The Evolution to Transformers
 
 The transformer architecture represents the culmination of decades of research in sequence modeling. To understand why transformers are so effective, it's essential to understand the evolution from early neural networks through RNNs, LSTMs, and attention mechanisms.
 
@@ -141,7 +141,7 @@ The transformer architecture represents the culmination of decades of research i
 
 The transformer's revolutionary insight was asking: *"What if we remove recurrence entirely and rely purely on attention?"* This question led to the realization that self-attention could serve as the primary mechanism for sequence processing, enabling parallel computation and direct modeling of long-range dependencies.
 
-## Pipeline
+## 4. Pipeline
 
 **Let's trace through what happens when you type "The cat sat on" and the AI predicts the next word.**
 
@@ -231,7 +231,7 @@ Output: "the" (most likely next word)
 
 ---
 
-## 2. Stage 1: Text to Tokens
+## 5. Stage 1: Text to Tokens
 
 ### 🎯 Intuition: Breaking Text into Computer-Friendly Pieces
 
@@ -295,7 +295,7 @@ $$\text{tokenize}(s) = [\text{vocab}[\tau_i] \mid \tau_i \in \mathrm{BPE\_segmen
 
 where $\mathrm{BPE\_segment}$ applies the learned merge rules to produce subword tokens $\tau_i$.
 
-**📖 Detailed Algorithm:** See [Tokenization Mathematics](./transformers_math.md#102-embedding-mathematics) for BPE training and inference procedures.
+**📖 Detailed Algorithm:** See [Tokenization Mathematics](./transformers_math.md#122-embedding-mathematics) for BPE training and inference procedures.
 
 ### Tokenization Challenges and Considerations
 
@@ -316,7 +316,7 @@ where $\mathrm{BPE\_segment}$ applies the learned merge rules to produce subword
 
 ---
 
-## 3. Stage 2: Tokens to Embeddings
+## 6. Stage 2: Tokens to Embeddings
 
 ### Dense Vector Representation Learning
 
@@ -363,7 +363,7 @@ $$X = X_{\text{tok}} + X_{\text{pos}} \in \mathbb{R}^{n \times d_{\text{model}}}
 
 where $n$ is the sequence length and $d_{\text{model}}$ is the model dimension.
 
-**📖 Theoretical Foundation:** See [Embedding Mathematics](./transformers_math.md#102-embedding-mathematics) and [Positional Encodings](./transformers_math.md#82-positional-encodings) for detailed analysis of learned vs. fixed position encodings.
+**📖 Theoretical Foundation:** See [Embedding Mathematics](./transformers_math.md#122-embedding-mathematics) and [Positional Encodings](./transformers_math.md#62-advanced-positional-encodings) for detailed analysis of learned vs. fixed position encodings.
 
 ### Concrete Example with Actual Numbers
 
@@ -414,7 +414,7 @@ Final X:       [4, 768]    (combine token + position info)
 
 ---
 
-## 4. Stage 3: Through the Transformer Stack
+## 7. Stage 3: Through the Transformer Stack
 
 ### Hierarchical Representation Learning
 
@@ -481,11 +481,11 @@ $$X^{(l)} = X'^{(l)} + F^{(l)} \quad \text{(residual connection)}$$
 - **Residual connections**: Address vanishing gradient problem via identity shortcuts
 - **Two-sublayer structure**: Separates relationship modeling (attention) from feature transformation (FFN)
 
-**📖 Theoretical Analysis:** See [Transformer Block Mathematics](./transformers_math.md#91-complete-block-equations) and [Residual Connections as Dynamical Systems](./transformers_math.md#32-residual-connections-as-discretized-dynamics) for detailed mathematical foundations.
+**📖 Theoretical Analysis:** See [Transformer Block Mathematics](./transformers_math.md#71-complete-block-equations) and [Residual Connections as Discretized Dynamics](./transformers_math.md#212-residual-connections-as-discretized-dynamics) for detailed mathematical foundations.
 
 ---
 
-## 5. Architectural Variants: Encoder, Decoder, and Encoder-Decoder
+## 8. Architectural Variants: Encoder, Decoder, and Encoder-Decoder
 
 ### Understanding Different Transformer Architectures
 
@@ -600,7 +600,7 @@ $$\text{CrossAttention}(Q_{\text{dec}}, K_{\text{enc}}, V_{\text{enc}}) = \text{
 
 ---
 
-## 6. Stage 4: Self-Attention Deep Dive
+## 9. Stage 4: Self-Attention Deep Dive
 
 ### Attention as Differentiable Key-Value Retrieval
 
@@ -641,11 +641,11 @@ For sequence "The cat sat on it" processing token "it":
 
 **Step 2: Multi-Head Reshaping**
 - **Reshape**: Split each matrix into $H$ heads of dimension $d_k = d_{\text{model}}/H$
-- **Result shapes**: $Q, K, V \in \mathbb{R}^{n \times H \times d_k}$
+- **Result shapes**: $Q, K, V \in \mathbb{R}^{H \times n \times d_k}$ (batch dimension omitted)
 - **Computational advantage**: Enables parallel processing of different attention patterns
 
 **Step 3: Scaled Dot-Product Attention**
-- **Compatibility scores**: $S = \frac{QK^T}{\sqrt{d_k}} \in \mathbb{R}^{n \times H \times n}$
+- **Compatibility scores**: $S = \frac{QK^T}{\sqrt{d_k}} \in \mathbb{R}^{H \times n \times n}$
 - **Scaling rationale**: Prevents softmax saturation as dimensionality increases
 - **Complexity**: $O(n^2 d_k)$ per head, $O(H \cdot n^2 \cdot d_k) = O(n^2 d_{\text{model}})$ total
 
@@ -655,12 +655,12 @@ For sequence "The cat sat on it" processing token "it":
 - **Implementation**: Applied before softmax to produce zero attention weights
 
 **Step 5: Attention Weight Computation**
-- **Normalization**: $A = \text{softmax}(S_{\text{masked}}, \text{dim}=-1) \in \mathbb{R}^{n \times H \times n}$
+- **Normalization**: $A = \text{softmax}(S_{\text{masked}}, \text{dim}=-1) \in \mathbb{R}^{H \times n \times n}$
 - **Properties**: Each row sums to 1, forming probability distributions
 - **Interpretation**: $A_{ijh}$ represents how much position $j$ contributes to position $i$ in head $h$
 
 **Step 6: Value Aggregation**
-- **Weighted sum**: $O = AV \in \mathbb{R}^{n \times H \times d_k}$
+- **Weighted sum**: $O = AV \in \mathbb{R}^{H \times n \times d_k}$
 - **Information flow**: Each position receives information from all positions weighted by attention
 
 **Step 7: Head Concatenation and Output Projection**
@@ -696,7 +696,7 @@ $$\text{head}_i = \text{Attention}(XW_i^Q, XW_i^K, XW_i^V)$$
 3. **Concatenation**: Head outputs concatenated along feature dimension
 4. **Output projection**: Single linear transformation of concatenated heads
 
-**📖 Derivation and Analysis:** See [Multi-Head Attention Theory](./transformers_math.md#81-multi-head-as-subspace-projections) and [Scaling Analysis](./transformers_math.md#72-why-the-sqrt_dk-scaling) for mathematical foundations.
+**📖 Derivation and Analysis:** See [Multi-Head Attention Theory](./transformers_math.md#61-multi-head-as-subspace-projections) and [Scaling Analysis](./transformers_math.md#52-why-the-sqrt-dk-scaling) for mathematical foundations.
 
 **Causal Masking for Autoregressive Models:**
 $$\text{mask}[i, j] = \begin{cases} 
@@ -712,16 +712,13 @@ $$\text{scores} = \frac{QK^T}{\sqrt{d_k}} + \text{mask}$$
 **Computational Complexity Analysis:**
 
 **Tensor Shapes with Standard Convention:**
-
-Use $Q,K\in\mathbb{R}^{H\times n\times d_k}$. Then $S = Q K^T/\sqrt{d_k}\in\mathbb{R}^{H\times n\times n}$ (row = query position, col = key position). The example with $n{=}4, H{=}12, d_k{=}64$ gives $S\in[12,4,4]$.
-
-**Complete Shape Analysis:**
-- Initial projections: $[4, 768] \to [4, 768]$ each for Q, K, V
-- Multi-head reshape: $[4, 768] \to [12, 4, 64]$ (heads first)
-- Attention scores: $[12, 4, 64] \times [12, 4, 64]^T \to [12, 4, 4]$
-- Attention weights: $[12, 4, 4]$ (normalized scores)
-- Attention output: $[12, 4, 4] \times [12, 4, 64] \to [12, 4, 64]$
-- Final output: $[12, 4, 64] \to [4, 768]$ (concatenate heads)
+A common convention is to use shapes like `[batch_size, num_heads, seq_len, head_dim]`. For simplicity, we omit the batch dimension.
+- Input $X$: `[seq_len, d_model]` (e.g., `[4, 768]`)
+- Reshaped Q, K, V for multi-head: `[num_heads, seq_len, head_dim]` (e.g., `[12, 4, 64]`)
+- Attention scores $S = QK^T$: `[num_heads, seq_len, seq_len]` (e.g., `[12, 4, 4]`)
+- Attention weights $A$: `[num_heads, seq_len, seq_len]`
+- Attention output $O = AV$: `[num_heads, seq_len, head_dim]`
+- Final output (concatenated and projected): `[seq_len, d_model]`
 
 **Time Complexity:**
 - Linear projections: $O(n \cdot d_{\text{model}}^2)$
@@ -735,7 +732,7 @@ Use $Q,K\in\mathbb{R}^{H\times n\times d_k}$. Then $S = Q K^T/\sqrt{d_k}\in\math
 
 ---
 
-## 7. Stage 5: KV Cache Operations
+## 10. Stage 5: KV Cache Operations
 
 ### Autoregressive Generation Optimization
 
@@ -837,7 +834,7 @@ $$\text{output} = \text{weights} \cdot V_{\text{full}} \in \mathbb{R}^{1 \times 
 
 ---
 
-## 8. Stage 6: Feed-Forward Networks
+## 11. Stage 6: Feed-Forward Networks
 
 ### Position-wise Nonlinear Transformations
 
@@ -889,7 +886,7 @@ where $\Phi(x)$ is the standard normal CDF. GELU provides smooth, differentiable
 
 **Approximation**: $\text{GELU}(x) \approx 0.5x\left(1 + \tanh\left(\sqrt{\frac{2}{\pi}}(x + 0.044715x^3)\right)\right)$
 
-**📖 Activation Function Analysis:** See [GELU vs ReLU](./transformers_math.md#92-why-gelu-over-relu) and [SwiGLU Variants](./transformers_math.md#91-complete-block-equations) for detailed comparisons.
+**📖 Activation Function Analysis:** See [GELU vs ReLU](./transformers_math.md#72-why-gelu-over-relu) and [SwiGLU Variants](./transformers_math.md#71-complete-block-equations) for detailed comparisons.
 
 **SwiGLU Variant (Gated FFN):**
 $$\text{SwiGLU}(x) = (W_1 x + b_1) \odot \text{SiLU}(W_2 x + b_2)$$
@@ -915,7 +912,7 @@ where:
 
 ---
 
-## 9. Stage 7: Output Generation
+## 12. Stage 7: Output Generation
 
 ### 🎯 Intuition: Making the Final Decision
 
@@ -1003,7 +1000,7 @@ $$\text{next\_token} \sim \text{Categorical}(\{i : \sum_{j \in \text{top}(p)} p_
 
 ---
 
-## 10. Training Objectives and Data Curriculum
+## 13. Training Objectives and Data Curriculum
 
 ### Core Pre-training Objectives
 
@@ -1114,7 +1111,7 @@ where $I$ is the instruction, $R$ is the response, and $\mathcal{D}$ is the inst
 
 ---
 
-## 11. Training: Backpropagation Flow
+## 14. Training: Backpropagation Flow
 
 ### 🎯 Intuition: How AI Models Learn from Mistakes
 
@@ -1150,7 +1147,7 @@ Total loss:
   L = (1/n) × Σ L_i = -(1/n) × Σ log(softmax(logits[i])[t_{i+1}])
 ```
 
-**📖 Mathematical Details:** See [Cross-Entropy Loss](./transformers_math.md#23-probability--information-theory) in transformers_math.md for detailed intuitive explanation
+**📖 Mathematical Details:** See [Cross-Entropy Loss](./transformers_math.md#6-probability--statistics) in transformers_math.md for detailed intuitive explanation
 
 ### Backward Pass Flow
 
@@ -1206,8 +1203,6 @@ dH1 = dH2 ⊙ φ'(W1 @ x + b1)
 
 **Attention Backward:**
 
-Rewrite using $S,P,O$ factoring and the row-wise softmax Jacobian; match the equations in **transformers_math.md** (Section D above).
-
 Let $S = QK^T/\sqrt{d_k}$, $P=\mathrm{softmax}(S)$ (row-wise), $O = PV$. Given $G_O=\partial \mathcal{L}/\partial O$:
 
 $$
@@ -1219,6 +1214,8 @@ G_Q &= G_S K/\sqrt{d_k},\quad G_K = G_S^T Q/\sqrt{d_k}.
 \end{aligned}
 $$
 
+The complete derivation is detailed in **[transformers_math.md](./transformers_math.md#53-backpropagation-through-attention)**.
+
 **LayerNorm Backward:**
 ```
 # Forward: y = γ ⊙ (x - μ)/σ + β  
@@ -1228,11 +1225,11 @@ $$
 ∂L/∂β = sum(∂L/∂y, dim=0)
 ```
 
-**📖 Mathematical Details:** See [LayerNorm Mathematics](./transformers_math.md#53-normalization-techniques) in transformers_math.md for intuitive explanation of normalization
+**📖 Mathematical Details:** See [Layer Normalization](./transformers_math.md#9-transformer-components) in transformers_math.md for intuitive explanation of normalization
 
 ---
 
-## 12. Weight Updates and Optimization
+## 15. Weight Updates and Optimization
 
 ### Adam Optimizer Mathematics
 
@@ -1257,7 +1254,7 @@ v̂_t = v_t / (1 - β₂^t)
 θ_{t+1} = θ_t - α × m̂_t / (√v̂_t + ε)
 ```
 
-**📖 Mathematical Details:** See [Adam Optimizer](./transformers_math.md#41-from-sgd-to-adam) in transformers_math.md for intuitive explanations
+**📖 Mathematical Details:** See [Adam Optimizer](./transformers_math.md#7-optimization) in transformers_math.md for intuitive explanations
 
 ### Learning Rate Scheduling
 
@@ -1273,7 +1270,7 @@ def learning_rate_schedule(step, warmup_steps, max_steps, max_lr):
         return max_lr * 0.5 * (1 + cos(π * progress))
 ```
 
-**📖 Mathematical Details:** See [Learning Rate Schedules](./transformers_math.md#42-learning-rate-schedules) in transformers_math.md for detailed explanations
+**📖 Mathematical Details:** See [Learning Rate Schedules](./transformers_math.md#93-learning-rate-schedules) in transformers_math.md for detailed explanations
 
 ### Gradient Clipping
 
@@ -1285,7 +1282,7 @@ for param in parameters:
     param.grad *= clip_coef
 ```
 
-**📖 Mathematical Details:** See [Gradient Clipping](./transformers_math.md#43-gradient-clipping) in transformers_math.md for intuitive explanations
+**📖 Mathematical Details:** See [Gradient Clipping](./transformers_math.md#94-numerical-stability) in transformers_math.md for intuitive explanations
 
 ### Parameter Update Flow
 
@@ -1314,7 +1311,7 @@ Updated model ready for next forward pass
 
 ---
 
-## 13. Parameter-Efficient Fine-Tuning Methods
+## 16. Parameter-Efficient Fine-Tuning Methods
 
 ### The Challenge of Full Fine-Tuning
 
@@ -1454,7 +1451,7 @@ where $W_{4bit}$ represents the quantized base weights and $BA$ represents the f
 
 ---
 
-## 14. Quantization for Practical Deployment
+## 17. Quantization for Practical Deployment
 
 ### The Precision vs. Efficiency Trade-off
 
@@ -1584,7 +1581,7 @@ class QuantizedLinear(nn.Module):
 
 ---
 
-## 15. Evaluation and Diagnostics
+## 18. Evaluation and Diagnostics
 
 ### Intrinsic vs. Extrinsic Evaluation
 
@@ -1717,7 +1714,7 @@ def test_length_generalization(model, base_length, test_lengths):
 
 ---
 
-## 16. Complete Mathematical Summary
+## 19. Complete Mathematical Summary
 
 ### Forward Pass Equations
 
@@ -1784,7 +1781,7 @@ where m̂_t = m_t/(1-β₁ᵗ), v̂_t = v_t/(1-β₂ᵗ)
 
 ---
 
-## Summary: From Mathematical Foundations to Practical Implementation
+## 20. Summary: From Mathematical Foundations to Practical Implementation
 
 This comprehensive guide has traced the complete journey of transformer architectures from theoretical foundations to practical deployment:
 
