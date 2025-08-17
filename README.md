@@ -32,7 +32,7 @@ This repository provides a comprehensive exploration of transformer architecture
 ---
 
 ### ⚡ Quick Overview
-*5-minute introduction to transformers*
+*Brief introduction to transformers*
 
 **What are transformers?** AI models that excel at understanding and generating human-like text.
 
@@ -65,9 +65,9 @@ This repository provides a comprehensive exploration of transformer architecture
    - ✅ Love mathematical rigor → [Research Deep Dive Path](#-research-deep-dive-path)
 
 3. **Time available?**
-   - ⚡ 30 minutes → [Quick Overview](#-quick-overview) above
-   - 📅 Few hours → [ML Practitioner Path](#-ml-practitioner-path) 
-   - 📚 Several weeks → [Complete Beginner Path](#-complete-beginner-path)
+   - ⚡ Quick intro → [Quick Overview](#-quick-overview) above
+   - 📅 Focused learning → [ML Practitioner Path](#-ml-practitioner-path) 
+   - 📚 Comprehensive study → [Complete Beginner Path](#-complete-beginner-path)
 
 4. **Learning style?**
    - 🧠 Theory first → [Research Deep Dive Path](#-research-deep-dive-path)
@@ -79,63 +79,63 @@ This repository provides a comprehensive exploration of transformer architecture
 ### 🌟 Complete Beginner Path
 *Start here if you're new to machine learning or neural networks*
 
-#### Phase 1: Foundations (Week 1-2)
+#### Phase 1: Foundations
 **🎯 Goal**: Understand what neural networks are and why they work
 
-1. **[🔰 Start Here: Neural Networks Introduction](./nn_intro.md)** *(1-2 hours)*
+1. **[🔰 Start Here: Neural Networks Introduction](./nn_intro.md)**
    - What are AI, ML, and Deep Learning?
    - Why deep learning revolutionized NLP
    - Basic neuron mechanics and perceptrons
    - **Output**: Understand the foundation of all neural networks
 
-2. **[🏗️ Building Networks: MLP Tutorial](./mlp_intro.md)** *(1-2 hours)*
+2. **[🏗️ Building Networks: MLP Tutorial](./mlp_intro.md)**
    - Multi-layer perceptrons in detail
    - Training with backpropagation
    - Hands-on example: Email spam detection
    - **Output**: Understand weights, biases, and network training
 
-3. **[📈 Sequential Data: RNN Tutorial](./rnn_intro.md)** *(1-2 hours)*
+3. **[📈 Sequential Data: RNN Tutorial](./rnn_intro.md)**
    - Why normal networks fail with sequences
    - How RNNs process text word-by-word
    - **Output**: Understand sequential modeling challenges
 
-#### Phase 2: Context & Motivation (Week 2-3)  
+#### Phase 2: Context & Motivation
 **🎯 Goal**: Understand why transformers were invented
 
-4. **[📚 The Story: Evolution of Sequence Modeling](./sequencing_history.md)** *(2-3 hours)*
+4. **[📚 The Story: Evolution of Sequence Modeling](./sequencing_history.md)**
    - Read **Sections 1-4**: From MLPs to LSTMs
    - Focus: Why each approach wasn't quite enough
    - **Output**: Appreciate the journey to transformers
 
-5. **[🎯 The Breakthrough: Attention Mechanism](./sequencing_history.md#the-attention-breakthrough)** *(1 hour)*
+5. **[🎯 The Breakthrough: Attention Mechanism](./sequencing_history.md#the-attention-breakthrough)**
    - Read **Section 5**: What attention solved
    - **Output**: Understand the core insight behind transformers
 
-#### Phase 3: Core Understanding (Week 3-4)
+#### Phase 3: Core Understanding
 **🎯 Goal**: Understand how transformers work
 
-6. **[🏗️ Transformer Overview](./transformers.md#2-overview)** *(1 hour)*
+6. **[🏗️ Transformer Overview](./transformers.md#2-overview)**
    - The big picture: How transformers process text
    - **Output**: Mental model of transformer architecture
 
-7. **[📖 Interactive Learning: Knowledge Storage](./knowledge_store.md)** *(2-3 hours)*
+7. **[📖 Interactive Learning: Knowledge Storage](./knowledge_store.md)**
    - How do LLMs "know" things?
    - Includes hands-on Python examples
    - **Output**: Understand how AI stores and retrieves knowledge
 
-8. **[⚡ Hands-on: Vector Search Notebook](./pynb/vector_search/vector_search.ipynb)** *(2-3 hours)*
+8. **[⚡ Hands-on: Vector Search Notebook](./pynb/vector_search/vector_search.ipynb)**
    - Execute code step-by-step
    - See search algorithms in action
    - **Output**: Practical understanding of similarity search
 
-#### Phase 4: Deep Dive (Week 4-6)
+#### Phase 4: Deep Dive
 **🎯 Goal**: Master transformer components
 
-9. **[🔍 Self-Attention Deep Dive](./transformers.md#9-stage-4-self-attention-deep-dive)** *(2-3 hours)*
+9. **[🔍 Self-Attention Deep Dive](./transformers.md#9-stage-4-self-attention-deep-dive)**
    - How attention really works mathematically
    - **Output**: Understand the core transformer mechanism
 
-10. **[🏗️ Complete Architecture](./transformers.md)** *(4-6 hours)* - Read Sections 5-12
+10. **[🏗️ Complete Architecture](./transformers.md)** - Read Sections 5-12
     - Work through each component step-by-step
     - **Output**: Complete understanding of transformer architecture
 
@@ -157,40 +157,40 @@ This repository provides a comprehensive exploration of transformer architecture
 ### 💻 ML Practitioner Path  
 *Start here if you have machine learning experience*
 
-#### Quick Start (Week 1)
+#### Quick Start
 **🎯 Goal**: Get hands-on with transformers quickly
 
-1. **[⚡ PyTorch Primer](./pytorch_ref.md)** *(2-3 hours)* - Read Sections 1-7
+1. **[⚡ PyTorch Primer](./pytorch_ref.md)** - Read Sections 1-7
    - Tensor operations and model patterns
    - **Output**: Comfortable with PyTorch for transformers
 
-2. **[🏗️ Architecture Overview](./transformers.md#2-overview)** *(1 hour)*  
+2. **[🏗️ Architecture Overview](./transformers.md#2-overview)**
    - High-level transformer operation
    - **Output**: System-level understanding
 
-3. **[🔧 Core Components](./transformers.md)** *(3-4 hours)* - Read Sections 9-12
+3. **[🔧 Core Components](./transformers.md)** - Read Sections 9-12
    - Self-attention, feed-forward networks, normalization
    - **Output**: Component-level implementation knowledge
 
-#### Implementation Focus (Week 2)
+#### Implementation Focus
 **🎯 Goal**: Build and deploy transformers
 
-4. **[📝 Model Implementations](./pytorch_ref.md)** *(4-6 hours)* - Read Sections 8-10
+4. **[📝 Model Implementations](./pytorch_ref.md)** - Read Sections 8-10
    - Complete transformer implementations
    - **Output**: Can implement from scratch
 
-5. **[🎛️ Architecture Variants](./transformers.md#8-architectural-variants-encoder-decoder-and-encoder-decoder)** *(2-3 hours)*
+5. **[🎛️ Architecture Variants](./transformers.md#8-architectural-variants-encoder-decoder-and-encoder-decoder)**
    - BERT vs GPT vs T5 patterns
    - **Output**: Choose right architecture for task
 
-#### Production Focus (Week 3)  
+#### Production Focus
 **🎯 Goal**: Deploy efficiently
 
-6. **[🚀 Optimization & Deployment](./transformers.md)** *(3-4 hours)* - Read Sections 16-18
+6. **[🚀 Optimization & Deployment](./transformers.md)** - Read Sections 16-18
    - Quantization, LoRA, evaluation
    - **Output**: Production-ready knowledge
 
-7. **[📚 Historical Context](./sequencing_history.md)** *(Optional, 2-3 hours)*
+7. **[📚 Historical Context](./sequencing_history.md)** *(Optional)*
    - Understanding the "why" behind design choices
    - **Output**: Informed architecture decisions
 
@@ -199,36 +199,36 @@ This repository provides a comprehensive exploration of transformer architecture
 ### 🔬 Research Deep Dive Path
 *Start here for theoretical understanding*
 
-#### Mathematical Foundations (Week 1-2)
+#### Mathematical Foundations
 **🎯 Goal**: Rigorous theoretical understanding
 
-1. **[📐 Mathematical Foundations](./transformers_math.md)** *(6-8 hours)*
+1. **[📐 Mathematical Foundations](./transformers_math.md)**
    - Complete mathematical treatment
    - **Output**: Formal understanding of all components
 
-2. **[📋 Quick Reference](./math_quick_ref.md)** *(1 hour)*
+2. **[📋 Quick Reference](./math_quick_ref.md)**
    - Bookmark for formulas and derivations
    - **Output**: Ready reference for research
 
-#### Technical Deep Dive (Week 2-3)
+#### Technical Deep Dive
 **🎯 Goal**: Implementation-level understanding
 
-3. **[🔍 Complete Technical Reference](./transformers.md)** *(10-12 hours)*
+3. **[🔍 Complete Technical Reference](./transformers.md)**
    - Every component with mathematical rigor
    - **Output**: Expert-level technical knowledge
 
-4. **[📈 Training Dynamics](./transformers.md#14-training-backpropagation-flow)** *(2-3 hours)*  
+4. **[📈 Training Dynamics](./transformers.md#14-training-backpropagation-flow)**
    - Backpropagation and optimization theory
    - **Output**: Understanding of learning dynamics
 
-#### Research Context (Week 3-4)
-**🎯 Goal**: Position in research landscape  
+#### Research Context
+**🎯 Goal**: Position in research landscape
 
-5. **[📚 Historical Evolution](./sequencing_history.md#key-mathematical-progression)** *(2-3 hours)*
-   - Mathematical progression through architectures  
+5. **[📚 Historical Evolution](./sequencing_history.md#key-mathematical-progression)**
+   - Mathematical progression through architectures
    - **Output**: Research context and motivation
 
-6. **[🧪 Evaluation & Diagnostics](./transformers.md#18-evaluation-and-diagnostics)** *(2-3 hours)*
+6. **[🧪 Evaluation & Diagnostics](./transformers.md#18-evaluation-and-diagnostics)**
    - Research methodologies and metrics
    - **Output**: Experimental design knowledge
 
