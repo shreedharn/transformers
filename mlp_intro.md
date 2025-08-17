@@ -5,6 +5,21 @@
 **Prerequisites:** Basic linear algebra (vectors, matrices, dot products). No prior neural network experience needed.
 
 ---
+## Table of Contents
+1. [What is an MLP?](#1-what-is-an-mlp)
+2. [The Core MLP Equations](#2-the-core-mlp-equations)
+3. [Multi-Layer Architecture](#3-multi-layer-architecture)
+4. [Hidden Size and Layer Depth](#4-hidden-size-and-layer-depth)
+5. [Worked Example: Email Spam Detection](#5-worked-example-email-spam-detection)
+6. [Training: How MLPs Learn](#6-training-how-mlps-learn)
+7. [MLP vs Other Models](#7-mlp-vs-other-models)
+8. [Common Challenges and Solutions](#8-common-challenges-and-solutions)
+9. [Activation Functions Deep Dive](#9-activation-functions-deep-dive)
+10. [Practical Implementation Tips](#10-practical-implementation-tips)
+11. [Summary: The MLP Foundation](#11-summary-the-mlp-foundation)
+12. [Final Visualization: Email Spam Detection](#12-final-visualization-email-spam-detection)
+13. [Next Steps](#next-steps)
+---
 
 ## 1. What is an MLP?
 

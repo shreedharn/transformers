@@ -2,27 +2,27 @@
 
 ## Table of Contents
 
-1. [Knowledge Storage Mechanisms](#part-i-knowledge-storage-mechanisms)
-   - [LLM Weight-Based Knowledge Storage](#1-llm-weight-based-knowledge-storage)
-   - [Vector Store Knowledge Storage](#2-vector-store-knowledge-storage)
+1. [Knowledge Storage Mechanisms](#1-knowledge-storage-mechanisms)
+   - [LLM Weight-Based Knowledge Storage](#11-llm-weight-based-knowledge-storage)
+   - [Vector Store Knowledge Storage](#12-vector-store-knowledge-storage)
 
-2. [Generation and Retrieval Control](#part-ii-generation-and-retrieval-control)
-   - [Temperature, Top-K, and Top-P](#3-controlling-randomness-temperature-top-k-and-top-p-in-llms-and-vector-stores)
+2. [Generation and Retrieval Control](#2-generation-and-retrieval-control)
+   - [Temperature, Top-K, and Top-P](#21-controlling-randomness-temperature-top-k-and-top-p-in-llms-and-vector-stores)
 
-3. [Mathematical Foundations](#part-iii-mathematical-foundations)
+3. [Mathematical Foundations](#3-mathematical-foundations)
    - [Transformers Mathematics Guide](./transformers_math.md) - Sections 4.2-4.3 (High-dimensional geometry), Section 5 (Attention mechanisms), Section 6 (Multi-head attention), Section 9 (Optimization theory)
    - [Mathematical Quick Reference](./math_quick_ref.md) - Comprehensive lookup table for neural network mathematics
 
-4. [System Comparison and Integration](#part-iv-system-comparison-and-integration)
-   - [Critical Question: Are They the Same Concept?](#4-critical-question-are-they-the-same-concept)
-   - [Relevance Across Contexts](#5-relevance-across-contexts)
-   - [Practical Integration](#6-practical-integration)
+4. [System Comparison and Integration](#4-system-comparison-and-integration)
+   - [Critical Question: Are They the Same Concept?](#41-critical-question-are-they-the-same-concept)
+   - [Relevance Across Contexts](#42-relevance-across-contexts)
+   - [Practical Integration](#43-practical-integration)
 
 ---
 
-## PART I: Knowledge Storage Mechanisms
+## 1. Knowledge Storage Mechanisms
 
-### 1. LLM Weight-Based Knowledge Storage
+### 1.1. LLM Weight-Based Knowledge Storage
 
 #### Introduction: What Are LLM Weights?
 
@@ -560,7 +560,7 @@ Storage Requirements:
 
 **Critical Insight**: Each parameter stores a tiny piece of learned knowledge - no single parameter understands "cats are animals", but collectively they encode this relationship through the distributed weight patterns we've explored above.
 
-### 2. Vector Store Knowledge Storage
+### 1.2. Vector Store Knowledge Storage
 
 #### Introduction: What Are Vector Stores?
 
@@ -933,9 +933,9 @@ When you upgrade your embedding model (the thing that turns text into numbers):
 
 ---
 
-## PART II: Generation and Retrieval Control
+## 2. Generation and Retrieval Control
 
-### 3. Controlling Randomness: Temperature, Top-K, and Top-P in LLMs and Vector Stores
+### 2.1. Controlling Randomness: Temperature, Top-K, and Top-P in LLMs and Vector Stores
 
 **Why Control Randomness?**
 
@@ -1103,7 +1103,7 @@ Real-time Chat: Medium threshold (0.7), Top-K=10
 
 ---
 
-## PART III: Mathematical Foundations
+## 3. Mathematical Foundations
 
 ### Comprehensive Mathematical Resources
 
@@ -1132,9 +1132,9 @@ The mathematical concepts underlying both LLM weights and vector stores share co
 
 ---
 
-## PART IV: System Comparison and Integration
+## 4. System Comparison and Integration
 
-### 4. Critical Question: Are They the Same Concept?
+### 4.1. Critical Question: Are They the Same Concept?
 
 **NO** - These are fundamentally different approaches:
 
@@ -1146,7 +1146,7 @@ The mathematical concepts underlying both LLM weights and vector stores share co
 | **Capacity** | Limited by parameter count | Unlimited external storage |
 | **Latency** | Fixed computation cost | Variable search cost |
 
-### 5. Similarity Calculations Across Systems
+### 4.2. Similarity Calculations Across Systems
 
 Both LLM weights and vector stores fundamentally rely on similarity calculations, but they use them in distinctly different ways:
 
@@ -1194,7 +1194,7 @@ Final ranking: doc2 (0.96), doc1 (0.94)
 - **LLMs**: Internal similarity for attention → generates new content
 - **Vector Stores**: External similarity for retrieval → finds existing content
 
-3. **RAG Pipeline (Retrieval-Augmented Generation):**
+#### RAG Pipeline (Retrieval-Augmented Generation):
 
 **Complete Workflow:**
 ```
@@ -1227,7 +1227,7 @@ LLM processes augmented prompt → Generates informed response
 - **Source attribution**: Clear traceability to retrieved documents  
 - **Reduced hallucination**: LLM responses grounded in real data
 
-### 6. Practical Integration
+### 4.3. Practical Integration
 
 #### Complementary Systems
 
