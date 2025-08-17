@@ -10,6 +10,7 @@ This repository provides a comprehensive exploration of transformer architecture
 
 | Document | Purpose | Key Focus |
 |----------|---------|-----------|
+| **[nn_intro.md](./nn_intro.md)** | Neural networks introduction | AI/ML/DL foundations, basic concepts |
 | **[transformers.md](./transformers.md)** | Complete technical reference | Mathematical rigor, implementation details |
 | **[sequencing_history.md](./sequencing_history.md)** | Historical evolution | From MLPs to Transformers |
 | **[mlp_intro.md](./mlp_intro.md)** | MLP step-by-step tutorial | Neural network fundamentals |
@@ -81,13 +82,19 @@ This repository provides a comprehensive exploration of transformer architecture
 #### Phase 1: Foundations (Week 1-2)
 **🎯 Goal**: Understand what neural networks are and why they work
 
-1. **[🔰 Start Here: MLP Tutorial](./mlp_intro.md)** *(1-2 hours)*
-   - What are neural networks? 
-   - How do they learn from data?
-   - Hands-on example: Email spam detection
-   - **Output**: Understand weights, biases, and backpropagation
+1. **[🔰 Start Here: Neural Networks Introduction](./nn_intro.md)** *(1-2 hours)*
+   - What are AI, ML, and Deep Learning?
+   - Why deep learning revolutionized NLP
+   - Basic neuron mechanics and perceptrons
+   - **Output**: Understand the foundation of all neural networks
 
-2. **[📈 Sequential Data: RNN Tutorial](./rnn_intro.md)** *(1-2 hours)*
+2. **[🏗️ Building Networks: MLP Tutorial](./mlp_intro.md)** *(1-2 hours)*
+   - Multi-layer perceptrons in detail
+   - Training with backpropagation
+   - Hands-on example: Email spam detection
+   - **Output**: Understand weights, biases, and network training
+
+3. **[📈 Sequential Data: RNN Tutorial](./rnn_intro.md)** *(1-2 hours)*
    - Why normal networks fail with sequences
    - How RNNs process text word-by-word
    - **Output**: Understand sequential modeling challenges
@@ -95,28 +102,28 @@ This repository provides a comprehensive exploration of transformer architecture
 #### Phase 2: Context & Motivation (Week 2-3)  
 **🎯 Goal**: Understand why transformers were invented
 
-3. **[📚 The Story: Evolution of Sequence Modeling](./sequencing_history.md)** *(2-3 hours)*
+4. **[📚 The Story: Evolution of Sequence Modeling](./sequencing_history.md)** *(2-3 hours)*
    - Read **Sections 1-4**: From MLPs to LSTMs
    - Focus: Why each approach wasn't quite enough
    - **Output**: Appreciate the journey to transformers
 
-4. **[🎯 The Breakthrough: Attention Mechanism](./sequencing_history.md#the-attention-breakthrough)** *(1 hour)*
+5. **[🎯 The Breakthrough: Attention Mechanism](./sequencing_history.md#the-attention-breakthrough)** *(1 hour)*
    - Read **Section 5**: What attention solved
    - **Output**: Understand the core insight behind transformers
 
 #### Phase 3: Core Understanding (Week 3-4)
 **🎯 Goal**: Understand how transformers work
 
-5. **[🏗️ Transformer Overview](./transformers.md#2-overview)** *(1 hour)*
+6. **[🏗️ Transformer Overview](./transformers.md#2-overview)** *(1 hour)*
    - The big picture: How transformers process text
    - **Output**: Mental model of transformer architecture
 
-6. **[📖 Interactive Learning: Knowledge Storage](./knowledge_store.md)** *(2-3 hours)*
+7. **[📖 Interactive Learning: Knowledge Storage](./knowledge_store.md)** *(2-3 hours)*
    - How do LLMs "know" things?
    - Includes hands-on Python examples
    - **Output**: Understand how AI stores and retrieves knowledge
 
-7. **[⚡ Hands-on: Vector Search Notebook](./pynb/vector_search/vector_search.ipynb)** *(2-3 hours)*
+8. **[⚡ Hands-on: Vector Search Notebook](./pynb/vector_search/vector_search.ipynb)** *(2-3 hours)*
    - Execute code step-by-step
    - See search algorithms in action
    - **Output**: Practical understanding of similarity search
@@ -124,16 +131,19 @@ This repository provides a comprehensive exploration of transformer architecture
 #### Phase 4: Deep Dive (Week 4-6)
 **🎯 Goal**: Master transformer components
 
-8. **[🔍 Self-Attention Deep Dive](./transformers.md#9-stage-4-self-attention-deep-dive)** *(2-3 hours)*
+9. **[🔍 Self-Attention Deep Dive](./transformers.md#9-stage-4-self-attention-deep-dive)** *(2-3 hours)*
    - How attention really works mathematically
    - **Output**: Understand the core transformer mechanism
 
-9. **[🏗️ Complete Architecture](./transformers.md)** *(4-6 hours)* - Read Sections 5-12
-   - Work through each component step-by-step
-   - **Output**: Complete understanding of transformer architecture
+10. **[🏗️ Complete Architecture](./transformers.md)** *(4-6 hours)* - Read Sections 5-12
+    - Work through each component step-by-step
+    - **Output**: Complete understanding of transformer architecture
 
 #### 📊 Progress Tracking
-- [ ] Can explain what a neural network does
+- [ ] Understand the difference between AI, ML, and Deep Learning
+- [ ] Can explain what a neural network does and why they work for NLP
+- [ ] Know how perceptrons combine to form multi-layer networks
+- [ ] Understand neural network training with backpropagation
 - [ ] Understand why RNNs struggle with long sequences  
 - [ ] Know why attention was revolutionary
 - [ ] Can describe how transformers process text
@@ -223,6 +233,19 @@ This repository provides a comprehensive exploration of transformer architecture
    - **Output**: Experimental design knowledge
 
 ## 📖 Document Details
+
+### [Neural Networks Introduction: From Biological Inspiration to Deep Learning](./nn_intro.md)
+**The foundational tutorial** - Perfect starting point for complete beginners to AI and neural networks.
+
+**Key Sections:**
+- **AI/ML/DL Hierarchy**: Clear distinctions between artificial intelligence, machine learning, and deep learning
+- **Why Deep Learning for NLP**: Understanding advantages over traditional approaches for text processing
+- **Neuron Basics**: From biological inspiration to mathematical perceptrons with practical examples
+- **Network Architecture**: How individual neurons combine to form powerful multi-layer networks
+- **Training Process**: Complete explanation of backpropagation and gradient descent with PyTorch code
+- **NLP Applications**: Where neural networks excel in language tasks and limitations of basic approaches
+
+**Prerequisites:** No prior machine learning experience needed. Basic understanding of high school mathematics helpful.
 
 ### [Transformer Flow: From Text Input to Output Generation](./transformers.md)
 **The comprehensive technical reference** - 1,700+ lines covering every aspect of transformer operation.
@@ -370,6 +393,7 @@ This repository provides a comprehensive exploration of transformer architecture
 
 | Document | Lines | Focus | Depth |
 |----------|--------|--------|--------|
+| nn_intro.md | 570+ | Neural Networks Introduction | Beginner-friendly |
 | transformers.md | 1,700+ | Technical Implementation | Deep |
 | sequencing_history.md | 800+ | Historical Context | Comprehensive |
 | mlp_intro.md | 500+ | MLP Tutorial | Beginner-friendly |
@@ -386,7 +410,8 @@ Documents are extensively cross-referenced:
 - **Quick formulas**: transformers_math.md → math_quick_ref.md
 - **Historical context**: transformers.md → sequencing_history.md  
 - **Implementation details**: sequencing_history.md → transformers.md
-- **Neural network basics**: sequencing_history.md → mlp_intro.md
+- **Foundation concepts**: nn_intro.md → mlp_intro.md → rnn_intro.md
+- **Neural network basics**: sequencing_history.md → nn_intro.md → mlp_intro.md
 - **Sequential modeling**: mlp_intro.md → rnn_intro.md
 - **RNN fundamentals**: sequencing_history.md → rnn_intro.md
 - **Code patterns**: pytorch_ref.md → transformers_math.md
@@ -397,6 +422,7 @@ Documents are extensively cross-referenced:
 ```
 transformers/
 ├── README.md                    # This file - main navigation
+├── nn_intro.md                  # Neural networks introduction
 ├── transformers.md              # Complete technical reference
 ├── sequencing_history.md        # Historical evolution narrative  
 ├── mlp_intro.md                 # Step-by-step MLP tutorial
