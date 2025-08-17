@@ -429,7 +429,7 @@ transformers/
 ├── sequencing_history.md        # Historical evolution narrative  
 ├── mlp_intro.md                 # Step-by-step MLP tutorial
 ├── rnn_intro.md                 # Step-by-step RNN tutorial
-├── transformers_math.md          # Mathematical foundations
+├── transformers_math.md         # Mathematical foundations
 ├── math_quick_ref.md            # Mathematical reference table
 ├── knowledge_store.md           # LLM weights vs vector stores guide
 ├── pytorch_ref.md               # Practical PyTorch implementation guide
@@ -496,7 +496,11 @@ This repository serves as an educational resource. For improvements or correctio
 - Jump directly to technical sections if you have ML background
 - Reference mathematical foundations when encountering complex equations
 
+---
 
-> **Note**: This repository's documents were created with the help of Large Language Models (LLMs) to provide comprehensive educational content on transformer architectures. 
+## License
+This project is licensed under the [MIT License](./LICENSE).
 
-**Happy Learning! 🚀**
+> ℹ️ **Note:** This Transformers study guide is created with the help of LLMs.  
+> Please refer to the license file for full terms of use.
+
