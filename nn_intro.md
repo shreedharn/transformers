@@ -11,7 +11,6 @@ A foundational guide to understanding neural networks, their role in artificial 
 5. [Training a Neural Network](#5-training-a-neural-network)
 6. [Where Neural Networks Shine in NLP](#6-where-neural-networks-shine-in-nlp)
 7. [What's Next?](#7-whats-next)
-8. [Glossary](#glossary)
 
 ---
 
@@ -21,7 +20,7 @@ Understanding the relationship between these three fields is crucial for graspin
 
 ### The Hierarchy: AI → ML → DL
 
-Think of these as nested circles, where each inner circle is a subset of the outer one:
+Think of these as nested boxes, where each inner box is a subset of the outer one:
 
 ```
 ┌─────────────────────────────────────────┐
@@ -71,11 +70,13 @@ Think of these as nested circles, where each inner circle is a subset of the out
 
 **Key Difference**: Deep learning can automatically discover the features it needs to learn from raw data, while traditional ML often requires humans to manually engineer these features.
 
+Now that we understand where deep learning fits in the AI landscape, let's explore why it has become the dominant approach for natural language processing tasks.
+
 ---
 
 ## 2. Why Deep Learning for NLP?
 
-Natural Language Processing (NLP) involves teaching computers to understand, interpret, and generate human language. This is inherently challenging because language is complex, nuanced, and context-dependent.
+Natural Language Processing (NLP) involves teaching computers to understand, interpret, and generate human language. This is inherently challenging because language is complex, nuanced, and context-dependent. While traditional machine learning made progress in NLP, deep learning has revolutionized the field by solving fundamental limitations that had persisted for decades.
 
 ### Challenges with Traditional ML for Text
 
@@ -153,6 +154,8 @@ Models like RNNs and Transformers can process text sequentially and understand w
 1. **RNNs**: Process text word by word, maintaining memory of previous words
 2. **LSTMs**: Improved RNNs that better handle long sequences
 3. **Transformers**: Revolutionary approach that processes all words simultaneously and learns attention patterns
+
+Having seen why deep learning outperforms traditional methods for language tasks, let's dive into the fundamental building blocks that make this possible. We'll start with the most basic unit: the artificial neuron.
 
 ---
 
@@ -260,6 +263,8 @@ prediction = model(example_input)
 print(f"Spam probability: {prediction.item():.2f}")
 ```
 
+Now that we understand how a single neuron works, we can explore how combining many neurons creates the powerful networks capable of understanding language.
+
 ---
 
 ## 4. From Single Neurons to Networks
@@ -329,6 +334,8 @@ Layer 3: Object parts (eyes, wheels)
 Layer 4: Complete objects (faces, cars)
 Layer 5: Scene understanding (office, outdoors)
 ```
+
+Understanding network architecture is only half the story. The real magic happens during training, where networks learn to perform their tasks through experience.
 
 ---
 
@@ -491,6 +498,8 @@ Controls how big steps to take when updating weights.
 - **Overfitting**: Model memorizes training data but fails on new data
 - **Underfitting**: Model is too simple to capture the underlying pattern
 
+With the fundamentals of neural network training under our belt, let's explore how these powerful learning systems excel in practical language applications.
+
 ---
 
 ## 6. Where Neural Networks Shine in NLP
@@ -620,6 +629,8 @@ Today's most powerful NLP systems are built on Transformer architectures:
 - **T5**: Text-to-text generation for translation and summarization
 - **Claude**: Helpful, harmless, and honest AI assistants
 
+You've now built a solid foundation in neural networks and understand their transformative impact on NLP. This knowledge prepares you for the exciting journey ahead into more advanced architectures.
+
 ---
 
 ## 7. What's Next?
@@ -630,27 +641,27 @@ Now that you understand the fundamentals of neural networks and their role in NL
 
 Based on this foundation, here's how to continue your journey:
 
-#### 1. **[MLP Step-by-Step Tutorial](./mlp_intro.md)** *(Next: 1-2 hours)*
+#### 1. **[MLP Step-by-Step Tutorial](./mlp_intro.md)**
 Learn Multi-Layer Perceptrons in detail with hands-on examples:
 - Detailed mathematics of forward and backward propagation
 - Building MLPs from scratch in PyTorch
 - Practical examples like email spam detection
 - Understanding when and why MLPs work
 
-#### 2. **[RNN Step-by-Step Tutorial](./rnn_intro.md)** *(1-2 hours)*
+#### 2. **[RNN Step-by-Step Tutorial](./rnn_intro.md)**
 Understand how neural networks learned to handle sequences:
 - Why sequence modeling matters for language
 - How RNNs maintain memory of previous words
 - Limitations that led to more advanced architectures
 - Hands-on example with text processing
 
-#### 3. **[The Evolution Story](./sequencing_history.md)** *(2-3 hours)*
+#### 3. **[The Evolution Story](./sequencing_history.md)**
 Follow the complete journey from neural networks to Transformers:
 - Historical context and motivation for each advancement
 - Why each previous approach wasn't quite enough
 - The breakthrough insights that led to modern architectures
 
-#### 4. **[Transformer Deep Dive](./transformers.md)** *(10+ hours)*
+#### 4. **[Transformer Deep Dive](./transformers.md)**
 Master the architecture that powers modern AI:
 - Complete technical understanding of attention mechanisms
 - Implementation details for building Transformers
@@ -674,50 +685,4 @@ Master the architecture that powers modern AI:
 
 ---
 
-## Glossary
-
-**Activation Function**: A mathematical function applied to the output of a neuron to introduce non-linearity. Common examples include ReLU, sigmoid, and tanh.
-
-**Artificial Intelligence (AI)**: Computer systems that can perform tasks typically requiring human intelligence, such as visual perception, speech recognition, and decision-making.
-
-**Backpropagation**: The algorithm used to train neural networks by calculating gradients and propagating errors backward through the network layers.
-
-**Bias**: An additional parameter in a neuron that allows the activation function to shift, helping the network fit data better.
-
-**Deep Learning**: A subset of machine learning using neural networks with multiple hidden layers to learn complex patterns in data.
-
-**Embedding**: A way of representing words or other discrete objects as dense vectors of real numbers, capturing semantic relationships.
-
-**Epoch**: One complete pass through the entire training dataset during neural network training.
-
-**Gradient Descent**: An optimization algorithm that finds the minimum of a function by iteratively moving in the direction of steepest descent.
-
-**Hidden Layer**: Layers in a neural network between the input and output layers that process and transform the data.
-
-**Loss Function**: A function that measures how well the neural network's predictions match the actual target values.
-
-**Machine Learning (ML)**: A subset of AI where systems learn patterns from data without being explicitly programmed for every scenario.
-
-**Multi-Layer Perceptron (MLP)**: A neural network with one or more hidden layers between input and output layers.
-
-**Natural Language Processing (NLP)**: A field of AI focused on enabling computers to understand, interpret, and generate human language.
-
-**Neural Network**: A computing system inspired by biological neural networks, consisting of interconnected nodes (neurons) that process information.
-
-**Overfitting**: When a model performs well on training data but poorly on new, unseen data because it has memorized rather than learned generalizable patterns.
-
-**Perceptron**: The basic building block of neural networks, consisting of inputs, weights, a bias, and an activation function.
-
-**ReLU (Rectified Linear Unit)**: An activation function that outputs the input if positive, zero otherwise: f(x) = max(0, x).
-
-**Sigmoid**: An activation function that maps any input to a value between 0 and 1: f(x) = 1/(1 + e^(-x)).
-
-**Transformer**: A neural network architecture that uses self-attention mechanisms to process sequential data efficiently, powering models like GPT and BERT.
-
-**Universal Approximation Theorem**: A mathematical theorem stating that neural networks with sufficient neurons can approximate any continuous function.
-
-**Weight**: Parameters in a neural network that determine the strength of connections between neurons and are learned during training.
-
----
-
-*This tutorial provides the foundation for understanding neural networks in the context of natural language processing. Continue with the [MLP Tutorial](./mlp_intro.md) to dive deeper into the mathematics and implementation details.*
+*This tutorial provides the foundation for understanding neural networks in the context of natural language processing. For definitions of technical terms, see the [Glossary](./glossary.md). Continue with the [MLP Tutorial](./mlp_intro.md) to dive deeper into the mathematics and implementation details.*

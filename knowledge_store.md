@@ -1272,33 +1272,7 @@ LLM processes augmented prompt → Generates informed response
 
 ---
 
-## Glossary
-
-**Attention Head**: A specialized component of multi-head attention that focuses on specific types of relationships (e.g., grammar, semantics, position).
-
-**Centroid**: The center point of a cluster in vector space, representing the average position of all vectors in that cluster.
-
-**Embedding**: A dense numerical vector representation of text, images, or other data that captures semantic meaning in high-dimensional space.
-
-**HNSW (Hierarchical Navigable Small World)**: A graph-based indexing method that creates multiple navigation layers for fast approximate nearest neighbor search.
-
-**IVF (Inverted File)**: A clustering-based indexing method that groups similar vectors together and searches only within relevant clusters.
-
-**Product Quantization (PQ)**: A compression technique that splits vectors into chunks and replaces each chunk with a representative centroid ID.
-
-**Query Vector**: In attention mechanisms, the vector representing "what information is being sought" from other positions.
-
-**RAG (Retrieval-Augmented Generation)**: A system that combines vector store retrieval with LLM generation to provide informed, grounded responses.
-
-**Similarity Threshold**: A minimum similarity score required for a document to be considered relevant in vector search.
-
-**Temperature**: A parameter controlling randomness in text generation; lower values make outputs more focused, higher values more creative.
-
-**Top-K**: A parameter limiting selection to the K most likely tokens (in LLMs) or K most similar documents (in vector stores).
-
-**Top-P (Nucleus Sampling)**: A parameter that dynamically selects tokens based on cumulative probability until reaching threshold P.
-
-**Vector Store**: A database optimized for storing and searching high-dimensional numerical vectors representing semantic content.
+*For definitions of technical terms used in this document, see the [Glossary](./glossary.md).*
 
 ---
 

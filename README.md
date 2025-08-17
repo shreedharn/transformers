@@ -19,6 +19,7 @@ This repository provides a comprehensive exploration of transformer architecture
 | **[math_quick_ref.md](./math_quick_ref.md)** | Mathematical reference table | Formulas, intuitions, neural network applications |
 | **[knowledge_store.md](./knowledge_store.md)** | LLM weights vs vector stores | Knowledge storage, similarity calculations |
 | **[pytorch_ref.md](./pytorch_ref.md)** | PyTorch implementation guide | Code patterns, practical examples |
+| **[glossary.md](./glossary.md)** | Comprehensive glossary | Technical terms and definitions |
 
 ## 🚀 Getting Started
 
@@ -402,6 +403,7 @@ This repository provides a comprehensive exploration of transformer architecture
 | math_quick_ref.md | 50+ | Mathematical Reference | Quick Reference |
 | knowledge_store.md | 300+ | Knowledge Storage Analysis | Intermediate |
 | pytorch_ref.md | 2,000+ | Practical Implementation | Hands-on |
+| glossary.md | 120+ | Technical Glossary | Reference |
 
 ## 🔗 Cross-References
 
@@ -430,7 +432,8 @@ transformers/
 ├── transformers_math.md          # Mathematical foundations
 ├── math_quick_ref.md            # Mathematical reference table
 ├── knowledge_store.md           # LLM weights vs vector stores guide
-└── pytorch_ref.md          # Practical PyTorch implementation guide
+├── pytorch_ref.md               # Practical PyTorch implementation guide
+└── glossary.md                  # Comprehensive technical glossary
 ```
 
 ## 🎉 Key Features
