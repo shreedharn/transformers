@@ -10,8 +10,8 @@
    - [Temperature, Top-K, and Top-P](#3-controlling-randomness-temperature-top-k-and-top-p-in-llms-and-vector-stores)
 
 3. [Mathematical Foundations](#part-iii-mathematical-foundations)
-   - [Transformers Mathematics Guide](./transformers_math.md) - Sections 4.2-4.3 (High-dimensional geometry), Section 5 (Attention mechanisms), Section 6 (Multi-head attention), Section 9 (Optimization theory)
-   - [Mathematical Quick Reference](./math_quick_ref.md) - Comprehensive lookup table for neural network mathematics
+   - [Similarity Search Algorithms](#similarity-search-algorithms)
+   - [Vector Search Implementation Methods](#vector-search-implementation-methods)
 
 4. [System Comparison and Integration](#part-iv-system-comparison-and-integration)
    - [Critical Question: Are They the Same Concept?](#4-critical-question-are-they-the-same-concept)
