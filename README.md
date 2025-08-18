@@ -11,13 +11,13 @@ This repository provides a comprehensive exploration of transformer architecture
 | Document | Purpose | Key Focus |
 |----------|---------|-----------|
 | **[nn_intro.md](./nn_intro.md)** | Neural networks introduction | AI/ML/DL foundations, basic concepts |
-| **[transformers.md](./transformers.md)** | Complete technical reference | Mathematical rigor, implementation details |
+| **[Transformers Deep Dive](./transformers.md)** | Complete technical reference | Mathematical rigor, implementation details |
 | **[sequencing_history.md](./sequencing_history.md)** | Historical evolution | From MLPs to Transformers |
 | **[mlp_intro.md](./mlp_intro.md)** | MLP step-by-step tutorial | Neural network fundamentals |
 | **[rnn_intro.md](./rnn_intro.md)** | RNN step-by-step tutorial | Sequential modeling basics |
 | **[transformers_math.md](./transformers_math.md)** | Mathematical foundations | Theoretical underpinnings |
 | **[math_quick_ref.md](./math_quick_ref.md)** | Mathematical reference table | Formulas, intuitions, neural network applications |
-| **[knowledge_store.md](./knowledge_store.md)** | LLM weights vs vector stores | Knowledge storage, similarity calculations |
+| **[knowledge_store.md](./knowledge_store.md)** | LLM weights vs vector stores | Internalized vs external knowledge storage |
 | **[pytorch_ref.md](./pytorch_ref.md)** | PyTorch implementation guide | Code patterns, practical examples |
 | **[glossary.md](./glossary.md)** | Comprehensive glossary | Technical terms and definitions |
 
@@ -394,16 +394,16 @@ This repository provides a comprehensive exploration of transformer architecture
 
 | Document | Lines | Focus | Depth |
 |----------|--------|--------|--------|
-| nn_intro.md | 570+ | Neural Networks Introduction | Beginner-friendly |
-| transformers.md | 1,700+ | Technical Implementation | Deep |
-| sequencing_history.md | 800+ | Historical Context | Comprehensive |
-| mlp_intro.md | 500+ | MLP Tutorial | Beginner-friendly |
-| rnn_intro.md | 410+ | RNN Tutorial | Beginner-friendly |
-| transformers_math.md | Variable | Mathematical Theory | Rigorous |
-| math_quick_ref.md | 50+ | Mathematical Reference | Quick Reference |
-| knowledge_store.md | 300+ | Knowledge Storage Analysis | Intermediate |
-| pytorch_ref.md | 2,000+ | Practical Implementation | Hands-on |
-| glossary.md | 120+ | Technical Glossary | Reference |
+| nn_intro.md | 687 | Neural Networks Introduction | Beginner-friendly |
+| transformers.md | 1,851 | Technical Implementation | Deep |
+| sequencing_history.md | 826 | Historical Context | Comprehensive |
+| mlp_intro.md | 625 | MLP Tutorial | Beginner-friendly |
+| rnn_intro.md | 442 | RNN Tutorial | Beginner-friendly |
+| transformers_math.md | 1,347 | Mathematical Theory | Rigorous |
+| math_quick_ref.md | 354 | Mathematical Reference | Quick Reference |
+| knowledge_store.md | 1,315 | LLM Weights vs Vector Stores | Intermediate |
+| pytorch_ref.md | 1,732 | Practical Implementation | Hands-on |
+| glossary.md | 118 | Technical Glossary | Reference |
 
 ## 🔗 Cross-References
 

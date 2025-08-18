@@ -3,7 +3,7 @@
 ## Table of Contents
 
 1. [Knowledge Storage Mechanisms](#part-i-knowledge-storage-mechanisms)
-   - [LLM Weight-Based Knowledge Storage](#1-llm-weight-based-knowledge-storage)
+   - [LLM Weights](#1-llm-weights)
    - [Vector Store Knowledge Storage](#2-vector-store-knowledge-storage)
 
 2. [Generation and Retrieval Control](#part-ii-generation-and-retrieval-control)
@@ -15,18 +15,26 @@
 
 4. [System Comparison and Integration](#part-iv-system-comparison-and-integration)
    - [Critical Question: Are They the Same Concept?](#4-critical-question-are-they-the-same-concept)
-   - [Relevance Across Contexts](#5-relevance-across-contexts)
+   - [Similarity Calculations Across Systems](#5-similarity-calculations-across-systems)
    - [Practical Integration](#6-practical-integration)
 
 ---
 
 ## PART I: Knowledge Storage Mechanisms
 
-### 1. LLM Weight-Based Knowledge Storage
+### 1. LLM Weights
 
-#### Introduction: What Are LLM Weights?
+#### Introduction: How Knowledge Becomes Internalized in LLM Weights
 
-Consider a distributed computing system where instead of storing data in centralized databases, knowledge is encoded across millions of interconnected processing nodes. Large Language Models store knowledge through **distributed representations** across billions of parameters (weights). Unlike relational databases where "cats are animals" might be stored as a discrete foreign key relationship in a normalized table, LLMs encode this relationship as learned patterns distributed across multiple layers of neural networks.
+Consider how humans internalize knowledge: when you learn that "Paris is the capital of France," this fact doesn't get stored in a single brain cell. Instead, it becomes encoded across neural connections that activate together when you think about Paris, France, or capitals. LLM weights work similarly - they store knowledge as **learned patterns distributed across billions of parameters**.
+
+**Knowledge Internalization Process:**
+- **Training Exposure**: During training, the model encounters "Paris is the capital of France" in thousands of different contexts
+- **Statistical Learning**: Weights learn that "Paris" and "capital of France" frequently co-occur and have semantic relationships
+- **Distributed Encoding**: This knowledge becomes encoded across many weight matrices, not stored as discrete facts
+- **Pattern Activation**: During inference, when asked about Paris, the learned weight patterns activate to generate contextually appropriate responses
+
+Unlike databases where "Paris → capital → France" might be a clear lookup table entry, LLMs internalize this as statistical associations that enable both recall and generalization to new contexts.
 
 **Core Intuition**: Think of LLM weights like a distributed neural architecture where:
 - **Embedding weights** position tokens in high-dimensional semantic space using vector representations (analogous to principal component analysis projections)
@@ -1283,10 +1291,10 @@ This comprehensive exploration reveals that LLM weights and vector stores repres
 ### Key Distinctions
 
 **LLM weights** store knowledge as:
-- **Distributed patterns** across billions of parameters
-- **Implicit relationships** learned through training
-- **Generated responses** via computational processes
-- **Fixed representations** requiring retraining to update
+- **Distributed patterns** across billions of parameters where knowledge is internalized during training
+- **Implicit relationships** learned through statistical associations in training data
+- **Generated responses** via computational processes that activate learned patterns
+- **Fixed representations** requiring retraining to update internalized knowledge
 
 **Vector stores** maintain knowledge as:
 - **Discrete vectors** in searchable databases
