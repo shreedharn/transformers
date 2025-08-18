@@ -363,7 +363,7 @@ At this stage, each word has its basic dictionary meaning, with no context.
 ```
 Layer 1 (After Self-Attention - Words Start Talking):
 `h_cat'` is the output of the attention mechanism for the token "cat". This is calculated as a weighted sum of the **Value (V)** vectors of all tokens in the sequence.
-
+```
 How it's computed:
 1.  **Create Value vectors**: First, each token's hidden state `h` is projected into a Value vector `v` using a learned weight matrix `W_v`.
     *   `v_the = h_the · W_v`
@@ -379,7 +379,7 @@ How it's computed:
     `h_cat' = 0.05·v_the + 0.35·v_big + 0.40·v_cat + 0.20·v_runs`
 
 This process mixes information from the entire sequence into each token's representation, guided by the learned attention patterns. The result is that `h_cat'` is no longer just the generic embedding for "cat", but a new vector that has absorbed context—it now "knows" it's a "big cat".
-```
+
 
 Now "cat" understands it's a "big cat" (not just any cat).
 
@@ -532,7 +532,8 @@ Now that we understand how individual weights work, let's examine the scale at w
 
 Think of parameters as the learned coefficients in a massive system of linear equations. Each parameter represents a weight in the network's computational graph that determines how information propagates through the model's layers during inference.
 
-**Concrete Example - GPT-3.5 (175 billion parameters):**
+**Concrete Example - GPT-3.5 (~175 billion parameters):**
+*Note: Parameter counts are illustrative approximations based on publicly available specifications.*
 
 ```
 Embedding Layer:
@@ -551,7 +552,7 @@ Output Layer:
 - Linear projection: 12,288 × 50,000 = 614.4 million
 - Layer normalization: 12,288 parameters
 
-Total Core Parameters: 614.4M + 172.8B + 614.4M + 0.012M ≈ 174.0 billion
+Total Core Parameters: 614M + 173B + 614M ≈ 175 billion
 Remaining ~1B parameters: Position embeddings, additional biases, etc.
 
 Storage Requirements:
@@ -638,13 +639,13 @@ HNSW Vector Index:
 Level 2: [doc1] ←→ [doc5] ←→ [doc12]  (sparse, long-distance connections)
 Level 1: [doc1] ←→ [doc2] ←→ [doc5] ←→ [doc8] ←→ [doc12] (medium connections)
 Level 0: [doc1] ←→ [doc2] ←→ [doc3] ←→ [doc4] ←→ [doc5] ←→ ... (dense, local connections)
-
+```
 **Mathematical Foundation:**
 - **Time complexity**: O(log n) on average
 - **Space complexity**: O(n·M) where M is average connections per node
 - **Search algorithm**: Greedy search through hierarchical graph layers
 
-Search Process:
+**Search Process:**
 1. Start at Level 2, find closest document to query
 2. Navigate to similar documents at this level
 3. Drop down to Level 1, continue navigation  
@@ -664,7 +665,7 @@ Search Process:
 > - Performance comparisons with timing benchmarks
 > - Recall vs speed trade-offs with real data
 > - Parameter tuning effects on search quality
-```
+
 
 **Method 3: IVF - The Clustering Approach**
 
@@ -685,19 +686,19 @@ Cluster 1 (Animal docs): centroid = [0.8, 0.2, 0.1]
 Cluster 2 (House docs): centroid = [0.1, 0.8, 0.3]
 ├── "Big house in park" → [0.12, 0.85, 0.43]
 └── "House needs cleaning" → [0.08, 0.78, 0.35]
-
+```
 **Mathematical Foundation:**
 - **Time complexity**: O(n/k + k) where k = number of clusters
 - **Space complexity**: O(n + k·d) for storing documents and centroids
 - **Optimal k**: Usually √n clusters (e.g., 1000 clusters for 1M documents)
 
-Search Process:
+**Search Process:**
 1. Query: "What animals are pets?" → [0.72, 0.31, 0.18]
 2. Find closest cluster centroid → Cluster 1 (animals)
 3. Search only within Cluster 1 → much faster!
 4. Reduced search: 3 documents instead of 5 total
 
-**Performance Math**:
+**Performance Math:**
 - **1M documents, 1000 clusters**: Search 1000 docs instead of 1M
 - **Speedup**: 1000× faster than brute force
 - **Trade-off**: Might miss documents in wrong clusters (~2-5% recall loss)
@@ -711,7 +712,7 @@ Search Process:
 > - Effect of cluster count (nlist) on performance
 > - Search probe tuning (nprobes) for accuracy vs speed
 > - Cluster distribution analysis and optimization
-```
+
 
 **Method 4: Product Quantization - The Compression Master**
 
@@ -750,13 +751,13 @@ Step 4: Compressed representation
 Original: 768 dimensions × 32 bits/float = 24,576 bits per vector (3,072 bytes)
 Compressed: 8 chunks × 8 bits/chunk = 64 bits per vector (8 bytes)
 Compression ratio: 24,576 ÷ 64 = 384× smaller!
-
+```
 **Mathematical Foundation:**
 - **Compression ratio**: d/(m·log₂(k)) where d=dimensions, m=subvectors, k=centroids per subvector
 - **Typical setup**: 768D → 8 subvectors of 96D each, 256 centroids per subvector
 - **Memory per vector**: m·log₂(k) = 8·log₂(256) = 8·8 = 64 bits = 8 bytes
 
-Memory savings calculation:
+**Memory savings calculation:**
 - **Original**: 1M vectors × (768 × 4 bytes) = 3.072 GB  
 - **Compressed**: 1M vectors × 8 bytes = 8 MB
 - **Compression**: 384× smaller memory usage!
@@ -962,7 +963,7 @@ Without controls:
 - Pick randomly → "The cat is purple" (nonsensical)
 
 We need balanced control between coherence and creativity
-
+```
 
 **Temperature: Controlling Confidence**
 

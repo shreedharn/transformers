@@ -300,15 +300,15 @@ The $\delta$ terms flow backwards through the network, carrying error informatio
 1D Slope:          2D Gradient:           Matrix Gradients:        MLP Training:
                                                                          
     f(x)             f(x,y)                    L(W,b)                Forward:
-     /|                 /|\                      /|\               X→Z₁→A₁→Z₂→Ŷ
+     /|                 /|\                      /|\                X→Z₁→A₁→Z₂→Ŷ
     / |                / | \                    / | \                   
-   /  |               /  |  \                  /  |  \             Backward:
-slope  |             ∇f   |   ∇f             ∇L   |   ∇L           δ₂←δ₁←∇W₁,∇b₁
-   \   |               \  |  /                  \  |  /               
-    \  |                \ | /                    \ | /             Update:
-     \ |                  \|/                     \|/              W,b ← W,b-α∇
-      \|                   x                       θ               (same α!)
-       x                                                               
+   /  |               /  |  \                  /  |  \               Backward:
+slope |             ∇f   |  ∇f                ∇L  |   ∇L           δ₂←δ₁←∇W₁,∇b₁
+   \  |               \  |  /                  \  |  /               
+    \ |                \ | /                    \ | /                Update:
+     \|                 \|/                      \|/               W,b ← W,b-α∇
+      x                  x                        θ                 (same α!)
+                                                                     
                                                                          
 Update: x₁ = x₀ - α(df/dx)   [x,y]₁ = [x,y]₀ - α∇f    θ₁ = θ₀ - α∇L    All params use α
 ```
@@ -1341,7 +1341,7 @@ p_i(1 - p_i) & \text{if } i = j \\
 
 **Multi-Head Attention:** Parallel attention mechanisms operating on different learned subspaces.
 
-**Position Encoding:** Method to inject sequential order information into permutation-invariant attention.
+**Position Encoding:** Method to inject sequential order information into permutation-equivariant attention.
 
 **Scaled Dot-Product Attention:** Core attention mechanism using $\text{softmax}(QK^T/\sqrt{d_k})V$.
 

@@ -329,6 +329,17 @@ This repository provides a comprehensive exploration of transformer architecture
 - [Evaluation Methods](./transformers.md#18-evaluation-and-diagnostics) - Metrics and benchmarks
 - [Training Dynamics](./transformers.md#14-training-backpropagation-flow) - Backpropagation and optimization
 
+## 📋 Global Conventions
+
+> **Mathematical Notation Standards**
+> 
+> Throughout this repository, we use consistent mathematical conventions for clarity:
+> - **Vectors are row-major**: Multiply on the right (`x W + b`)
+> - **Shape notation**: Use `[seq, dim]` or `[batch, seq, heads, dim]` consistently  
+> - **Dimension symbols**: Use `d_model`, `d_k`, `d_v`, `H` (heads), `N` (layers) consistently
+> - **Softmax operations**: Row-wise softmax in attention equations
+> - **Architecture**: Pre-LayerNorm transformer blocks throughout
+
 ## 🔧 Technical Specifications
 
 ### Covered Architectures

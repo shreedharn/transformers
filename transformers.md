@@ -189,7 +189,7 @@ $$\text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)$$
 
 ### Position Encoding Solution
 
-**Problem**: Attention is permutation-invariant—"cat sat on mat" and "mat on sat cat" would be processed identically.
+**Problem**: Attention is permutation-equivariant—"cat sat on mat" and "mat on sat cat" would be processed identically.
 
 **Solution**: Add positional information to input embeddings:
 $$\text{input} = \text{token\_embedding} + \text{positional\_encoding}$$
@@ -198,19 +198,14 @@ Each token's embedding is combined with a positional encoding vector, ensuring t
 
 ### Complete Transformer Architecture
 
-**Encoder Block**:
-1. Multi-head self-attention
-2. Add & normalize (residual connection)
-3. Feed-forward network
-4. Add & normalize (residual connection)
+**Encoder Block (Pre-LayerNorm)**:
+1. LayerNorm → Multi-head self-attention → Add residual
+2. LayerNorm → Feed-forward network → Add residual
 
-**Decoder Block**:
-1. Masked multi-head self-attention (causal)
-2. Add & normalize
-3. Multi-head cross-attention (to encoder)
-4. Add & normalize  
-5. Feed-forward network
-6. Add & normalize
+**Decoder Block (Pre-LayerNorm)**:
+1. LayerNorm → Masked multi-head self-attention → Add residual
+2. LayerNorm → Multi-head cross-attention → Add residual
+3. LayerNorm → Feed-forward network → Add residual
 
 ### Why Transformers Work So Well
 
@@ -250,28 +245,28 @@ Think of this process like a sophisticated translation system - but instead of t
 ```
 User Input: "The cat sat on"
        ↓
-┌─────────────────────────────────────────────────────────────┐
-│                    FORWARD PASS                             │
-│              (How AI Understands Text)                     │
-├─────────────────────────────────────────────────────────────┤
-│ 1. Tokenization:     "The cat sat on" → [464, 2415, 3332, 319] │
-│    (Break into computer-friendly pieces)                   │
-│                                                             │
-│ 2. Embedding:        tokens → vectors [4, 768]             │
-│    (Convert numbers to meaning representations)            │
-│                                                             │
-│ 3. Position Encoding: add positional info [4, 768]        │
-│    (Tell the model WHERE each word appears)                │
-│                                                             │
-│ 4. Transformer Stack: 12 layers of attention + processing │
-│    (Deep understanding - like reading comprehension)       │
-│                                                             │
-│ 5. Output Projection: → probabilities for all 50,000 words│
-│    (Consider every possible next word)                     │
-│                                                             │
-│ 6. Sampling:         choose from top candidates            │
-│    (Make the final decision)                               │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                    FORWARD PASS                                 │
+│              (How AI Understands Text)                          │
+├─────────────────────────────────────────────────────────────────┤
+│ 1. Tokenization:     "The cat sat on" → [464, 2415, 3332, 319]  │
+│    (Break into computer-friendly pieces)                        │
+│                                                                 │
+│ 2. Embedding:        tokens → vectors [4, 768]                  │
+│    (Convert numbers to meaning representations)                 │
+│                                                                 │
+│ 3. Position Encoding: add positional info [4, 768]              │
+│    (Tell the model WHERE each word appears)                     │
+│                                                                 │
+│ 4. Transformer Stack: 12 layers of attention + processing       │
+│    (Deep understanding - like reading comprehension)            │
+│                                                                 │
+│ 5. Output Projection: → probabilities for all 50,000 words.     │
+│    (Consider every possible next word)                          │
+│                                                                 │
+│ 6. Sampling:         choose from top candidates                 │
+│    (Make the final decision)                                    │
+└─────────────────────────────────────────────────────────────────┘
        ↓
 Output: "the" (most likely next word)
 ```
@@ -287,16 +282,16 @@ Output: "the" (most likely next word)
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                   TRAINING: BACKWARD PASS                   │
-│                (How AI Learns from Mistakes)               │
+│                (How AI Learns from Mistakes)                │
 ├─────────────────────────────────────────────────────────────┤
-│ 1. Compute Loss:     Compare prediction with correct answer│
-│    (Like grading a test - how wrong was the guess?)       │
+│ 1. Compute Loss:     Compare prediction with correct answer │
+│    (Like grading a test - how wrong was the guess?)         │
 │                                                             │
-│ 2. Backpropagation: Find what caused the mistake          │
-│    (Trace back through all the steps to find errors)      │
+│ 2. Backpropagation: Find what caused the mistake            │
+│    (Trace back through all the steps to find errors)        │
 │                                                             │
-│ 3. Weight Updates:   Adjust internal parameters            │
-│    (Fine-tune the model to do better next time)           │
+│ 3. Weight Updates:   Adjust internal parameters             │
+│    (Fine-tune the model to do better next time)             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -907,8 +902,8 @@ $$\text{output} = \text{weights} \cdot V_{\text{full}} \in \mathbb{R}^{1 \times 
 **Complexity Summary:**
 
 **Time Complexity per Generation Step:**
-- Without cache: $O(t^2 \cdot d_{\text{model}})$ where $t$ is current sequence length
-- With cache: $O(t \cdot d_{\text{model}})$ per step
+- First token: $O(d_{\text{model}}^2)$ (no cache)
+- Subsequent tokens with KV cache: $O(d_{\text{model}}^2 + H \times \text{seq\_len} \times d_k)$ per token
 
 **Space Complexity:**
 - Cache storage: $O(L \cdot H \cdot n_{\max} \cdot d_k)$ where $L$ is layers, $H$ is heads
@@ -1243,31 +1238,31 @@ Loss: L (scalar)
        ↓
 ┌─────────────────────────────────────┐
 │     Gradient w.r.t. Logits          │
-│   ∂L/∂logits = probs - targets     │
+│   ∂L/∂logits = probs - targets      │
 │   [seq_len, vocab_size]             │
 └─────────────────────────────────────┘
        ↓
 ┌─────────────────────────────────────┐
-│   Gradient w.r.t. Final Hidden     │
-│   ∂L/∂h_final = ∂L/∂logits @ W_lm^T│
+│   Gradient w.r.t. Final Hidden      │
+│   ∂L/∂h_final = ∂L/∂logits @ W_lm^T │
 │   [seq_len, d_model]                │
 └─────────────────────────────────────┘
        ↓
 ┌─────────────────────────────────────┐
 │      Through Layer N                │
-│   ∂L/∂X^(N-1) = backward_layer_N() │
+│   ∂L/∂X^(N-1) = backward_layer_N()  │
 └─────────────────────────────────────┘
        ↓
        ...
        ↓
 ┌─────────────────────────────────────┐
 │      Through Layer 1                │
-│   ∂L/∂X^(0) = backward_layer_1()   │
+│   ∂L/∂X^(0) = backward_layer_1()    │
 └─────────────────────────────────────┘
        ↓
 ┌─────────────────────────────────────┐
-│   Gradient w.r.t. Embeddings       │
-│   ∂L/∂E = scatter_add(∂L/∂X^(0))   │
+│   Gradient w.r.t. Embeddings        │
+│   ∂L/∂E = scatter_add(∂L/∂X^(0))    │
 └─────────────────────────────────────┘
 ```
 
@@ -1390,7 +1385,7 @@ Computed Gradients: {∂L/∂θ_i} for all parameters
                    ↓
 ┌─────────────────────────────────────┐
 │      Update Model Parameters        │
-│   θ_new = θ_old - lr * update      │
+│   θ_new = θ_old - lr * update       │
 └─────────────────────────────────────┘
                    ↓
 Updated model ready for next forward pass
@@ -1819,7 +1814,7 @@ X'ₗ = Xₗ₋₁ + Aₗ
 
 # FFN sub-layer  
 X̃'ₗ = LayerNorm(X'ₗ)
-Fₗ = FFN(X̃'ₗ) = W₂ₗ × GELU(W₁ₗ × X̃'ₗ + b₁ₗ) + b₂ₗ
+Fₗ = FFN(X̃'ₗ) = GELU(X̃'ₗ W₁ₗ + b₁ₗ) W₂ₗ + b₂ₗ
 Xₗ = X'ₗ + Fₗ
 ```
 

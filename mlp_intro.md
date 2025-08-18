@@ -77,31 +77,31 @@ Layer 2: [h₁, h₂] → [spam probability] (combine patterns intelligently)
 
 The heart of every MLP layer is this transformation:
 
-$$h = \sigma(Wx + b)$$
+$$h = \sigma(x W + b)$$
 
 Let's break this down term by term:
 
 | Term | Size | Meaning |
 |------|------|---------|
-| $x$ | $(D_{in},)$ | **Input vector** - features coming into this layer |
-| $W$ | $(D_{in}, D_{out})$ | **Weight matrix** - learned transformation |
-| $b$ | $(D_{out},)$ | **Bias vector** - learned offset |
-| $Wx + b$ | $(D_{out},)$ | **Linear combination** - weighted sum of inputs |
+| $x$ | $[1, D_{in}]$ | **Input vector** - features coming into this layer |
+| $W$ | $[D_{in}, D_{out}]$ | **Weight matrix** - learned transformation |
+| $b$ | $[1, D_{out}]$ | **Bias vector** - learned offset |
+| $x W + b$ | $[1, D_{out}]$ | **Linear combination** - weighted sum of inputs |
 | $\sigma(\cdot)$ | - | **Activation function** - introduces non-linearity |
-| $h$ | $(D_{out},)$ | **Output vector** - transformed features |
+| $h$ | $[1, D_{out}]$ | **Output vector** - transformed features |
 
 ### Visual Breakdown
 
 ```
-Input Features     Weight Matrix     Bias      Activation
-     x        ×         W         +   b    →    σ(·)    →   h
-   [x₁]        [w₁₁ w₁₂]         [b₁]                    [h₁]
-   [x₂]    ×   [w₂₁ w₂₂]     +   [b₂]   →   σ(·)   →   [h₂]
-              [w₃₁ w₃₂]
+Input Features     Weight Matrix     Bias        Activation
+     x        ×         W         +   b       →     σ(·)      →   h
+[x₁ x₂ x₃]    ×     [w₁₁ w₁₂]     +  [b₁ b₂]  →     σ(·)      →  [h₁ h₂]
+                    [w₂₁ w₂₂]
+                    [w₃₁ w₃₂]
 ```
 
 **Why this structure?**
-- **$Wx$:** Each output neuron gets a weighted combination of all inputs
+- **$x W$:** Each output neuron gets a weighted combination of all inputs
 - **$+ b$:** Bias allows shifting the activation threshold
 - **$\sigma(\cdot)$:** Non-linearity enables learning complex patterns
 
@@ -118,10 +118,10 @@ Input Features     Weight Matrix     Bias      Activation
 
 A complete MLP chains multiple layers together:
 
-$$h^{(1)} = \sigma^{(1)}(W^{(1)}x + b^{(1)})$$
-$$h^{(2)} = \sigma^{(2)}(W^{(2)}h^{(1)} + b^{(2)})$$
+$$h^{(1)} = \sigma^{(1)}(x W^{(1)} + b^{(1)})$$
+$$h^{(2)} = \sigma^{(2)}(h^{(1)} W^{(2)} + b^{(2)})$$
 $$\vdots$$
-$$y = W^{(L)}h^{(L-1)} + b^{(L)}$$
+$$y = h^{(L-1)} W^{(L)} + b^{(L)}$$
 
 **Layer Naming Convention:**
 - **Input Layer**: The original features $x$
@@ -151,7 +151,7 @@ Each layer transforms its input into increasingly abstract representations
 Hidden size controls how many features each layer can learn:
 
 ```
-Small hidden size (2 neurons):  h = [h₁, h₂]
+Small hidden size (2 neurons):   h = [h₁, h₂]
 Large hidden size (100 neurons): h = [h₁, h₂, ..., h₁₀₀]
 ```
 
@@ -239,10 +239,10 @@ b² = [0.2]            # 1-element bias vector
 **Compute linear combination:**
 The operation is `x @ W¹ + b¹` where `x` is a row vector.
 ```
-   x (1x3)      @      W¹ (3x2)        +    b¹ (1x2)    =   Result (1x2)
-[3, 0, 15]    @ [[0.4, 0.1],       +   [-2.0, -1.5]
-                 [-0.8, 0.9],
-                 [0.3, -0.2]]
+   x (1x3)      @      W¹ (3x2)        +    b¹ (1x2)     =   Result (1x2)
+[3, 0, 15]      @    [[0.4, 0.1],      +   [-2.0, -1.5]
+                     [-0.8, 0.9],
+                     [0.3, -0.2]]
 
 Step 1: x @ W¹
 [3*0.4+0*(-0.8)+15*0.3,  3*0.1+0*0.9+15*(-0.2)] = [5.7, -2.7]
@@ -388,7 +388,7 @@ For each batch of training examples:
 
 | **Aspect** | **Linear Regression** | **MLP** |
 |------------|---------------------|---------|
-| **Equation** | $y = Wx + b$ | $y = W^L \sigma(W^{L-1} \sigma(\ldots))$ |
+| **Equation** | $y = x W + b$ | $y = h^{(L-1)} W^L + b^L$ where $h = \sigma(x W + b)$ |
 | **Decision Boundary** | Straight line/plane | Curved, complex shapes |
 | **Expressiveness** | Limited to linear patterns | Can learn any continuous function |
 | **Training** | Closed-form solution | Iterative optimization |
@@ -626,7 +626,7 @@ Common choice: 64-128
 
 ```
 Input Features → Layer 1 → Layer 2 → ... → Output
-     x       → σ(W¹x+b¹) → σ(W²h¹+b²) →  → W^L h^(L-1)+b^L
+     x       → σ(xW¹+b¹) → σ(h¹W²+b²) →  → h^(L-1)W^L+b^L
 
 Where each layer applies: Linear Transformation → Non-linear Activation
 ```
@@ -659,11 +659,11 @@ Where each layer applies: Linear Transformation → Non-linear Activation
 Email: "Congratulations winner!!!"
 Features: [3, 0, 15]  # [exclamations, no_free, capitals]
                 ↓
-Hidden Layer 1: W¹x + b¹ = [3.7, -4.2]
+Hidden Layer 1: xW¹ + b¹ = [3.7, -4.2]
                 ↓  
 After ReLU:     h¹ = [3.7, 0]  # Urgency detected, no legitimacy
                 ↓
-Output Layer:   W²h¹ + b² = [5.75] 
+Output Layer:   h¹W² + b² = [5.75] 
                 ↓
 After Sigmoid:  y = 0.997  # 99.7% spam probability
 ```

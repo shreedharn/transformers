@@ -148,16 +148,16 @@ Time step 3: x₃ → RNN → h₃ → y₃  (uses h₂ as memory)
 
 The heart of every RNN is this update rule:
 
-$$h_t = \tanh(W_{xh} \cdot x_t + W_{hh} \cdot h_{t-1} + b_h)$$
+$$h_t = \tanh(x_t W_{xh} + h_{t-1} W_{hh} + b_h)$$
 
 Let's break this down term by term:
 
 | Term | Size | Meaning |
 |------|------|---------|
-| $x_t$ | $(E,)$ | **Current input** - word embedding at time $t$ |
-| $h_{t-1}$ | $(H,)$ | **Past memory** - hidden state from previous step |
-| $W_{xh}$ | $(E, H)$ | **Input weights** - transform current input |
-| $W_{hh}$ | $(H, H)$ | **Hidden weights** - transform past memory |
+| $x_t$ | $[1, E]$ | **Current input** - word embedding at time $t$ |
+| $h_{t-1}$ | $[1, H]$ | **Past memory** - hidden state from previous step |
+| $W_{xh}$ | $[E, H]$ | **Input weights** - transform current input |
+| $W_{hh}$ | $[H, H]$ | **Hidden weights** - transform past memory |
 | $b_h$ | $(H,)$ | **Bias** - learned offset |
 | $h_t$ | $(H,)$ | **New memory** - updated hidden state |
 
@@ -167,7 +167,7 @@ Let's break this down term by term:
 Past Memory    Current Input
     h_{t-1}  +      x_t
        ↓              ↓
-   W_{hh} * h_{t-1} + W_{xh} * x_t + b_h
+   h_{t-1} W_{hh} + x_t W_{xh} + b_h
                       ↓
                    tanh(...)
                       ↓
@@ -180,8 +180,8 @@ Past Memory    Current Input
 - **Zero-centered:** Helps with gradient flow during training
 
 **The Magic:** At each step, the RNN combines:
-1. **What's happening now** ($W_{xh} \cdot x_t$) 
-2. **What it remembers** ($W_{hh} \cdot h_{t-1}$)
+1. **What's happening now** ($x_t W_{xh}$) 
+2. **What it remembers** ($h_{t-1} W_{hh}$)
 3. **Its learned bias** ($b_h$)
 
 ---
@@ -195,9 +195,9 @@ Initially, $W_{xh}$, $W_{hh}$, and $b_h$ are **random numbers**. The RNN learns 
 
 ```
 Forward Pass (compute predictions):
-Step 1: h₁ = tanh(W_xh·x₁ + W_hh·h₀ + b_h)
-Step 2: h₂ = tanh(W_xh·x₂ + W_hh·h₁ + b_h)
-Step 3: h₃ = tanh(W_xh·x₃ + W_hh·h₂ + b_h)
+Step 1: h₁ = tanh(x₁W_xh + h₀W_hh + b_h)
+Step 2: h₂ = tanh(x₂W_xh + h₁W_hh + b_h)
+Step 3: h₃ = tanh(x₃W_xh + h₂W_hh + b_h)
 
 Compute Loss:
 loss = compare(predictions, true_labels)
@@ -308,61 +308,61 @@ b_h = [0.1, 0.2]       # 2-element bias vector
 
 **Compute contributions:**
 ```
-W_xh · x₁ = [[0.3, 0.7],  · [0.5,  = [0.3·0.5 + 0.7·0.2,  = [0.29,
-             [0.4, 0.2]]     0.2]     0.4·0.5 + 0.2·0.2]     0.24]
+x₁ W_xh = [0.5, 0.2] · [[0.3, 0.7],  = [0.5·0.3 + 0.2·0.4,  = [0.23,
+                        [0.4, 0.2]]     0.5·0.7 + 0.2·0.2]     0.39]
 
-W_hh · h₀ = [[0.1, 0.5],  · [0.0,  = [0.0,
-             [0.6, 0.3]]     0.0]     0.0]
+h₀ W_hh = [0.0, 0.0] · [[0.1, 0.5],  = [0.0,
+                        [0.6, 0.3]]     0.0]
 ```
 
 **Combine and activate:**
 ```
-W_xh·x₁ + W_hh·h₀ + b_h = [0.29, 0.24] + [0.0, 0.0] + [0.1, 0.2]
-                        = [0.39, 0.44]
+x₁W_xh + h₀W_hh + b_h = [0.23, 0.39] + [0.0, 0.0] + [0.1, 0.2]
+                      = [0.33, 0.59]
 
-h₁ = tanh([0.39, 0.44]) = [0.37, 0.41]
+h₁ = tanh([0.33, 0.59]) = [0.32, 0.53]
 ```
 
 ### Step 2: Process "sat" 
 
-**Input:** $x_2 = [0.1, 0.9]$, **Memory:** $h_1 = [0.37, 0.41]$
+**Input:** $x_2 = [0.1, 0.9]$, **Memory:** $h_1 = [0.32, 0.53]$
 
 **Compute contributions:**
 ```
-W_xh · x₂ = [[0.3, 0.7],  · [0.1,  = [0.66,
-             [0.4, 0.2]]     0.9]     0.22]
+x₂ W_xh = [0.1, 0.9] · [[0.3, 0.7],  = [0.1·0.3 + 0.9·0.4,  = [0.39,
+                        [0.4, 0.2]]     0.1·0.7 + 0.9·0.2]     0.25]
 
-W_hh · h₁ = [[0.1, 0.5],  · [0.37, = [0.24,
-             [0.6, 0.3]]     0.41]    0.35]
+h₁ W_hh = [0.32, 0.53] · [[0.1, 0.5],  = [0.32·0.1 + 0.53·0.6,  = [0.35,
+                          [0.6, 0.3]]     0.32·0.5 + 0.53·0.3]     0.32]
 ```
 
 **Combine and activate:**
 ```
-W_xh·x₂ + W_hh·h₁ + b_h = [0.66, 0.22] + [0.24, 0.35] + [0.1, 0.2]
-                        = [1.00, 0.77]
+x₂W_xh + h₁W_hh + b_h = [0.39, 0.25] + [0.35, 0.32] + [0.1, 0.2]
+                      = [0.84, 0.77]
 
-h₂ = tanh([1.00, 0.77]) = [0.76, 0.65]
+h₂ = tanh([0.84, 0.77]) = [0.69, 0.65]
 ```
 
 ### Step 3: Process "here"
 
-**Input:** $x_3 = [0.8, 0.3]$, **Memory:** $h_2 = [0.76, 0.65]$
+**Input:** $x_3 = [0.8, 0.3]$, **Memory:** $h_2 = [0.69, 0.65]$
 
 **Compute contributions:**
 ```
-W_xh · x₃ = [[0.3, 0.7],  · [0.8,  = [0.45,
-             [0.4, 0.2]]     0.3]     0.38]
+x₃ W_xh = [0.8, 0.3] · [[0.3, 0.7],  = [0.8·0.3 + 0.3·0.4,  = [0.36,
+                        [0.4, 0.2]]     0.8·0.7 + 0.3·0.2]     0.62]
 
-W_hh · h₂ = [[0.1, 0.5],  · [0.76, = [0.40,
-             [0.6, 0.3]]     0.65]    0.65]
+h₂ W_hh = [0.69, 0.65] · [[0.1, 0.5],  = [0.69·0.1 + 0.65·0.6,  = [0.46,
+                          [0.6, 0.3]]     0.69·0.5 + 0.65·0.3]     0.54]
 ```
 
 **Combine and activate:**
 ```
-W_xh·x₃ + W_hh·h₂ + b_h = [0.45, 0.38] + [0.40, 0.65] + [0.1, 0.2]
-                        = [0.95, 1.23]
+x₃W_xh + h₂W_hh + b_h = [0.36, 0.62] + [0.46, 0.54] + [0.1, 0.2]
+                      = [0.92, 1.36]
 
-h₃ = tanh([0.95, 1.23]) = [0.74, 0.84]
+h₃ = tanh([0.92, 1.36]) = [0.73, 0.88]
 ```
 
 ### Summary: Memory Evolution
@@ -451,7 +451,7 @@ The **vanishing gradient problem** is the critical limitation that prevented van
 
 **The Mathematical Problem**: When training RNNs using Backpropagation Through Time (BPTT), gradients must flow backward through all time steps to update the weights.
 
-**Gradient Chain**: For an RNN with the equation $h_t = \tanh(W_{hh}h_{t-1} + W_{xh}x_t + b_h)$, the gradient flowing from time $T$ to time $1$ involves:
+**Gradient Chain**: For an RNN with the equation $h_t = \tanh(x_t W_{xh} + h_{t-1} W_{hh} + b_h)$, the gradient flowing from time $T$ to time $1$ involves:
 
 $$\frac{\partial h_T}{\partial h_1} = \prod_{t=2}^{T} \frac{\partial h_t}{\partial h_{t-1}} = \prod_{t=2}^{T} W_{hh} \odot \tanh'(\cdot)$$
 
@@ -532,7 +532,7 @@ $$c = h_{T}^{enc} \quad \text{(Final hidden state becomes context)}$$
 
 **Decoder Process**:
 $$h_t^{dec} = f_{dec}(y_{t-1}, h_{t-1}^{dec}, c)$$
-$$p(y_t | y_{<t}, x) = \text{softmax}(W_o h_t^{dec} + b_o)$$
+$$p(y_t | y_{<t}, x) = \text{softmax}(h_t^{dec} W_o + b_o)$$
 
 Where:
 - $c$: Context vector (compressed representation of entire input)
