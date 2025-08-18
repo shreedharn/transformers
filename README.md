@@ -11,10 +11,9 @@ This repository provides a comprehensive exploration of transformer architecture
 | Document | Purpose | Key Focus |
 |----------|---------|-----------|
 | **[nn_intro.md](./nn_intro.md)** | Neural networks introduction | AI/ML/DL foundations, basic concepts |
-| **[transformers.md](./transformers.md)** | Complete technical reference | Mathematical rigor, implementation details |
-| **[sequencing_history.md](./sequencing_history.md)** | Historical evolution | From MLPs to Transformers |
-| **[mlp_intro.md](./mlp_intro.md)** | MLP step-by-step tutorial | Neural network fundamentals |
-| **[rnn_intro.md](./rnn_intro.md)** | RNN step-by-step tutorial | Sequential modeling basics |
+| **[mlp_intro.md](./mlp_intro.md)** | MLP step-by-step tutorial | Multi-layer network fundamentals |
+| **[rnn_intro.md](./rnn_intro.md)** | RNN step-by-step tutorial | Sequential modeling fundamentals |
+| **[transformers.md](./transformers.md)** | Transformer technical reference | Complete architecture + mathematical rigor |
 | **[transformers_math.md](./transformers_math.md)** | Mathematical foundations | Theoretical underpinnings |
 | **[math_quick_ref.md](./math_quick_ref.md)** | Mathematical reference table | Formulas, intuitions, neural network applications |
 | **[knowledge_store.md](./knowledge_store.md)** | LLM weights vs vector stores | Internalized vs external knowledge storage |
@@ -95,63 +94,39 @@ This repository provides a comprehensive exploration of transformer architecture
    - Hands-on example: Email spam detection
    - **Output**: Understand weights, biases, and network training
 
-3. **[📈 Sequential Data: RNN Tutorial](./rnn_intro.md)**
-   - Why normal networks fail with sequences
-   - How RNNs process text word-by-word
-   - **Output**: Understand sequential modeling challenges
+3. **[📈 Sequential Modeling: RNN Tutorial](./rnn_intro.md)**
+   - Why MLPs fail with sequences and how RNNs solved it
+   - RNN mechanics with step-by-step examples
+   - **Output**: Understanding of sequential processing and RNN limitations
 
-#### Phase 2: Context & Motivation
-**🎯 Goal**: Understand why transformers were invented
-
-4. **[📚 The Story: Evolution of Sequence Modeling](./sequencing_history.md)**
-   - Read **Sections 1-4**: From MLPs to LSTMs
-   - Focus: Why each approach wasn't quite enough
-   - **Output**: Appreciate the journey to transformers
-
-5. **[🎯 The Breakthrough: Attention Mechanism](./sequencing_history.md#the-attention-breakthrough)**
-   - Read **Section 5**: What attention solved
-   - **Output**: Understand the core insight behind transformers
-
-#### Phase 3: Core Understanding
+#### Phase 2: Core Understanding
 **🎯 Goal**: Understand how transformers work
 
-6. **[🏗️ Transformer Overview](./transformers.md#2-overview)**
-   - The big picture: How transformers process text
-   - **Output**: Mental model of transformer architecture
+4. **[🏗️ Transformer Architecture](./transformers.md)**
+   - From RNN limitations to transformer solutions
+   - Complete technical flow from input to output
+   - **Output**: Deep understanding of modern AI architecture
 
-7. **[📖 Interactive Learning: Knowledge Storage](./knowledge_store.md)**
+5. **[📖 Interactive Learning: Knowledge Storage](./knowledge_store.md)**
    - How do LLMs "know" things?
    - Includes hands-on Python examples
    - **Output**: Understand how AI stores and retrieves knowledge
 
-8. **[⚡ Hands-on: Vector Search Notebook](./pynb/vector_search/vector_search.ipynb)**
+6. **[⚡ Hands-on: Vector Search Notebook](./pynb/vector_search/vector_search.ipynb)**
    - Execute code step-by-step
    - See search algorithms in action
    - **Output**: Practical understanding of similarity search
-
-#### Phase 4: Deep Dive
-**🎯 Goal**: Master transformer components
-
-9. **[🔍 Self-Attention Deep Dive](./transformers.md#9-stage-4-self-attention-deep-dive)**
-   - How attention really works mathematically
-   - **Output**: Understand the core transformer mechanism
-
-10. **[🏗️ Complete Architecture](./transformers.md)** - Read Sections 5-12
-    - Work through each component step-by-step
-    - **Output**: Complete understanding of transformer architecture
 
 #### 📊 Progress Tracking
 - [ ] Understand the difference between AI, ML, and Deep Learning
 - [ ] Can explain what a neural network does and why they work for NLP
 - [ ] Know how perceptrons combine to form multi-layer networks
 - [ ] Understand neural network training with backpropagation
-- [ ] Understand why RNNs struggle with long sequences  
-- [ ] Know why attention was revolutionary
-- [ ] Can describe how transformers process text
-- [ ] Understand how LLMs store knowledge
-- [ ] Can run and modify vector search code
-- [ ] Explain how self-attention works
-- [ ] Know all major transformer components
+- [ ] Understand why RNNs struggle with long sequences and how this led to transformers
+- [ ] Can describe how attention mechanisms work and why they're revolutionary
+- [ ] Understand the complete transformer architecture
+- [ ] Know how transformers process text from input to output
+- [ ] Understand how LLMs store and retrieve knowledge
 
 **🎉 Congratulations!** You now understand transformers from the ground up!
 
@@ -191,9 +166,9 @@ This repository provides a comprehensive exploration of transformer architecture
    - Quantization, LoRA, evaluation
    - **Output**: Production-ready knowledge
 
-7. **[📚 Historical Context](./sequencing_history.md)** *(Optional)*
-   - Understanding the "why" behind design choices
-   - **Output**: Informed architecture decisions
+7. **[📚 RNN Background](./rnn_intro.md)** *(Optional)*
+   - Sequential modeling fundamentals and RNN mechanics
+   - **Output**: Understanding of pre-transformer sequential approaches
 
 ---
 
@@ -225,9 +200,9 @@ This repository provides a comprehensive exploration of transformer architecture
 #### Research Context
 **🎯 Goal**: Position in research landscape
 
-5. **[📚 Historical Evolution](./sequencing_history.md#key-mathematical-progression)**
-   - Mathematical progression through architectures
-   - **Output**: Research context and motivation
+5. **[📚 RNN Fundamentals](./rnn_intro.md)**
+   - Sequential modeling with recurrent neural networks
+   - **Output**: Understanding of RNN mechanics and limitations
 
 6. **[🧪 Evaluation & Diagnostics](./transformers.md#18-evaluation-and-diagnostics)**
    - Research methodologies and metrics
@@ -260,21 +235,21 @@ This repository provides a comprehensive exploration of transformer architecture
 
 **Prerequisites:** Familiarity with deep learning, linear algebra, probability theory
 
-### [The Evolution of Sequence Modeling: From MLPs to Transformers](./sequencing_history.md)
-**The complete historical narrative** - Comprehensive exploration of the 30-year journey to transformers.
+### [Recurrent Neural Networks: Step-by-Step Tutorial](./rnn_intro.md)
+**Sequential modeling fundamentals** - Learn RNN mechanics with worked examples and understand the path to transformers.
 
 **Key Topics:**
-- **MLPs and limitations**: Why traditional networks failed for sequences
-- **RNNs and vanishing gradients**: The sequential processing era
-- **LSTMs/GRUs and gating**: Solving gradient problems with memory mechanisms  
-- **Seq2Seq and attention**: Breaking the information bottleneck
-- **Transformer breakthrough**: "Attention Is All You Need" revolution
+- **Sequential Challenge**: Why MLPs failed for variable-length sequences
+- **RNN Mechanics**: Step-by-step examples with worked calculations
+- **Vanishing Gradients**: Mathematical analysis of RNN's fatal flaw
+- **Evolution Beyond RNNs**: LSTMs, GRUs, and seq2seq architectures
+- **Attention Revolution**: How attention mechanisms led to transformers
 
 **Features:**
-- **Detailed explanations**: Every abbreviation and term thoroughly explained
-- **Mathematical progression**: Step-by-step evolution of core equations
-- **Concrete examples**: Real-world analogies and intuitive explanations
-- **Timeline and impact**: Historical context and societal implications
+- **Hands-on Examples**: Trace "cat sat here" through RNN processing
+- **Historical Context**: Complete evolution from early approaches to modern AI
+- **Mathematical Rigor**: Detailed gradient flow analysis and equations
+- **Practical Insights**: Why each limitation drove the next innovation
 
 ### [Mathematical Foundations](./transformers_math.md)
 **Theoretical underpinnings** - Deep mathematical analysis supporting the main documents.
@@ -340,9 +315,9 @@ This repository provides a comprehensive exploration of transformer architecture
 - Cross-reference between theory and implementation
 
 **🏗️ Architecture Understanding**  
-- [Historical Evolution](./sequencing_history.md) - Why each component exists
-- [Complete Technical Reference](./transformers.md) - Implementation details
+- [Complete Technical Reference](./transformers.md) - Implementation details with historical context
 - [Architectural Variants](./transformers.md#8-architectural-variants-encoder-decoder-and-encoder-decoder) - BERT vs GPT vs T5
+- [RNN Foundations](./rnn_intro.md) - Sequential modeling background
 
 **💻 Implementation Skills**
 - [PyTorch from Basics](./pytorch_ref.md) - Tensor operations to full models
@@ -396,7 +371,6 @@ This repository provides a comprehensive exploration of transformer architecture
 |----------|--------|--------|--------|
 | nn_intro.md | 687 | Neural Networks Introduction | Beginner-friendly |
 | transformers.md | 1,851 | Technical Implementation | Deep |
-| sequencing_history.md | 826 | Historical Context | Comprehensive |
 | mlp_intro.md | 625 | MLP Tutorial | Beginner-friendly |
 | rnn_intro.md | 442 | RNN Tutorial | Beginner-friendly |
 | transformers_math.md | 1,347 | Mathematical Theory | Rigorous |
@@ -410,12 +384,9 @@ This repository provides a comprehensive exploration of transformer architecture
 Documents are extensively cross-referenced:
 - **Mathematical concepts**: transformers.md → transformers_math.md → math_quick_ref.md
 - **Quick formulas**: transformers_math.md → math_quick_ref.md
-- **Historical context**: transformers.md → sequencing_history.md  
-- **Implementation details**: sequencing_history.md → transformers.md
 - **Foundation concepts**: nn_intro.md → mlp_intro.md → rnn_intro.md
-- **Neural network basics**: sequencing_history.md → nn_intro.md → mlp_intro.md
-- **Sequential modeling**: mlp_intro.md → rnn_intro.md
-- **RNN fundamentals**: sequencing_history.md → rnn_intro.md
+- **Sequential modeling**: mlp_intro.md → rnn_intro.md → transformers.md
+- **Implementation details**: transformers.md ↔ pytorch_ref.md
 - **Code patterns**: pytorch_ref.md → transformers_math.md
 - **Practical examples**: transformers.md → pytorch_ref.md
 
@@ -426,7 +397,6 @@ transformers/
 ├── README.md                    # This file - main navigation
 ├── nn_intro.md                  # Neural networks introduction
 ├── transformers.md              # Complete technical reference
-├── sequencing_history.md        # Historical evolution narrative  
 ├── mlp_intro.md                 # Step-by-step MLP tutorial
 ├── rnn_intro.md                 # Step-by-step RNN tutorial
 ├── transformers_math.md         # Mathematical foundations

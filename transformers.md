@@ -1,5 +1,11 @@
 # Transformer Flow: From Text Input to Output Generation
 
+**Building on the RNN journey:** In the [RNN Tutorial](./rnn_intro.md), you learned how neural networks gained memory and why this revolutionized sequence processing. You also discovered RNN's fundamental limitations—vanishing gradients, sequential bottlenecks, and the inability to process long sequences efficiently. The Transformer architecture solved all these problems while preserving RNN's core insights about sequential understanding.
+
+**What you'll learn:** How the "Attention Is All You Need" breakthrough created the architecture powering ChatGPT, GPT-4, and modern AI. We'll cover the complete technical flow from input text to output generation, with mathematical rigor and implementation details for each component.
+
+**Prerequisites:** Completed [RNN Tutorial](./rnn_intro.md) and the mathematical foundations listed below.
+
 ## 1. Prerequisites
 
 **Mathematical Foundations:**
@@ -8,7 +14,6 @@
 - **Calculus**: Gradients, chain rule, optimization theory (📚 See [Matrix Calculus Essentials](./transformers_math.md#22-matrix-calculus-essentials))
 - **Machine Learning**: Backpropagation, gradient descent, regularization techniques
 
-**This document assumes familiarity with deep learning fundamentals and focuses on the mathematical rigor and computational details specific to transformer architectures.**
 ---
 
 ## Table of Contents
