@@ -189,7 +189,7 @@ This notebook covers:
 
 In deep networks, gradients can vanish (become too small) or explode (become too large) as they backpropagate through layers. This is especially problematic for RNNs processing long sequences.
 
-> **See also**: `./sequencing_history.md` discusses how vanishing gradients motivated the development of LSTM/GRU architectures with gating mechanisms.
+> **See also**: `./rnn_intro.md` discusses how vanishing gradients motivated the development of LSTM/GRU architectures with gating mechanisms.
 
 ### Practical Fixes in PyTorch
 
@@ -500,7 +500,7 @@ This notebook covers:
 
 ### Why Gating Mechanisms?
 
-> **See also**: `./sequencing_history.md` explains how vanilla RNNs suffer from vanishing gradients over long sequences, motivating LSTM/GRU architectures with gates that control information flow.
+> **See also**: `./rnn_intro.md` explains how vanilla RNNs suffer from vanishing gradients over long sequences, motivating LSTM/GRU architectures with gates that control information flow.
 
 ### Minimal Sequence Classifier with LSTM
 
