@@ -1,8 +1,8 @@
 # Multi-Layer Perceptrons (MLPs): A Step-by-Step Tutorial
 
-**What you'll learn:** How MLPs process fixed-size inputs through layers of neurons, transform data with weights and activations, and serve as the foundation for all modern neural networks. We'll work through math and intuition together, with tiny examples you can follow by hand.
+**Building on your neural network foundation:** In the [Neural Networks Introduction](./nn_intro.md), you learned how a single perceptron can solve simple problems like basic spam detection. But what happens when the patterns get more complex? This tutorial shows you how stacking multiple layers of perceptrons creates networks capable of learning any pattern—no matter how intricate.
 
-**Prerequisites:** Basic linear algebra (vectors, matrices, dot products). No prior neural network experience needed.
+**What you'll learn:** How MLPs combine multiple perceptrons into powerful networks, why depth enables learning complex patterns that single neurons cannot, and how these building blocks form the foundation of all modern neural architectures. We'll work through math and intuition together, with examples that demonstrate clear advantages over single perceptrons.
 
 ## Table of Contents
 
@@ -24,30 +24,52 @@
 
 ## 1. What is an MLP?
 
-Imagine you want to predict whether an email is spam based on features like "number of exclamation marks," "contains word 'free'," and "sender reputation score." An MLP takes these features and combines them through multiple layers of simple computations to make a prediction.
+### Recalling the Perceptron's Success and Limitations
 
-### MLP vs Simple Linear Model
+In the previous tutorial, you saw a single perceptron successfully classify this spam email:
 
-**Simple Linear Model:**
+**Email:** "FREE VACATION!!! Click now!!!"  
+**Features:** [6 exclamations, has "free", 13 capitals] → **87% spam probability**
+
+The perceptron worked great! But what if we encounter more sophisticated spam that exploits the perceptron's linear nature?
+
+### When Single Perceptrons Fail: The XOR-like Problem
+
+Consider these two emails that a single perceptron struggles with:
+
+**Email A:** "You have 1 new message"  
+**Features:** [0 exclamations, no "free", 3 capitals] → **Should be: NOT spam**
+
+**Email B:** "Get free bitcoins with zero risk!!!"  
+**Features:** [3 exclamations, has "free", 8 capitals] → **Should be: SPAM**
+
+**Email C:** "FREE SHIPPING on your order"  
+**Features:** [0 exclamations, has "free", 13 capitals] → **Should be: NOT spam** (legitimate store)
+
+**Email D:** "Congratulations winner!!!"  
+**Features:** [3 exclamations, no "free", 15 capitals] → **Should be: SPAM**
+
+**The Problem:** A single perceptron creates a linear decision boundary. It cannot learn the pattern: "Spam when (many capitals AND no 'free') OR (has 'free' AND many exclamations), but not spam when only one condition is true."
+
+### MLP vs Single Perceptron
+
+**Single Perceptron (Linear Decision):**
 ```
 Input Features → Single Computation → Output
-[3, 1, 0.2]   →   w₁×3 + w₂×1 + w₃×0.2 + b   →   spam probability
+[excl, free, caps] → w₁×excl + w₂×free + w₃×caps + b → spam probability
 ```
-- Direct mapping from features to output
-- Can only learn linear relationships
-- Limited expressiveness
+- **Problem:** Can only draw straight lines to separate spam from non-spam
+- **Limitation:** Cannot handle complex patterns that require curved decision boundaries
 
-**MLP (Multi-Layer Perceptron):**
+**MLP (Non-Linear Decisions):**
 ```
-Layer 1: [3, 1, 0.2] → [h₁, h₂, h₃] (hidden features)
-Layer 2: [h₁, h₂, h₃] → [h₄, h₅] (more hidden features)  
-Layer 3: [h₄, h₅] → [spam probability] (output)
+Layer 1: [excl, free, caps] → [h₁, h₂] (detect patterns like "promotional tone", "urgency signals")
+Layer 2: [h₁, h₂] → [spam probability] (combine patterns intelligently)
 ```
-- Multiple layers of transformations
-- Can learn complex, non-linear patterns  
-- Much more expressive
+- **Solution:** Each layer can create new features, enabling complex curved decision boundaries
+- **Power:** Can learn: "IF (urgency signals without legitimacy) OR (promotional tone with pressure) THEN spam"
 
-**Key Insight:** An MLP is like having multiple simple models stacked on top of each other, where each layer learns increasingly complex features from the layer below.
+**Key Insight:** MLPs solve the fundamental limitation of perceptrons by stacking multiple layers, where each layer learns increasingly sophisticated feature combinations that enable non-linear pattern recognition.
 
 ---
 
@@ -168,100 +190,127 @@ For a layer with input size $D_{in}$ and output size $D_{out}$:
 
 ---
 
-## 5. Worked Example: Email Spam Detection
+## 5. Worked Example: Advanced Spam Detection
 
-Let's trace through a tiny example step by step. We'll use:
-- **Input features**: [num_exclamations, has_word_free, sender_reputation]
-- **Hidden layer size**: 2 neurons
-- **Output**: spam probability
+Let's trace through a complex example that shows why MLPs are necessary. We'll use the problematic case from Section 1:
+
+**The Challenge:** Detect sophisticated spam that fools single perceptrons  
+**Input features**: [num_exclamations, has_word_free, num_capitals]  
+**Hidden layer size**: 2 neurons (for pattern detection)  
+**Output**: spam probability
 
 ### Step 0: Initialize
 
-**Input email features:**
+**Test Email (sophisticated spam):**
 ```
-Email: "Free money!!!"
-x = [3, 1, 0.8]  # [3 exclamations, has "free", reputation 0.8]
+Email: "Congratulations winner!!!"
+x = [3, 0, 15]  # [3 exclamations, no "free", 15 capitals]
 ```
 
-**Learned weights (after training):**
-```
-# Hidden Layer 1 (2 neurons)
-W¹ = [[0.5, -0.2],    # 3×2 matrix: input-to-hidden
-      [0.8,  0.6],
-      [-0.3, 0.4]]
+**Why this is hard for a single perceptron:**
+- Has exclamations (spam-like) but no "free" word
+- Has many capitals (spam-like) but winner congratulations can be legitimate
+- **Requires learning**: "High urgency (excl + caps) without legitimacy markers = spam"
 
-b¹ = [0.1, -0.5]      # 2-element bias vector
+**Learned weights (after training on complex patterns):**
+```
+# Hidden Layer 1 (2 specialized pattern detectors)
+W¹ = [[0.4, 0.1],     # 3×2 matrix: input-to-hidden
+      [-0.8, 0.9],    # Neuron 1: urgency detector, Neuron 2: legitimacy detector  
+      [0.3, -0.2]]
+
+b¹ = [-2.0, -1.5]     # 2-element bias vector (high thresholds for pattern detection)
 
 # Output Layer (1 neuron)  
-W² = [[0.7],          # 2×1 matrix: hidden-to-output
-      [1.2]]
+W² = [[1.5],          # 2×1 matrix: hidden-to-output
+      [-0.8]]         # Positive weight for urgency, negative for legitimacy
 
-b² = [-0.3]           # 1-element bias vector
+b² = [0.2]            # 1-element bias vector
 ```
+
+**What each neuron learned to detect:**
+- **Neuron 1**: "Urgency signals" (high exclamations + capitals, low "free")
+- **Neuron 2**: "Legitimacy markers" (presence of "free" reduces suspicion)
 
 ### Step 1: Forward Pass Through Hidden Layer
 
-**Input:** $x = [3, 1, 0.8]$
+**Input:** $x = [3, 0, 15]$ (our sophisticated spam example)
 
 **Compute linear combination:**
 The operation is `x @ W¹ + b¹` where `x` is a row vector.
 ```
    x (1x3)      @      W¹ (3x2)        +    b¹ (1x2)    =   Result (1x2)
-[3, 1, 0.8]   @ [[0.5, -0.2],      +   [0.1, -0.5]
-                  [0.8,  0.6],
-                  [-0.3, 0.4]]
+[3, 0, 15]    @ [[0.4, 0.1],       +   [-2.0, -1.5]
+                 [-0.8, 0.9],
+                 [0.3, -0.2]]
 
 Step 1: x @ W¹
-[3*0.5+1*0.8+0.8*(-0.3),  3*(-0.2)+1*0.6+0.8*0.4] = [2.06, 0.32]
+[3*0.4+0*(-0.8)+15*0.3,  3*0.1+0*0.9+15*(-0.2)] = [5.7, -2.7]
 
 Step 2: Add bias b¹
-[2.06, 0.32] + [0.1, -0.5] = [2.16, -0.18]
+[5.7, -2.7] + [-2.0, -1.5] = [3.7, -4.2]
 ```
 **Calculation Breakdown:**
 ```
-Calculation:
-Neuron 1: 0.5×3 + 0.8×1 + (-0.3)×0.8 + 0.1 = 1.5 + 0.8 - 0.24 + 0.1 = 2.16
-Neuron 2: (-0.2)×3 + 0.6×1 + 0.4×0.8 + (-0.5) = -0.6 + 0.6 + 0.32 - 0.5 = -0.18
+Neuron 1 (Urgency Detector): 0.4×3 + (-0.8)×0 + 0.3×15 + (-2.0) 
+                           = 1.2 + 0 + 4.5 - 2.0 = 3.7
+
+Neuron 2 (Legitimacy Detector): 0.1×3 + 0.9×0 + (-0.2)×15 + (-1.5)
+                              = 0.3 + 0 - 3.0 - 1.5 = -4.2
 ```
 
 **Apply ReLU activation:**
 ```
-h¹ = ReLU([2.16, -0.18]) = [max(0, 2.16), max(0, -0.18)] = [2.16, 0]
+h¹ = ReLU([3.7, -4.2]) = [max(0, 3.7), max(0, -4.2)] = [3.7, 0]
 ```
+
+**Pattern Detection Results:**
+- **Neuron 1 (Urgency)**: Strongly activated (3.7) - detected high urgency pattern
+- **Neuron 2 (Legitimacy)**: Silent (0) - no legitimacy markers found
 
 ### Step 2: Forward Pass Through Output Layer
 
-**Input:** $h^{(1)} = [2.16, 0]$
+**Input:** $h^{(1)} = [3.7, 0]$ (urgency detected, no legitimacy)
 
 **Compute linear combination:**
 ```
-W²h¹ + b² = [[0.7],   [2.16,    [-0.3] = [0.7×2.16 + 1.2×0] + [-0.3]
-             [1.2]] × [0]   +            = [1.512] + [-0.3]
-                                         = [1.212]
+W²h¹ + b² = [[1.5],    [3.7,    [0.2] = [1.5×3.7 + (-0.8)×0] + [0.2]
+             [-0.8]] × [0]   +         = [5.55] + [0.2]
+                                       = [5.75]
 ```
 
 **Apply sigmoid for probability:**
 ```
-y = sigmoid(1.212) = 1/(1 + e^(-1.212)) = 1/(1 + 0.297) = 0.771
+y = sigmoid(5.75) = 1/(1 + e^(-5.75)) = 1/(1 + 0.003) = 0.997
 ```
 
-**Result:** 77.1% probability this email is spam!
+**Result:** 99.7% probability this email is spam!
+
+**Why the MLP succeeded:**
+- **Hidden layer** learned to detect "urgency without legitimacy" pattern
+- **Output layer** learned that this combination strongly indicates spam
+- **Single perceptron** would have failed to capture this complex relationship
 
 ### Step 3: Understanding What Happened
 
 ```
-Original Features: [3 exclamations, has "free", good reputation]
+Original Features: [3 exclamations, no "free", 15 capitals]
                          ↓
-Hidden Layer:      [2.16, 0]  # Learned feature combinations
+Hidden Layer:      [3.7, 0]  # Urgency detected, no legitimacy
                          ↓  
-Output:           0.771       # 77% spam probability
+Output:           0.997      # 99.7% spam probability
 ```
 
 **Hidden Neuron Analysis:**
-- **Neuron 1 (activated)**: Detected pattern of many exclamations + "free" word
-- **Neuron 2 (silent)**: Its pattern wasn't triggered by this input
+- **Neuron 1 (Urgency Detector)**: Strongly activated by exclamations + capitals combination
+- **Neuron 2 (Legitimacy Detector)**: Silent because no "free" word (legitimacy marker) present
 
-**Key Insight:** The MLP learned that the combination of exclamations and "free" is a strong spam indicator, even with good sender reputation.
+**The Power of Multiple Layers:**
+1. **Layer 1**: Learned specialized pattern detectors (urgency vs legitimacy)
+2. **Layer 2**: Learned to combine these patterns intelligently
+3. **Result**: Detected sophisticated spam that exploits urgency without legitimate context
+
+**Key Insight:** The MLP learned a complex decision rule: "High urgency signals without legitimacy markers = strong spam indicator." This non-linear pattern would be impossible for a single perceptron to capture.
 
 ---
 
@@ -604,27 +653,29 @@ Where each layer applies: Linear Transformation → Non-linear Activation
 
 ---
 
-## 12. Final Visualization: Email Spam Detection
+## 12. Final Visualization: Advanced Spam Detection
 
 ```
-Email: "Free money!!!"
-Features: [3, 1, 0.8]  # [exclamations, has_free, reputation]
+Email: "Congratulations winner!!!"
+Features: [3, 0, 15]  # [exclamations, no_free, capitals]
                 ↓
-Hidden Layer 1: W¹x + b¹ = [2.16, -0.18]
+Hidden Layer 1: W¹x + b¹ = [3.7, -4.2]
                 ↓  
-After ReLU:     h¹ = [2.16, 0]
+After ReLU:     h¹ = [3.7, 0]  # Urgency detected, no legitimacy
                 ↓
-Output Layer:   W²h¹ + b² = [1.212] 
+Output Layer:   W²h¹ + b² = [5.75] 
                 ↓
-After Sigmoid:  y = 0.771  # 77% spam probability
+After Sigmoid:  y = 0.997  # 99.7% spam probability
 ```
 
-**The Journey:** From raw email features to spam probability through learned transformations. The MLP discovered that "many exclamations + free word" is a strong spam signal.
+**The Journey:** From raw email features to sophisticated spam detection through specialized pattern recognition. The MLP learned to detect complex spam patterns that single perceptrons cannot handle.
 
 **What It Learned:**
-- Hidden neuron 1: Detects "suspicious promotional patterns"  
-- Hidden neuron 2: Detects some other pattern (inactive for this email)
-- Output combination: Weighs these patterns to make final decision
+- **Hidden neuron 1 (Urgency Detector)**: Detects high-pressure tactics (exclamations + capitals)
+- **Hidden neuron 2 (Legitimacy Detector)**: Detects legitimate context markers (silent here)
+- **Output combination**: Learned "urgency without legitimacy = strong spam signal"
+
+**Why This Matters:** This example shows MLPs solving problems beyond single perceptron capabilities—the foundation for all complex neural network architectures.
 
 ---
 

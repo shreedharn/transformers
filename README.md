@@ -11,7 +11,7 @@ This repository provides a comprehensive exploration of transformer architecture
 | Document | Purpose | Key Focus |
 |----------|---------|-----------|
 | **[nn_intro.md](./nn_intro.md)** | Neural networks introduction | AI/ML/DL foundations, basic concepts |
-| **[Transformers Deep Dive](./transformers.md)** | Complete technical reference | Mathematical rigor, implementation details |
+| **[transformers.md](./transformers.md)** | Complete technical reference | Mathematical rigor, implementation details |
 | **[sequencing_history.md](./sequencing_history.md)** | Historical evolution | From MLPs to Transformers |
 | **[mlp_intro.md](./mlp_intro.md)** | MLP step-by-step tutorial | Neural network fundamentals |
 | **[rnn_intro.md](./rnn_intro.md)** | RNN step-by-step tutorial | Sequential modeling basics |
