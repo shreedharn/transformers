@@ -1,119 +1,361 @@
 # Glossary: Neural Networks and Transformers
 
-A comprehensive dictionary of key terms, concepts, and technical vocabulary used throughout the neural networks and transformers learning materials.
+A comprehensive dictionary of key terms, concepts, and technical vocabulary used throughout the neural networks and transformers learning materials. Each term includes cross-references to detailed explanations in the repository documents.
 
 ## Table of Contents
 
-- [A](#a) | [B](#b) | [C](#c) | [D](#d) | [E](#e) | [G](#g) | [H](#h) | [I](#i) | [L](#l) | [M](#m) | [N](#n) | [O](#o) | [P](#p) | [Q](#q) | [R](#r) | [S](#s) | [T](#t) | [U](#u) | [V](#v) | [W](#w)
+- [A](#a) | [B](#b) | [C](#c) | [D](#d) | [E](#e) | [F](#f) | [G](#g) | [H](#h) | [I](#i) | [L](#l) | [M](#m) | [N](#n) | [O](#o) | [P](#p) | [Q](#q) | [R](#r) | [S](#s) | [T](#t) | [U](#u) | [V](#v) | [W](#w)
 
 ---
 
 ## A
 
-**Activation Function**: A mathematical function applied to the output of a neuron to introduce non-linearity. Common examples include ReLU, sigmoid, and tanh. Without activation functions, neural networks would only be able to learn linear relationships.
+**Activation Function**: A mathematical function applied to the output of a neuron to introduce non-linearity. Without activation functions, neural networks would only be able to learn linear relationships.
+- **Common types**: ReLU: $f(x) = \max(0, x)$, Sigmoid: $\sigma(x) = \frac{1}{1+e^{-x}}$, Tanh: $\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$
+- **Deep dive**: [nn_intro.md Section 3](./nn_intro.md#the-role-of-activation-functions-space-warping) for geometric intuition, [mlp_intro.md Section 9](./mlp_intro.md#9-activation-functions-deep-dive) for detailed comparison
+
+**Adam Optimizer**: An adaptive optimization algorithm that combines momentum with per-parameter learning rate adaptation.
+- **Formula**: $\theta_t = \theta_{t-1} - \alpha \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}$ where $\hat{m}_t$ and $\hat{v}_t$ are bias-corrected moment estimates
+- **Details**: [nn_intro.md Section 5](./nn_intro.md#adam-adaptive-moments) for intuition, [pytorch_ref.md Section 5](./pytorch_ref.md#5-optimization-loop--losses) for implementation
 
 **Artificial Intelligence (AI)**: Computer systems that can perform tasks typically requiring human intelligence, such as visual perception, speech recognition, decision-making, and natural language understanding.
+- **Context**: [nn_intro.md Section 1](./nn_intro.md#1-what-is-ai-ml-and-deep-learning) for AI/ML/DL hierarchy
 
 **Attention Head**: A specialized component of multi-head attention that focuses on specific types of relationships (e.g., grammar, semantics, position).
+- **Implementation**: [transformers.md Section 9](./transformers.md#9-multi-head-attention) for complete technical details
+- **Code**: [pytorch_ref.md Section 10](./pytorch_ref.md#self-attention-from-scratch) for from-scratch implementation
+
+**Attention Mechanism**: A technique that allows models to focus on relevant parts of the input sequence when making predictions.
+- **Formula**: $\text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$
+- **Explanation**: [transformers.md Section 9](./transformers.md#9-multi-head-attention) for detailed mechanics
+
+---
 
 ## B
 
-**Backpropagation**: The algorithm used to train neural networks by calculating gradients and propagating errors backward through the network layers. It determines how much each weight contributed to the final error and adjusts them accordingly.
+**Backpropagation**: The algorithm used to train neural networks by calculating gradients and propagating errors backward through the network layers.
+- **Mathematical foundation**: Uses chain rule to compute $\frac{\partial \mathcal{L}}{\partial W^{(l)}} = \frac{\partial \mathcal{L}}{\partial h^{(l+1)}} \cdot \frac{\partial h^{(l+1)}}{\partial W^{(l)}}$
+- **Step-by-step**: [mlp_intro.md Section 6](./mlp_intro.md#backpropagation-the-learning-algorithm) for detailed derivation
+- **Implementation**: [pytorch_ref.md Section 3](./pytorch_ref.md#3-autograd-finding-gradients) for automatic differentiation
 
-**Bias**: An additional parameter in a neuron that allows the activation function to shift, helping the network fit data better. It acts like an intercept term in linear regression, providing flexibility in the decision boundary.
+**Batch Normalization**: A technique that normalizes layer inputs to stabilize training and accelerate convergence.
+- **Formula**: $\hat{x} = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}}$ followed by learned scaling and shifting
+- **Details**: [pytorch_ref.md Section 6](./pytorch_ref.md#6-vanishingexploding-gradients) for gradient stabilization context
+
+**BERT (Bidirectional Encoder Representations from Transformers)**: A transformer-based model that reads text bidirectionally for better context understanding.
+- **Architecture**: [transformers.md Section 8](./transformers.md#encoder-only-models-bert-roberta-electra) for encoder-only design
+- **Training**: Masked Language Modeling (MLM) and Next Sentence Prediction (NSP)
+
+**Bias**: An additional parameter in a neuron that allows the activation function to shift, providing flexibility in the decision boundary.
+- **Mathematical role**: Shifts hyperplane: $z = Wx + b$
+- **Geometric intuition**: [nn_intro.md Section 3](./nn_intro.md#the-role-of-bias-flexible-positioning) for spatial understanding
+- **Examples**: [mlp_intro.md Section 5](./mlp_intro.md#5-worked-example-advanced-spam-detection) for worked calculations
+
+---
 
 ## C
 
 **Centroid**: The center point of a cluster in vector space, representing the average position of all vectors in that cluster.
+- **Context**: [knowledge_store.md](./knowledge_store.md) for vector search applications
+
+**Cross-Entropy Loss**: The standard loss function for classification tasks that measures the difference between predicted and true probability distributions.
+- **Formula**: $\mathcal{L} = -\sum_{i=1}^{C} y_i \log(p_i)$ where $y_i$ is true label and $p_i$ is predicted probability
+- **Intuition**: [nn_intro.md Section 5](./nn_intro.md#for-classification-problems) for geometric interpretation
+- **Implementation**: [pytorch_ref.md Section 5](./pytorch_ref.md#5-optimization-loop--losses) for PyTorch usage
+
+---
 
 ## D
 
-**Deep Learning**: A subset of machine learning using neural networks with multiple hidden layers (typically 3 or more) to learn complex patterns in data. The "deep" refers to the many layers that enable hierarchical feature learning.
+**Deep Learning**: A subset of machine learning using neural networks with multiple hidden layers (typically 3 or more) to learn complex patterns in data.
+- **Foundations**: [nn_intro.md Section 1](./nn_intro.md#deep-learning-dl) for definition and examples
+- **Why it works**: [nn_intro.md Section 2](./nn_intro.md#2-why-deep-learning-for-nlp) for NLP advantages
+
+**Dropout**: A regularization technique that randomly sets some neurons to zero during training to prevent overfitting.
+- **Implementation**: [mlp_intro.md Section 8](./mlp_intro.md#overfitting-when-mlps-memorize) for overfitting solutions
+- **Code**: [pytorch_ref.md Section 8](./pytorch_ref.md#8-mlps-in-pytorch) for practical usage
+
+---
 
 ## E
 
-**Embedding**: A dense numerical vector representation of text, images, or other data that captures semantic meaning in high-dimensional space. Word embeddings allow neural networks to understand that similar words have similar meanings.
+**Embedding**: A dense numerical vector representation of text, images, or other data that captures semantic meaning in high-dimensional space.
+- **Mathematical foundation**: $\mathbf{e}_i = E[i] \in \mathbb{R}^{d_{\text{model}}}$ where $E$ is the embedding matrix
+- **Geometric intuition**: [nn_intro.md Section 5](./nn_intro.md#text-embeddings-bridging-language-and-mathematics) for complete explanation
+- **Applications**: [knowledge_store.md](./knowledge_store.md) for semantic search and knowledge storage
 
-**Epoch**: One complete pass through the entire training dataset during neural network training. Multiple epochs are usually needed for the model to converge to optimal weights.
+**Encoder**: In transformer architecture, the component that processes input sequences to create contextualized representations.
+- **Architecture**: [transformers.md Section 8](./transformers.md#encoder-only-models-bert-roberta-electra) for encoder-only models
+- **vs Decoder**: [transformers.md Section 8](./transformers.md#8-architectural-variants-encoder-decoder-and-encoder-decoder) for comparison
+
+**Epoch**: One complete pass through the entire training dataset during neural network training.
+- **Training context**: [nn_intro.md Section 5](./nn_intro.md#1-epochs) for training concepts
+- **Implementation**: [pytorch_ref.md Section 5](./pytorch_ref.md#5-optimization-loop--losses) for training loops
+
+---
+
+## F
+
+**Feed-Forward Network**: A neural network component where information flows in one direction, typically used within transformer blocks.
+- **In transformers**: [transformers.md Section 11](./transformers.md#11-feed-forward-networks) for detailed explanation
+- **Implementation**: Two linear transformations with activation: $\text{FFN}(x) = \max(0, xW_1 + b_1)W_2 + b_2$
+
+---
 
 ## G
 
-**Gradient Descent**: An optimization algorithm that finds the minimum of a function by iteratively moving in the direction of steepest descent. It's the core method for updating neural network weights during training.
+**GPT (Generative Pre-trained Transformer)**: A family of decoder-only transformer models designed for text generation.
+- **Architecture**: [transformers.md Section 8](./transformers.md#decoder-only-models-gpt-palm-llama) for decoder-only design
+- **Training**: Causal Language Modeling (CLM) for next-token prediction
+
+**Gradient Descent**: An optimization algorithm that finds the minimum of a function by iteratively moving in the direction of steepest descent.
+- **Mathematical foundation**: $\theta_{\text{new}} = \theta_{\text{old}} - \alpha \nabla_{\theta} \mathcal{L}$
+- **Intuition**: [nn_intro.md Section 5](./nn_intro.md#gradient-descent-the-universal-learning-algorithm) for complete explanation
+- **Variants**: [nn_intro.md Section 5](./nn_intro.md#from-simple-to-sophisticated-evolution-of-optimizers) for SGD, momentum, Adam
+
+**GRU (Gated Recurrent Unit)**: A type of RNN with gating mechanisms that help handle long-term dependencies, simpler than LSTM.
+- **Implementation**: [pytorch_ref.md Section 9](./pytorch_ref.md#rnn-vs-lstm-vs-gru-comparison) for comparison with RNN/LSTM
+- **Evolution**: [rnn_intro.md Section 10](./rnn_intro.md#evolution-beyond-vanilla-rnns) for historical context
+
+---
 
 ## H
 
-**Hidden Layer**: Layers in a neural network between the input and output layers that process and transform the data. These layers learn increasingly abstract representations of the input.
+**Hidden Layer**: Layers in a neural network between the input and output layers that process and transform the data.
+- **vs Hidden State**: [nn_intro.md Section 6](./nn_intro.md#understanding-hidden-states-vs-hidden-layers) for crucial distinction
+- **In RNNs**: [rnn_intro.md Section 4](./rnn_intro.md#4-understanding-hidden-states-vs-hidden-layers) for memory vs architecture
+
+**Hidden State**: The internal representation vector that flows through a neural network at a specific processing step.
+- **Mathematical definition**: $h^{(l)} = f(W^{(l)}h^{(l-1)} + b^{(l)})$ for layer $l$
+- **In RNNs**: [rnn_intro.md Section 3](./rnn_intro.md#3-the-core-rnn-equation) for memory across time steps
+- **Worked example**: [rnn_intro.md Section 7](./rnn_intro.md#7-worked-example-cat-sat-here) for "cat sat here" processing
 
 **HNSW (Hierarchical Navigable Small World)**: A graph-based indexing method that creates multiple navigation layers for fast approximate nearest neighbor search.
+- **Context**: [knowledge_store.md](./knowledge_store.md) for vector database indexing
+
+**Hyperparameter**: Configuration settings for machine learning models that are set before training begins (learning rate, batch size, etc.).
+- **Tuning guide**: [mlp_intro.md Section 10](./mlp_intro.md#hyperparameter-tuning) for practical advice
+
+---
 
 ## I
 
 **IVF (Inverted File)**: A clustering-based indexing method that groups similar vectors together and searches only within relevant clusters.
+- **Vector search**: [knowledge_store.md](./knowledge_store.md) for database optimization techniques
+
+---
 
 ## L
 
-**Loss Function**: A function that measures how well the neural network's predictions match the actual target values. Different tasks (classification, regression) use different loss functions.
+**Layer Normalization**: A normalization technique applied within transformer layers to stabilize training.
+- **Formula**: Applied to each position independently across the feature dimension
+- **In transformers**: [transformers.md Section 12](./transformers.md#12-layer-normalization) for detailed explanation
+
+**Learning Rate**: A hyperparameter that controls the step size in gradient descent optimization.
+- **Importance**: [nn_intro.md Section 5](./nn_intro.md#the-learning-rate-α-speed-vs-accuracy-trade-off) for intuitive explanation
+- **Schedules**: [pytorch_ref.md Section 5](./pytorch_ref.md#5-optimization-loop--losses) for dynamic adjustment
+
+**Loss Function**: A function that measures how well the neural network's predictions match the actual target values.
+- **Types**: Cross-entropy for classification, MSE for regression
+- **Deep dive**: [nn_intro.md Section 5](./nn_intro.md#loss-functions-the-networks-report-card) for complete explanation
+- **Implementation**: [pytorch_ref.md Section 5](./pytorch_ref.md#5-optimization-loop--losses) for PyTorch examples
+
+**LSTM (Long Short-Term Memory)**: A type of RNN with gating mechanisms designed to handle long-term dependencies and mitigate vanishing gradients.
+- **Architecture**: [pytorch_ref.md Section 9](./pytorch_ref.md#why-gating-mechanisms) for gating explanation
+- **vs RNN**: [rnn_intro.md Section 10](./rnn_intro.md#evolution-beyond-vanilla-rnns) for improvements over vanilla RNNs
+
+---
 
 ## M
 
-**Machine Learning (ML)**: A subset of AI where systems learn patterns from data without being explicitly programmed for every scenario. It includes both traditional methods (decision trees, SVM) and deep learning.
+**Machine Learning (ML)**: A subset of AI where systems learn patterns from data without being explicitly programmed for every scenario.
+- **vs AI vs DL**: [nn_intro.md Section 1](./nn_intro.md#1-what-is-ai-ml-and-deep-learning) for clear hierarchy
+- **Traditional methods**: [nn_intro.md Section 2](./nn_intro.md#challenges-with-traditional-ml-for-text) for comparison with deep learning
 
-**Multi-Layer Perceptron (MLP)**: A neural network with one or more hidden layers between input and output layers. MLPs can learn non-linear patterns and are the foundation of deeper architectures.
+**Masked Language Modeling (MLM)**: A training objective where some tokens are masked and the model learns to predict them.
+- **In BERT**: [transformers.md](./transformers.md) for bidirectional training context
+
+**Multi-Head Attention**: An extension of attention that runs multiple attention mechanisms in parallel to capture different types of relationships.
+- **Formula**: $\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^O$
+- **Complete explanation**: [transformers.md Section 9](./transformers.md#9-multi-head-attention) for mathematical details
+- **Implementation**: [pytorch_ref.md Section 10](./pytorch_ref.md#10-transformers-in-pytorch) for code examples
+
+**Multi-Layer Perceptron (MLP)**: A neural network with one or more hidden layers between input and output layers.
+- **Complete tutorial**: [mlp_intro.md](./mlp_intro.md) for step-by-step explanation
+- **vs single perceptron**: [mlp_intro.md Section 1](./mlp_intro.md#mlp-vs-single-perceptron) for capability comparison
+- **Worked example**: [mlp_intro.md Section 5](./mlp_intro.md#5-worked-example-advanced-spam-detection) for detailed calculations
+
+---
 
 ## N
 
-**Natural Language Processing (NLP)**: A field of AI focused on enabling computers to understand, interpret, and generate human language. It includes tasks like translation, sentiment analysis, and text generation.
+**Natural Language Processing (NLP)**: A field of AI focused on enabling computers to understand, interpret, and generate human language.
+- **Why deep learning**: [nn_intro.md Section 2](./nn_intro.md#2-why-deep-learning-for-nlp) for advantages over traditional methods
+- **Applications**: [nn_intro.md Section 6](./nn_intro.md#6-where-neural-networks-shine-in-nlp) for practical uses
 
-**Neural Network**: A computing system inspired by biological neural networks, consisting of interconnected nodes (neurons) that process information. Each connection has a weight that determines the strength of the signal.
+**Neural Network**: A computing system inspired by biological neural networks, consisting of interconnected nodes (neurons) that process information.
+- **Foundation**: [nn_intro.md Section 3](./nn_intro.md#3-the-neuron-and-the-perceptron) for basic building blocks
+- **Geometric view**: [nn_intro.md Section 4](./nn_intro.md#geometric-intuition-from-1d-to-n-d) for spatial understanding
+
+---
 
 ## O
 
-**Overfitting**: When a model performs well on training data but poorly on new, unseen data because it has memorized rather than learned generalizable patterns. It's a common problem that requires regularization techniques to address.
+**Optimizer**: An algorithm that updates neural network parameters to minimize the loss function.
+- **Types**: SGD, Adam, RMSprop
+- **Comparison**: [nn_intro.md Section 5](./nn_intro.md#from-simple-to-sophisticated-evolution-of-optimizers) for evolution
+- **PyTorch**: [pytorch_ref.md Section 5](./pytorch_ref.md#5-optimization-loop--losses) for practical implementation
+
+**Overfitting**: When a model performs well on training data but poorly on new, unseen data because it has memorized rather than learned generalizable patterns.
+- **Solutions**: [mlp_intro.md Section 8](./mlp_intro.md#overfitting-when-mlps-memorize) for regularization techniques
+- **vs Underfitting**: [nn_intro.md Section 5](./nn_intro.md#4-overfitting-vs-underfitting) for comparison
+
+---
 
 ## P
 
-**Perceptron**: The basic building block of neural networks, consisting of inputs, weights, a bias, and an activation function. It performs a weighted sum of inputs and applies an activation function to produce an output.
+**Perceptron**: The basic building block of neural networks, consisting of inputs, weights, a bias, and an activation function.
+- **Formula**: $y = f\left(\sum_{i=1}^{n} w_i x_i + b\right)$
+- **Complete explanation**: [nn_intro.md Section 3](./nn_intro.md#3-the-neuron-and-the-perceptron) for biological inspiration and mathematics
+- **Limitations**: [nn_intro.md Section 4](./nn_intro.md#limitations-of-single-perceptrons) for XOR problem
+
+**Positional Encoding**: A technique to inject sequence order information into transformer models since attention is permutation-invariant.
+- **Mathematical foundation**: [transformers.md Section 6](./transformers.md#6-positional-encoding) for sinusoidal encoding
+- **Implementation**: [pytorch_ref.md Section 10](./pytorch_ref.md#10-transformers-in-pytorch) for code examples
 
 **Product Quantization (PQ)**: A compression technique that splits vectors into chunks and replaces each chunk with a representative centroid ID.
+- **Vector databases**: [knowledge_store.md](./knowledge_store.md) for storage optimization
+
+---
 
 ## Q
 
 **Query Vector**: In attention mechanisms, the vector representing "what information is being sought" from other positions.
+- **Q, K, V mechanism**: [transformers.md Section 9](./transformers.md#9-multi-head-attention) for complete attention explanation
+
+---
 
 ## R
 
 **RAG (Retrieval-Augmented Generation)**: A system that combines vector store retrieval with LLM generation to provide informed, grounded responses.
+- **Architecture**: [knowledge_store.md](./knowledge_store.md) for implementation patterns
 
-**ReLU (Rectified Linear Unit)**: An activation function that outputs the input if positive, zero otherwise: f(x) = max(0, x). It's popular because it's simple to compute and helps address the vanishing gradient problem.
+**ReLU (Rectified Linear Unit)**: An activation function that outputs the input if positive, zero otherwise.
+- **Formula**: $f(x) = \max(0, x)$
+- **Advantages**: [nn_intro.md Section 3](./nn_intro.md#relu-rectified-linear-unit) for vanishing gradient prevention
+- **Geometric effect**: [nn_intro.md Section 4](./nn_intro.md#step-2-relu-activation-bends-space) for space folding in XOR example
 
-## S
+**RNN (Recurrent Neural Network)**: A neural network designed for sequential data that maintains hidden states across time steps.
+- **Core equation**: $h_t = f(W_x x_t + W_h h_{t-1} + b)$
+- **Complete tutorial**: [rnn_intro.md](./rnn_intro.md) for step-by-step explanation
+- **Limitations**: [rnn_intro.md Section 9](./rnn_intro.md#9-the-vanishing-gradient-problem-rnns-fatal-flaw) for vanishing gradients
 
-**Sigmoid**: An activation function that maps any input to a value between 0 and 1: f(x) = 1/(1 + e^(-x)). It's often used in binary classification tasks and historically was very common in neural networks.
-
-**Similarity Threshold**: A minimum similarity score required for a document to be considered relevant in vector search.
-
-## T
-
-**Temperature**: A parameter controlling randomness in text generation; lower values make outputs more focused, higher values more creative.
-
-**Top-K**: A parameter limiting selection to the K most likely tokens (in LLMs) or K most similar documents (in vector stores).
-
-**Top-P (Nucleus Sampling)**: A parameter that dynamically selects tokens based on cumulative probability until reaching threshold P.
-
-**Transformer**: A neural network architecture that uses self-attention mechanisms to process sequential data efficiently, powering models like GPT and BERT. It revolutionized NLP by processing all positions in a sequence simultaneously.
-
-## U
-
-**Universal Approximation Theorem**: A mathematical theorem stating that neural networks with sufficient neurons can approximate any continuous function. This provides theoretical justification for why neural networks are so powerful.
-
-## V
-
-**Vector Store**: A database optimized for storing and searching high-dimensional numerical vectors representing semantic content.
-
-## W
-
-**Weight**: Parameters in a neural network that determine the strength of connections between neurons and are learned during training. Weights are adjusted through backpropagation to minimize the loss function.
+**Regularization**: Techniques to prevent overfitting by constraining model complexity.
+- **Methods**: Dropout, L1/L2 regularization, early stopping
+- **Practical guide**: [mlp_intro.md Section 8](./mlp_intro.md#8-common-challenges-and-solutions) for implementation
 
 ---
 
-*This glossary covers fundamental terms from neural networks through transformer architectures. Terms are continuously updated as new concepts are introduced in the learning materials.*
+## S
+
+**Self-Attention**: An attention mechanism where queries, keys, and values all come from the same sequence, allowing positions to attend to each other.
+- **Formula**: $\text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$
+- **Implementation**: [pytorch_ref.md Section 10](./pytorch_ref.md#self-attention-from-scratch) for from-scratch code
+- **Intuition**: [transformers.md Section 9](./transformers.md#9-multi-head-attention) for detailed mechanics
+
+**Sigmoid**: An activation function that maps any input to a value between 0 and 1.
+- **Formula**: $\sigma(x) = \frac{1}{1 + e^{-x}}$
+- **Properties**: [nn_intro.md Section 3](./nn_intro.md#sigmoid) for squashing behavior
+- **Uses**: Binary classification, historical neural networks
+
+**Similarity Threshold**: A minimum similarity score required for a document to be considered relevant in vector search.
+- **Vector search**: [knowledge_store.md](./knowledge_store.md) for retrieval systems
+
+**Softmax**: A function that converts a vector of real numbers into a probability distribution.
+- **Formula**: $\text{softmax}(x_i) = \frac{e^{x_i}}{\sum_{j=1}^{K} e^{x_j}}$
+- **Usage**: Output layer for multi-class classification, attention weights
+
+**Stochastic Gradient Descent (SGD)**: A variant of gradient descent that uses random mini-batches instead of the full dataset.
+- **Benefits**: [nn_intro.md Section 5](./nn_intro.md#from-simple-to-sophisticated-evolution-of-optimizers) for comparison with other optimizers
+
+---
+
+## T
+
+**Tanh (Hyperbolic Tangent)**: An activation function that maps inputs to values between -1 and 1.
+- **Formula**: $\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$
+- **Advantages**: [nn_intro.md Section 3](./nn_intro.md#tanh) for zero-centered output
+- **Comparison**: [mlp_intro.md Section 9](./mlp_intro.md#tanh-hyperbolic-tangent) for detailed analysis
+
+**Temperature**: A parameter controlling randomness in text generation; lower values make outputs more focused, higher values more creative.
+- **Text generation**: Used in softmax: $p_i = \frac{e^{x_i/T}}{\sum_j e^{x_j/T}}$
+
+**Token**: The basic unit of text processing in NLP models (words, subwords, or characters).
+- **Tokenization**: [transformers.md Section 4](./transformers.md#4-tokenization-breaking-text-into-pieces) for detailed explanation
+- **Embeddings**: [nn_intro.md Section 5](./nn_intro.md#text-embeddings-bridging-language-and-mathematics) for vector representation
+
+**Top-K**: A parameter limiting selection to the K most likely tokens (in LLMs) or K most similar documents (in vector stores).
+- **Sampling**: Controls generation diversity in language models
+
+**Top-P (Nucleus Sampling)**: A parameter that dynamically selects tokens based on cumulative probability until reaching threshold P.
+- **vs Top-K**: More adaptive selection for text generation
+
+**Transformer**: A neural network architecture that uses self-attention mechanisms to process sequential data efficiently.
+- **Complete reference**: [transformers.md](./transformers.md) for comprehensive technical details
+- **Key innovation**: [nn_intro.md Section 6](./nn_intro.md#the-transformer-solution) for attention mechanism explanation
+- **Implementation**: [pytorch_ref.md Section 10](./pytorch_ref.md#10-transformers-in-pytorch) for code examples
+
+---
+
+## U
+
+**Universal Approximation Theorem**: A mathematical theorem stating that neural networks with sufficient neurons can approximate any continuous function.
+- **Implication**: [nn_intro.md Section 4](./nn_intro.md#universal-approximation-theorem) for theoretical foundation
+- **Practical meaning**: Justifies why neural networks are so powerful for complex pattern learning
+
+**Underfitting**: When a model is too simple to capture the underlying patterns in the data.
+- **vs Overfitting**: [nn_intro.md Section 5](./nn_intro.md#4-overfitting-vs-underfitting) for comparison
+- **Solutions**: [mlp_intro.md Section 8](./mlp_intro.md#underfitting-when-mlps-are-too-simple) for model complexity increase
+
+---
+
+## V
+
+**Vanishing Gradient Problem**: A fundamental issue in deep networks where gradients become exponentially small in earlier layers, preventing effective learning.
+- **Mathematical analysis**: [rnn_intro.md Section 9](./rnn_intro.md#9-the-vanishing-gradient-problem-rnns-fatal-flaw) for RNN-specific issues
+- **Solutions**: [pytorch_ref.md Section 6](./pytorch_ref.md#6-vanishingexploding-gradients) for practical fixes
+- **Why ReLU helps**: [nn_intro.md Section 3](./nn_intro.md#relu-rectified-linear-unit) for gradient preservation
+
+**Vector Store**: A database optimized for storing and searching high-dimensional numerical vectors representing semantic content.
+- **Complete guide**: [knowledge_store.md](./knowledge_store.md) for implementation, indexing, and comparison with LLM weights
+- **Applications**: Semantic search, RAG systems, recommendation engines
+
+**Vocabulary**: The complete set of unique tokens (words, subwords, characters) that a model can process.
+- **Size considerations**: [transformers.md Section 4](./transformers.md#4-tokenization-breaking-text-into-pieces) for tokenization trade-offs
+
+---
+
+## W
+
+**Weight**: Parameters in a neural network that determine the strength of connections between neurons and are learned during training.
+- **Mathematical role**: $z = w_1x_1 + w_2x_2 + ... + w_nx_n + b$
+- **Geometric interpretation**: [nn_intro.md Section 3](./nn_intro.md#the-role-of-weights-feature-importance-and-direction) for spatial understanding
+- **Training**: [nn_intro.md Section 5](./nn_intro.md#gradient-descent-the-universal-learning-algorithm) for optimization process
+
+**Word Embedding**: A dense vector representation of words that captures semantic relationships.
+- **Mathematical foundation**: Words mapped to $\mathbb{R}^{d}$ where similar words have similar vectors
+- **Properties**: [nn_intro.md Section 5](./nn_intro.md#why-embeddings-work) for distributional hypothesis
+- **Applications**: [knowledge_store.md](./knowledge_store.md) for semantic search and knowledge storage
+
+---
+
+## 📚 Additional Resources
+
+- **Mathematical Foundations**: [math_quick_ref.md](./math_quick_ref.md) for formulas and derivations
+- **Implementation Patterns**: [pytorch_ref.md](./pytorch_ref.md) for practical coding examples  
+- **Historical Context**: [history_quick_ref.md](./history_quick_ref.md) for evolution timeline
+- **Hands-on Examples**: [mlp_intro.md](./mlp_intro.md) and [rnn_intro.md](./rnn_intro.md) for worked calculations
+
+---
+
+*This glossary covers fundamental terms from neural networks through transformer architectures. Each term includes cross-references to detailed explanations in the repository documents for deeper understanding.*
