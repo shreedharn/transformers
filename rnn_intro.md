@@ -17,35 +17,40 @@
    - [The RNN Innovation: Adding Memory](#the-rnn-innovation-adding-memory)
 3. [The Core RNN Equation](#3-the-core-rnn-equation)
    - [Visual Breakdown](#visual-breakdown)
-4. [Where These Weights Come From](#4-where-these-weights-come-from)
+4. [Understanding Hidden States vs Hidden Layers](#4-understanding-hidden-states-vs-hidden-layers)
+   - [Core Concepts: States vs Layers](#core-concepts-states-vs-layers)
+   - [Key Distinctions](#key-distinctions)  
+   - [RNN-Specific Examples](#rnn-specific-examples)
+   - [Common Confusions Clarified](#common-confusions-clarified)
+5. [Where These Weights Come From](#5-where-these-weights-come-from)
    - [Weight Initialization](#weight-initialization)
    - [Training Process: Backpropagation Through Time (BPTT)](#training-process-backpropagation-through-time-bptt)
    - [Weight Sharing vs MLPs](#weight-sharing-vs-mlps)
-5. [Hidden Size and Embedding Size](#5-hidden-size-and-embedding-size)
+6. [Hidden Size and Embedding Size](#6-hidden-size-and-embedding-size)
    - [Embedding Size (E): Input Detail](#embedding-size-e-input-detail)
    - [Hidden Size (H): Memory Capacity](#hidden-size-h-memory-capacity)
    - [Weight Matrix Shapes](#weight-matrix-shapes)
-6. [Worked Example: "cat sat here"](#6-worked-example-cat-sat-here)
+7. [Worked Example: "cat sat here"](#7-worked-example-cat-sat-here)
    - [Step 0: Initialize](#step-0-initialize)
    - [Step 1: Process "cat"](#step-1-process-cat)
    - [Step 2: Process "sat"](#step-2-process-sat)
    - [Step 3: Process "here"](#step-3-process-here)
    - [Summary: Memory Evolution](#summary-memory-evolution)
-7. [RNN vs MLP Training](#7-rnn-vs-mlp-training)
+8. [RNN vs MLP Training](#8-rnn-vs-mlp-training)
    - [MLP Training: Layer-by-Layer](#mlp-training-layer-by-layer)
    - [RNN Training: Backpropagation Through Time (BPTT)](#rnn-training-backpropagation-through-time-bptt)
    - [The Gradient Flow Challenge](#the-gradient-flow-challenge)
-8. [The Vanishing Gradient Problem: RNN's Fatal Flaw](#8-the-vanishing-gradient-problem-rnns-fatal-flaw)
+9. [The Vanishing Gradient Problem: RNN's Fatal Flaw](#9-the-vanishing-gradient-problem-rnns-fatal-flaw)
    - [Why Gradients Vanish](#why-gradients-vanish)
    - [Impact on Learning](#impact-on-learning)
-9. [Evolution Beyond Vanilla RNNs](#9-evolution-beyond-vanilla-rnns)
+10. [Evolution Beyond Vanilla RNNs](#10-evolution-beyond-vanilla-rnns)
    - [Gating Mechanisms: LSTMs and GRUs](#gating-mechanisms-lstms-and-grus)
    - [Seq2Seq: The Encoder-Decoder Revolution](#seq2seq-the-encoder-decoder-revolution)
-10. [Summary: The RNN Legacy](#10-summary-the-rnn-legacy)
+11. [Summary: The RNN Legacy](#11-summary-the-rnn-legacy)
    - [How RNNs Changed Everything](#how-rnns-changed-everything)
    - [Why RNNs Led to Transformers](#why-rnns-led-to-transformers)
-11. [Final Visualization: "cat sat here" Through Time](#11-final-visualization-cat-sat-here-through-time)
-12. [Next Steps](#12-next-steps)
+12. [Final Visualization: "cat sat here" Through Time](#12-final-visualization-cat-sat-here-through-time)
+13. [Next Steps](#13-next-steps)
 
 ---
 
@@ -144,7 +149,7 @@ Time step 3: x₃ → RNN → h₃ → y₃  (uses h₂ as memory)
 
 ---
 
-## 2. The Core RNN Equation
+## 3. The Core RNN Equation
 
 The heart of every RNN is this update rule:
 
@@ -186,7 +191,123 @@ Past Memory    Current Input
 
 ---
 
-## 3. Where These Weights Come From
+## 4. Understanding Hidden States vs Hidden Layers
+
+Before diving deeper into RNN implementation details, it's crucial to clarify a fundamental distinction that often confuses newcomers: **hidden states** vs **hidden layers**. This distinction is especially important for RNNs because they handle both concepts in unique ways.
+
+### Core Concepts: States vs Layers
+
+**Hidden State**: The internal representation at a specific point in time or processing step
+**Hidden Layer**: The architectural component (collection of neurons) that produces hidden states
+
+### Key Distinctions
+
+#### Hidden Layers (Architecture)
+- **What**: Physical neural network structure between input and output
+- **Purpose**: Transform data through learned parameters (weights and biases)
+- **Persistence**: Fixed architecture throughout training and inference
+- **Example**: A 128-neuron recurrent layer in an RNN
+
+#### Hidden States (Dynamic Representations)
+- **What**: Actual vector values flowing through the network at any given moment
+- **Purpose**: Encode processed information at intermediate stages
+- **Persistence**: Change with each input/time step
+- **Example**: 128-dimensional vector of activations from that layer
+
+### RNN-Specific Examples
+
+#### The Architecture (Hidden Layer)
+In our RNN equation $h_t = \tanh(x_t W_{xh} + h_{t-1} W_{hh} + b_h)$:
+- **Hidden Layer**: The fixed computational structure with weight matrices $W_{xh}$, $W_{hh}$, and bias $b_h$
+- **Layer size**: Fixed at 128 neurons (if $H = 128$)
+- **Parameters**: Same weights used at every time step
+
+#### The Dynamic States (Hidden States)
+```
+Hidden Layer (architecture): Fixed 128-neuron recurrent layer
+Hidden States (dynamic):
+  h₀: [0.0, 0.0, ..., 0.0] (initial state, 128 values)
+  h₁: [0.2, 0.8, ..., 0.1] (after processing x₁, 128 values)
+  h₂: [0.7, 0.3, ..., 0.9] (after processing x₂, 128 values)
+  h₃: [0.1, 0.5, ..., 0.4] (after processing x₃, 128 values)
+```
+
+**Key Insight**: The **same layer** produces different **states** over time. The RNN architecture is fixed, but the hidden states evolve as the sequence is processed.
+
+### Mathematical Relationship for RNNs
+
+For RNNs, the relationship is:
+$$\text{Hidden Layer}: \mathbb{R}^{E} \times \mathbb{R}^{H} \rightarrow \mathbb{R}^{H}$$
+$$\text{Hidden State } h_t = \tanh(x_t W_{xh} + h_{t-1} W_{hh} + b_h)$$
+
+Where:
+- **Layer parameters**: $W_{xh} \in \mathbb{R}^{E \times H}$, $W_{hh} \in \mathbb{R}^{H \times H}$, $b_h \in \mathbb{R}^H$
+- **State evolution**: $h_t$ depends on current input $x_t$ and previous state $h_{t-1}$
+
+### Memory vs Structure Analogy
+
+Think of it like a **notebook and note-taking process**:
+
+#### Hidden Layer = The Notebook Design
+- **Fixed structure**: Number of pages (neurons), ruling style (activation function)
+- **Consistent tools**: Same pen (weights) used throughout
+- **Physical constraints**: Page size determines how much can be written
+
+#### Hidden States = The Actual Notes
+- **Content changes**: Each page contains different information
+- **Temporal evolution**: Notes build up over time
+- **Dynamic information**: What's written depends on what you're processing
+
+### Common Confusions Clarified
+
+#### Confusion 1: "Hidden layers store memory"
+❌ **Wrong**: Layers are architectural blueprints—they don't store anything
+✅ **Correct**: Hidden states carry information/memory from one time step to the next
+
+**RNN Context**: The hidden state $h_{t-1}$ carries memory forward, not the layer itself.
+
+#### Confusion 2: "RNNs have one hidden state"  
+❌ **Wrong**: RNNs have one type of recurrent layer architecture
+✅ **Correct**: RNNs produce a sequence of hidden states over time ($h_1, h_2, h_3, ..., h_T$)
+
+**RNN Context**: Each time step produces a new hidden state that encodes the sequence history.
+
+#### Confusion 3: "Adding more hidden layers gives more memory"
+❌ **Wrong**: More layers ≠ longer memory
+✅ **Correct**: Layer depth affects transformation complexity; sequence length affects memory span
+
+**RNN Context**: Memory span depends on sequence length and gradient flow, not layer count.
+
+### Practical Implications for RNNs
+
+#### For Model Design
+- **Layer architecture**: Choose hidden size $H$ based on memory capacity needs
+- **State initialization**: Decide how to initialize $h_0$ (usually zeros)
+- **Layer stacking**: Multiple RNN layers create deeper transformations
+
+#### For Debugging
+- **Analyze layer**: Check weight initialization, gradient flow through parameters
+- **Analyze states**: Monitor hidden state evolution, detect vanishing/exploding patterns
+- **Memory tracking**: Watch how information flows from $h_{t-1}$ to $h_t$
+
+#### For Training
+- **Layer-level**: Adjust hidden size, learning rates, regularization
+- **State-level**: Monitor gradient magnitudes, use gradient clipping, detect saturation
+
+### Key Insight for RNNs
+
+**Hidden layers** are the **computational machinery** (the RNN equation with its weights), while **hidden states** are the **evolving memory** that flows through this machinery at each time step.
+
+In RNNs specifically:
+- **Same layer** processes each time step
+- **Different states** result from each processing step
+- **Memory continuity** comes from passing $h_{t-1}$ to compute $h_t$
+
+Understanding this distinction is crucial for grasping how RNNs maintain memory across time while using a fixed computational structure.
+
+---
+
+## 5. Where These Weights Come From
 
 ### Weight Initialization
 Initially, $W_{xh}$, $W_{hh}$, and $b_h$ are **random numbers**. The RNN learns by adjusting these weights through training.
@@ -221,7 +342,7 @@ Backward Pass (compute gradients):
 
 ---
 
-## 4. Hidden Size and Embedding Size
+## 6. Hidden Size and Embedding Size
 
 ### Embedding Size (E): Input Detail
 
@@ -269,7 +390,7 @@ The dimensions determine the weight matrix shapes:
 
 ---
 
-## 5. Worked Example: "cat sat here"
+## 7. Worked Example: "cat sat here"
 
 Let's trace through a tiny example step by step. We'll use:
 - **Vocabulary:** {"cat": 0, "sat": 1, "here": 2}
@@ -378,7 +499,7 @@ Start:    h₀ = [0.00, 0.00]  # No memory
 
 ---
 
-## 6. RNN vs MLP Training
+## 8. RNN vs MLP Training
 
 ### MLP Training: Layer-by-Layer
 
@@ -443,7 +564,7 @@ Step 1 → Step 2 → ... → Step 49 → Step 50
 
 ---
 
-## 8. The Vanishing Gradient Problem: RNN's Fatal Flaw
+## 9. The Vanishing Gradient Problem: RNN's Fatal Flaw
 
 ### Why Gradients Vanish
 
@@ -474,7 +595,7 @@ $$\frac{\partial h_T}{\partial h_1} = \prod_{t=2}^{T} \frac{\partial h_t}{\parti
 
 ---
 
-## 9. Evolution Beyond Vanilla RNNs
+## 10. Evolution Beyond Vanilla RNNs
 
 ### Gating Mechanisms: LSTMs and GRUs
 
@@ -575,7 +696,7 @@ $$c \in \mathbb{R}^h \quad \text{(fixed hidden size)}$$
 
 ---
 
-## 10. Summary: The RNN Legacy
+## 11. Summary: The RNN Legacy
 
 ### How RNNs Changed Everything
 
@@ -636,7 +757,7 @@ Transformers: Pure attention, no recurrence = parallel processing
 
 ---
 
-## 11. Final Visualization: "cat sat here" Through Time
+## 12. Final Visualization: "cat sat here" Through Time
 
 ```
 Time Step 1: "cat"
@@ -661,7 +782,7 @@ Final Memory: [0.74, 0.84] encodes "cat sat here"
 
 ---
 
-## 12. Next Steps
+## 13. Next Steps
 
 Now that you understand RNNs and their complete evolution:
 

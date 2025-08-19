@@ -216,10 +216,17 @@ This repository provides a comprehensive exploration of transformer architecture
 **Key Sections:**
 - **AI/ML/DL Hierarchy**: Clear distinctions between artificial intelligence, machine learning, and deep learning
 - **Why Deep Learning for NLP**: Understanding advantages over traditional approaches for text processing
-- **Neuron Basics**: From biological inspiration to mathematical perceptrons with practical examples
-- **Network Architecture**: How individual neurons combine to form powerful multi-layer networks
-- **Training Process**: Complete explanation of backpropagation and gradient descent with PyTorch code
-- **NLP Applications**: Where neural networks excel in language tasks and limitations of basic approaches
+- **Neuron Basics**: From biological inspiration to mathematical perceptrons with geometric intuition
+- **Network Architecture**: How individual neurons combine to form powerful multi-layer networks with XOR example
+- **Training Process**: Complete explanation of loss functions, gradient descent, optimizers, and text embeddings
+- **NLP Applications**: Where neural networks excel in language tasks and the evolution to transformers
+- **Hidden States vs Layers**: Clear distinction between architecture and dynamic representations
+
+**Enhanced Features:**
+- **Geometric Intuition**: Deep understanding of how weights, bias, and activation functions transform space
+- **Worked Examples**: XOR problem solution showing why all components are essential
+- **Cross-References**: Comprehensive links to detailed explanations in other documents
+- **Text Embeddings**: Bridge from discrete symbols to continuous representations
 
 **Prerequisites:** No prior machine learning experience needed. Basic understanding of high school mathematics helpful.
 
@@ -239,16 +246,19 @@ This repository provides a comprehensive exploration of transformer architecture
 **Sequential modeling fundamentals** - Learn RNN mechanics with worked examples and understand the path to transformers.
 
 **Key Topics:**
-- **Sequential Challenge**: Why MLPs failed for variable-length sequences
-- **RNN Mechanics**: Step-by-step examples with worked calculations
+- **Sequential Challenge**: Why MLPs failed for variable-length sequences  
+- **RNN Core Equation**: Mathematical foundations with geometric intuition
+- **Hidden States vs Layers**: Clear distinction between architecture and memory
+- **Weight Matrices**: How input, hidden, and output weights work together
+- **Worked Example**: Complete "cat sat here" sequence processing with real numbers
 - **Vanishing Gradients**: Mathematical analysis of RNN's fatal flaw
 - **Evolution Beyond RNNs**: LSTMs, GRUs, and seq2seq architectures
-- **Attention Revolution**: How attention mechanisms led to transformers
 
 **Features:**
-- **Hands-on Examples**: Trace "cat sat here" through RNN processing
-- **Historical Context**: Complete evolution from early approaches to modern AI
-- **Mathematical Rigor**: Detailed gradient flow analysis and equations
+- **Hands-on Examples**: Trace "cat sat here" through RNN processing with calculated values
+- **Hidden State Analysis**: Deep dive into how RNNs maintain memory across time steps
+- **Mathematical Rigor**: Detailed gradient flow analysis and backpropagation through time
+- **Historical Context**: Complete evolution from early approaches to modern transformers
 - **Practical Insights**: Why each limitation drove the next innovation
 
 ### [Mathematical Foundations](./transformers_math.md)
@@ -380,10 +390,10 @@ This repository provides a comprehensive exploration of transformer architecture
 
 | Document | Lines | Focus | Depth |
 |----------|--------|--------|--------|
-| nn_intro.md | 687 | Neural Networks Introduction | Beginner-friendly |
+| nn_intro.md | 1,098 | Neural Networks Introduction | Beginner-friendly |
 | transformers.md | 1,851 | Technical Implementation | Deep |
 | mlp_intro.md | 625 | MLP Tutorial | Beginner-friendly |
-| rnn_intro.md | 442 | RNN Tutorial | Beginner-friendly |
+| rnn_intro.md | 807 | RNN Tutorial | Beginner-friendly |
 | transformers_math.md | 1,347 | Mathematical Theory | Rigorous |
 | math_quick_ref.md | 354 | Mathematical Reference | Quick Reference |
 | knowledge_store.md | 1,315 | LLM Weights vs Vector Stores | Intermediate |
