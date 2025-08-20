@@ -172,7 +172,7 @@ Models like RNNs and Transformers can process text sequentially and understand w
 
 > 📖 **For sequence modeling details**: See [rnn_intro.md](./rnn_intro.md) for complete RNN/LSTM tutorial with worked examples, and [transformers.md](./transformers.md) for comprehensive transformer architecture guide.
 
-Having seen why deep learning outperforms traditional methods for language tasks, let's dive into the fundamental building blocks that make this possible. We'll start with the most basic unit: the artificial neuron.
+Having seen why deep learning outperforms traditional methods for language tasks, let's explore the fundamental building blocks that make this revolution possible, starting with the most basic unit: the artificial neuron.
 
 ---
 
@@ -216,7 +216,7 @@ Each component serves a distinct geometric purpose that becomes clear when we vi
 3. **Bias (b)**: An additional parameter that allows the neuron to shift its output
 4. **Activation Function (f)**: A function that determines the final output
 
-#### Mathematical Formula
+The perceptron's mathematical operation can be expressed as:
 
 $$y = f\left(\sum_{i=1}^{n} w_i x_i + b\right)$$
 
@@ -230,7 +230,7 @@ Where:
 
 ### Understanding Each Component Geometrically
 
-To build true intuition, let's understand what each component does *geometrically* - how it transforms data in space.
+To build true intuition about neural networks, we need to understand how each component transforms data in high-dimensional space. Let's start with weights, which serve as both feature selectors and space transformers.
 
 #### The Role of Weights: Feature Importance and Direction
 
@@ -256,9 +256,8 @@ The bias term shifts the decision boundary away from the origin:
 
 $$z = Wx + b$$
 
-**Why Bias Matters:**
+Understanding bias requires seeing how it transforms geometric boundaries. Without bias, decision boundaries are constrained to pass through the origin:
 
-**Without Bias:**
 ```
 Decision boundary stuck at origin:
    \
@@ -267,18 +266,17 @@ Decision boundary stuck at origin:
       \
 ```
 
-All separating lines/hyperplanes must pass through the origin, severely limiting the network's ability to fit real-world data.
+This severely limits the network's flexibility. With bias, the boundary can slide to any optimal position:
 
-**With Bias:**  
 ```
-Decision boundary can be positioned anywhere:
+Decision boundary positioned optimally:
       \
        \
 --------\------
          \
 ```
 
-The bias allows the boundary to slide to the optimal position for separating classes.
+This freedom to position boundaries anywhere in space is crucial for fitting real-world data patterns.
 
 **Geometric Intuition:**
 - **1D**: Bias shifts the intercept (like the 'c' in y = mx + c)
@@ -290,21 +288,15 @@ Bias is like the **default activation level**. Even with zero input, a neuron ca
 
 #### The Role of Activation Functions: Space Warping
 
-**The Linearity Problem:**
-Without activation functions, stacking layers simply creates a deeper linear transformation:
+Activation functions solve a fundamental limitation: without them, stacking layers merely creates deeper linear transformations that collapse to a single function:
 
 $$h(x) = W_3(W_2(W_1x)) = (W_3W_2W_1)x$$
 
-This collapses to a single linear function regardless of depth - neural networks become no more powerful than linear regression!
-
-**How Activation Functions Create Nonlinearity:**
-Activation functions introduce **space bending** after each linear transformation:
+Regardless of depth, this remains equivalent to linear regression! Activation functions break this limitation by introducing **space bending** after each linear transformation:
 
 $$h^{(l)} = f(W^{(l)}x + b^{(l)})$$
 
-#### Simple Example: Email Spam Detection
-
-Let's say we want to detect spam emails using a single perceptron with three features:
+Let's see how these components work together in a concrete example. Consider detecting spam emails using a single perceptron with three key features:
 
 **Features:**
 - $x_1$ = Number of exclamation marks
@@ -333,40 +325,38 @@ $$f(1.9) = \frac{1}{1 + e^{-1.9}} = 0.87$$
 
 #### Common Activation Functions
 
-**ReLU (Rectified Linear Unit):**
+**ReLU (Rectified Linear Unit)** is the most widely used activation function:
 $$f(x) = \max(0, x)$$
 
-**Effect**: Folds negative half-space to zero
+ReLU folds the negative half-space to zero, creating piecewise linear regions:
 ```
 Input:  -∞ -------- 0 -------- +∞
 Output:  0 -------- 0 -------- +∞
 ```
 
-**Advantages**: Simple, prevents vanishing gradients, creates sparse representations
+This simple operation proves remarkably effective, preventing vanishing gradients while creating sparse, efficient representations.
 
 > 📖 **For vanishing gradients deep dive**: See [pytorch_ref.md Section 6](./pytorch_ref.md#6-vanishingexploding-gradients) for causes, detection, and solutions, plus [rnn_intro.md Section 9](./rnn_intro.md#9-the-vanishing-gradient-problem-rnns-fatal-flaw) for RNN-specific analysis.
 
-**Sigmoid:**  
+**Sigmoid** compresses any real number into probability-like values:
 $$\sigma(x) = \frac{1}{1+e^{-x}}$$
 
-**Effect**: Compresses infinite range to (0,1)
 ```
 Input:  -∞ -------- 0 -------- +∞
 Output:  0 -------- 0.5 ------ 1
 ```
 
-**Use case**: Output probabilities, but can cause vanishing gradients
+While perfect for output probabilities, sigmoid can cause vanishing gradients in deep networks.
 
-**Tanh:**
+**Tanh** provides symmetric squashing around zero:
 $$\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$$
 
-**Effect**: Symmetric squashing to (-1,1)
 ```
 Input:  -∞ -------- 0 -------- +∞
 Output: -1 -------- 0 -------- +1
 ```
 
-**Advantage**: Zero-centered, better than sigmoid for hidden layers
+Its zero-centered nature makes it preferable to sigmoid for hidden layers in many architectures.
 
 #### The Space Bending Intuition
 
@@ -403,7 +393,7 @@ prediction = model(example_input)
 print(f"Spam probability: {prediction.item():.2f}")
 ```
 
-Now that we understand how a single neuron works, we can explore how combining many neurons creates the powerful networks capable of understanding language.
+Now that we understand how a single neuron transforms input through its geometric operations, let's discover how combining many neurons creates the powerful networks capable of understanding language.
 
 ---
 
@@ -413,7 +403,7 @@ A single perceptron can only learn simple patterns and make linear decisions. To
 
 ### Limitations of Single Perceptrons
 
-A single perceptron can only draw a straight line (or hyperplane in higher dimensions) to separate data. This means it can only solve "linearly separable" problems.
+A single perceptron faces a fundamental geometric constraint: it can only draw straight lines (or hyperplanes in higher dimensions) to separate data. This limitation becomes apparent when we encounter problems that aren't "linearly separable."
 
 **Example: XOR Problem**
 ```
@@ -436,7 +426,7 @@ No single straight line can separate the 1s from the 0s in this case! Classes ar
 
 ### How Neural Networks Solve XOR: The Geometric Solution
 
-The XOR problem demonstrates why all three components (weights, bias, activation) are essential. Let's see how a simple 2-layer network solves it:
+The XOR problem beautifully demonstrates why neural networks need all three components working together. Here's how a simple 2-layer network transforms the impossible into the trivial:
 
 **Network Architecture**: Input(2) → Hidden(2, ReLU) → Output(1, sigmoid)
 
@@ -467,15 +457,11 @@ Original space:         After ReLU folding:
 
 In the folded space, a simple line (e.g., $h_A + h_B = 0.5$) perfectly separates the classes.
 
-#### Why All Three Components Were Essential
-
-- **Weights**: Oriented the folding lines correctly
-- **Bias**: Positioned folds at x=0.5 instead of origin  
-- **Activation**: Created the nonlinear folding that made classes separable
+This elegant solution showcases why every component matters: weights oriented the folding lines correctly, bias positioned the folds away from the origin at exactly x=0.5, and activation functions created the nonlinear folding that transformed an impossible linear problem into a simple one.
 
 ### Multi-Layer Perceptrons (MLPs): High-Dimensional Sculptors
 
-By stacking multiple layers of perceptrons, we can learn much more complex patterns through repeated geometric transformations.
+Now we arrive at the heart of neural networks' power: by stacking multiple layers, we create systems that can sculpt arbitrarily complex decision boundaries through repeated geometric transformations.
 
 #### Network Architecture
 
@@ -487,14 +473,7 @@ Input Layer → Hidden Layer(s) → Output Layer
 [x₃]              [h₅]
 ```
 
-#### How Components Work Together
-
-The three components create a powerful geometric transformation system:
-
-1. **Weights** determine the orientation and scaling of the transformation
-2. **Bias** positions the decision boundary optimally  
-3. **Activation** bends the resulting space nonlinearly
-4. **Repeat** across layers to build complex decision manifolds
+These components orchestrate a sophisticated geometric transformation system: weights control orientation and scaling, bias ensures optimal positioning, and activation functions bend space nonlinearly. When repeated across layers, this process builds arbitrarily complex decision manifolds.
 
 **Unified Intuition**: Think of neural networks as **high-dimensional sculptors**:
 - **Weights**: Control the direction and strength of each sculpting tool
@@ -502,22 +481,9 @@ The three components create a powerful geometric transformation system:
 - **Activation**: Apply nonlinear bending/folding operations
 - **Depth**: Compose many sculpting operations to create arbitrarily complex shapes
 
-#### Why Multiple Layers Work
+Multiple layers create a natural hierarchy of abstraction. Early layers learn simple patterns and features, middle layers combine these into complex patterns, and the output layer makes final decisions. In text processing, this might progress from detecting individual words and punctuation, to recognizing phrases and local context, and finally to understanding complete sentence meaning and intent.
 
-1. **First Hidden Layer**: Learns simple patterns and features
-2. **Second Hidden Layer**: Combines simple features into more complex patterns
-3. **Output Layer**: Makes final decision based on complex patterns
-
-**Text Example:**
-- **Layer 1**: Detects individual words and punctuation
-- **Layer 2**: Recognizes phrases and local context
-- **Layer 3**: Understands sentence meaning and intent
-
-#### Universal Approximation Theorem
-
-**Key Insight**: A neural network with just one hidden layer can approximate any continuous function, given enough neurons.
-
-This means neural networks are theoretically capable of learning any pattern in data!
+The **Universal Approximation Theorem** provides theoretical backing for this power: a neural network with just one hidden layer can approximate any continuous function, given enough neurons. This remarkable result means neural networks are theoretically capable of learning any pattern that exists in data!
 
 ### Geometric Intuition: From 1D to n-D
 
@@ -564,19 +530,9 @@ $$x \in \mathbb{R}^{784} \xrightarrow{\text{Layer 1}} h_1 \in \mathbb{R}^{512} \
 
 "Deep" in deep learning refers to having many layers (typically 3 or more hidden layers).
 
-**Benefits of Depth:**
-1. **Hierarchical Learning**: Each layer learns increasingly abstract features
-2. **Parameter Efficiency**: Deep networks can learn complex functions with fewer total parameters than wide shallow networks
-3. **Better Generalization**: Deep networks often generalize better to new data
+Depth brings distinct advantages: hierarchical learning allows each layer to build increasingly abstract features, parameter efficiency means complex functions can be learned with fewer total parameters than wide shallow networks, and better generalization helps deep networks perform well on unseen data.
 
-**Example: Image Recognition Hierarchy**
-```
-Layer 1: Edges and simple shapes
-Layer 2: Textures and patterns  
-Layer 3: Object parts (eyes, wheels)
-Layer 4: Complete objects (faces, cars)
-Layer 5: Scene understanding (office, outdoors)
-```
+In image recognition, this hierarchy progresses naturally from edges and simple shapes, to textures and patterns, to object parts like eyes and wheels, to complete objects like faces and cars, and finally to full scene understanding distinguishing offices from outdoor environments.
 
 ### Mathematical Perspective
 
@@ -587,7 +543,7 @@ $$\text{Layer}: \mathbb{R}^n \xrightarrow{\text{affine}} \mathbb{R}^m \xrightarr
 Stacking layers composes these operations:
 $$\text{Network}: \mathbb{R}^{n_0} \rightarrow \mathbb{R}^{n_1} \rightarrow \mathbb{R}^{n_2} \rightarrow ... \rightarrow \mathbb{R}^{n_L}$$
 
-Understanding network architecture is only half the story. The real magic happens during training, where networks learn to perform their tasks through experience.
+Understanding network architecture reveals the potential, but the real magic unfolds during training, where networks learn to perform their tasks through experience.
 
 ---
 
@@ -605,7 +561,7 @@ Training a neural network means finding the optimal weights and biases that allo
 
 ### Loss Functions: The Network's Report Card
 
-Loss functions serve as the **objective measure** of how well the neural network is performing. They translate the vague goal "learn to do the task well" into a precise mathematical objective that can guide the optimization process.
+Every learning system needs a way to measure progress, and neural networks are no exception. Loss functions bridge the gap between our human goals ("I want this model to translate accurately") and the mathematical precision computers require ("minimize this specific number").
 
 **Mathematical Foundation:**
 $$\mathcal{L}(\mathbf{y}_{\text{true}}, \mathbf{y}_{\text{pred}}) \rightarrow \mathbb{R}^+$$
@@ -615,18 +571,11 @@ Where:
 - $\mathbf{y}_{\text{pred}}$: Model prediction (what the network thinks)
 - Output: Single positive number (the "badness score")
 
-**Why Loss Functions Are Critical:**
-Loss functions bridge the gap between:
-- **Human goals**: "I want the model to translate accurately"
-- **Mathematical optimization**: "Minimize this specific number"
-
-Without a loss function, there's no way to:
-1. **Measure progress** during training
-2. **Compute gradients** for backpropagation  
-3. **Compare different models** objectively
+Without this translation, neural networks would have no way to measure progress during training, compute the gradients essential for backpropagation, or objectively compare different models' performance.
 
 #### For Classification Problems
-**Cross-Entropy Loss**: Used when predicting categories (spam/not spam, positive/negative sentiment)
+
+When predicting categories like spam detection or sentiment analysis, **cross-entropy loss** provides the mathematical foundation:
 
 $$\mathcal{L} = -\sum_{i=1}^{C} y_i \log(p_i)$$
 
@@ -635,12 +584,7 @@ Where:
 - $p_i$: Predicted probability for class $i$
 - $C$: Number of classes
 
-**Geometric Intuition:**
-Cross-entropy measures "surprise":
-- **High confidence + correct** = low loss (good!)  
-- **High confidence + wrong** = high loss (bad!)
-- **Low confidence + correct** = medium loss (uncertain but right)
-- **Low confidence + wrong** = high loss (uncertain and wrong)
+Cross-entropy elegantly captures the concept of "surprise" - it heavily penalizes confident wrong predictions while rewarding confident correct ones. Being uncertain but right yields medium loss, while being uncertain and wrong still incurs high penalty.
 
 **Example: Next Word Prediction**
 ```
@@ -657,30 +601,23 @@ Predicted probabilities:
 Loss = -log(0.7) ≈ 0.36 (relatively low - good prediction!)
 ```
 
-**Why logarithm?**
-The log function heavily penalizes being confident about the wrong answer:
-- Predicting 1% chance for the correct answer: $-\log(0.01) = 4.6$
-- Predicting 50% chance for the correct answer: $-\log(0.5) = 0.69$
-- Predicting 99% chance for the correct answer: $-\log(0.99) = 0.01$
+The logarithmic scale creates this penalty structure naturally: predicting just 1% chance for the correct answer yields a harsh penalty of 4.6, while 99% confidence gives a gentle 0.01 penalty, with 50% confidence falling at 0.69.
 
 #### For Regression Problems
-**Mean Squared Error (MSE)**: Used when predicting continuous values
+
+When predicting continuous values like house prices or temperatures, **Mean Squared Error (MSE)** becomes our guide:
 
 $$\mathcal{L} = \frac{1}{N} \sum_{i=1}^N (y_i - \hat{y}_i)^2$$
 
-**Geometric Interpretation:**
-MSE measures **squared distance** between predictions and targets:
-- **Small errors** get small penalties
-- **Large errors** get disproportionately large penalties (squared term)
-- **Symmetric**: Positive and negative errors treated equally
+MSE measures the squared distance between predictions and targets, creating a penalty structure where small errors receive proportional punishment, but large errors face disproportionately severe consequences. This symmetric approach treats overestimation and underestimation equally.
 
 ### Gradient Descent: The Universal Learning Algorithm
 
-Gradient descent is the **fundamental mechanism** by which neural networks learn. It's the answer to the question: "Given that I know my current predictions are wrong, how should I adjust my parameters to make better predictions?"
+At the heart of every neural network's learning process lies gradient descent - the elegant answer to a deceptively simple question: "Given that my current predictions are wrong, how should I adjust my parameters to make them better?"
 
 #### The Core Idea: Following the Slope Downhill
 
-**Visual Analogy**: Imagine you're blindfolded on a mountainside and want to reach the valley (minimum error). Your only tool is feeling the slope under your feet. Gradient descent says: **"Always take a step in the direction of steepest descent."**
+Imagine standing blindfolded on a mountainside, seeking the valley that represents minimum error. With only the slope beneath your feet as guidance, gradient descent offers a beautifully simple strategy: always step in the direction of steepest descent.
 
 #### Mathematical Foundation
 
@@ -700,7 +637,7 @@ Where:
 
 #### The Gradient: Direction of Steepest Ascent
 
-**Understanding $\nabla$ (Nabla):**
+The gradient symbol $\nabla$ (nabla) might look mysterious, but it represents something intuitive:
 $$\nabla_{\mathbf{\theta}} \mathcal{L} = \begin{bmatrix}
 \frac{\partial \mathcal{L}}{\partial \theta_1} \\
 \frac{\partial \mathcal{L}}{\partial \theta_2} \\
@@ -708,7 +645,7 @@ $$\nabla_{\mathbf{\theta}} \mathcal{L} = \begin{bmatrix}
 \frac{\partial \mathcal{L}}{\partial \theta_n}
 \end{bmatrix}$$
 
-**Each element tells us:** "If I increase parameter $\theta_i$ by a tiny amount, how much does the loss increase?"
+Each element answers a simple question: "If I nudge parameter $\theta_i$ slightly upward, how much does my loss increase?"
 
 #### Step-by-Step Gradient Descent Process
 
@@ -753,15 +690,12 @@ Loss
   |         ×  ← Reaches minimum
 ```
 
-### From Simple to Sophisticated: Evolution of Optimizers
+### From Simple to Sophisticated: The Evolution of Optimizers
 
 #### Plain Gradient Descent
 $$\theta_t = \theta_{t-1} - \alpha \nabla \mathcal{L}$$
 
-**Problems:**
-- **No momentum**: Stops immediately when gradient is zero
-- **Same learning rate**: All parameters updated equally
-- **Zigzagging**: Inefficient in valleys
+While elegant in its simplicity, plain gradient descent suffers from several limitations: it lacks momentum and stops abruptly when gradients vanish, treats all parameters with the same learning rate regardless of their needs, and tends to zigzag inefficiently through valleys in the loss landscape.
 
 #### SGD with Momentum
 $$\begin{align}
@@ -769,7 +703,7 @@ v_t &= \beta v_{t-1} + (1-\beta) \nabla \mathcal{L} \\
 \theta_t &= \theta_{t-1} - \alpha v_t
 \end{align}$$
 
-**Improvement**: **"Rolling ball" behavior** - builds velocity, smooths updates
+Momentum transforms gradient descent into a "rolling ball" that builds velocity over time, smoothing updates and helping escape shallow local minima.
 
 #### Adam: Adaptive Moments
 $$\begin{align}
@@ -778,14 +712,7 @@ v_t &= \beta_2 v_{t-1} + (1-\beta_2) (\nabla \mathcal{L})^2 \quad \text{(varianc
 \theta_t &= \theta_{t-1} - \alpha \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}
 \end{align}$$
 
-**Key innovation**: **Adaptive per-parameter learning rates**
-- Large gradients → smaller effective learning rate
-- Small gradients → larger effective learning rate
-
-**Why Adam is Popular:**
-- Automatically adjusts learning rates
-- Handles sparse gradients well
-- Generally requires less tuning
+Adam's breakthrough innovation lies in adaptive per-parameter learning rates: parameters with large gradients get smaller effective steps, while those with small gradients get larger ones. This automatic adjustment, combined with excellent handling of sparse gradients and minimal tuning requirements, explains Adam's widespread adoption.
 
 > 📖 **For optimizer comparison**: See [pytorch_ref.md Section 5](./pytorch_ref.md#5-optimization-loop--losses) for practical optimizer selection guide and [transformers_math.md](./transformers_math.md) for theoretical analysis.
 
@@ -863,21 +790,16 @@ for epoch in range(num_epochs):
 ### Key Training Concepts
 
 #### 1. Epochs
-One epoch = one complete pass through the entire training dataset.
+An epoch represents one complete journey through the entire training dataset.
 
 #### 2. Batch Size
-Number of examples processed together before updating weights.
-- **Small batches**: More frequent updates, more noise
-- **Large batches**: More stable updates, requires more memory
+This determines how many examples we process before updating weights. Small batches provide frequent, noisy updates that can help escape local minima, while large batches offer more stable updates at the cost of memory requirements.
 
 #### 3. Learning Rate
-Controls how big steps to take when updating weights.
-- **Too high**: May overshoot the minimum and never converge
-- **Too low**: Training will be very slow
+This critical hyperparameter controls our step size through the parameter space. Set it too high and we'll overshoot optimal solutions, bouncing around chaotically; too low and training crawls at an impractical pace.
 
 #### 4. Overfitting vs Underfitting
-- **Overfitting**: Model memorizes training data but fails on new data
-- **Underfitting**: Model is too simple to capture the underlying pattern
+These represent the two failure modes of machine learning: overfitting occurs when models memorize training examples rather than learning generalizable patterns, while underfitting happens when models are too simple to capture the underlying data structure.
 
 > 📖 **For practical solutions**: See [mlp_intro.md Section 8](./mlp_intro.md#8-common-challenges-and-solutions) for detailed strategies including dropout, regularization, and early stopping.
 
@@ -990,7 +912,7 @@ Neural networks succeed by **repeatedly bending high-dimensional space** until c
 
 ## 6. Where Neural Networks Shine in NLP
 
-Neural networks have revolutionized natural language processing by solving problems that traditional methods struggled with.
+Neural networks have transformed our relationship with language technology, solving problems that seemed intractable for decades and opening doors to applications we barely imagined possible.
 
 ### Limitations of MLPs for Language
 
@@ -1006,19 +928,11 @@ An MLP treating these as bags of words would see them as identical, missing the 
 
 ### Where Neural Networks Excel in NLP
 
+Despite sequential processing limitations in basic MLPs, neural networks have revolutionized natural language processing by solving fundamental challenges that traditional methods couldn't address.
+
 #### 1. Text Classification
 
-**Problem**: Categorize text into predefined classes.
-
-**Examples:**
-- **Sentiment Analysis**: Positive, negative, neutral reviews
-- **Topic Classification**: Sports, politics, technology articles
-- **Intent Recognition**: Customer service chatbots understanding user requests
-
-**Why Neural Networks Work:**
-- Learn word embeddings that capture semantic meaning
-- Can handle variable-length inputs
-- Automatically discover relevant features
+The challenge of automatically categorizing text into meaningful groups showcases neural networks' pattern recognition strength. From sentiment analysis that distinguishes positive from negative reviews, to topic classification that separates sports articles from political commentary, to intent recognition that helps chatbots understand customer requests, neural networks excel by learning semantic word embeddings, handling variable-length inputs naturally, and discovering relevant features automatically.
 
 **Example Architecture:**
 ```
@@ -1032,62 +946,20 @@ Input Text → Word Embeddings → Hidden Layers → Classification Output
 
 #### 2. Named Entity Recognition (NER)
 
-**Problem**: Identify and classify entities in text.
-
-**Example:**
-```
-Input: "Apple Inc. was founded by Steve Jobs in Cupertino."
-Output: 
-- "Apple Inc." → ORGANIZATION
-- "Steve Jobs" → PERSON  
-- "Cupertino" → LOCATION
-```
-
-**Why Neural Networks Work:**
-- Context awareness: "Apple" could be fruit or company
-- Pattern recognition: Learns that capitalized sequences often indicate entities
-- Sequential processing: Understands that "Inc." following "Apple" indicates a company
+Identifying and classifying entities within text demonstrates neural networks' contextual understanding. Consider the challenge of processing "Apple Inc. was founded by Steve Jobs in Cupertino" - neural networks excel by recognizing "Apple Inc." as an organization, "Steve Jobs" as a person, and "Cupertino" as a location. This success comes from context awareness that distinguishes "Apple" the fruit from "Apple" the company, pattern recognition that associates capitalization with entity names, and sequential understanding that recognizes "Inc." following "Apple" as a strong company indicator.
 
 #### 3. Question Answering
 
-**Problem**: Find answers to questions within a given text.
-
-**Example:**
-```
-Context: "The capital of France is Paris. Paris is known for the Eiffel Tower."
-Question: "What is the capital of France?"
-Answer: "Paris"
-```
-
-**Why Neural Networks Work:**
-- Can encode both question and context simultaneously
-- Learn attention patterns to focus on relevant parts of text
-- Understand various ways questions can be phrased
+The ability to find answers within text showcases neural networks' reading comprehension capabilities. When presented with context like "The capital of France is Paris. Paris is known for the Eiffel Tower" and asked "What is the capital of France?", neural networks demonstrate remarkable understanding. Success comes from simultaneously encoding questions and context, learning attention patterns that highlight relevant text passages, and understanding the myriad ways humans can phrase the same question.
 
 #### 4. Machine Translation
 
-**Problem**: Translate text from one language to another.
-
-**Example:**
-```
-English: "Hello, how are you?"
-Spanish: "Hola, ¿cómo estás?"
-```
-
-**Why Neural Networks Work:**
-- Learn shared representations across languages
-- Handle different word orders and grammatical structures
-- Can translate rare words by understanding context
+Perhaps the most impressive demonstration of neural language understanding lies in translation between human languages. Converting "Hello, how are you?" to "Hola, ¿cómo estás?" might seem straightforward, but neural networks succeed by learning shared semantic representations that transcend language barriers, adapting to different grammatical structures and word orders, and translating even rare words through contextual understanding.
 
 ---
 ## Next Steps
 
-Now that you understand neural network fundamentals:
-
-1. **Deep Dive**: Learn how individual neurons combine into powerful multi-layer networks
-2. **Hands-on Mathematics**: Work through detailed examples with real numbers you can trace by hand  
-3. **Modern Foundation**: Understand the building blocks used in all advanced architectures
-4. **Implementation Skills**: See how these concepts translate to actual code
+With neural network fundamentals now in place, you're ready to explore deeper territories. The journey ahead offers multiple paths: diving into how individual neurons combine into powerful multi-layer networks, working through hands-on mathematics with real numbers you can trace by hand, understanding the building blocks used in all advanced architectures, or seeing how these concepts translate to actual code.
 
 > **Continue Learning**: Ready to build networks? 
 > 
