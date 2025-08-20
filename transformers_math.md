@@ -59,17 +59,26 @@ We begin with optimization fundamentals and high-dimensional geometry, then buil
   - **What this means:** The "length" of the vector, like measuring a stick with a ruler
   - **Why it matters:** Longer vectors represent "stronger" or "more confident" representations
 
-- Inner product: $$\langle \mathbf{u}, \mathbf{v} \rangle = \mathbf{u}^T \mathbf{v} = \sum_{i=1}^d u_i v_i$$
+- Inner product: 
+```math
+\langle \mathbf{u}, \mathbf{v} \rangle = \mathbf{u}^T \mathbf{v} = \sum_{i=1}^d u_i v_i
+```
   - **What this measures:** How much two vectors point in the same direction
   - **Intuition:** Like measuring how similar two things are. If vectors represent word meanings, a high inner product means the words are related
   - **Real example:** "king" and "queen" vectors would have a high inner product because they're conceptually similar
 
 **Matrix Operations:** For matrices $A \in \mathbb{R}^{m \times n}$, $B \in \mathbb{R}^{n \times p}$:
-- Matrix multiplication: $$(AB)_{ij} = \sum_{k=1}^n A_{ik}B_{kj}$$
+- Matrix multiplication: 
+```math
+(AB)_{ij} = \sum_{k=1}^n A_{ik}B_{kj}
+```
   - **What this does:** Combines information from two tables of numbers in a specific way
   - **Think of it as:** Matrix A transforms space, then matrix B transforms it again - like applying two filters in sequence
 
-- Transpose: $$(A^T)_{ij} = A_{ji}$$
+- Transpose: 
+```math
+(A^T)_{ij} = A_{ji}
+```
   - **What transpose ($A^T$) means:** Flip the matrix over its diagonal - rows become columns, columns become rows
   - **Why we use it:** Often we need to "reverse" a transformation or change the direction of information flow
 
@@ -84,16 +93,28 @@ We begin with optimization fundamentals and high-dimensional geometry, then buil
 
 **What this means:** The gradient has the same shape as what you're taking the gradient with respect to. If X is a 3×4 matrix, its gradient is also 3×4. This makes sense - you need to know how much to adjust each individual number in X.
 
-**Chain Rule:** For $f(g(x))$: $$\frac{\partial f}{\partial x} = \frac{\partial f}{\partial g} \frac{\partial g}{\partial x}$$
+**Chain Rule:** For $f(g(x))$: 
+```math
+\frac{\partial f}{\partial x} = \frac{\partial f}{\partial g} \frac{\partial g}{\partial x}
+```
 
 **Chain rule intuition:** Like a chain reaction. If changing x affects g, and changing g affects f, then the total effect of x on f is the product of both effects. It's like asking "if I turn this knob (x) by a little bit, how much does the final output (f) change?" You multiply the sensitivity at each step.
 
 **Useful Identities:**
-- If $Y = AXB$ and $f$ depends on $Y$, then: $$\frac{\partial f}{\partial X} = A^T \left(\frac{\partial f}{\partial Y}\right) B^T$$
+- If $Y = AXB$ and $f$ depends on $Y$, then: 
+```math
+\frac{\partial f}{\partial X} = A^T \left(\frac{\partial f}{\partial Y}\right) B^T
+```
   **Parameters:** $A\in\mathbb{R}^{m\times r}, X\in\mathbb{R}^{r\times s}, B\in\mathbb{R}^{s\times n}$, so $\partial f/\partial X\in\mathbb{R}^{r\times s}$.
   **Intuition:** Backward through linear maps flips them with transposes.
-- $$\nabla_X \text{tr}(AX) = A^T$$
-- $$\nabla_X \|X\|_F^2 = 2X$$
+- 
+```math
+\nabla_X \text{tr}(AX) = A^T
+```
+- 
+```math
+\nabla_X \|X\|_F^2 = 2X
+```
 
 **What these mean:**
 - The first says "when matrices multiply, gradients flow backward through transposes"
@@ -103,7 +124,9 @@ We begin with optimization fundamentals and high-dimensional geometry, then buil
 ### 2.3 Probability & Information Theory
 
 **Softmax as Gibbs Distribution:**
-$$\text{softmax}(\mathbf{z})_i = \frac{e^{z_i}}{\sum_{j=1}^n e^{z_j}} \quad (1)$$
+```math
+\text{softmax}(\mathbf{z})_i = \frac{e^{z_i}}{\sum_{j=1}^n e^{z_j}} \quad (1)
+```
 
 **What softmax does intuitively:** Imagine you're choosing which restaurant to go to. Each restaurant has a "score" (z_i). Softmax converts these raw scores into probabilities that sum to 1, like saying "there's a 30% chance I'll pick restaurant A, 50% chance for B, 20% chance for C." The exponential function (e^x) ensures that higher scores get disproportionately higher probabilities - if one restaurant is much better, it gets most of the probability mass.
 
@@ -112,7 +135,9 @@ $$\text{softmax}(\mathbf{z})_i = \frac{e^{z_i}}{\sum_{j=1}^n e^{z_j}} \quad (1)$
 This represents a Gibbs distribution with "energy" $-z_i$ and temperature $T=1$.
 
 **Cross-Entropy Loss:**
-$$\mathcal{L} = -\sum_{i=1}^n y_i \log p_i \quad (2)$$
+```math
+\mathcal{L} = -\sum_{i=1}^n y_i \log p_i \quad (2)
+```
 
 **What cross-entropy loss does intuitively:** Think of it as a "wrongness penalty." If the model predicts the right answer with high confidence (p_i close to 1), the loss is small. If it predicts the wrong answer or is uncertain about the right answer, the loss is large. The logarithm harshly penalizes being confidently wrong - predicting 0.01% chance for the correct answer gives a huge penalty.
 
@@ -141,7 +166,9 @@ where $y_i$ are true labels (what the answer actually is) and $p_i$ are predicte
 **Building Intuition: Slope of a Line**
 
 Let's start with something familiar - the equation of a straight line:
-$$y = mx + b$$
+```math
+y = mx + b
+```
 
 where:
 - $m$ is the **slope** - tells us how steep the line is
@@ -155,13 +182,17 @@ where:
 
 **The Derivative as Slope:** For any function $f(x)$, the derivative $\frac{df}{dx}$ tells us the slope at any point:
 
-$$\frac{df}{dx} = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$
+```math
+\frac{df}{dx} = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
+```
 
 **What this equation means:** "If I move a tiny amount h to the right, how much does f change?" The derivative is the limit as that tiny amount approaches zero.
 
 **Gradient Descent in One Dimension:** If we want to minimize $f(x)$, we update $x$ using:
 
-$$x_{\text{new}} = x_{\text{old}} - \alpha \frac{df}{dx}$$
+```math
+x_{\text{new}} = x_{\text{old}} - \alpha \frac{df}{dx}
+```
 
 where $\alpha$ (alpha) is the **learning rate** - how big steps we take.
 
@@ -203,11 +234,15 @@ Iteration 10: x ≈ 0.27, f(x) ≈ 0.07
 
 **The Gradient Vector:** We combine these into a **gradient vector**:
 
-$$\nabla f = \begin{bmatrix} \frac{\partial f}{\partial x} \\ \frac{\partial f}{\partial y} \end{bmatrix} = \begin{bmatrix} 2x \\ 2y \end{bmatrix}$$
+```math
+\nabla f = \begin{bmatrix} \frac{\partial f}{\partial x} \\ \frac{\partial f}{\partial y} \end{bmatrix} = \begin{bmatrix} 2x \\ 2y \end{bmatrix}
+```
 
 **Vector Gradient Descent:** Now our update rule becomes:
 
-$$\begin{bmatrix} x_{\text{new}} \\ y_{\text{new}} \end{bmatrix} = \begin{bmatrix} x_{\text{old}} \\ y_{\text{old}} \end{bmatrix} - \alpha \begin{bmatrix} 2x_{\text{old}} \\ 2y_{\text{old}} \end{bmatrix}$$
+```math
+\begin{bmatrix} x_{\text{new}} \\ y_{\text{new}} \end{bmatrix} = \begin{bmatrix} x_{\text{old}} \\ y_{\text{old}} \end{bmatrix} - \alpha \begin{bmatrix} 2x_{\text{old}} \\ 2y_{\text{old}} \end{bmatrix}
+```
 
 **Intuition:** The gradient vector points in the direction of steepest *ascent*. By moving in the *opposite* direction (negative gradient), we go downhill most quickly.
 
@@ -221,19 +256,29 @@ $$\begin{bmatrix} x_{\text{new}} \\ y_{\text{new}} \end{bmatrix} = \begin{bmatri
 
 **Loss Function:** We measure how wrong our predictions are using mean squared error:
 
-$$L = \frac{1}{N} \sum_{i=1}^N \|Y_{\text{true}}^{(i)} - Y_{\text{hat}}^{(i)}\|^2$$
+```math
+L = \frac{1}{N} \sum_{i=1}^N \|Y_{\text{true}}^{(i)} - Y_{\text{hat}}^{(i)}\|^2
+```
 
 **Matrix Gradients:** To minimize the loss, we need gradients with respect to W and b:
 
-$$\frac{\partial L}{\partial W} = \frac{2}{N} X^T (Y_{\text{hat}} - Y_{\text{true}})$$
+```math
+\frac{\partial L}{\partial W} = \frac{2}{N} X^T (Y_{\text{hat}} - Y_{\text{true}})
+```
 
-$$\frac{\partial L}{\partial b} = \frac{2}{N} \sum_{i=1}^N (Y_{\text{hat}}^{(i)} - Y_{\text{true}}^{(i)})$$
+```math
+\frac{\partial L}{\partial b} = \frac{2}{N} \sum_{i=1}^N (Y_{\text{hat}}^{(i)} - Y_{\text{true}}^{(i)})
+```
 
 **Matrix Gradient Descent Updates:**
 
-$$W_{\text{new}} = W_{\text{old}} - \alpha \frac{\partial L}{\partial W}$$
+```math
+W_{\text{new}} = W_{\text{old}} - \alpha \frac{\partial L}{\partial W}
+```
 
-$$b_{\text{new}} = b_{\text{old}} - \alpha \frac{\partial L}{\partial b}$$
+```math
+b_{\text{new}} = b_{\text{old}} - \alpha \frac{\partial L}{\partial b}
+```
 
 **Key Insight:** The same learning rate $\alpha$ controls the step size for all parameters, just like in our simple 1D case.
 
@@ -259,24 +304,44 @@ where $\sigma$ is an activation function like ReLU or sigmoid.
 **Backward Pass (Backpropagation):**
 
 **Step 1:** Compute the error at the output:
-$$\delta_2 = Y_{\text{hat}} - Y_{\text{true}} \quad \text{(shape: samples × outputs)}$$
+```math
+\delta_2 = Y_{\text{hat}} - Y_{\text{true}} \quad \text{(shape: samples × outputs)}
+```
 
 **Step 2:** Compute gradients for output layer:
-$$\frac{\partial L}{\partial W_2} = \frac{1}{N} A_1^T \delta_2$$
-$$\frac{\partial L}{\partial b_2} = \frac{1}{N} \sum_{i=1}^N \delta_2^{(i)}$$
+```math
+\frac{\partial L}{\partial W_2} = \frac{1}{N} A_1^T \delta_2
+```
+```math
+\frac{\partial L}{\partial b_2} = \frac{1}{N} \sum_{i=1}^N \delta_2^{(i)}
+```
 
 **Step 3:** Backpropagate error to hidden layer:
-$$\delta_1 = (\delta_2 W_2^T) \odot \sigma'(Z_1) \quad \text{(element-wise multiplication)}$$
+```math
+\delta_1 = (\delta_2 W_2^T) \odot \sigma'(Z_1) \quad \text{(element-wise multiplication)}
+```
 
 **Step 4:** Compute gradients for hidden layer:
-$$\frac{\partial L}{\partial W_1} = \frac{1}{N} X^T \delta_1$$
-$$\frac{\partial L}{\partial b_1} = \frac{1}{N} \sum_{i=1}^N \delta_1^{(i)}$$
+```math
+\frac{\partial L}{\partial W_1} = \frac{1}{N} X^T \delta_1
+```
+```math
+\frac{\partial L}{\partial b_1} = \frac{1}{N} \sum_{i=1}^N \delta_1^{(i)}
+```
 
 **Step 5:** Update all parameters using the same learning rate:
-$$W_1 \leftarrow W_1 - \alpha \frac{\partial L}{\partial W_1}$$
-$$b_1 \leftarrow b_1 - \alpha \frac{\partial L}{\partial b_1}$$
-$$W_2 \leftarrow W_2 - \alpha \frac{\partial L}{\partial W_2}$$
-$$b_2 \leftarrow b_2 - \alpha \frac{\partial L}{\partial b_2}$$
+```math
+W_1 \leftarrow W_1 - \alpha \frac{\partial L}{\partial W_1}
+```
+```math
+b_1 \leftarrow b_1 - \alpha \frac{\partial L}{\partial b_1}
+```
+```math
+W_2 \leftarrow W_2 - \alpha \frac{\partial L}{\partial W_2}
+```
+```math
+b_2 \leftarrow b_2 - \alpha \frac{\partial L}{\partial b_2}
+```
 
 **Understanding the δ terms:**
 - $\delta_2$: "How much does changing each output neuron's value affect the loss?"
@@ -328,7 +393,9 @@ This is why understanding the simple case of line slopes gives us insight into t
 ### 2.1.1 Gradient Fields and Optimization
 
 **Gradient Descent as Continuous Flow:** Parameter updates $\theta_{t+1} = \theta_t - \eta \nabla_\theta \mathcal{L}$ approximate the ODE:
-$$\frac{d\theta}{dt} = -\nabla_\theta \mathcal{L}(\theta) \quad (3)$$
+```math
+\frac{d\theta}{dt} = -\nabla_\theta \mathcal{L}(\theta) \quad (3)
+```
 
 **Understanding the symbols:**
 - $\theta$ (theta): The parameters we want to learn - think of these as the "knobs" we can adjust
@@ -345,7 +412,9 @@ This connects discrete optimization to continuous dynamical systems.
 ### 2.1.2 Residual Connections as Discretized Dynamics
 
 **Residual Block:** $\mathbf{h}_{l+1} = \mathbf{h}_l + F(\mathbf{h}_l)$ approximates:
-$$\frac{d\mathbf{h}}{dt} = F(\mathbf{h}) \quad (4)$$
+```math
+\frac{d\mathbf{h}}{dt} = F(\mathbf{h}) \quad (4)
+```
 
 **What residual connections do intuitively:** Think of them as "safety nets" for information. Without residual connections, information would have to successfully pass through every layer to reach the output. With residual connections, information can "skip over" layers that might be learning slowly or poorly.
 
@@ -420,10 +489,14 @@ Adam is like having a smart GPS that adjusts your driving based on two things:
 **AdamW vs Adam:** AdamW decouples weight decay from gradient-based updates:
 
 **Adam with L2 regularization:**
-$$\theta_t = \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon} - \eta \lambda \theta_{t-1}$$
+```math
+\theta_t = \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon} - \eta \lambda \theta_{t-1}
+```
 
 **AdamW (decoupled weight decay):**
-$$\theta_t = (1 - \eta \lambda) \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}$$
+```math
+\theta_t = (1 - \eta \lambda) \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}
+```
 
 **Why AdamW is better:** Weight decay is applied regardless of gradient magnitude, leading to better generalization.
 
@@ -437,7 +510,9 @@ $$\theta_t = (1 - \eta \lambda) \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{
 **Why do we need schedules?** Think of learning to drive: you start slow in the parking lot (warmup), drive at normal speed on the highway (main training), then slow down carefully when approaching your destination (decay).
 
 **Warmup:** Gradually increase learning rate to avoid early instability:
-$$\eta_t = \eta_{\text{max}} \cdot \min\left(\frac{t}{T_{\text{warmup}}}, 1\right) \quad (10)$$
+```math
+\eta_t = \eta_{\text{max}} \cdot \min\left(\frac{t}{T_{\text{warmup}}}, 1\right) \quad (10)
+```
 
 **Why warmup works:**
 - **Early training is chaotic:** Random initial weights create wild gradients
@@ -454,12 +529,16 @@ $$\eta_t = \eta_{\text{max}} \cdot \min\left(\frac{t}{T_{\text{warmup}}}, 1\righ
 - **Mathematical smoothness:** Cosine provides a natural, smooth curve from 1 to 0
 
 **Formula:**
-$$\eta_t = \eta_{\text{max}} \cdot 0.5 \left(1 + \cos\left(\pi \cdot \frac{t - T_{\text{warmup}}}{T_{\text{total}} - T_{\text{warmup}}}\right)\right)$$
+```math
+\eta_t = \eta_{\text{max}} \cdot 0.5 \left(1 + \cos\left(\pi \cdot \frac{t - T_{\text{warmup}}}{T_{\text{total}} - T_{\text{warmup}}}\right)\right)
+```
 
 **Real-world analogy:** Like landing an airplane - you approach fast, then gradually slow down for a smooth landing, not a crash.
 
 **Original Transformer Schedule:** Combines warmup with inverse square root decay:
-$$\eta_t = d_{\text{model}}^{-0.5} \cdot \min(t^{-0.5}, t \cdot T_{\text{warmup}}^{-1.5})$$
+```math
+\eta_t = d_{\text{model}}^{-0.5} \cdot \min(t^{-0.5}, t \cdot T_{\text{warmup}}^{-1.5})
+```
 
 **When to use cosine vs original:** Cosine for fine-tuning and shorter training; original schedule for training from scratch with very large models.
 
@@ -470,7 +549,9 @@ $$\eta_t = d_{\text{model}}^{-0.5} \cdot \min(t^{-0.5}, t \cdot T_{\text{warmup}
 **The Solution:** Clip (limit) the gradients to a maximum norm.
 
 **Global Norm Clipping:**
-$$\tilde{g} = \min\left(1, \frac{c}{\|\mathbf{g}\|_2}\right) \mathbf{g} \quad (11)$$
+```math
+\tilde{g} = \min\left(1, \frac{c}{\|\mathbf{g}\|_2}\right) \mathbf{g} \quad (11)
+```
 
 **What this does intuitively:**
 - Calculate the total "size" of all gradients combined: $\|\mathbf{g}\|_2$
@@ -489,7 +570,9 @@ $$\tilde{g} = \min\left(1, \frac{c}{\|\mathbf{g}\|_2}\right) \mathbf{g} \quad (1
 ### 9.4 Numerical Stability
 
 **Log-Sum-Exp Trick:** For numerical stability in softmax:
-$$\log\left(\sum_{i=1}^n e^{x_i}\right) = c + \log\left(\sum_{i=1}^n e^{x_i - c}\right) \quad (12)$$
+```math
+\log\left(\sum_{i=1}^n e^{x_i}\right) = c + \log\left(\sum_{i=1}^n e^{x_i - c}\right) \quad (12)
+```
 
 where $c = \max_i x_i$ prevents overflow.
 
@@ -506,7 +589,9 @@ where $c = \max_i x_i$ prevents overflow.
 ### 3.2 Backpropagation Derivation
 
 **Loss Gradient w.r.t. Output:**
-$$\frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} = \frac{\partial \mathcal{L}}{\partial \hat{\mathbf{y}}} \quad (16)$$
+```math
+\frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} = \frac{\partial \mathcal{L}}{\partial \hat{\mathbf{y}}} \quad (16)
+```
 
 **Weight Gradients:**
 
@@ -530,7 +615,9 @@ where $\odot$ denotes element-wise multiplication.
 ### 3.3 Advanced Normalization Techniques
 
 **LayerNorm:** Normalizes across features within each sample:
-$$\text{LayerNorm}(\mathbf{x}) = \gamma \odot \frac{\mathbf{x} - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta \quad (19)$$
+```math
+\text{LayerNorm}(\mathbf{x}) = \gamma \odot \frac{\mathbf{x} - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta \quad (19)
+```
 
 **Shape Analysis:** For $\mathbf{x} \in \mathbb{R}^{n \times d}$: $\gamma, \beta \in \mathbb{R}^{d}$ (learnable per-feature parameters)
 
@@ -550,12 +637,16 @@ where $\mu = \frac{1}{d}\sum_{i=1}^d x_i$ and $\sigma^2 = \frac{1}{d}\sum_{i=1}^
 ### 3.4 Alternative Normalization Methods
 
 **RMSNorm (Root Mean Square Norm):** Simplifies LayerNorm by removing the mean:
-$$\text{RMSNorm}(\mathbf{x}) = \gamma \odot \frac{\mathbf{x}}{\sqrt{\frac{1}{d}\sum_{i=1}^d x_i^2 + \epsilon}}$$
+```math
+\text{RMSNorm}(\mathbf{x}) = \gamma \odot \frac{\mathbf{x}}{\sqrt{\frac{1}{d}\sum_{i=1}^d x_i^2 + \epsilon}}
+```
 
 **Benefits:** Faster computation, similar performance to LayerNorm.
 
 **Scaled Residuals:** In very deep networks, scale residual connections:
-$$\mathbf{h}_{l+1} = \mathbf{h}_l + \alpha \cdot F(\mathbf{h}_l)$$
+```math
+\mathbf{h}_{l+1} = \mathbf{h}_l + \alpha \cdot F(\mathbf{h}_l)
+```
 where $\alpha < 1$ prevents residual explosion.
 
 **Pre-LN vs Post-LN:**
@@ -568,9 +659,15 @@ where $\alpha < 1$ prevents residual explosion.
 
 ### 4.1 Distance Metrics in High Dimensions
 
-**Euclidean Distance:** $$d_2(\mathbf{u}, \mathbf{v}) = \|\mathbf{u} - \mathbf{v}\|_2$$
+**Euclidean Distance:** 
+```math
+d_2(\mathbf{u}, \mathbf{v}) = \|\mathbf{u} - \mathbf{v}\|_2
+```
 
-**Cosine Similarity:** $$\cos(\theta) = \frac{\mathbf{u}^T \mathbf{v}}{\|\mathbf{u}\|_2 \|\mathbf{v}\|_2}$$
+**Cosine Similarity:** 
+```math
+\cos(\theta) = \frac{\mathbf{u}^T \mathbf{v}}{\|\mathbf{u}\|_2 \|\mathbf{v}\|_2}
+```
 
 **Concentration of Measure:** In high dimensions, most random vectors are approximately orthogonal, making cosine similarity more discriminative than Euclidean distance.
 
@@ -582,7 +679,10 @@ Using simple example vectors to illustrate the concepts:
 
 #### 4.2.1 Cosine Similarity
 
-**Formula:** $$\cos(\theta) = \frac{\mathbf{A} \cdot \mathbf{B}}{\|\mathbf{A}\| \times \|\mathbf{B}\|}$$
+**Formula:** 
+```math
+\cos(\theta) = \frac{\mathbf{A} \cdot \mathbf{B}}{\|\mathbf{A}\| \times \|\mathbf{B}\|}
+```
 
 **Step-by-step calculation:**
 
@@ -598,7 +698,10 @@ Using simple example vectors to illustrate the concepts:
 
 #### 4.2.2 Euclidean Distance
 
-**Formula:** $$d = \sqrt{(x_1-x_2)^2 + (y_1-y_2)^2 + (z_1-z_2)^2}$$
+**Formula:** 
+```math
+d = \sqrt{(x_1-x_2)^2 + (y_1-y_2)^2 + (z_1-z_2)^2}
+```
 
 **Step-by-step calculation:**
 
@@ -614,7 +717,10 @@ Using simple example vectors to illustrate the concepts:
 
 ### 4.3 Maximum Inner Product Search (MIPS)
 
-**Problem:** Find $$\mathbf{v}^* = \arg\max_{\mathbf{v} \in \mathcal{V}} \mathbf{q}^T \mathbf{v}$$
+**Problem:** Find 
+```math
+\mathbf{v}^* = \arg\max_{\mathbf{v} \in \mathcal{V}} \mathbf{q}^T \mathbf{v}
+```
 
 This is exactly what attention computes when finding relevant keys for a given query!
 
@@ -629,10 +735,14 @@ This is exactly what attention computes when finding relevant keys for a given q
 ### 5.1 Deriving Scaled Dot-Product Attention
 
 **Step 1:** Start with similarity search between query $\mathbf{q}$ and keys $\{\mathbf{k}_i\}$:
-$$s_i = \mathbf{q}^T \mathbf{k}_i \quad (20)$$
+```math
+s_i = \mathbf{q}^T \mathbf{k}_i \quad (20)
+```
 
 **Step 2:** Convert similarities to weights via softmax:
-$$\alpha_i = \frac{e^{s_i}}{\sum_{j=1}^n e^{s_j}} \quad (21)$$
+```math
+\alpha_i = \frac{e^{s_i}}{\sum_{j=1}^n e^{s_j}} \quad (21)
+```
 
 **Understanding $\alpha$ (alpha):** These are the attention weights - they tell us "how much should I pay attention to each word?" The $\alpha_i$ values all add up to 1, like percentages.
 
@@ -646,12 +756,16 @@ $$\alpha_i = \frac{e^{s_i}}{\sum_{j=1}^n e^{s_j}} \quad (21)$$
 **Real-world analogy:** Like deciding how much attention to give each person in a room - you don't ignore everyone except one person (hard max), but you do focus more on the most interesting people while still being somewhat aware of others.
 
 **Step 3:** Aggregate values using weights:
-$$\mathbf{o} = \sum_{i=1}^n \alpha_i \mathbf{v}_i \quad (22)$$
+```math
+\mathbf{o} = \sum_{i=1}^n \alpha_i \mathbf{v}_i \quad (22)
+```
 
 **What this step does:** Take a weighted average of all the value vectors. It's like saying "give me 30% of word 1's information, 50% of word 2's information, and 20% of word 3's information."
 
 **Matrix Form:** For sequences, this becomes:
-$$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V \quad (23)$$
+```math
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V \quad (23)
+```
 
 **Shape Analysis:** $Q \in \mathbb{R}^{n \times d_k}, K \in \mathbb{R}^{n \times d_k}, V \in \mathbb{R}^{n \times d_v} \Rightarrow \text{Output} \in \mathbb{R}^{n \times d_v}$
 
@@ -666,7 +780,9 @@ $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)
 ### 5.4 Masked Attention
 
 **Causal Masking:** For autoregressive models, prevent attention to future tokens:
-$$P = \text{softmax}\left(\frac{QK^T + M}{\sqrt{d_k}}\right) \quad (24)$$
+```math
+P = \text{softmax}\left(\frac{QK^T + M}{\sqrt{d_k}}\right) \quad (24)
+```
 
 where mask $M_{ij} \in \{0, -\infty\}$ with $M_{ij} = -\infty$ if $i < j$ (future positions).
 
@@ -681,7 +797,9 @@ where mask $M_{ij} \in \{0, -\infty\}$ with $M_{ij} = -\infty$ if $i < j$ (futur
 ### 5.2 Why the $\sqrt{d_k}$ Scaling?
 
 **Variance Analysis:** If $Q, K$ have i.i.d. entries with variance $\sigma^2$, then:
-$$\text{Var}(QK^T) = d_k \sigma^4 \quad (24)$$
+```math
+\text{Var}(QK^T) = d_k \sigma^4 \quad (24)
+```
 
 **Understanding $\sigma$ (sigma):** This represents the variance - how spread out the numbers are. Think of it as measuring "how noisy" or "how varied" the data is.
 
@@ -694,7 +812,9 @@ Without scaling, attention weights become too peaked (sharp) as $d_k$ increases,
 ### 5.3 Backpropagation Through Attention
 
 **Softmax Gradient:** For $\mathbf{p} = \text{softmax}(\mathbf{z})$:
-$$\frac{\partial p_i}{\partial z_j} = p_i(\delta_{ij} - p_j) \quad (25)$$
+```math
+\frac{\partial p_i}{\partial z_j} = p_i(\delta_{ij} - p_j) \quad (25)
+```
 
 where $\delta_{ij}$ is the Kronecker delta.
 
@@ -704,14 +824,14 @@ where $\delta_{ij}$ is the Kronecker delta.
 
 Let $S = QK^T/\sqrt{d_k}$, $P=\mathrm{softmax}(S)$ (row-wise), $O = PV$. Given $G_O=\partial \mathcal{L}/\partial O$:
 
-$$
+```math
 \begin{aligned}
 G_V &= P^T G_O,\quad &&\text{(V same shape as }V\text{)}\\
 G_P &= G_O V^T,\\
 G_{S,r} &= \big(\mathrm{diag}(P_r) - P_r P_r^T\big)\, G_{P,r}\quad &&\text{(row }r\text{; softmax Jacobian)}\\
 G_Q &= G_S K/\sqrt{d_k},\quad G_K = G_S^T Q/\sqrt{d_k}.
 \end{aligned}
-$$
+```
 
 **Parameters:** $Q,K\in\mathbb{R}^{n\times d_k}$, $V\in\mathbb{R}^{n\times d_v}$.
 **Intuition:** Backprop splits into (i) linear parts, (ii) softmax Jacobian per row.
@@ -723,10 +843,14 @@ $$
 ### 6.1 Multi-Head as Subspace Projections
 
 **Single Head:** Projects to subspace of dimension $d_k = d_{\text{model}}/h$:
-$$\text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V) \quad (26)$$
+```math
+\text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V) \quad (26)
+```
 
 **Multi-Head Combination:**
-$$\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^O \quad (27)$$
+```math
+\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^O \quad (27)
+```
 
 **Why multiple heads instead of one big head?** Different heads can specialize in different types of relationships:
 - **Head 1 might focus on syntax:** "What words are grammatically related?"
@@ -832,7 +956,9 @@ $$\begin{align}
 \end{align}$$
 
 **Feed-Forward Network:**
-$$\text{FFN}(\mathbf{x}) = \text{GELU}(\mathbf{x}W_1 + \mathbf{b}_1)W_2 + \mathbf{b}_2 \quad (36)$$
+```math
+\text{FFN}(\mathbf{x}) = \text{GELU}(\mathbf{x}W_1 + \mathbf{b}_1)W_2 + \mathbf{b}_2 \quad (36)
+```
 
 **Shape Analysis:** $\mathbf{x} \in \mathbb{R}^{n \times d_{\text{model}}}, W_1 \in \mathbb{R}^{d_{\text{model}} \times d_{\text{ffn}}}, W_2 \in \mathbb{R}^{d_{\text{ffn}} \times d_{\text{model}}}$
 
@@ -847,7 +973,9 @@ $$\text{FFN}(\mathbf{x}) = \text{GELU}(\mathbf{x}W_1 + \mathbf{b}_1)W_2 + \mathb
 ### 7.2 Why GELU over ReLU?
 
 **GELU Definition:**
-$$\text{GELU}(x) = x \cdot \Phi(x) \quad (37)$$
+```math
+\text{GELU}(x) = x \cdot \Phi(x) \quad (37)
+```
 
 **What GELU does intuitively:** GELU is like a "smooth switch." Unlike ReLU which harshly cuts off negative values to zero, GELU gradually transitions from "mostly off" to "mostly on." It asks "how much should I activate this neuron?" and gives a smooth answer between 0 and the input value.
 
@@ -865,7 +993,9 @@ where $\Phi(x)$ is the standard normal CDF (cumulative distribution function - t
 ### 12.1 Next-Token Prediction
 
 **Autoregressive Objective:**
-$$\mathcal{L} = -\sum_{t=1}^T \log P(x_t | x_1, ..., x_{t-1}) \quad (38)$$
+```math
+\mathcal{L} = -\sum_{t=1}^T \log P(x_t | x_1, ..., x_{t-1}) \quad (38)
+```
 
 **Shape Analysis:** For batch size $B$, sequence length $T$: loss computed per sequence, averaged over batch
 
@@ -874,12 +1004,16 @@ $$\mathcal{L} = -\sum_{t=1}^T \log P(x_t | x_1, ..., x_{t-1}) \quad (38)$$
 ### 12.2 Embedding Mathematics
 
 **Token Embeddings:** Map discrete tokens to continuous vectors:
-$$\mathbf{e}_i = E[i] \in \mathbb{R}^{d_{\text{model}}} \quad (39)$$
+```math
+\mathbf{e}_i = E[i] \in \mathbb{R}^{d_{\text{model}}} \quad (39)
+```
 
 where $E \in \mathbb{R}^{V \times d_{\text{model}}}$ is the embedding matrix.
 
 **Weight Tying:** Share embedding matrix $E$ with output projection to reduce parameters:
-$$P(w_t | \text{context}) = \text{softmax}(\mathbf{h}_t E^T) \quad (40)$$
+```math
+P(w_t | \text{context}) = \text{softmax}(\mathbf{h}_t E^T) \quad (40)
+```
 
 **Shape Analysis:** For $\mathbf{h}_t \in \mathbb{R}^{1 \times d_{\text{model}}}$ and $E \in \mathbb{R}^{V \times d_{\text{model}}}$:
 - $\mathbf{h}_t E^T \in \mathbb{R}^{1 \times V}$ (logits over vocabulary)
