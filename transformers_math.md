@@ -357,14 +357,7 @@ This enables training very deep networks by maintaining gradient flow.
 
 **Stability Consideration:** The transformation $F$ should be well-conditioned to avoid exploding/vanishing gradients.
 
-```python
-import torch
-import torch.nn as nn
-
-# Residual connection preserves gradient flow
-def residual_block(x, transform_fn):
-    return x + transform_fn(x)  # Skip connection is crucial
-```
+💻 **Implementation Example**: For a practical implementation of residual connections, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
 
 ## 9. Optimization for Deep Networks
 
@@ -437,14 +430,7 @@ $$\theta_t = (1 - \eta \lambda) \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{
 **$\beta_2$ Warmup:** Start with high $\beta_2$ (e.g., 0.99) and gradually decrease to final value (e.g., 0.999) over first few thousand steps. Helps with training stability.
 
 **Gradient Accumulation:** Simulate larger batch sizes:
-```python
-for step in range(num_accumulation_steps):
-    loss = model(batch[step]) / num_accumulation_steps
-    loss.backward()
-
-optimizer.step()
-optimizer.zero_grad()
-```
+💻 **Implementation Example**: For gradient accumulation implementation, see [Optimization Notebook](./pynb/math_ref/optimization.ipynb)
 
 ### 9.3 Learning Rate Schedules
 
@@ -634,17 +620,7 @@ This is exactly what attention computes when finding relevant keys for a given q
 
 **Connection to Attention:** Query-key similarity in attention is inner product search over learned embeddings.
 
-```python
-# High-dimensional similarity comparison
-def compare_similarities(q, k_list, normalize=True):
-    if normalize:
-        q = q / torch.norm(q)
-        k_list = [k / torch.norm(k) for k in k_list]
-    
-    # Inner product similarity (what attention uses)
-    similarities = [torch.dot(q, k) for k in k_list]
-    return similarities
-```
+💻 **Implementation Example**: For high-dimensional similarity comparisons, see [Vectors & Geometry Notebook](./pynb/math_ref/vectors_geometry.ipynb)
 
 ## 5. From Similarity to Attention
 
@@ -696,13 +672,7 @@ where mask $M_{ij} \in \{0, -\infty\}$ with $M_{ij} = -\infty$ if $i < j$ (futur
 
 **Numerical Stability:** Instead of $-\infty$, use large negative values (e.g., $-10^9$) to prevent NaN gradients:
 
-```python
-# Causal mask implementation
-def create_causal_mask(seq_len):
-    mask = torch.triu(torch.ones(seq_len, seq_len), diagonal=1)
-    mask = mask.masked_fill(mask == 1, -1e9)
-    return mask
-```
+💻 **Implementation Example**: For causal mask implementation, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
 
 **Padding Masks:** Mask out padding tokens by setting their attention scores to $-\infty$ before softmax. This ensures padding tokens receive zero attention weight.
 
@@ -824,31 +794,8 @@ where $\theta_i = 10000^{-2i/d_{\text{model}}}$ for dimension pairs.
 
 **RoPE Implementation Insight:** Instead of rotating the full vectors, RoPE applies rotations to consecutive dimension pairs, enabling efficient implementation via element-wise operations.
 
-```python
-# Simplified RoPE implementation
-def apply_rope(x, position, dim):
-    # x: [seq_len, dim]
-    seq_len, d = x.shape
-    theta = 1.0 / (10000 ** (torch.arange(0, d, 2).float() / d))
+💻 **Implementation Example**: For RoPE (Rotary Position Embedding) implementation, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
     
-    angles = position[:, None] * theta[None, :]  # [seq_len, d//2]
-    cos_angles = torch.cos(angles)
-    sin_angles = torch.sin(angles)
-    
-    # Apply rotation to even-odd pairs
-    x_even = x[:, 0::2]
-    x_odd = x[:, 1::2]
-    
-    rotated_even = cos_angles * x_even - sin_angles * x_odd
-    rotated_odd = sin_angles * x_even + cos_angles * x_odd
-    
-    # Interleave back
-    result = torch.zeros_like(x)
-    result[:, 0::2] = rotated_even
-    result[:, 1::2] = rotated_odd
-    
-    return result
-```
 
 ### 6.3 Alternative Position Encodings
 
@@ -1013,23 +960,7 @@ At each generation step, append the new key and value to the cache, then compute
 
 **Memory Trade-off:** Cache size grows as $O(nd)$ but eliminates $O(n^2)$ recomputation.
 
-```python
-# KV Cache implementation
-class KVCache:
-    def __init__(self):
-        self.keys = None
-        self.values = None
-    
-    def update(self, new_keys, new_values):
-        if self.keys is None:
-            self.keys = new_keys
-            self.values = new_values
-        else:
-            self.keys = torch.cat([self.keys, new_keys], dim=1)
-            self.values = torch.cat([self.values, new_values], dim=1)
-        
-        return self.keys, self.values
-```
+💻 **Implementation Example**: For KV Cache implementation, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
 
 ### 10.5 Linear Attention Approximations
 
@@ -1102,15 +1033,7 @@ $$W \sim \mathcal{N}\left(0, \frac{2}{n_{\text{in}} + n_{\text{out}}}\right) \qu
 ### 8.2 Mixed Precision Training
 
 **FP16 Forward, FP32 Gradients:** Use half precision for speed, full precision for numerical stability:
-```python
-# Automatic Mixed Precision pattern
-with torch.cuda.amp.autocast():
-    output = model(input)
-    loss = criterion(output, target)
-
-scaler.scale(loss).backward()
-scaler.step(optimizer)
-```
+💻 **Implementation Example**: For Automatic Mixed Precision implementation, see [Optimization Notebook](./pynb/math_ref/optimization.ipynb)
 
 ### 8.3 Gradient Clipping
 
@@ -1146,32 +1069,7 @@ $$A = \begin{bmatrix}
 **Step 4:** Compute output $O = AV$:
 $$O = \begin{bmatrix}0.359 & 0.641\\0.500 & 0.500\end{bmatrix} \begin{bmatrix}2 & 0 & 1\\1 & 1 & 0\end{bmatrix} = \begin{bmatrix}1.359 & 0.641 & 0.359\\1.500 & 0.500 & 0.500\end{bmatrix}$$
 
-**Verification Code:**
-```python
-import torch
-import torch.nn.functional as F
-
-# Set seed for reproducibility
-torch.manual_seed(42)
-
-# Define inputs
-Q = torch.tensor([[1., 0., 1.], [0., 1., 1.]])
-K = torch.tensor([[1., 1., 0.], [1., 0., 1.]])
-V = torch.tensor([[2., 0., 1.], [1., 1., 0.]])
-
-# Compute attention
-scores = torch.mm(Q, K.t()) / (3**0.5)
-A = F.softmax(scores, dim=1)
-O = torch.mm(A, V)
-
-print(f"Scores: {scores}")
-print(f"Attention weights: {A}")
-print(f"Output: {O}")
-
-# Verify shapes
-print(f"Q shape: {Q.shape}, K shape: {K.shape}, V shape: {V.shape}")
-print(f"Output shape: {O.shape}")
-```
+💻 **Implementation Example**: For attention computation verification, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
 
 ### 13.2 Backprop Through Simple Attention
 
@@ -1180,42 +1078,7 @@ print(f"Output shape: {O.shape}")
 **Gradient w.r.t. Values:**
 $$\frac{\partial \mathcal{L}}{\partial V} = A^T \frac{\partial \mathcal{L}}{\partial O} = \begin{bmatrix}0.359 & 0.500\\0.641 & 0.500\end{bmatrix}\begin{bmatrix}1 & 0 & 1\\0 & 1 & 0\end{bmatrix} = \begin{bmatrix}0.359 & 0.500 & 0.359\\0.641 & 0.500 & 0.641\end{bmatrix}$$
 
-**Gradient Verification:** Using finite differences with $\epsilon = 10^{-5}$:
-```python
-# Verify gradients using finite differences
-def finite_diff_check(Q, K, V, grad_output, epsilon=1e-5):
-    def attention_forward(Q, K, V):
-        scores = torch.mm(Q, K.t()) / (K.shape[1]**0.5)
-        A = F.softmax(scores, dim=1)
-        return torch.mm(A, V)
-    
-    # Analytical gradient (simplified)
-    scores = torch.mm(Q, K.t()) / (K.shape[1]**0.5)
-    A = F.softmax(scores, dim=1)
-    grad_V_analytical = A.t() @ grad_output
-    
-    # Finite difference gradient
-    grad_V_fd = torch.zeros_like(V)
-    for i in range(V.shape[0]):
-        for j in range(V.shape[1]):
-            V_plus = V.clone()
-            V_plus[i, j] += epsilon
-            V_minus = V.clone()
-            V_minus[i, j] -= epsilon
-            
-            out_plus = attention_forward(Q, K, V_plus)
-            out_minus = attention_forward(Q, K, V_minus)
-            
-            grad_V_fd[i, j] = torch.sum(grad_output * (out_plus - out_minus)) / (2 * epsilon)
-    
-    print(f"Analytical grad_V: {grad_V_analytical}")
-    print(f"Finite diff grad_V: {grad_V_fd}")
-    print(f"Max difference: {torch.max(torch.abs(grad_V_analytical - grad_V_fd)).item()}")
-
-# Test with example
-grad_output = torch.tensor([[1., 0., 1.], [0., 1., 0.]])
-finite_diff_check(Q, K, V, grad_output)
-```
+💻 **Implementation Example**: For gradient verification using finite differences, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
 
 **Check for Understanding:** Verify that gradient shapes match parameter shapes and that the chain rule is applied correctly.
 

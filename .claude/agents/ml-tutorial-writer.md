@@ -18,7 +18,8 @@ When creating tutorials, you will:
 - Review README.md and maintain cross references
 
 **Mathematical Content:**
-- Always use $$ for all mathematical equations (LaTeX block math format). Do not use Inline math syntax $...$
+- Use LaTeX formatted math that can be rendered with MathJax 
+- Use ```math block to render mathematical formulas instead of $$
 - Clearly explain every parameter and variable in formulas in a bullet format
 - Ensure equations render properly on GitHub webpages
 - Provide intuitive explanations alongside mathematical formulations
