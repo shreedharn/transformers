@@ -287,13 +287,13 @@ b_{\text{new}} = b_{\text{old}} - \alpha \frac{\partial L}{\partial b}
 **Forward Pass Equations:**
 
 ```math
-Z_1 = X W_1 + b_1 \quad \text{(shape: samples $\times$ hidden units)}
+Z_1 = X W_1 + b_1 \quad \text{(shape: samples x hidden units)}
 ```
 ```math
 A_1 = \sigma(Z_1) \quad \text{(apply activation function element-wise)}
 ```
 ```math
-Z_2 = A_1 W_2 + b_2 \quad \text{(shape: samples $\times$ outputs)}
+Z_2 = A_1 W_2 + b_2 \quad \text{(shape: samples x outputs)}
 ```
 ```math
 Y_{\text{hat}} = Z_2 \quad \text{(final predictions)}
@@ -1037,7 +1037,7 @@ P(w_t | \text{context}) = \text{softmax}(\mathbf{h}_t E^T) \quad (40)
 
 **Perplexity:** Measures model uncertainty:
 ```math
-\text{PPL} = \exp\left(-\frac{1}{T}\sum_{t=1}^T \log P(x_t | x_{<t})\right) \quad (41)
+\text{PPL} = \exp\left(-\frac{1}{T}\sum_{t=1}^T \log P(x_t \mid x_{<t})\right) \quad (41)
 ```
 
 ## 10. Efficient Attention & Scaling
