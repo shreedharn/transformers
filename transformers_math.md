@@ -52,7 +52,10 @@ We begin with optimization fundamentals and high-dimensional geometry, then buil
 **What is a vector?** Think of it as an arrow in space that has both direction and length. In transformers, vectors represent word meanings - words with similar meanings point in similar directions.
 
 **Vectors and Norms:** For $\mathbf{v} \in \mathbb{R}^d$ (a vector with d numbers):
-- L2 norm: $$\|\mathbf{v}\|_2 = \sqrt{\sum_{i=1}^d v_i^2}$$ 
+- L2 norm: 
+```math
+\|\mathbf{v}\|_2 = \sqrt{\sum_{i=1}^d v_i^2}
+```
   - **What this means:** The "length" of the vector, like measuring a stick with a ruler
   - **Why it matters:** Longer vectors represent "stronger" or "more confident" representations
 
