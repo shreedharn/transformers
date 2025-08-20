@@ -1037,7 +1037,7 @@ P(w_t | \text{context}) = \text{softmax}(\mathbf{h}_t E^T) \quad (40)
 
 **Perplexity:** Measures model uncertainty:
 ```math
-\text{PPL} = \exp\left(-\frac{1}{T}\sum_{t=1}^T \log P(x_t \mid x_{<t})\right) \quad (41)
+\text{PPL} = \exp\left(-\frac{1}{T}\sum_{t=1}^T \log P(x_t | x_{<t})\right) \quad (41)
 ```
 
 ## 10. Efficient Attention & Scaling
