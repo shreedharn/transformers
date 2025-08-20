@@ -52,21 +52,21 @@ We begin with optimization fundamentals and high-dimensional geometry, then buil
 **What is a vector?** Think of it as an arrow in space that has both direction and length. In transformers, vectors represent word meanings - words with similar meanings point in similar directions.
 
 **Vectors and Norms:** For $\mathbf{v} \in \mathbb{R}^d$ (a vector with d numbers):
-- L2 norm: $\|\mathbf{v}\|_2 = \sqrt{\sum_{i=1}^d v_i^2}$ 
+- L2 norm: $$\|\mathbf{v}\|_2 = \sqrt{\sum_{i=1}^d v_i^2}$$ 
   - **What this means:** The "length" of the vector, like measuring a stick with a ruler
   - **Why it matters:** Longer vectors represent "stronger" or "more confident" representations
 
-- Inner product: $\langle \mathbf{u}, \mathbf{v} \rangle = \mathbf{u}^T \mathbf{v} = \sum_{i=1}^d u_i v_i$
+- Inner product: $$\langle \mathbf{u}, \mathbf{v} \rangle = \mathbf{u}^T \mathbf{v} = \sum_{i=1}^d u_i v_i$$
   - **What this measures:** How much two vectors point in the same direction
   - **Intuition:** Like measuring how similar two things are. If vectors represent word meanings, a high inner product means the words are related
   - **Real example:** "king" and "queen" vectors would have a high inner product because they're conceptually similar
 
 **Matrix Operations:** For matrices $A \in \mathbb{R}^{m \times n}$, $B \in \mathbb{R}^{n \times p}$:
-- Matrix multiplication: $(AB)_{ij} = \sum_{k=1}^n A_{ik}B_{kj}$
+- Matrix multiplication: $$(AB)_{ij} = \sum_{k=1}^n A_{ik}B_{kj}$$
   - **What this does:** Combines information from two tables of numbers in a specific way
   - **Think of it as:** Matrix A transforms space, then matrix B transforms it again - like applying two filters in sequence
 
-- Transpose: $(A^T)_{ij} = A_{ji}$
+- Transpose: $$(A^T)_{ij} = A_{ji}$$
   - **What transpose ($A^T$) means:** Flip the matrix over its diagonal - rows become columns, columns become rows
   - **Why we use it:** Often we need to "reverse" a transformation or change the direction of information flow
 
@@ -81,16 +81,16 @@ We begin with optimization fundamentals and high-dimensional geometry, then buil
 
 **What this means:** The gradient has the same shape as what you're taking the gradient with respect to. If X is a 3×4 matrix, its gradient is also 3×4. This makes sense - you need to know how much to adjust each individual number in X.
 
-**Chain Rule:** For $f(g(x))$: $\frac{\partial f}{\partial x} = \frac{\partial f}{\partial g} \frac{\partial g}{\partial x}$
+**Chain Rule:** For $f(g(x))$: $$\frac{\partial f}{\partial x} = \frac{\partial f}{\partial g} \frac{\partial g}{\partial x}$$
 
 **Chain rule intuition:** Like a chain reaction. If changing x affects g, and changing g affects f, then the total effect of x on f is the product of both effects. It's like asking "if I turn this knob (x) by a little bit, how much does the final output (f) change?" You multiply the sensitivity at each step.
 
 **Useful Identities:**
-- If $Y = AXB$ and $f$ depends on $Y$, then $\displaystyle \frac{\partial f}{\partial X} = A^T \left(\frac{\partial f}{\partial Y}\right) B^T$.
+- If $Y = AXB$ and $f$ depends on $Y$, then: $$\frac{\partial f}{\partial X} = A^T \left(\frac{\partial f}{\partial Y}\right) B^T$$
   **Parameters:** $A\in\mathbb{R}^{m\times r}, X\in\mathbb{R}^{r\times s}, B\in\mathbb{R}^{s\times n}$, so $\partial f/\partial X\in\mathbb{R}^{r\times s}$.
   **Intuition:** Backward through linear maps flips them with transposes.
-- $\nabla_X \text{tr}(AX) = A^T$  
-- $\nabla_X \|X\|_F^2 = 2X$
+- $$\nabla_X \text{tr}(AX) = A^T$$
+- $$\nabla_X \|X\|_F^2 = 2X$$
 
 **What these mean:**
 - The first says "when matrices multiply, gradients flow backward through transposes"
@@ -579,9 +579,9 @@ where $\alpha < 1$ prevents residual explosion.
 
 ### 4.1 Distance Metrics in High Dimensions
 
-**Euclidean Distance:** $d_2(\mathbf{u}, \mathbf{v}) = \|\mathbf{u} - \mathbf{v}\|_2$
+**Euclidean Distance:** $$d_2(\mathbf{u}, \mathbf{v}) = \|\mathbf{u} - \mathbf{v}\|_2$$
 
-**Cosine Similarity:** $\cos(\theta) = \frac{\mathbf{u}^T \mathbf{v}}{\|\mathbf{u}\|_2 \|\mathbf{v}\|_2}$
+**Cosine Similarity:** $$\cos(\theta) = \frac{\mathbf{u}^T \mathbf{v}}{\|\mathbf{u}\|_2 \|\mathbf{v}\|_2}$$
 
 **Concentration of Measure:** In high dimensions, most random vectors are approximately orthogonal, making cosine similarity more discriminative than Euclidean distance.
 
@@ -593,7 +593,7 @@ Using simple example vectors to illustrate the concepts:
 
 #### 4.2.1 Cosine Similarity
 
-**Formula:** `cos(θ) = (A·B)/(||A||×||B||)`
+**Formula:** $$\cos(\theta) = \frac{\mathbf{A} \cdot \mathbf{B}}{\|\mathbf{A}\| \times \|\mathbf{B}\|}$$
 
 **Step-by-step calculation:**
 
@@ -609,7 +609,7 @@ Using simple example vectors to illustrate the concepts:
 
 #### 4.2.2 Euclidean Distance
 
-**Formula:** `d = √[(x₁-x₂)² + (y₁-y₂)² + (z₁-z₂)²]`
+**Formula:** $$d = \sqrt{(x_1-x_2)^2 + (y_1-y_2)^2 + (z_1-z_2)^2}$$
 
 **Step-by-step calculation:**
 
@@ -625,7 +625,7 @@ Using simple example vectors to illustrate the concepts:
 
 ### 4.3 Maximum Inner Product Search (MIPS)
 
-**Problem:** Find $\mathbf{v}^* = \arg\max_{\mathbf{v} \in \mathcal{V}} \mathbf{q}^T \mathbf{v}$
+**Problem:** Find $$\mathbf{v}^* = \arg\max_{\mathbf{v} \in \mathcal{V}} \mathbf{q}^T \mathbf{v}$$
 
 This is exactly what attention computes when finding relevant keys for a given query!
 
@@ -999,9 +999,7 @@ $$\text{PPL} = \exp\left(-\frac{1}{T}\sum_{t=1}^T \log P(x_t | x_{<t})\right) \q
 
 **Cache Update:**
 
-```math
-K_{\text{cache}} \gets \mathrm{concat}(K_{\text{cache}},\ k_{\text{new}}) \tag{42}
-```
+$$K_{\text{cache}} \gets \mathrm{concat}(K_{\text{cache}},\ k_{\text{new}}) \tag{42}$$
 
 - **$K_{\text{cache}}$**: Cached keys from previous tokens.
 - **$V_{\text{cache}}$**: Cached values from previous tokens.
@@ -1137,12 +1135,10 @@ $$S = \frac{QK^T}{\sqrt{3}} = \begin{bmatrix}0.577 & 1.155\\0.577 & 0.577\end{bm
 - Row 1: $e^{0.577} = 1.781, e^{1.155} = 3.173$, sum $= 4.954$
 - Row 2: $e^{0.577} = 1.781, e^{0.577} = 1.781$, sum $= 3.562$
 
-```math
-A = \begin{bmatrix}
+$$A = \begin{bmatrix}
 0.359 & 0.641 \\
 0.500 & 0.500
-\end{bmatrix}
-```
+\end{bmatrix}$$
 
 **Step 4:** Compute output $O = AV$:
 $$O = \begin{bmatrix}0.359 & 0.641\\0.500 & 0.500\end{bmatrix} \begin{bmatrix}2 & 0 & 1\\1 & 1 & 0\end{bmatrix} = \begin{bmatrix}1.359 & 0.641 & 0.359\\1.500 & 0.500 & 0.500\end{bmatrix}$$
