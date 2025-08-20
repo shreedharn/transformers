@@ -286,18 +286,18 @@ b_{\text{new}} = b_{\text{old}} - \alpha \frac{\partial L}{\partial b}
 
 **Forward Pass Equations:**
 
-$$
+```math
 Z_1 = X W_1 + b_1 \quad \text{(shape: samples $\times$ hidden units)}
-$$
-$$
+```
+```math
 A_1 = \sigma(Z_1) \quad \text{(apply activation function element-wise)}
-$$
-$$
+```
+```math
 Z_2 = A_1 W_2 + b_2 \quad \text{(shape: samples $\times$ outputs)}
-$$
-$$
+```
+```math
 Y_{\text{hat}} = Z_2 \quad \text{(final predictions)}
-$$
+```
 
 where $\sigma$ is an activation function like ReLU or sigmoid.
 
@@ -435,10 +435,12 @@ This enables training very deep networks by maintaining gradient flow.
 📚 **Quick Reference**: See [Adam Optimizer](./math_quick_ref.md#mathematical-quick-reference-for-neural-networks) and [Gradient Descent](./math_quick_ref.md#mathematical-quick-reference-for-neural-networks) in the mathematical reference table.
 
 **SGD with Momentum:**
-$$\begin{align}
+```math
+\begin{align}
 \mathbf{v}_t &= \beta \mathbf{v}_{t-1} + (1-\beta) \nabla_\theta \mathcal{L} \quad (5)\\
 \theta_t &= \theta_{t-1} - \eta \mathbf{v}_t \quad (6)
-\end{align}$$
+\end{align}
+```
 
 **What momentum does:** Like a ball rolling down a hill. Instead of just following the current slope (gradient), momentum keeps some memory of where you were going before. This helps you:
 - **Roll through small bumps** (escape local minima)
@@ -454,11 +456,13 @@ $$\begin{align}
 - $\eta$: Learning rate (step size)
 
 **Adam Optimizer:** Combines momentum with adaptive learning rates:
-$$\begin{align}
+```math
+\begin{align}
 \mathbf{m}_t &= \beta_1 \mathbf{m}_{t-1} + (1-\beta_1) \nabla_\theta \mathcal{L} \quad (7)\\
 \mathbf{v}_t &= \beta_2 \mathbf{v}_{t-1} + (1-\beta_2) (\nabla_\theta \mathcal{L})^2 \quad (8)\\
 \theta_t &= \theta_{t-1} - \eta \frac{\hat{\mathbf{m}}_t}{\sqrt{\hat{\mathbf{v}}_t} + \epsilon} \quad (9)
-\end{align}$$
+\end{align}
+```
 
 where $\hat{\mathbf{m}}_t$, $\hat{\mathbf{v}}_t$ are bias-corrected estimates.
 
@@ -595,12 +599,12 @@ where $c = \max_i x_i$ prevents overflow.
 
 **Weight Gradients:**
 
-$$
+```math
 \begin{aligned}
 \frac{\partial \mathcal{L}}{\partial W^{(2)}} &= (\mathbf{h}^{(1)})^T \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} \\
 \frac{\partial \mathcal{L}}{\partial W^{(1)}} &= \mathbf{x}^T \left[ \left( \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} W^{(2)T} \right) \odot \sigma'(\mathbf{z}^{(1)}) \right]
 \end{aligned}
-$$
+```
 
 
 
@@ -886,10 +890,12 @@ Instead of computing each head separately, implementations often:
 ### 6.2 Advanced Positional Encodings
 
 **Sinusoidal Encoding:** Provides absolute position information:
-$$\begin{align}
+```math
+\begin{align}
 PE_{(pos,2i)} &= \sin(pos/10000^{2i/d_{\text{model}}}) \quad (28)\\
 PE_{(pos,2i+1)} &= \cos(pos/10000^{2i/d_{\text{model}}}) \quad (29)
-\end{align}$$
+\end{align}
+```
 
 **Mathematical Properties of Sinusoidal Encoding:**
 - **Linearity**: For any fixed offset $k$, $PE_{pos+k}$ can be expressed as a linear function of $PE_{pos}$
@@ -897,16 +903,20 @@ PE_{(pos,2i+1)} &= \cos(pos/10000^{2i/d_{\text{model}}}) \quad (29)
 - **Extrapolation**: Can handle sequences longer than seen during training
 
 **RoPE (Rotary Position Embedding):** Rotates query-key pairs by position-dependent angles:
-$$\begin{align}
+```math
+\begin{align}
 \mathbf{q}_m^{(i)} &= R_{\Theta,m}^{(i)} \mathbf{q}^{(i)} \quad (30)\\
 \mathbf{k}_n^{(i)} &= R_{\Theta,n}^{(i)} \mathbf{k}^{(i)} \quad (31)
-\end{align}$$
+\end{align}
+```
 
 **RoPE Rotation Matrix:**
-$$R_{\Theta,m}^{(i)} = \begin{pmatrix}
+```math
+R_{\Theta,m}^{(i)} = \begin{pmatrix}
 \cos(m\theta_i) & -\sin(m\theta_i) \\
 \sin(m\theta_i) & \cos(m\theta_i)
-\end{pmatrix}$$
+\end{pmatrix}
+```
 
 where $\theta_i = 10000^{-2i/d_{\text{model}}}$ for dimension pairs.
 
@@ -924,7 +934,9 @@ where $\theta_i = 10000^{-2i/d_{\text{model}}}$ for dimension pairs.
 ### 6.3 Alternative Position Encodings
 
 **ALiBi (Attention with Linear Biases):** Adds position-dependent bias to attention scores:
-$$\text{ALiBi-Attention} = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}} + \text{bias}_{ij}\right)V$$
+```math
+\text{ALiBi-Attention} = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}} + \text{bias}_{ij}\right)V
+```
 
 where $\text{bias}_{ij} = -m \cdot |i - j|$ and $m$ is a head-specific slope.
 
@@ -934,7 +946,9 @@ where $\text{bias}_{ij} = -m \cdot |i - j|$ and $m$ is a head-specific slope.
 - Linear relationship between position distance and attention bias
 
 **T5 Relative Position Bias:** Learns relative position embeddings:
-$$A_{ij} = \frac{q_i^T k_j}{\sqrt{d_k}} + b_{\text{rel}(i,j)}$$
+```math
+A_{ij} = \frac{q_i^T k_j}{\sqrt{d_k}} + b_{\text{rel}(i,j)}
+```
 
 where $b_{\text{rel}(i,j)}$ is a learned bias based on relative distance $\text{rel}(i,j)$.
 
@@ -948,12 +962,14 @@ where $b_{\text{rel}(i,j)}$ is a learned bias based on relative distance $\text{
 ### 7.1 Complete Block Equations
 
 **Pre-LayerNorm Architecture:**
-$$\begin{align}
+```math
+\begin{align}
 \mathbf{h}_1 &= \text{LayerNorm}(\mathbf{x}) \quad (32)\\
 \mathbf{h}_2 &= \mathbf{x} + \text{MultiHeadAttn}(\mathbf{h}_1, \mathbf{h}_1, \mathbf{h}_1) \quad (33)\\
 \mathbf{h}_3 &= \text{LayerNorm}(\mathbf{h}_2) \quad (34)\\
 \mathbf{y} &= \mathbf{h}_2 + \text{FFN}(\mathbf{h}_3) \quad (35)
-\end{align}$$
+\end{align}
+```
 
 **Feed-Forward Network:**
 ```math
@@ -1020,7 +1036,9 @@ P(w_t | \text{context}) = \text{softmax}(\mathbf{h}_t E^T) \quad (40)
 - Consistent with row-vector convention
 
 **Perplexity:** Measures model uncertainty:
-$$\text{PPL} = \exp\left(-\frac{1}{T}\sum_{t=1}^T \log P(x_t | x_{<t})\right) \quad (41)$$
+```math
+\text{PPL} = \exp\left(-\frac{1}{T}\sum_{t=1}^T \log P(x_t | x_{<t})\right) \quad (41)
+```
 
 ## 10. Efficient Attention & Scaling
 
@@ -1083,7 +1101,9 @@ $$\text{PPL} = \exp\left(-\frac{1}{T}\sum_{t=1}^T \log P(x_t | x_{<t})\right) \q
 
 **Cache Update:**
 
-$$K_{\text{cache}} \gets \mathrm{concat}(K_{\text{cache}},\ k_{\text{new}}) \tag{42}$$
+```math
+K_{\text{cache}} \gets \mathrm{concat}(K_{\text{cache}},\ k_{\text{new}}) \tag{42}
+```
 
 - **$K_{\text{cache}}$**: Cached keys from previous tokens.
 - **$V_{\text{cache}}$**: Cached values from previous tokens.
@@ -1101,7 +1121,9 @@ At each generation step, append the new key and value to the cache, then compute
 **Kernel Method View:** Approximate $\text{softmax}(\mathbf{q}^T\mathbf{k})$ with $\phi(\mathbf{q})^T \phi(\mathbf{k})$ for feature map $\phi$.
 
 **Linear Attention:**
-$$\text{LinAttn}(Q,K,V) = \frac{\phi(Q)(\phi(K)^T V)}{\phi(Q)(\phi(K)^T \mathbf{1})} \quad (45)$$
+```math
+\text{LinAttn}(Q,K,V) = \frac{\phi(Q)(\phi(K)^T V)}{\phi(Q)(\phi(K)^T \mathbf{1})} \quad (45)
+```
 
 **Complexity Reduction:** Reduces from $O(n^2 d)$ to $O(nd^2)$ when $d < n$.
 
@@ -1110,19 +1132,27 @@ $$\text{LinAttn}(Q,K,V) = \frac{\phi(Q)(\phi(K)^T V)}{\phi(Q)(\phi(K)^T \mathbf{
 ### 11.1 Dropout in Transformers
 
 **Attention Dropout:** Applied to attention weights:
-$$A_{\text{dropped}} = \text{Dropout}(\text{softmax}(QK^T/\sqrt{d_k})) \quad (46)$$
+```math
+A_{\text{dropped}} = \text{Dropout}(\text{softmax}(QK^T/\sqrt{d_k})) \quad (46)
+```
 
 **FFN Dropout:** Applied after first linear transformation:
-$$\text{FFN}(\mathbf{x}) = W_2 \cdot \text{Dropout}(\text{GELU}(W_1 \mathbf{x})) \quad (47)$$
+```math
+\text{FFN}(\mathbf{x}) = W_2 \cdot \text{Dropout}(\text{GELU}(W_1 \mathbf{x})) \quad (47)
+```
 
 ### 11.2 Evaluation and Calibration
 
 **Expected Calibration Error (ECE):** Measures how well predicted probabilities match actual outcomes:
-$$\text{ECE} = \sum_{m=1}^M \frac{|B_m|}{n} |\text{acc}(B_m) - \text{conf}(B_m)|$$
+```math
+\text{ECE} = \sum_{m=1}^M \frac{|B_m|}{n} |\text{acc}(B_m) - \text{conf}(B_m)|
+```
 where $B_m$ are probability bins, $\text{acc}$ is accuracy, $\text{conf}$ is confidence.
 
 **Temperature Scaling:** Post-training calibration method:
-$$P_{\text{cal}}(y|x) = \text{softmax}(\mathbf{z}/T)$$
+```math
+P_{\text{cal}}(y|x) = \text{softmax}(\mathbf{z}/T)
+```
 where $T > 1$ makes predictions less confident, $T < 1$ more confident.
 
 **Perplexity Dependence on Tokenizer:** PPL comparisons only valid with same tokenizer. Different tokenizers create different sequence lengths and vocabulary sizes.
@@ -1151,7 +1181,9 @@ When sharing weights, ensure shape compatibility:
 ### 11.4 Label Smoothing
 
 **Smooth Labels:** Replace one-hot targets with:
-$$y_{\text{smooth}} = (1-\alpha) y_{\text{true}} + \frac{\alpha}{V} \mathbf{1} \quad (48)$$
+```math
+y_{\text{smooth}} = (1-\alpha) y_{\text{true}} + \frac{\alpha}{V} \mathbf{1} \quad (48)
+```
 
 **Effect on Gradients:** Prevents overconfident predictions and improves calibration.
 
@@ -1160,7 +1192,9 @@ $$y_{\text{smooth}} = (1-\alpha) y_{\text{true}} + \frac{\alpha}{V} \mathbf{1} \
 ### 8.1 Initialization Strategies
 
 **Xavier/Glorot for Linear Layers:**
-$$W \sim \mathcal{N}\left(0, \frac{2}{n_{\text{in}} + n_{\text{out}}}\right) \quad (49)$$
+```math
+W \sim \mathcal{N}\left(0, \frac{2}{n_{\text{in}} + n_{\text{out}}}\right) \quad (49)
+```
 
 **Attention-Specific:** Initialize query/key projections with smaller variance to prevent attention collapse (overly peaked attention distributions).
 
@@ -1186,31 +1220,44 @@ Q = [[1, 0, 1],    K = [[1, 1, 0],    V = [[2, 0, 1],
 ```
 
 **Step 1:** Compute raw scores $QK^T$:
-$$QK^T = \begin{bmatrix}1 & 0 & 1\\0 & 1 & 1\end{bmatrix} \begin{bmatrix}1 & 1\\1 & 0\\0 & 1\end{bmatrix} = \begin{bmatrix}1 & 2\\1 & 1\end{bmatrix}$$
+```math
+QK^T = \begin{bmatrix}1 & 0 & 1\\0 & 1 & 1\end{bmatrix} \begin{bmatrix}1 & 1\\1 & 0\\0 & 1\end{bmatrix} = \begin{bmatrix}1 & 2\\1 & 1\end{bmatrix}
+```
 
 **Step 2:** Scale by $1/\sqrt{d_k} = 1/\sqrt{3} \approx 0.577$:
-$$S = \frac{QK^T}{\sqrt{3}} = \begin{bmatrix}0.577 & 1.155\\0.577 & 0.577\end{bmatrix}$$
+```math
+S = \frac{QK^T}{\sqrt{3}} = \begin{bmatrix}0.577 & 1.155\\0.577 & 0.577\end{bmatrix}
+```
 
 **Step 3:** Apply softmax (row-wise, rounded to 3 d.p.):
 - Row 1: $e^{0.577} = 1.781, e^{1.155} = 3.173$, sum $= 4.954$
 - Row 2: $e^{0.577} = 1.781, e^{0.577} = 1.781$, sum $= 3.562$
 
-$$A = \begin{bmatrix}
+```math
+A = \begin{bmatrix}
 0.359 & 0.641 \\
 0.500 & 0.500
-\end{bmatrix}$$
+\end{bmatrix}
+```
 
 **Step 4:** Compute output $O = AV$:
-$$O = \begin{bmatrix}0.359 & 0.641\\0.500 & 0.500\end{bmatrix} \begin{bmatrix}2 & 0 & 1\\1 & 1 & 0\end{bmatrix} = \begin{bmatrix}1.359 & 0.641 & 0.359\\1.500 & 0.500 & 0.500\end{bmatrix}$$
+```math
+O = \begin{bmatrix}0.359 & 0.641\\0.500 & 0.500\end{bmatrix} \begin{bmatrix}2 & 0 & 1\\1 & 1 & 0\end{bmatrix} = \begin{bmatrix}1.359 & 0.641 & 0.359\\1.500 & 0.500 & 0.500\end{bmatrix}
+```
 
 💻 **Implementation Example**: For attention computation verification, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
 
 ### 13.2 Backprop Through Simple Attention
 
-**Given:** $\frac{\partial \mathcal{L}}{\partial O} = \begin{bmatrix}1 & 0 & 1\\0 & 1 & 0\end{bmatrix}$
+**Given:** 
+```math
+\frac{\partial \mathcal{L}}{\partial O} = \begin{bmatrix}1 & 0 & 1\\0 & 1 & 0\end{bmatrix}
+```
 
 **Gradient w.r.t. Values:**
-$$\frac{\partial \mathcal{L}}{\partial V} = A^T \frac{\partial \mathcal{L}}{\partial O} = \begin{bmatrix}0.359 & 0.500\\0.641 & 0.500\end{bmatrix}\begin{bmatrix}1 & 0 & 1\\0 & 1 & 0\end{bmatrix} = \begin{bmatrix}0.359 & 0.500 & 0.359\\0.641 & 0.500 & 0.641\end{bmatrix}$$
+```math
+\frac{\partial \mathcal{L}}{\partial V} = A^T \frac{\partial \mathcal{L}}{\partial O} = \begin{bmatrix}0.359 & 0.500\\0.641 & 0.500\end{bmatrix}\begin{bmatrix}1 & 0 & 1\\0 & 1 & 0\end{bmatrix} = \begin{bmatrix}0.359 & 0.500 & 0.359\\0.641 & 0.500 & 0.641\end{bmatrix}
+```
 
 💻 **Implementation Example**: For gradient verification using finite differences, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
 
@@ -1314,10 +1361,12 @@ $$\frac{\partial \mathcal{L}}{\partial V} = A^T \frac{\partial \mathcal{L}}{\par
 
 For $p_i = \frac{e^{z_i}}{\sum_j e^{z_j}}$:
 
-$$\frac{\partial p_i}{\partial z_j} = \begin{cases}
+```math
+\frac{\partial p_i}{\partial z_j} = \begin{cases}
 p_i(1 - p_i) & \text{if } i = j \\
 -p_i p_j & \text{if } i \neq j
-\end{cases} = p_i(\delta_{ij} - p_j)$$
+\end{cases} = p_i(\delta_{ij} - p_j)
+```
 
 ### B.2 Matrix Calculus Identities
 
