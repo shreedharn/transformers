@@ -37,7 +37,7 @@ This tutorial builds the mathematical foundations of Transformer architectures f
 **Appendices:**
 - [A. Symbol/Shape Reference](#appendix-a-symbolshape-reference)
 - [B. Key Derivations](#appendix-b-key-derivations)
-- [C. Glossary](#appendix-c-glossary)
+- [Glossary](./glossary.md) - Comprehensive terms and definitions
 
 ## 1. Roadmap
 
@@ -1376,18 +1376,3 @@ p_i(1 - p_i) & \text{if } i = j \\
 
 **Chain Rule for Matrices:** $\frac{\partial f}{\partial X} = \sum_Y \frac{\partial f}{\partial Y} \frac{\partial Y}{\partial X}$
 
-## Appendix C: Glossary
-
-**Attention Collapse:** Phenomenon where attention weights become too peaked (concentrated on few tokens) rather than uniform, leading to poor gradient flow and reduced model expressiveness.
-
-**Causal Mask:** Lower-triangular mask preventing attention to future tokens in autoregressive models.
-
-**KV Cache:** Stored key-value pairs from previous tokens to accelerate autoregressive generation.
-
-**Multi-Head Attention:** Parallel attention mechanisms operating on different learned subspaces.
-
-**Position Encoding:** Method to inject sequential order information into permutation-equivariant attention.
-
-**Scaled Dot-Product Attention:** Core attention mechanism using $\text{softmax}(QK^T/\sqrt{d_k})V$.
-
-**Teacher Forcing:** Training technique using ground truth tokens as inputs instead of model predictions.
