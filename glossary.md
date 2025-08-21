@@ -307,7 +307,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 - **Comparison**: [mlp_intro.md Section 9](./mlp_intro.md#tanh-hyperbolic-tangent) for detailed analysis
 
 **Teacher Forcing:** Training technique using ground truth tokens as inputs instead of model predictions.
-- **Autoregressive training**: [transformers_math1.md Section 12.1](./transformers_math1.md#121-next-token-prediction) for implementation details
+- **Autoregressive training**: [transformers_math1.md Section 8.1](./transformers_math1.md#81-next-token-prediction) for implementation details
 
 **Temperature**: A parameter controlling randomness in text generation; lower values make outputs more focused, higher values more creative.
 - **Text generation**: Used in softmax: $p_i = \frac{e^{x_i/T}}{\sum_j e^{x_j/T}}$

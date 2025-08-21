@@ -9,9 +9,9 @@
 ## 1. Prerequisites
 
 **Mathematical Foundations:**
-- **Linear Algebra**: Matrix operations, eigenvalues, vector spaces (📚 See [Linear Algebra Essentials](./transformers_math1.md#21-linear-algebra-essentials))
-- **Probability Theory**: Distributions, information theory, maximum likelihood estimation (📚 See [Probability & Information Theory](./transformers_math1.md#23-probability--information-theory))
-- **Calculus**: Gradients, chain rule, optimization theory (📚 See [Matrix Calculus Essentials](./transformers_math1.md#22-matrix-calculus-essentials))
+- **Linear Algebra**: Matrix operations, eigenvalues, vector spaces (📚 See [Linear Algebra Essentials](./transformers_math1.md#221-vectors-as-word-meanings))
+- **Probability Theory**: Distributions, information theory, maximum likelihood estimation (📚 See [Probability & Information Theory](./transformers_math1.md#224-softmax-and-cross-entropy-from-scores-to-decisions))
+- **Calculus**: Gradients, chain rule, optimization theory (📚 See [Matrix Calculus Essentials](./transformers_math1.md#223-gradients-as-learning-signals))
 - **Machine Learning**: Backpropagation, gradient descent, regularization techniques
 
 ---
@@ -377,7 +377,7 @@ $$\text{tokenize}(s) = [\text{vocab}[\tau_i] \mid \tau_i \in \mathrm{BPE\_segmen
 
 where $\mathrm{BPE\_segment}$ applies the learned merge rules to produce subword tokens $\tau_i$.
 
-**📖 Detailed Algorithm:** See [Tokenization Mathematics](./transformers_math1.md#122-embedding-mathematics) for BPE training and inference procedures.
+**📖 Detailed Algorithm:** See [Tokenization Mathematics](./transformers_math1.md#82-embedding-mathematics) for BPE training and inference procedures.
 
 ### Tokenization Challenges and Considerations
 
@@ -445,7 +445,7 @@ $$X = X_{\text{tok}} + X_{\text{pos}} \in \mathbb{R}^{n \times d_{\text{model}}}
 
 where $n$ is the sequence length and $d_{\text{model}}$ is the model dimension.
 
-**📖 Theoretical Foundation:** See [Embedding Mathematics](./transformers_math1.md#122-embedding-mathematics) and [Positional Encodings](./transformers_math1.md#62-advanced-positional-encodings) for detailed analysis of learned vs. fixed position encodings.
+**📖 Theoretical Foundation:** See [Embedding Mathematics](./transformers_math1.md#82-embedding-mathematics) and [Positional Encodings](./transformers_math1.md#62-advanced-positional-encodings) for detailed analysis of learned vs. fixed position encodings.
 
 ### Concrete Example with Actual Numbers
 
@@ -563,7 +563,7 @@ $$X^{(l)} = X'^{(l)} + F^{(l)} \quad \text{(residual connection)}$$
 - **Residual connections**: Address vanishing gradient problem via identity shortcuts
 - **Two-sublayer structure**: Separates relationship modeling (attention) from feature transformation (FFN)
 
-**📖 Theoretical Analysis:** See [Transformer Block Mathematics](./transformers_math1.md#71-complete-block-equations) and [Residual Connections as Discretized Dynamics](./transformers_math1.md#212-residual-connections-as-discretized-dynamics) for detailed mathematical foundations.
+**📖 Theoretical Analysis:** See [Transformer Block Mathematics](./transformers_math1.md#71-complete-block-equations) and [Residual Connections as Discretized Dynamics](./transformers_math1.md#213-residual-connections-as-discretized-dynamics) for detailed mathematical foundations.
 
 ---
 
@@ -1229,7 +1229,7 @@ Total loss:
   L = (1/n) × Σ L_i = -(1/n) × Σ log(softmax(logits[i])[t_{i+1}])
 ```
 
-**📖 Mathematical Details:** See [Cross-Entropy Loss](./transformers_math1.md#23-probability--information-theory) in transformers_math1.md for detailed intuitive explanation
+**📖 Mathematical Details:** See [Cross-Entropy Loss](./transformers_math1.md#224-softmax-and-cross-entropy-from-scores-to-decisions) in transformers_math1.md for detailed intuitive explanation
 
 ### Backward Pass Flow
 

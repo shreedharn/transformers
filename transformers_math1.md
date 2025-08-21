@@ -21,15 +21,23 @@ For advanced topics including optimization, training stability, scaling laws, an
 ## Table of Contents
 
 1. [Roadmap](#1-roadmap)
-2. [Mathematical Preliminaries](#2-mathematical-preliminaries)
-   - [2.1.0 From Line Slopes to Neural Network Training](#210-from-line-slopes-to-neural-network-training)
+2. [Neural Network Training: Mathematical Foundations](#2-neural-network-training-mathematical-foundations)
+   - [2.1 From Training to Inference: The Complete Journey](#21-from-training-to-inference-the-complete-journey)
+     - [2.1.1 From Line Slopes to Neural Network Training](#211-from-line-slopes-to-neural-network-training)
+     - [2.1.2 Gradient Fields and Optimization](#212-gradient-fields-and-optimization)
+     - [2.1.3 Residual Connections as Discretized Dynamics](#213-residual-connections-as-discretized-dynamics)
+   - [2.2 Deep Learning Mathematics in Context](#22-deep-learning-mathematics-in-context)
+     - [2.2.1 Vectors as Word Meanings](#221-vectors-as-word-meanings)
+     - [2.2.2 Matrices as Transformations of Meaning](#222-matrices-as-transformations-of-meaning)
+     - [2.2.3 Gradients as Learning Signals](#223-gradients-as-learning-signals)
+     - [2.2.4 Softmax and Cross-Entropy: From Scores to Decisions](#224-softmax-and-cross-entropy-from-scores-to-decisions)
 3. [Multilayer Perceptrons as a Warm-Up](#3-multilayer-perceptrons-as-a-warm-up)
 4. [High-Dimensional Geometry & Similarity](#4-high-dimensional-geometry--similarity)
 5. [From Similarity to Attention](#5-from-similarity-to-attention)
 6. [Multi-Head Attention & Positional Information](#6-multi-head-attention--positional-information)
 7. [Transformer Block Mathematics](#7-transformer-block-mathematics)
-12. [Training Objective & Tokenization/Embeddings](#12-training-objective--tokenizationembeddings)
-13. [Worked Mini-Examples](#13-worked-mini-examples)
+8. [Training Objective & Tokenization/Embeddings](#8-training-objective--tokenizationembeddings)
+9. [Worked Mini-Examples](#9-worked-mini-examples)
 
 **For Advanced Topics:**
 - [Part 2: Advanced Concepts and Scaling](./transformers_math2.md) covers optimization, efficient attention, regularization, and implementation details
@@ -43,125 +51,13 @@ We begin with optimization fundamentals and high-dimensional geometry, then buil
 
 For the complete journey including **efficient inference**, **scaling laws**, and **advanced optimization techniques**, continue to [Part 2](./transformers_math2.md).
 
-## 2. Mathematical Preliminaries
+## 2. Neural Network Training: Mathematical Foundations
 
-📚 **Quick Reference**: For a comprehensive table of all mathematical concepts used in neural networks, see [Mathematical Quick Reference](./math_quick_ref.md).
+📚 **Quick Reference**: For pure mathematical concepts and formulas, see [Mathematical Quick Reference](./math_quick_ref.md). This section focuses on mathematical concepts **in the context of deep learning**.
 
-### 2.1 Linear Algebra Essentials
+### 2.1 From Training to Inference: The Complete Journey
 
-**What is a vector?** Think of it as an arrow in space that has both direction and length. In transformers, vectors represent word meanings - words with similar meanings point in similar directions.
-
-**Vectors and Norms:** For $\mathbf{v} \in \mathbb{R}^d$ (a vector with d numbers):
-- L2 norm: 
-```math
-\|\mathbf{v}\|_2 = \sqrt{\sum_{i=1}^d v_i^2}
-```
-  - **What this means:** The "length" of the vector, like measuring a stick with a ruler
-  - **Why it matters:** Longer vectors represent "stronger" or "more confident" representations
-
-- Inner product: 
-```math
-\langle \mathbf{u}, \mathbf{v} \rangle = \mathbf{u}^T \mathbf{v} = \sum_{i=1}^d u_i v_i
-```
-  - **What this measures:** How much two vectors point in the same direction
-  - **Intuition:** Like measuring how similar two things are. If vectors represent word meanings, a high inner product means the words are related
-  - **Real example:** "king" and "queen" vectors would have a high inner product because they're conceptually similar
-
-**Matrix Operations:** For matrices $A \in \mathbb{R}^{m \times n}$, $B \in \mathbb{R}^{n \times p}$:
-- Matrix multiplication: 
-```math
-(AB)_{ij} = \sum_{k=1}^n A_{ik}B_{kj}
-```
-  - **What this does:** Combines information from two tables of numbers in a specific way
-  - **Think of it as:** Matrix A transforms space, then matrix B transforms it again - like applying two filters in sequence
-
-- Transpose: 
-```math
-(A^T)_{ij} = A_{ji}
-```
-  - **What transpose ($A^T$) means:** Flip the matrix over its diagonal - rows become columns, columns become rows
-  - **Why we use it:** Often we need to "reverse" a transformation or change the direction of information flow
-
-- Block matrices enable efficient computation of attention over sequences
-  - **Practical point:** Instead of processing one word at a time, we can process entire sentences at once using matrices
-
-### 2.2 Matrix Calculus Essentials
-
-**What is a gradient?** Think of hiking on a mountain. The gradient at any point tells you the direction of steepest ascent. In machine learning, we want to find the valley (minimum loss), so we go in the opposite direction of the gradient - downhill.
-
-**Gradient Shapes:** If $f: \mathbb{R}^{m \times n} \to \mathbb{R}$, then $\nabla_X f \in \mathbb{R}^{m \times n}$
-
-**What this means:** The gradient has the same shape as what you're taking the gradient with respect to. If X is a 3×4 matrix, its gradient is also 3×4. This makes sense - you need to know how much to adjust each individual number in X.
-
-**Chain Rule:** For $f(g(x))$: 
-```math
-\frac{\partial f}{\partial x} = \frac{\partial f}{\partial g} \frac{\partial g}{\partial x}
-```
-
-**Chain rule intuition:** Like a chain reaction. If changing x affects g, and changing g affects f, then the total effect of x on f is the product of both effects. It's like asking "if I turn this knob (x) by a little bit, how much does the final output (f) change?" You multiply the sensitivity at each step.
-
-**Useful Identities:**
-- If $Y = AXB$ and $f$ depends on $Y$, then: 
-```math
-\frac{\partial f}{\partial X} = A^T \left(\frac{\partial f}{\partial Y}\right) B^T
-```
-  **Parameters:** $A\in\mathbb{R}^{m\times r}, X\in\mathbb{R}^{r\times s}, B\in\mathbb{R}^{s\times n}$, so $\partial f/\partial X\in\mathbb{R}^{r\times s}$.
-  **Intuition:** Backward through linear maps flips them with transposes.
-- 
-```math
-\nabla_X \text{tr}(AX) = A^T
-```
-- 
-```math
-\nabla_X \|X\|_F^2 = 2X
-```
-
-**What these mean:**
-- The first says "when matrices multiply, gradients flow backward through transposes"
-- The second: "the trace (sum of diagonal elements) has a simple gradient"
-- The third: "the gradient of squared magnitude is just twice the original" (like how d/dx(x²) = 2x)
-
-### 2.3 Probability & Information Theory
-
-**Softmax as Gibbs Distribution:**
-```math
-\text{softmax}(\mathbf{z})_i = \frac{e^{z_i}}{\sum_{j=1}^n e^{z_j}} \quad (1)
-```
-
-**What softmax does intuitively:** Imagine you're choosing which restaurant to go to. Each restaurant has a "score" (z_i). Softmax converts these raw scores into probabilities that sum to 1, like saying "there's a 30% chance I'll pick restaurant A, 50% chance for B, 20% chance for C." The exponential function (e^x) ensures that higher scores get disproportionately higher probabilities - if one restaurant is much better, it gets most of the probability mass.
-
-**Why use exponentials?** Because they're always positive (probabilities can't be negative) and they amplify differences - a score of 5 vs 4 creates a much bigger probability difference than 2 vs 1.
-
-This represents a Gibbs distribution with "energy" $-z_i$ and temperature $T=1$.
-
-**Cross-Entropy Loss:**
-```math
-\mathcal{L} = -\sum_{i=1}^n y_i \log p_i \quad (2)
-```
-
-**What cross-entropy loss does intuitively:** Think of it as a "wrongness penalty." If the model predicts the right answer with high confidence (p_i close to 1), the loss is small. If it predicts the wrong answer or is uncertain about the right answer, the loss is large. The logarithm harshly penalizes being confidently wrong - predicting 0.01% chance for the correct answer gives a huge penalty.
-
-**Why cross-entropy instead of just counting wrong answers?** Because it rewards confidence in correct predictions and punishes overconfidence in wrong ones. It's like the difference between "I'm pretty sure this is right" vs "I'm absolutely certain this is wrong."
-
-**Deeper reasons why cross-entropy is perfect for transformers:**
-
-1. **Information-theoretic foundation:** Cross-entropy measures the "surprise" in the prediction. If the model is confident in the right answer (low surprise), loss is low. If it's surprised by the correct answer (assigned low probability), loss is high.
-
-2. **Matches the softmax output:** Since transformers output probability distributions via softmax, we need a loss function that works with probabilities. Cross-entropy is the natural choice for probability distributions.
-
-3. **Encourages proper calibration:** Unlike squared error, cross-entropy pushes the model to output probabilities that reflect its true confidence. A well-trained model should be right 90% of the time when it says it's 90% confident.
-
-4. **Smooth gradients everywhere:** The gradient of cross-entropy with respect to the final layer outputs is simply (predicted probability - true probability). This creates clean, well-behaved gradients for training.
-
-5. **Class imbalance considerations:** Unweighted cross-entropy does **not** handle class imbalance by itself; use class weights or resampling when imbalance is a concern (language modeling often leaves it unweighted because frequencies reflect the data distribution).
-
-**Mathematical intuition:** The logarithm grows very quickly as probability approaches 0. This means being slightly wrong about a high-confidence prediction gets heavily penalized, encouraging the model to be humble about its uncertainty.
-
-where $y_i$ are true labels (what the answer actually is) and $p_i$ are predicted probabilities (what the model thinks the answer is).
-
-## 2.1 Calculus to Differential Equations
-
-### 2.1.0 From Line Slopes to Neural Network Training
+#### 2.1.1 From Line Slopes to Neural Network Training
 
 **Building Intuition: Slope of a Line**
 
@@ -390,7 +286,7 @@ Update: x₁ = x₀ - α(df/dx)   [x,y]₁ = [x,y]₀ - α∇f    θ₁ = θ₀ 
 
 This is why understanding the simple case of line slopes gives us insight into the most sophisticated neural network training algorithms.
 
-### 2.1.1 Gradient Fields and Optimization
+#### 2.1.2 Gradient Fields and Optimization
 
 **Gradient Descent as Continuous Flow:** Parameter updates $\theta_{t+1} = \theta_t - \eta \nabla_\theta \mathcal{L}$ approximate the ODE:
 ```math
@@ -409,7 +305,7 @@ This connects discrete optimization to continuous dynamical systems.
 
 **Why This Matters:** Understanding optimization as flow helps explain momentum methods, learning rate schedules, and convergence behavior.
 
-### 2.1.2 Residual Connections as Discretized Dynamics
+#### 2.1.3 Residual Connections as Discretized Dynamics
 
 **Residual Block:** $\mathbf{h}_{l+1} = \mathbf{h}_l + F(\mathbf{h}_l)$ approximates:
 ```math
@@ -427,6 +323,67 @@ This enables training very deep networks by maintaining gradient flow.
 **Stability Consideration:** The transformation $F$ should be well-conditioned to avoid exploding/vanishing gradients.
 
 💻 **Implementation Example**: For a practical implementation of residual connections, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
+
+### 2.2 Deep Learning Mathematics in Context
+
+#### 2.2.1 Vectors as Word Meanings
+
+**What vectors represent in transformers:** Vectors are not just mathematical objects—they encode semantic meaning. Each word becomes a point in high-dimensional space where:
+- **Similar words cluster together:** "king" and "queen" vectors point in similar directions
+- **Vector arithmetic captures relationships:** "king" - "man" + "woman" ≈ "queen"
+- **Distance measures semantic similarity:** Cosine similarity between "cat" and "dog" is higher than between "cat" and "airplane"
+
+**Why this matters for attention:** When transformers compute attention, they're asking "which word meanings are most relevant to understanding this context?" This is fundamentally a similarity search in semantic space.
+
+#### 2.2.2 Matrices as Transformations of Meaning
+
+**Linear transformations in neural networks:**
+- **Weight matrices** $W$ transform input meanings: $\mathbf{h}_{\text{new}} = \mathbf{h}_{\text{old}} W$
+- **Multiple transformations compose:** $\mathbf{h}_3 = \mathbf{h}_1 W_1 W_2$ applies two sequential meaning transformations
+- **Transpose operations** $W^T$ reverse transformations during backpropagation
+
+**Block matrix operations enable parallel processing:**
+```math
+\begin{bmatrix} \mathbf{h}_1 \\ \mathbf{h}_2 \\ \vdots \\ \mathbf{h}_n \end{bmatrix} W = \begin{bmatrix} \mathbf{h}_1 W \\ \mathbf{h}_2 W \\ \vdots \\ \mathbf{h}_n W \end{bmatrix}
+```
+This processes entire sequences simultaneously instead of word-by-word.
+
+#### 2.2.3 Gradients as Learning Signals
+
+**What gradients mean in neural networks:** Gradients tell us "if I adjust this parameter slightly, how much will my prediction error change?" This guides learning:
+- **Large gradients:** Parameter strongly affects error → make bigger adjustments
+- **Small gradients:** Parameter weakly affects error → make smaller adjustments
+- **Zero gradients:** Parameter doesn't affect error → don't change it
+
+**Chain rule enables credit assignment:** In deep networks, we need to know how output errors relate to early layer parameters. The chain rule flows error signals backward through the network:
+```math
+\frac{\partial \mathcal{L}}{\partial W_1} = \frac{\partial \mathcal{L}}{\partial \mathbf{h}_3} \frac{\partial \mathbf{h}_3}{\partial \mathbf{h}_2} \frac{\partial \mathbf{h}_2}{\partial W_1}
+```
+
+#### 2.2.4 Softmax and Cross-Entropy: From Scores to Decisions
+
+**Softmax converts neural network outputs to probabilities:**
+```math
+\text{softmax}(\mathbf{z})_i = \frac{e^{z_i}}{\sum_{j=1}^n e^{z_j}} \quad (1)
+```
+
+**Why transformers use this combination:**
+1. **Neural networks output raw scores** (logits) that can be any real number
+2. **Softmax normalizes these into probabilities** that sum to 1
+3. **Cross-entropy loss measures prediction quality** using these probabilities
+
+**Cross-Entropy Loss:**
+```math
+\mathcal{L} = -\sum_{i=1}^n y_i \log p_i \quad (2)
+```
+
+**Why cross-entropy is perfect for language modeling:**
+- **Encourages confident correct predictions:** Low loss when p_i ≈ 1 for correct answer
+- **Harshly penalizes confident wrong predictions:** High loss when p_i ≈ 0 for correct answer
+- **Provides clean gradients:** $\nabla \mathcal{L} = \mathbf{p} - \mathbf{y}$ (predicted - true)
+- **Matches softmax naturally:** Both work with probability distributions
+
+**Example:** If the model predicts 90% probability for the correct next word, loss is low. If it predicts 1% probability for the correct next word, loss is very high.
 
 ## 3. Multilayer Perceptrons as a Warm-Up
 
@@ -852,9 +809,9 @@ where $b_{\text{rel}(i,j)}$ is a learned bias based on relative distance $\text{
 
 where $\Phi(x)$ is the standard normal CDF (cumulative distribution function - tells you the probability that a normal random variable is less than x). GELU provides smoother gradients than ReLU, improving optimization.
 
-## 12. Training Objective & Tokenization/Embeddings
+## 8. Training Objective & Tokenization/Embeddings
 
-### 12.1 Next-Token Prediction
+### 8.1 Next-Token Prediction
 
 **Autoregressive Objective:**
 ```math
@@ -865,7 +822,7 @@ where $\Phi(x)$ is the standard normal CDF (cumulative distribution function - t
 
 **Implementation:** Use causal mask in attention to prevent information leakage from future tokens.
 
-### 12.2 Embedding Mathematics
+### 8.2 Embedding Mathematics
 
 **Token Embeddings:** Map discrete tokens to continuous vectors:
 ```math
@@ -884,13 +841,17 @@ P(w_t | \text{context}) = \text{softmax}(\mathbf{h}_t E^T) \quad (40)
 - Consistent with row-vector convention
 
 **Perplexity:** Measures model uncertainty:
+
+
 ```math
 \mathrm{PPL} = \exp\left(-\frac{1}{T} \sum_{t=1}^{T} \log P\left(x_t \mid x_{<t}\right) \right) \quad (41)
 ```
 
-## 13. Worked Mini-Examples
+> Note: This equation may not render correctly in GitHub. Use a Markdown viewer!
 
-### 13.1 Tiny Attention Forward Pass
+## 9. Worked Mini-Examples
+
+### 9.1 Tiny Attention Forward Pass
 
 **Setup:** $n=2$ tokens, $d_k=d_v=3$, single head.
 
@@ -928,7 +889,7 @@ O = \begin{bmatrix}0.359 & 0.641\\0.500 & 0.500\end{bmatrix} \begin{bmatrix}2 & 
 
 💻 **Implementation Example**: For attention computation verification, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
 
-### 13.2 Backprop Through Simple Attention
+### 9.2 Backprop Through Simple Attention
 
 **Given:** 
 ```math
