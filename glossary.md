@@ -15,7 +15,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 - **Deep dive**: [nn_intro.md Section 3](./nn_intro.md#the-role-of-activation-functions-space-warping) for geometric intuition, [mlp_intro.md Section 9](./mlp_intro.md#9-activation-functions-deep-dive) for detailed comparison
 
 **Attention Collapse:** Phenomenon where attention weights become too peaked (concentrated on few tokens) rather than uniform, leading to poor gradient flow and reduced model expressiveness.
-- **Mathematical foundation**: [transformers_math.md Section 5.2](./transformers_math.md#52-why-the-sqrtd_k-scaling) for scaling analysis
+- **Mathematical foundation**: [transformers_math1.md Section 5.2](./transformers_math1.md#52-why-the-sqrtd_k-scaling) for scaling analysis
 
 **Adam Optimizer**: An adaptive optimization algorithm that combines momentum with per-parameter learning rate adaptation.
 - **Formula**: $\theta_t = \theta_{t-1} - \alpha \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}$ where $\hat{m}_t$ and $\hat{v}_t$ are bias-corrected moment estimates
@@ -59,7 +59,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 ## C
 
 **Causal Mask:** Lower-triangular mask preventing attention to future tokens in autoregressive models.
-- **Mathematical implementation**: [transformers_math.md Section 5.4](./transformers_math.md#54-masked-attention) for masking details
+- **Mathematical implementation**: [transformers_math1.md Section 5.4](./transformers_math1.md#54-masked-attention) for masking details
 
 **Centroid**: The center point of a cluster in vector space, representing the average position of all vectors in that cluster.
 - **Context**: [knowledge_store.md](./knowledge_store.md) for vector search applications
@@ -154,7 +154,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 ## K
 
 **KV Cache:** Stored key-value pairs from previous tokens to accelerate autoregressive generation.
-- **Mathematical foundation**: [transformers_math.md Section 10.4](./transformers_math.md#104-kv-caching-for-autoregressive-generation) for efficiency details
+- **Mathematical foundation**: [transformers_math2.md Section 10.4](./transformers_math2.md#104-kv-caching-for-autoregressive-generation) for efficiency details
 
 ---
 
@@ -191,7 +191,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 **Multi-Head Attention**: An extension of attention that runs multiple attention mechanisms in parallel to capture different types of relationships.
 - **Formula**: $\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^O$
 - **Complete explanation**: [transformers.md Section 9](./transformers.md#9-multi-head-attention) for mathematical details
-- **Mathematical foundation**: [transformers_math.md Section 6.1](./transformers_math.md#61-multi-head-as-subspace-projections) for subspace projections
+- **Mathematical foundation**: [transformers_math1.md Section 6.1](./transformers_math1.md#61-multi-head-as-subspace-projections) for subspace projections
 - **Implementation**: [pytorch_ref.md Section 10](./pytorch_ref.md#10-transformers-in-pytorch) for code examples
 
 **Multi-Layer Perceptron (MLP)**: A neural network with one or more hidden layers between input and output layers.
@@ -235,7 +235,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 
 **Position Encoding:** Method to inject sequential order information into permutation-equivariant attention.
 - **Mathematical foundation**: [transformers.md Section 6](./transformers.md#6-positional-encoding) for sinusoidal encoding
-- **Advanced techniques**: [transformers_math.md Section 6.2](./transformers_math.md#62-advanced-positional-encodings) for RoPE and ALiBi
+- **Advanced techniques**: [transformers_math1.md Section 6.2](./transformers_math1.md#62-advanced-positional-encodings) for RoPE and ALiBi
 - **Implementation**: [pytorch_ref.md Section 10](./pytorch_ref.md#10-transformers-in-pytorch) for code examples
 
 **Product Quantization (PQ)**: A compression technique that splits vectors into chunks and replaces each chunk with a representative centroid ID.
@@ -274,7 +274,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 ## S
 
 **Scaled Dot-Product Attention:** Core attention mechanism using $\text{softmax}(QK^T/\sqrt{d_k})V$.
-- **Mathematical derivation**: [transformers_math.md Section 5.1](./transformers_math.md#51-deriving-scaled-dot-product-attention) for complete derivation
+- **Mathematical derivation**: [transformers_math1.md Section 5.1](./transformers_math1.md#51-deriving-scaled-dot-product-attention) for complete derivation
 - **Implementation**: [pytorch_ref.md Section 10](./pytorch_ref.md#self-attention-from-scratch) for from-scratch code
 
 **Self-Attention**: An attention mechanism where queries, keys, and values all come from the same sequence, allowing positions to attend to each other.
@@ -307,7 +307,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 - **Comparison**: [mlp_intro.md Section 9](./mlp_intro.md#tanh-hyperbolic-tangent) for detailed analysis
 
 **Teacher Forcing:** Training technique using ground truth tokens as inputs instead of model predictions.
-- **Autoregressive training**: [transformers_math.md Section 12.1](./transformers_math.md#121-next-token-prediction) for implementation details
+- **Autoregressive training**: [transformers_math1.md Section 12.1](./transformers_math1.md#121-next-token-prediction) for implementation details
 
 **Temperature**: A parameter controlling randomness in text generation; lower values make outputs more focused, higher values more creative.
 - **Text generation**: Used in softmax: $p_i = \frac{e^{x_i/T}}{\sum_j e^{x_j/T}}$

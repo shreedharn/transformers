@@ -14,7 +14,8 @@ This repository provides a comprehensive exploration of transformer architecture
 | **[mlp_intro.md](./mlp_intro.md)** | MLP step-by-step tutorial | Multi-layer network fundamentals |
 | **[rnn_intro.md](./rnn_intro.md)** | RNN step-by-step tutorial | Sequential modeling fundamentals |
 | **[transformers.md](./transformers.md)** | Transformer technical reference | Complete architecture + mathematical rigor |
-| **[transformers_math.md](./transformers_math.md)** | Mathematical foundations | Theoretical underpinnings |
+| **[transformers_math1.md](./transformers_math1.md)** | Mathematical foundations (Part 1) | Building intuition and core concepts |
+| **[transformers_math2.md](./transformers_math2.md)** | Mathematical foundations (Part 2) | Advanced concepts and scaling |
 | **[math_quick_ref.md](./math_quick_ref.md)** | Mathematical reference table | Formulas, intuitions, neural network applications |
 | **[knowledge_store.md](./knowledge_store.md)** | LLM weights vs vector stores | Internalized vs external knowledge storage |
 | **[pytorch_ref.md](./pytorch_ref.md)** | PyTorch implementation guide | Code patterns, practical examples |
@@ -178,7 +179,8 @@ This repository provides a comprehensive exploration of transformer architecture
 #### Mathematical Foundations
 **🎯 Goal**: Rigorous theoretical understanding
 
-1. **[📐 Mathematical Foundations](./transformers_math.md)**
+1. **[📐 Mathematical Foundations Part 1](./transformers_math1.md)** - Building intuition and core concepts
+2. **[📐 Mathematical Foundations Part 2](./transformers_math2.md)** - Advanced concepts and scaling
    - Complete mathematical treatment
    - **Output**: Formal understanding of all components
 
@@ -261,14 +263,24 @@ This repository provides a comprehensive exploration of transformer architecture
 - **Historical Context**: Complete evolution from early approaches to modern transformers
 - **Practical Insights**: Why each limitation drove the next innovation
 
-### [Mathematical Foundations](./transformers_math.md)
-**Theoretical underpinnings** - Deep mathematical analysis supporting the main documents.
+### [Mathematical Foundations Part 1](./transformers_math1.md)
+**Building intuition and core concepts** - Step-by-step mathematical foundation.
 
 **Coverage:**
 - Linear algebra essentials and matrix calculus
 - Probability theory and information theory foundations
-- Optimization theory and gradient methods
-- Detailed derivations of transformer components
+- High-dimensional geometry and similarity
+- Attention mechanisms and multi-head attention
+- Transformer block mathematics
+
+### [Mathematical Foundations Part 2](./transformers_math2.md)
+**Advanced concepts and scaling** - Optimization, efficiency, and implementation.
+
+**Coverage:**
+- Advanced optimization (Adam, learning rate schedules)
+- Efficient attention implementations (FlashAttention, KV caching)
+- Regularization and generalization techniques
+- Common pitfalls and numerical stability
 
 ### [Mathematical Quick Reference](./math_quick_ref.md)
 **Comprehensive reference table** - All mathematical concepts used in neural networks with formulas and intuitive explanations.
@@ -320,7 +332,8 @@ This repository provides a comprehensive exploration of transformer architecture
 ### 📚 Topic-Specific Deep Dives
 
 **🧮 Mathematical Mastery**
-- [Mathematical Foundations](./transformers_math.md) - Complete theoretical treatment
+- [Mathematical Foundations Part 1](./transformers_math1.md) - Building intuition and core concepts
+- [Mathematical Foundations Part 2](./transformers_math2.md) - Advanced concepts and scaling
 - [Math Quick Reference](./math_quick_ref.md) - Formulas with intuitive explanations  
 - Cross-reference between theory and implementation
 
@@ -394,7 +407,8 @@ This repository provides a comprehensive exploration of transformer architecture
 | transformers.md | 1,851 | Technical Implementation | Deep |
 | mlp_intro.md | 625 | MLP Tutorial | Beginner-friendly |
 | rnn_intro.md | 807 | RNN Tutorial | Beginner-friendly |
-| transformers_math.md | 1,347 | Mathematical Theory | Rigorous |
+| transformers_math1.md | ~800 | Mathematical Theory (Part 1) | Intuitive |
+| transformers_math2.md | ~600 | Mathematical Theory (Part 2) | Advanced |
 | math_quick_ref.md | 354 | Mathematical Reference | Quick Reference |
 | knowledge_store.md | 1,315 | LLM Weights vs Vector Stores | Intermediate |
 | pytorch_ref.md | 1,732 | Practical Implementation | Hands-on |
@@ -403,12 +417,12 @@ This repository provides a comprehensive exploration of transformer architecture
 ## 🔗 Cross-References
 
 Documents are extensively cross-referenced:
-- **Mathematical concepts**: transformers.md → transformers_math.md → math_quick_ref.md
-- **Quick formulas**: transformers_math.md → math_quick_ref.md
+- **Mathematical concepts**: transformers.md → transformers_math1.md → transformers_math2.md → math_quick_ref.md
+- **Quick formulas**: transformers_math1.md/transformers_math2.md → math_quick_ref.md
 - **Foundation concepts**: nn_intro.md → mlp_intro.md → rnn_intro.md
 - **Sequential modeling**: mlp_intro.md → rnn_intro.md → transformers.md
 - **Implementation details**: transformers.md ↔ pytorch_ref.md
-- **Code patterns**: pytorch_ref.md → transformers_math.md
+- **Code patterns**: pytorch_ref.md → transformers_math1.md/transformers_math2.md
 - **Practical examples**: transformers.md → pytorch_ref.md
 
 ## 🏗️ Repository Structure
@@ -420,7 +434,8 @@ transformers/
 ├── transformers.md              # Complete technical reference
 ├── mlp_intro.md                 # Step-by-step MLP tutorial
 ├── rnn_intro.md                 # Step-by-step RNN tutorial
-├── transformers_math.md         # Mathematical foundations
+├── transformers_math1.md        # Mathematical foundations (Part 1)
+├── transformers_math2.md        # Mathematical foundations (Part 2)
 ├── math_quick_ref.md            # Mathematical reference table
 ├── knowledge_store.md           # LLM weights vs vector stores guide
 ├── pytorch_ref.md               # Practical PyTorch implementation guide

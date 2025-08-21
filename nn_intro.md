@@ -714,7 +714,7 @@ v_t &= \beta_2 v_{t-1} + (1-\beta_2) (\nabla \mathcal{L})^2 \quad \text{(varianc
 
 Adam's breakthrough innovation lies in adaptive per-parameter learning rates: parameters with large gradients get smaller effective steps, while those with small gradients get larger ones. This automatic adjustment, combined with excellent handling of sparse gradients and minimal tuning requirements, explains Adam's widespread adoption.
 
-> 📖 **For optimizer comparison**: See [pytorch_ref.md Section 5](./pytorch_ref.md#5-optimization-loop--losses) for practical optimizer selection guide and [transformers_math.md](./transformers_math.md) for theoretical analysis.
+> 📖 **For optimizer comparison**: See [pytorch_ref.md Section 5](./pytorch_ref.md#5-optimization-loop--losses) for practical optimizer selection guide and [transformers_math2.md](./transformers_math2.md) for theoretical analysis.
 
 ### Complete Training Loop in PyTorch
 
@@ -968,7 +968,8 @@ With neural network fundamentals now in place, you're ready to explore deeper te
 > - **🔄 Sequential Processing**: [rnn_intro.md](./rnn_intro.md) - Learn RNNs and understand the path to transformers
 > - **⚡ Modern Architectures**: [transformers.md](./transformers.md) - Complete transformer technical reference
 > - **💻 PyTorch Coding**: [pytorch_ref.md](./pytorch_ref.md) - Practical implementation patterns
-> - **📐 Mathematical Rigor**: [transformers_math.md](./transformers_math.md) - Theoretical foundations
+> - **📐 Mathematical Rigor**: [transformers_math1.md](./transformers_math1.md) - Theoretical foundations (Part 1)
+> - **📐 Advanced Mathematics**: [transformers_math2.md](./transformers_math2.md) - Advanced concepts and scaling (Part 2)
 
 **Remember:** Neural networks taught us that simple mathematical operations, when combined in layers, can learn to recognize complex patterns in data. This insight revolutionized AI and remains the foundation of every modern architecture - from image recognition to language models.
 

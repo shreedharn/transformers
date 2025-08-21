@@ -1118,13 +1118,18 @@ Real-time Chat: Medium threshold (0.7), Top-K=10
 
 This document focuses on conceptual understanding. For detailed mathematical derivations, formal proofs, and implementation details, please consult our dedicated mathematical resources:
 
-#### [Transformers Mathematics Guide](./transformers_math.md)
+#### [Transformers Mathematics Guide Part 1](./transformers_math1.md)
 **Essential sections for this document:**
+- **Sections 2.1-2.3:** Mathematical preliminaries (linear algebra, matrix calculus, probability theory)
 - **Section 4.2-4.3:** High-dimensional geometry and similarity metrics (cosine similarity, euclidean distance, concentration of measure)
 - **Section 5:** Attention mechanism derivations (scaled dot-product attention, softmax gradients, backpropagation)  
 - **Section 6:** Multi-head attention mathematics (subspace projections, positional encodings, RoPE)
+
+#### [Transformers Mathematics Guide Part 2](./transformers_math2.md)
+**Essential sections for this document:**
 - **Section 9:** Optimization theory (gradient descent, Adam optimizer, learning rate schedules)
-- **Sections 2.1-2.3:** Mathematical preliminaries (linear algebra, matrix calculus, probability theory)
+- **Section 10:** Efficient attention implementations for scaling
+- **Section 11:** Regularization and calibration techniques
 
 #### [Mathematical Quick Reference](./math_quick_ref.md) 
 **Quick lookup for:**
@@ -1320,6 +1325,6 @@ Modern AI systems achieve optimal performance by combining both approaches:
 
 ### Mathematical Foundation
 
-The underlying mathematics—from high-dimensional geometry to attention mechanisms—provides the theoretical foundation that makes both systems possible. For deeper mathematical understanding, see the comprehensive treatment in [transformers_math.md](./transformers_math.md).
+The underlying mathematics—from high-dimensional geometry to attention mechanisms—provides the theoretical foundation that makes both systems possible. For deeper mathematical understanding, see the comprehensive treatment in [transformers_math1.md](./transformers_math1.md) and [transformers_math2.md](./transformers_math2.md).
 
 **Final Insight**: Understanding both knowledge storage paradigms enables practitioners to design more effective AI systems that leverage the strengths of each approach while mitigating their individual limitations.

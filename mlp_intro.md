@@ -324,7 +324,7 @@ MLPs learn through **supervised learning**:
 3. **Backward Pass**: Compute gradients using backpropagation
 4. **Weight Update**: Adjust weights to reduce the loss
 
-> **📚 Mathematical Deep Dive**: For a complete step-by-step mathematical explanation of how gradient descent works from line slopes to neural network training, see **[transformers_math.md Section 2.1.0](./transformers_math.md#210-from-line-slopes-to-neural-network-training)** - includes worked examples and the connection between simple derivatives and MLP backpropagation.
+> **📚 Mathematical Deep Dive**: For a complete step-by-step mathematical explanation of how gradient descent works from line slopes to neural network training, see **[transformers_math1.md Section 2.1.0](./transformers_math1.md#210-from-line-slopes-to-neural-network-training)** - includes worked examples and the connection between simple derivatives and MLP backpropagation.
 
 ### Loss Functions
 
@@ -367,7 +367,7 @@ b² = b² - α × ∂L/∂b²
 b¹ = b¹ - α × ∂L/∂b¹
 ```
 
-> **🔗 Mathematical Connection**: The backpropagation equations above are derived step-by-step in **[transformers_math.md Section 2.1.0](./transformers_math.md#210-from-line-slopes-to-neural-network-training)**. See the "Single Hidden Layer MLP" subsection for the complete mathematical derivation including the δ terms and chain rule applications.
+> **🔗 Mathematical Connection**: The backpropagation equations above are derived step-by-step in **[transformers_math1.md Section 2.1.0](./transformers_math1.md#210-from-line-slopes-to-neural-network-training)**. See the "Single Hidden Layer MLP" subsection for the complete mathematical derivation including the δ terms and chain rule applications.
 
 ### Training Loop Example
 
@@ -479,7 +479,7 @@ Solutions:
 - Better weight initialization
 ```
 
-> **🎯 Gradient Flow Mathematics**: To understand the mathematical foundations of why gradients vanish or explode, and how gradient descent fundamentally works, see **[transformers_math.md Section 2.1.0](./transformers_math.md#210-from-line-slopes-to-neural-network-training)**. The section builds intuition from simple 1D slopes to complex neural network training.
+> **🎯 Gradient Flow Mathematics**: To understand the mathematical foundations of why gradients vanish or explode, and how gradient descent fundamentally works, see **[transformers_math1.md Section 2.1.0](./transformers_math1.md#210-from-line-slopes-to-neural-network-training)**. The section builds intuition from simple 1D slopes to complex neural network training.
 
 ---
 
@@ -583,7 +583,7 @@ Too low:  Very slow convergence
 Sweet spot: Usually 0.001 - 0.01
 ```
 
-> **📊 Learning Rate Intuition**: For a visual and mathematical explanation of why learning rate choice matters, see the worked example with f(x) = x² in **[transformers_math.md Section 2.1.0](./transformers_math.md#210-from-line-slopes-to-neural-network-training)** - shows exactly how different learning rates affect convergence behavior.
+> **📊 Learning Rate Intuition**: For a visual and mathematical explanation of why learning rate choice matters, see the worked example with f(x) = x² in **[transformers_math1.md Section 2.1.0](./transformers_math1.md#210-from-line-slopes-to-neural-network-training)** - shows exactly how different learning rates affect convergence behavior.
 
 **Batch Size:**
 ```

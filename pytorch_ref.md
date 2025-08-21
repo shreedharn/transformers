@@ -84,7 +84,7 @@ This notebook covers:
 - Gradient clipping demonstrations
 - Higher-order derivatives
 
-**Math** Cross-Reference to `./transformers_math.md`:
+**Math** Cross-Reference to `./transformers_math1.md`:
 > The softmax gradient `∂p_i/∂z_j = p_i(δ_{ij} - p_j)` from **equation (25)** explains why PyTorch's `CrossEntropyLoss` yields the clean gradient `(p - y)` at the logits. The **log-sum-exp trick (12)** prevents overflow in softmax computation, which PyTorch handles automatically in `F.softmax()`.
 
 ## 4. Modules, Parameters, Initialization
@@ -164,7 +164,7 @@ for name, param in model.named_parameters():
     print(f"{name}: mean={param.data.mean():.4f}, std={param.data.std():.4f}")
 ```
 
-**Math** Cross-Reference to `./transformers_math.md`:
+**Math** Cross-Reference to `./transformers_math1.md`:
 > **MLP Forward Pass (13-15)**: `z^(1) = xW^(1) + b^(1)`, `h^(1) = σ(z^(1))`, `z^(2) = h^(1)W^(2) + b^(2)`
 > 
 > **LayerNorm (19)**: `LayerNorm(x) = γ ⊙ (x - μ)/√(σ² + ε) + β` where `γ, β` are learnable parameters
@@ -299,7 +299,7 @@ clipped_norm = sum(p.grad.norm().item() ** 2 for p in rnn.parameters()) ** 0.5
 print(f"Gradient norm with clipping: {clipped_norm:.2f}")
 ```
 
-**Math** Cross-Reference to `./transformers_math.md`:
+**Math** Cross-Reference to `./transformers_math1.md`:
 > **Residual as ODE (4)**: `h_{l+1} = h_l + F(h_l)` approximates the differential equation `dh/dt = F(h)`, enabling gradient highways through skip connections.
 >
 > **Gradient Clipping (11)**: `g̃ = min(1, c/||g||₂) · g` scales gradients proportionally when norm exceeds threshold `c`.
@@ -346,7 +346,7 @@ print(f"Gradient norm with clipping: {clipped_norm:.2f}")
 | Device placement | GPU/CPU | `tensor.to(device)`, `model.to(device)` | |
 | Model saving | Persistence | `torch.save(model.state_dict())` | |
 
-**Math** annotations reference equations from `./transformers_math.md` where applicable.
+**Math** annotations reference equations from `./transformers_math1.md` and `./transformers_math2.md` where applicable.
 
 ## 8. MLPs in PyTorch
 
@@ -485,7 +485,7 @@ targets_wrong = torch.tensor([0.0, 1.0, 2.0])  # Float - will cause error
 targets_correct = torch.tensor([0, 1, 2])      # Long - correct
 ```
 
-**Math** Cross-Reference to `./transformers_math.md`:
+**Math** Cross-Reference to `./transformers_math1.md`:
 > **MLP Forward/Backprop (13-18)**: The code above implements `z^(1) = xW^(1) + b^(1)`, `h^(1) = σ(z^(1))`, `z^(2) = h^(1)W^(2) + b^(2)` with automatic gradient computation for the backward pass.
 
 ## 9. RNNs, LSTMs, GRUs
@@ -914,7 +914,7 @@ with torch.no_grad():
     print(f"Generated sequence: {generated[0].tolist()}")
 ```
 
-**Math** Cross-Reference to `./transformers_math.md`:
+**Math** Cross-Reference to `./transformers_math1.md`:
 > **Scaled Dot-Product Attention (23)**: `Attention(Q,K,V) = softmax(QK^T/√d_k)V`
 > 
 > **Why 1/√d_k scaling**: Prevents attention weights from becoming too peaked as dimensions increase, maintaining gradient flow.
@@ -1071,7 +1071,7 @@ model = model.to(device)
 tensor = tensor.to(device)
 ```
 
-**Math** Cross-Reference: `torch.einsum('bqd,bkd->bqk', Q, K)` directly implements the `QK^T` operation from attention equation (23) in `./transformers_math.md`.
+**Math** Cross-Reference: `torch.einsum('bqd,bkd->bqk', Q, K)` directly implements the `QK^T` operation from attention equation (23) in `./transformers_math1.md`.
 
 ## 12. Common Gotchas & How to Avoid Them
 
@@ -1267,7 +1267,7 @@ optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
 epoch = checkpoint['epoch']
 ```
 
-**Math** Cross-Reference to `./transformers_math.md`:
+**Math** Cross-Reference to `./transformers_math1.md`:
 > Numerical stability issues like log-sum-exp overflow (equation 12) are handled automatically by PyTorch functions like `F.softmax()` and `F.log_softmax()`, but be aware when implementing custom operations.
 
 ## 13. End-to-End Mini Example
@@ -1571,7 +1571,7 @@ def debug_shapes():
 debug_shapes()
 ```
 
-**Math** Cross-Reference to `./transformers_math.md`:
+**Math** Cross-Reference to `./transformers_math1.md`:
 > This example implements:
 > - **Attention (23)**: Self-attention within each transformer layer
 > - **FFN (36)**: Feed-forward networks in transformer layers  
@@ -1667,13 +1667,13 @@ choose_architecture()
 
 | **PyTorch Code** | **Math Equation** | **Reference** |
 |------------------|-------------------|---------------|
-| `F.softmax(scores, dim=-1)` | `softmax(z)_i = e^{z_i}/∑e^{z_j}` | transformers_math.md (1) |
-| `F.cross_entropy(logits, targets)` | `L = -∑ y_i log p_i` | transformers_math.md (2) |
-| `torch.matmul(Q, K.transpose(-2,-1)) / math.sqrt(d_k)` | `QK^T/√d_k` | transformers_math.md (23) |
-| `F.layer_norm(x, normalized_shape)` | `γ(x-μ)/√(σ²+ε) + β` | transformers_math.md (19) |
-| `F.gelu(linear(x))` | `GELU(xW + b)` | transformers_math.md (36) |
-| `clip_grad_norm_(params, max_norm)` | `g̃ = min(1, c/‖g‖)g` | transformers_math.md (11) |
-| `optimizer.step()` with AdamW | Adam update rules | transformers_math.md (7-9) |
+| `F.softmax(scores, dim=-1)` | `softmax(z)_i = e^{z_i}/∑e^{z_j}` | transformers_math1.md (1) |
+| `F.cross_entropy(logits, targets)` | `L = -∑ y_i log p_i` | transformers_math1.md (2) |
+| `torch.matmul(Q, K.transpose(-2,-1)) / math.sqrt(d_k)` | `QK^T/√d_k` | transformers_math1.md (23) |
+| `F.layer_norm(x, normalized_shape)` | `γ(x-μ)/√(σ²+ε) + β` | transformers_math1.md (19) |
+| `F.gelu(linear(x))` | `GELU(xW + b)` | transformers_math1.md (36) |
+| `clip_grad_norm_(params, max_norm)` | `g̃ = min(1, c/‖g‖)g` | transformers_math2.md (11) |
+| `optimizer.step()` with AdamW | Adam update rules | transformers_math2.md (7-9) |
 
 ### Final Checklist for New PyTorch Users
 
