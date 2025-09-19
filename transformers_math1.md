@@ -18,27 +18,6 @@ For advanced topics including optimization, training stability, scaling laws, an
 - Default dtype is fp32 unless specified
 - Equations numbered sequentially throughout document
 
-## Table of Contents
-
-1. [Roadmap](#1-roadmap)
-2. [Neural Network Training: Mathematical Foundations](#2-neural-network-training-mathematical-foundations)
-   - [2.1 From Training to Inference: The Complete Journey](#21-from-training-to-inference-the-complete-journey)
-     - [2.1.1 From Line Slopes to Neural Network Training](#211-from-line-slopes-to-neural-network-training)
-     - [2.1.2 Gradient Fields and Optimization](#212-gradient-fields-and-optimization)
-     - [2.1.3 Residual Connections as Discretized Dynamics](#213-residual-connections-as-discretized-dynamics)
-   - [2.2 Deep Learning Mathematics in Context](#22-deep-learning-mathematics-in-context)
-     - [2.2.1 Vectors as Word Meanings](#221-vectors-as-word-meanings)
-     - [2.2.2 Matrices as Transformations of Meaning](#222-matrices-as-transformations-of-meaning)
-     - [2.2.3 Gradients as Learning Signals](#223-gradients-as-learning-signals)
-     - [2.2.4 Softmax and Cross-Entropy: From Scores to Decisions](#224-softmax-and-cross-entropy-from-scores-to-decisions)
-3. [Multilayer Perceptrons as a Warm-Up](#3-multilayer-perceptrons-as-a-warm-up)
-4. [High-Dimensional Geometry & Similarity](#4-high-dimensional-geometry--similarity)
-5. [From Similarity to Attention](#5-from-similarity-to-attention)
-6. [Multi-Head Attention & Positional Information](#6-multi-head-attention--positional-information)
-7. [Transformer Block Mathematics](#7-transformer-block-mathematics)
-8. [Training Objective & Tokenization/Embeddings](#8-training-objective--tokenizationembeddings)
-9. [Worked Mini-Examples](#9-worked-mini-examples)
-
 **For Advanced Topics:**
 - [Part 2: Advanced Concepts and Scaling](./transformers_math2.md) covers optimization, efficient attention, regularization, and implementation details
 

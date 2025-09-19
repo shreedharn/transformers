@@ -19,15 +19,6 @@ A foundational guide to understanding neural networks, their role in artificial 
 
 **👆 How do we get there?** This guide will take you from the basics of neural networks through the foundations that make transformers possible!
 
-## Table of Contents
-
-1. [What is AI, ML, and Deep Learning?](#1-what-is-ai-ml-and-deep-learning)
-2. [Why Deep Learning for NLP?](#2-why-deep-learning-for-nlp)
-3. [The Neuron and the Perceptron](#3-the-neuron-and-the-perceptron)
-4. [From Single Neurons to Networks](#4-from-single-neurons-to-networks)
-5. [Training a Neural Network](#5-training-a-neural-network)
-6. [Where Neural Networks Shine in NLP](#6-where-neural-networks-shine-in-nlp)
----
 
 ## 1. What is AI, ML, and Deep Learning?
 

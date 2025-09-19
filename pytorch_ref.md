@@ -1,21 +1,5 @@
 # PyTorch Reference: From MLPs to Transformers
 
-## Table of Contents
-
-1. [Title & Quickstart](#1-title--quickstart)
-2. [Tensors: Vectors & Matrices in PyTorch](#2-tensors-vectors--matrices-in-pytorch)
-3. [Autograd (Finding Gradients)](#3-autograd-finding-gradients)
-4. [Modules, Parameters, Initialization](#4-modules-parameters-initialization)
-5. [Optimization Loop & Losses](#5-optimization-loop--losses)
-6. [Vanishing/Exploding Gradients](#6-vanishingexploding-gradients)
-7. [Mapping Table: ML Concepts → PyTorch Objects](#7-mapping-table-ml-concepts--pytorch-objects)
-8. [MLPs in PyTorch](#8-mlps-in-pytorch)
-9. [RNNs, LSTMs, GRUs](#9-rnns-lstms-grus)
-10. [Transformers in PyTorch](#10-transformers-in-pytorch)
-11. [Most-Used PyTorch APIs](#11-most-used-pytorch-apis)
-12. [Common Gotchas & How to Avoid Them](#12-common-gotchas--how-to-avoid-them)
-13. [End-to-End Mini Example](#13-end-to-end-mini-example)
-14. [Appendix: Quick Mapping & Formula Cards](#14-appendix-quick-mapping--formula-cards)
 
 ## 1. Title & Quickstart
 

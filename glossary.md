@@ -2,11 +2,6 @@
 
 A comprehensive dictionary of key terms, concepts, and technical vocabulary used throughout the neural networks and transformers learning materials. Each term includes cross-references to detailed explanations in the repository documents.
 
-## Table of Contents
-
-- [A](#a) | [B](#b) | [C](#c) | [D](#d) | [E](#e) | [F](#f) | [G](#g) | [H](#h) | [I](#i) | [L](#l) | [M](#m) | [N](#n) | [O](#o) | [P](#p) | [Q](#q) | [R](#r) | [S](#s) | [T](#t) | [U](#u) | [V](#v) | [W](#w)
-
----
 
 ## A
 
@@ -25,12 +20,12 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 - **Context**: [nn_intro.md Section 1](./nn_intro.md#1-what-is-ai-ml-and-deep-learning) for AI/ML/DL hierarchy
 
 **Attention Head**: A specialized component of multi-head attention that focuses on specific types of relationships (e.g., grammar, semantics, position).
-- **Implementation**: [transformers.md Section 9](./transformers.md#9-multi-head-attention) for complete technical details
+- **Implementation**: [transformers_fundamentals.md Section 9](./transformers_fundamentals.md#9-stage-4-self-attention-deep-dive) for complete technical details
 - **Code**: [pytorch_ref.md Section 10](./pytorch_ref.md#self-attention-from-scratch) for from-scratch implementation
 
 **Attention Mechanism**: A technique that allows models to focus on relevant parts of the input sequence when making predictions.
 - **Formula**: $\text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$
-- **Explanation**: [transformers.md Section 9](./transformers.md#9-multi-head-attention) for detailed mechanics
+- **Explanation**: [transformers_fundamentals.md Section 9](./transformers_fundamentals.md#9-stage-4-self-attention-deep-dive) for detailed mechanics
 
 ---
 
@@ -46,7 +41,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 - **Details**: [pytorch_ref.md Section 6](./pytorch_ref.md#6-vanishingexploding-gradients) for gradient stabilization context
 
 **BERT (Bidirectional Encoder Representations from Transformers)**: A transformer-based model that reads text bidirectionally for better context understanding.
-- **Architecture**: [transformers.md Section 8](./transformers.md#encoder-only-models-bert-roberta-electra) for encoder-only design
+- **Architecture**: [transformers_fundamentals.md Section 8](./transformers_fundamentals.md#encoder-only-bert-family) for encoder-only design
 - **Training**: Masked Language Modeling (MLM) and Next Sentence Prediction (NSP)
 
 **Bias**: An additional parameter in a neuron that allows the activation function to shift, providing flexibility in the decision boundary.
@@ -91,8 +86,8 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 - **Applications**: [knowledge_store.md](./knowledge_store.md) for semantic search and knowledge storage
 
 **Encoder**: In transformer architecture, the component that processes input sequences to create contextualized representations.
-- **Architecture**: [transformers.md Section 8](./transformers.md#encoder-only-models-bert-roberta-electra) for encoder-only models
-- **vs Decoder**: [transformers.md Section 8](./transformers.md#8-architectural-variants-encoder-decoder-and-encoder-decoder) for comparison
+- **Architecture**: [transformers_fundamentals.md Section 8](./transformers_fundamentals.md#encoder-only-bert-family) for encoder-only models
+- **vs Decoder**: [transformers_fundamentals.md Section 8](./transformers_fundamentals.md#8-architectural-variants-encoder-decoder-and-encoder-decoder) for comparison
 
 **Epoch**: One complete pass through the entire training dataset during neural network training.
 - **Training context**: [nn_intro.md Section 5](./nn_intro.md#1-epochs) for training concepts
@@ -103,7 +98,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 ## F
 
 **Feed-Forward Network**: A neural network component where information flows in one direction, typically used within transformer blocks.
-- **In transformers**: [transformers.md Section 11](./transformers.md#11-feed-forward-networks) for detailed explanation
+- **In transformers**: [transformers_fundamentals.md Section 11](./transformers_fundamentals.md#11-stage-6-feed-forward-networks) for detailed explanation
 - **Implementation**: Two linear transformations with activation: $\text{FFN}(x) = \max(0, xW_1 + b_1)W_2 + b_2$
 
 ---
@@ -111,24 +106,24 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 ## G
 
 **GPT (Generative Pre-trained Transformer)**: A family of decoder-only transformer models designed for text generation.
-- **Architecture**: [transformers.md Section 8](./transformers.md#decoder-only-models-gpt-palm-llama) for decoder-only design
+- **Architecture**: [transformers_fundamentals.md Section 8](./transformers_fundamentals.md#decoder-only-gpt-family) for decoder-only design
 - **Training**: Causal Language Modeling (CLM) for next-token prediction
 
 **Gradient Descent**: An optimization algorithm that finds the minimum of a function by iteratively moving in the direction of steepest descent.
 - **Mathematical foundation**: $\theta_{\text{new}} = \theta_{\text{old}} - \alpha \nabla_{\theta} \mathcal{L}$
 - **Intuition**: [nn_intro.md Section 5](./nn_intro.md#gradient-descent-the-universal-learning-algorithm) for complete explanation
-- **Variants**: [nn_intro.md Section 5](./nn_intro.md#from-simple-to-sophisticated-evolution-of-optimizers) for SGD, momentum, Adam
+- **Variants**: [nn_intro.md Section 5](./nn_intro.md#from-simple-to-sophisticated-the-evolution-of-optimizers) for SGD, momentum, Adam
 
 **GRU (Gated Recurrent Unit)**: A type of RNN with gating mechanisms that help handle long-term dependencies, simpler than LSTM.
 - **Implementation**: [pytorch_ref.md Section 9](./pytorch_ref.md#rnn-vs-lstm-vs-gru-comparison) for comparison with RNN/LSTM
-- **Evolution**: [rnn_intro.md Section 10](./rnn_intro.md#evolution-beyond-vanilla-rnns) for historical context
+- **Evolution**: [rnn_intro.md Section 10](./rnn_intro.md#10-evolution-beyond-vanilla-rnns) for historical context
 
 ---
 
 ## H
 
 **Hidden Layer**: Layers in a neural network between the input and output layers that process and transform the data.
-- **vs Hidden State**: [nn_intro.md Section 6](./nn_intro.md#understanding-hidden-states-vs-hidden-layers) for crucial distinction
+- **vs Hidden State**: [rnn_intro.md Section 4](./rnn_intro.md#4-understanding-hidden-states-vs-hidden-layers) for crucial distinction
 - **In RNNs**: [rnn_intro.md Section 4](./rnn_intro.md#4-understanding-hidden-states-vs-hidden-layers) for memory vs architecture
 
 **Hidden State**: The internal representation vector that flows through a neural network at a specific processing step.
@@ -162,7 +157,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 
 **Layer Normalization**: A normalization technique applied within transformer layers to stabilize training.
 - **Formula**: Applied to each position independently across the feature dimension
-- **In transformers**: [transformers.md Section 12](./transformers.md#12-layer-normalization) for detailed explanation
+- **In transformers**: [transformers_fundamentals.md Section 7](./transformers_fundamentals.md#7-stage-3-through-the-transformer-stack) for detailed explanation
 
 **Learning Rate**: A hyperparameter that controls the step size in gradient descent optimization.
 - **Importance**: [nn_intro.md Section 5](./nn_intro.md#the-learning-rate-α-speed-vs-accuracy-trade-off) for intuitive explanation
@@ -175,7 +170,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 
 **LSTM (Long Short-Term Memory)**: A type of RNN with gating mechanisms designed to handle long-term dependencies and mitigate vanishing gradients.
 - **Architecture**: [pytorch_ref.md Section 9](./pytorch_ref.md#why-gating-mechanisms) for gating explanation
-- **vs RNN**: [rnn_intro.md Section 10](./rnn_intro.md#evolution-beyond-vanilla-rnns) for improvements over vanilla RNNs
+- **vs RNN**: [rnn_intro.md Section 10](./rnn_intro.md#10-evolution-beyond-vanilla-rnns) for improvements over vanilla RNNs
 
 ---
 
@@ -190,7 +185,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 
 **Multi-Head Attention**: An extension of attention that runs multiple attention mechanisms in parallel to capture different types of relationships.
 - **Formula**: $\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^O$
-- **Complete explanation**: [transformers.md Section 9](./transformers.md#9-multi-head-attention) for mathematical details
+- **Complete explanation**: [transformers_fundamentals.md Section 9](./transformers_fundamentals.md#9-stage-4-self-attention-deep-dive) for mathematical details
 - **Mathematical foundation**: [transformers_math1.md Section 6.1](./transformers_math1.md#61-multi-head-as-subspace-projections) for subspace projections
 - **Implementation**: [pytorch_ref.md Section 10](./pytorch_ref.md#10-transformers-in-pytorch) for code examples
 
@@ -217,7 +212,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 
 **Optimizer**: An algorithm that updates neural network parameters to minimize the loss function.
 - **Types**: SGD, Adam, RMSprop
-- **Comparison**: [nn_intro.md Section 5](./nn_intro.md#from-simple-to-sophisticated-evolution-of-optimizers) for evolution
+- **Comparison**: [nn_intro.md Section 5](./nn_intro.md#from-simple-to-sophisticated-the-evolution-of-optimizers) for evolution
 - **PyTorch**: [pytorch_ref.md Section 5](./pytorch_ref.md#5-optimization-loop--losses) for practical implementation
 
 **Overfitting**: When a model performs well on training data but poorly on new, unseen data because it has memorized rather than learned generalizable patterns.
@@ -234,7 +229,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 - **Limitations**: [nn_intro.md Section 4](./nn_intro.md#limitations-of-single-perceptrons) for XOR problem
 
 **Position Encoding:** Method to inject sequential order information into permutation-equivariant attention.
-- **Mathematical foundation**: [transformers.md Section 6](./transformers.md#6-positional-encoding) for sinusoidal encoding
+- **Mathematical foundation**: [transformers_fundamentals.md Section 6](./transformers_fundamentals.md#6-stage-2-tokens-to-embeddings) for sinusoidal encoding
 - **Advanced techniques**: [transformers_math1.md Section 6.2](./transformers_math1.md#62-advanced-positional-encodings) for RoPE and ALiBi
 - **Implementation**: [pytorch_ref.md Section 10](./pytorch_ref.md#10-transformers-in-pytorch) for code examples
 
@@ -246,7 +241,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 ## Q
 
 **Query Vector**: In attention mechanisms, the vector representing "what information is being sought" from other positions.
-- **Q, K, V mechanism**: [transformers.md Section 9](./transformers.md#9-multi-head-attention) for complete attention explanation
+- **Q, K, V mechanism**: [transformers_fundamentals.md Section 9](./transformers_fundamentals.md#9-stage-4-self-attention-deep-dive) for complete attention explanation
 
 ---
 
@@ -257,7 +252,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 
 **ReLU (Rectified Linear Unit)**: An activation function that outputs the input if positive, zero otherwise.
 - **Formula**: $f(x) = \max(0, x)$
-- **Advantages**: [nn_intro.md Section 3](./nn_intro.md#relu-rectified-linear-unit) for vanishing gradient prevention
+- **Advantages**: [nn_intro.md Section 3](./nn_intro.md#common-activation-functions) for vanishing gradient prevention
 - **Geometric effect**: [nn_intro.md Section 4](./nn_intro.md#step-2-relu-activation-bends-space) for space folding in XOR example
 
 **RNN (Recurrent Neural Network)**: A neural network designed for sequential data that maintains hidden states across time steps.
@@ -280,11 +275,11 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 **Self-Attention**: An attention mechanism where queries, keys, and values all come from the same sequence, allowing positions to attend to each other.
 - **Formula**: $\text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$
 - **Implementation**: [pytorch_ref.md Section 10](./pytorch_ref.md#self-attention-from-scratch) for from-scratch code
-- **Intuition**: [transformers.md Section 9](./transformers.md#9-multi-head-attention) for detailed mechanics
+- **Intuition**: [transformers_fundamentals.md Section 9](./transformers_fundamentals.md#9-stage-4-self-attention-deep-dive) for detailed mechanics
 
 **Sigmoid**: An activation function that maps any input to a value between 0 and 1.
 - **Formula**: $\sigma(x) = \frac{1}{1 + e^{-x}}$
-- **Properties**: [nn_intro.md Section 3](./nn_intro.md#sigmoid) for squashing behavior
+- **Properties**: [nn_intro.md Section 3](./nn_intro.md#common-activation-functions) for squashing behavior
 - **Uses**: Binary classification, historical neural networks
 
 **Similarity Threshold**: A minimum similarity score required for a document to be considered relevant in vector search.
@@ -295,7 +290,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 - **Usage**: Output layer for multi-class classification, attention weights
 
 **Stochastic Gradient Descent (SGD)**: A variant of gradient descent that uses random mini-batches instead of the full dataset.
-- **Benefits**: [nn_intro.md Section 5](./nn_intro.md#from-simple-to-sophisticated-evolution-of-optimizers) for comparison with other optimizers
+- **Benefits**: [nn_intro.md Section 5](./nn_intro.md#from-simple-to-sophisticated-the-evolution-of-optimizers) for comparison with other optimizers
 
 ---
 
@@ -303,7 +298,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 
 **Tanh (Hyperbolic Tangent)**: An activation function that maps inputs to values between -1 and 1.
 - **Formula**: $\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$
-- **Advantages**: [nn_intro.md Section 3](./nn_intro.md#tanh) for zero-centered output
+- **Advantages**: [nn_intro.md Section 3](./nn_intro.md#common-activation-functions) for zero-centered output
 - **Comparison**: [mlp_intro.md Section 9](./mlp_intro.md#tanh-hyperbolic-tangent) for detailed analysis
 
 **Teacher Forcing:** Training technique using ground truth tokens as inputs instead of model predictions.
@@ -313,7 +308,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 - **Text generation**: Used in softmax: $p_i = \frac{e^{x_i/T}}{\sum_j e^{x_j/T}}$
 
 **Token**: The basic unit of text processing in NLP models (words, subwords, or characters).
-- **Tokenization**: [transformers.md Section 4](./transformers.md#4-tokenization-breaking-text-into-pieces) for detailed explanation
+- **Tokenization**: [transformers_fundamentals.md Section 5](./transformers_fundamentals.md#5-stage-1-text-to-tokens) for detailed explanation
 - **Embeddings**: [nn_intro.md Section 5](./nn_intro.md#text-embeddings-bridging-language-and-mathematics) for vector representation
 
 **Top-K**: A parameter limiting selection to the K most likely tokens (in LLMs) or K most similar documents (in vector stores).
@@ -324,7 +319,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 
 **Transformer**: A neural network architecture that uses self-attention mechanisms to process sequential data efficiently.
 - **Complete reference**: [transformers.md](./transformers.md) for comprehensive technical details
-- **Key innovation**: [nn_intro.md Section 6](./nn_intro.md#the-transformer-solution) for attention mechanism explanation
+- **Key innovation**: [transformers_fundamentals.md Section 9](./transformers_fundamentals.md#9-stage-4-self-attention-deep-dive) for attention mechanism explanation
 - **Implementation**: [pytorch_ref.md Section 10](./pytorch_ref.md#10-transformers-in-pytorch) for code examples
 
 ---
@@ -332,7 +327,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 ## U
 
 **Universal Approximation Theorem**: A mathematical theorem stating that neural networks with sufficient neurons can approximate any continuous function.
-- **Implication**: [nn_intro.md Section 4](./nn_intro.md#universal-approximation-theorem) for theoretical foundation
+- **Implication**: [nn_intro.md Section 4](./nn_intro.md#multi-layer-perceptrons-mlps-high-dimensional-sculptors) for theoretical foundation
 - **Practical meaning**: Justifies why neural networks are so powerful for complex pattern learning
 
 **Underfitting**: When a model is too simple to capture the underlying patterns in the data.
@@ -346,14 +341,14 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 **Vanishing Gradient Problem**: A fundamental issue in deep networks where gradients become exponentially small in earlier layers, preventing effective learning.
 - **Mathematical analysis**: [rnn_intro.md Section 9](./rnn_intro.md#9-the-vanishing-gradient-problem-rnns-fatal-flaw) for RNN-specific issues
 - **Solutions**: [pytorch_ref.md Section 6](./pytorch_ref.md#6-vanishingexploding-gradients) for practical fixes
-- **Why ReLU helps**: [nn_intro.md Section 3](./nn_intro.md#relu-rectified-linear-unit) for gradient preservation
+- **Why ReLU helps**: [nn_intro.md Section 3](./nn_intro.md#common-activation-functions) for gradient preservation
 
 **Vector Store**: A database optimized for storing and searching high-dimensional numerical vectors representing semantic content.
 - **Complete guide**: [knowledge_store.md](./knowledge_store.md) for implementation, indexing, and comparison with LLM weights
 - **Applications**: Semantic search, RAG systems, recommendation engines
 
 **Vocabulary**: The complete set of unique tokens (words, subwords, characters) that a model can process.
-- **Size considerations**: [transformers.md Section 4](./transformers.md#4-tokenization-breaking-text-into-pieces) for tokenization trade-offs
+- **Size considerations**: [transformers_fundamentals.md Section 5](./transformers_fundamentals.md#5-stage-1-text-to-tokens) for tokenization trade-offs
 
 ---
 

@@ -2,13 +2,6 @@
 
 A concise historical reference covering the evolution of neural sequence modeling from MLPs to Transformers. For detailed tutorials, start from [nn_intro.md](./nn_intro.md).
 
-## Table of Contents
-
-1. [Timeline and Impact](#1-timeline-and-impact)
-2. [Key Mathematical Progression](#2-key-mathematical-progression)
-3. [Conclusion](#3-conclusion)
-
----
 
 ## 1. Timeline and Impact
 

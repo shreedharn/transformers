@@ -2,59 +2,6 @@
 
 A comprehensive reference of core mathematical concepts used in neural networks and deep learning, with detailed intuitions and practical PyTorch examples.
 
-## Table of Contents
-
-1. [Linear Algebra](#linear-algebra)
-   - [Matrix Multiplication](#matrix-multiplication)
-   - [Matrix Transpose](#matrix-transpose)
-   - [Matrix Inverse](#matrix-inverse)
-   - [Eigenvalues & Eigenvectors](#eigenvalues--eigenvectors)
-   - [Singular Value Decomposition (SVD)](#singular-value-decomposition-svd)
-
-2. [Vectors & Geometry](#vectors--geometry)
-   - [Dot Product](#dot-product)
-   - [Cosine Similarity](#cosine-similarity)
-   - [Euclidean Distance](#euclidean-distance)
-   - [Lp Norms](#lp-norms)
-
-3. [Calculus](#calculus)
-   - [Derivatives](#derivatives)
-   - [Partial Derivatives](#partial-derivatives)
-   - [Chain Rule](#chain-rule)
-   - [Gradient](#gradient)
-   - [Hessian](#hessian)
-   - [Jacobian](#jacobian)
-
-4. [Differential Equations](#differential-equations)
-   - [Ordinary Differential Equations (ODEs)](#ordinary-differential-equations-odes)
-   - [Partial Differential Equations (PDEs)](#partial-differential-equations-pdes)
-
-5. [Nonlinear Functions](#nonlinear-functions)
-   - [Hyperbolic Tangent (tanh)](#hyperbolic-tangent-tanh)
-   - [Sigmoid](#sigmoid)
-   - [ReLU](#relu)
-
-6. [Probability & Statistics](#probability--statistics)
-   - [Expectation](#expectation)
-   - [Variance](#variance)
-   - [Softmax](#softmax)
-   - [Cross-Entropy Loss](#cross-entropy-loss)
-
-7. [Optimization](#optimization)
-   - [Gradient Descent](#gradient-descent)
-   - [Adam Optimizer](#adam-optimizer)
-
-8. [Attention Mechanisms](#attention-mechanisms)
-   - [Scaled Dot-Product Attention](#scaled-dot-product-attention)
-
-9. [Transformer Components](#transformer-components)
-   - [Layer Normalization](#layer-normalization)
-   - [Residual Connections](#residual-connections)
-
-10. [Advanced Concepts](#advanced-concepts)
-    - [Temperature Scaling](#temperature-scaling)
-
----
 
 ## Linear Algebra
 

@@ -1,0 +1,71 @@
+site_name: Introduction to Transformers 
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.instant
+    - content.code.copy
+    - content.tabs.link
+    - toc.follow
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+  font:
+    text: Inter
+    code: JetBrains Mono
+plugins:
+  - search
+  - awesome-pages
+  - roamlinks         # keep if you use [[Wiki Links]]; safe to leave on
+markdown_extensions:
+  # core niceties
+  - admonition
+  - attr_list
+  - def_list
+  - md_in_html
+
+  # pymdownx goodies (lists, tabs, better emphasis)
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.details
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+          separator: "-"
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  - javascripts/mathjax.js
+extra:
+  arithmatex:
+    generic: true
+extra_css:
+  - styles.css
+docs_dir: docs
+nav:
+  - Neural Network Introduction: nn_intro.md
+  - Building Networks with MLP: mlp_intro.md
+  - Sequential Modeling with RNN: rnn_intro.md
+  - Transformers Fundamentals: transformers_fundamentals.md
+  - Transformers Advanced: transformers_advanced.md
+  - Knowledge Store: knowledge_store.md
+  - References:
+      - PyTorch Primer: pytorch_ref.md
+      - Mathematical Foundations 1: transformers_math1.md
+      - Mathematical Foundations 2: transformers_math2.md
+      - Mathematical Quick Reference: math_quick_ref.md
+      - Sequence Modeling History: history_quick_ref.md
+  - Glossary: glossary.md
+  - README: README.md
+  - LICENSE: LICENSE.md
+
+

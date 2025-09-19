@@ -7,52 +7,6 @@
 **Prerequisites:** Completed [MLP Tutorial](./mlp_intro.md) and basic understanding of sequential data (text, time series).
 
 
-## Table of Contents
-
-1. [The Sequential Challenge: Why MLPs Aren't Enough](#1-the-sequential-challenge-why-mlps-arent-enough)
-   - [The Problem with Fixed-Size Inputs](#the-problem-with-fixed-size-inputs)
-   - [Failed Approaches: Bags of Words and Padding](#failed-approaches-bags-of-words-and-padding)
-2. [What is an RNN?](#2-what-is-an-rnn)
-   - [RNN vs Regular Neural Network (MLP)](#rnn-vs-regular-neural-network-mlp)
-   - [The RNN Innovation: Adding Memory](#the-rnn-innovation-adding-memory)
-3. [The Core RNN Equation](#3-the-core-rnn-equation)
-   - [Visual Breakdown](#visual-breakdown)
-4. [Understanding Hidden States vs Hidden Layers](#4-understanding-hidden-states-vs-hidden-layers)
-   - [Core Concepts: States vs Layers](#core-concepts-states-vs-layers)
-   - [Key Distinctions](#key-distinctions)  
-   - [RNN-Specific Examples](#rnn-specific-examples)
-   - [Common Confusions Clarified](#common-confusions-clarified)
-5. [Where These Weights Come From](#5-where-these-weights-come-from)
-   - [Weight Initialization](#weight-initialization)
-   - [Training Process: Backpropagation Through Time (BPTT)](#training-process-backpropagation-through-time-bptt)
-   - [Weight Sharing vs MLPs](#weight-sharing-vs-mlps)
-6. [Hidden Size and Embedding Size](#6-hidden-size-and-embedding-size)
-   - [Embedding Size (E): Input Detail](#embedding-size-e-input-detail)
-   - [Hidden Size (H): Memory Capacity](#hidden-size-h-memory-capacity)
-   - [Weight Matrix Shapes](#weight-matrix-shapes)
-7. [Worked Example: "cat sat here"](#7-worked-example-cat-sat-here)
-   - [Step 0: Initialize](#step-0-initialize)
-   - [Step 1: Process "cat"](#step-1-process-cat)
-   - [Step 2: Process "sat"](#step-2-process-sat)
-   - [Step 3: Process "here"](#step-3-process-here)
-   - [Summary: Memory Evolution](#summary-memory-evolution)
-8. [RNN vs MLP Training](#8-rnn-vs-mlp-training)
-   - [MLP Training: Layer-by-Layer](#mlp-training-layer-by-layer)
-   - [RNN Training: Backpropagation Through Time (BPTT)](#rnn-training-backpropagation-through-time-bptt)
-   - [The Gradient Flow Challenge](#the-gradient-flow-challenge)
-9. [The Vanishing Gradient Problem: RNN's Fatal Flaw](#9-the-vanishing-gradient-problem-rnns-fatal-flaw)
-   - [Why Gradients Vanish](#why-gradients-vanish)
-   - [Impact on Learning](#impact-on-learning)
-10. [Evolution Beyond Vanilla RNNs](#10-evolution-beyond-vanilla-rnns)
-   - [Gating Mechanisms: LSTMs and GRUs](#gating-mechanisms-lstms-and-grus)
-   - [Seq2Seq: The Encoder-Decoder Revolution](#seq2seq-the-encoder-decoder-revolution)
-11. [Summary: The RNN Legacy](#11-summary-the-rnn-legacy)
-   - [How RNNs Changed Everything](#how-rnns-changed-everything)
-   - [Why RNNs Led to Transformers](#why-rnns-led-to-transformers)
-12. [Final Visualization: "cat sat here" Through Time](#12-final-visualization-cat-sat-here-through-time)
-13. [Next Steps](#13-next-steps)
-
----
 
 ## 1. The Sequential Challenge: Why MLPs Aren't Enough
 
@@ -799,7 +753,7 @@ Now that you understand RNNs and their complete evolution:
 3. **Modern Applications**: Understand how these breakthroughs power today's AI systems
 4. **Implementation Practice**: Build these architectures yourself with PyTorch
 
-> **Ready for the Revolutionary Answer?** See **[transformers.md](./transformers.md)** to learn how the question *"What if attention is all you need?"* led to the architecture that powers modern AI. You'll see exactly how the Transformer solved every RNN limitation while preserving the core insights about memory and sequence processing.
+> **Ready for the Revolutionary Answer?** See **[Transformer Fundamentals](./transformers_fundamentals.md)** to learn how the question *"What if attention is all you need?"* led to the architecture that powers modern AI. You'll see exactly how the Transformer solved every RNN limitation while preserving the core insights about memory and sequence processing.
 
 ### The Complete Historical Arc
 

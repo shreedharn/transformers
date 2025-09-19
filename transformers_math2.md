@@ -15,15 +15,6 @@ This second part builds upon the foundational concepts from [Part 1: Building In
 - Common pitfalls and how to avoid them
 - Implementation best practices for numerical stability
 
-## Table of Contents
-
-8. [Practical Numerics & Implementation Notes](#8-practical-numerics--implementation-notes)
-9. [Optimization for Deep Networks](#9-optimization-for-deep-networks)
-10. [Efficient Attention & Scaling](#10-efficient-attention--scaling)
-11. [Regularization, Generalization, and Calibration](#11-regularization-generalization-and-calibration)
-14. [Common Pitfalls & Misconceptions](#14-common-pitfalls--misconceptions)
-15. [Summary & What to Learn Next](#15-summary--what-to-learn-next)
-
 **Appendices:**
 - [A. Symbol/Shape Reference](#appendix-a-symbolshape-reference)
 - [B. Key Derivations](#appendix-b-key-derivations)

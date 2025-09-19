@@ -1,24 +1,5 @@
 # LLM Weights vs Vector Stores: Knowledge Storage and Similarity Calculations
 
-## Table of Contents
-
-1. [Knowledge Storage Mechanisms](#part-i-knowledge-storage-mechanisms)
-   - [LLM Weights](#1-llm-weights)
-   - [Vector Store Knowledge Storage](#2-vector-store-knowledge-storage)
-
-2. [Generation and Retrieval Control](#part-ii-generation-and-retrieval-control)
-   - [Temperature, Top-K, and Top-P](#3-controlling-randomness-temperature-top-k-and-top-p-in-llms-and-vector-stores)
-
-3. [Mathematical Foundations](#part-iii-mathematical-foundations)
-   - [Similarity Search Algorithms](#similarity-search-algorithms)
-   - [Vector Search Implementation Methods](#vector-search-implementation-methods)
-
-4. [System Comparison and Integration](#part-iv-system-comparison-and-integration)
-   - [Critical Question: Are They the Same Concept?](#4-critical-question-are-they-the-same-concept)
-   - [Similarity Calculations Across Systems](#5-similarity-calculations-across-systems)
-   - [Practical Integration](#6-practical-integration)
-
----
 
 ## PART I: Knowledge Storage Mechanisms
 

@@ -1,0 +1,33 @@
+:root{
+  --md-typeset-font-size: 0.86rem;   /* try 0.86–0.92 */
+  --md-typeset-line-height: 1.50;
+}
+
+/* ===== Headings: calmer sizes ===== */
+/* ===== Headings scaled down ===== */
+.md-content__title,
+.md-typeset h1{ font-size: 1.55rem; line-height: 1.22; margin: .9rem 0 .45rem; }
+.md-typeset h2{ font-size: 1.22rem; line-height: 1.25; margin: .9rem 0 .4rem; border-bottom: 0; }
+.md-typeset h3{ font-size: 1.08rem; margin: .7rem 0 .3rem; }
+.md-typeset h4{ font-size: 1.0rem;  margin: .6rem 0 .25rem; }
+
+/* ===== Lists: tighter spacing & smaller indent ===== */
+.md-typeset ul,
+.md-typeset ol{
+  margin: .25rem 0 .55rem 1.1rem;   /* top / bottom / left indent */
+  padding-left: 0;                   /* Material adds padding; keep compact */
+}
+.md-typeset li{ margin: .08rem 0; line-height: 1.45; }
+.md-typeset li > p{ margin: .12rem 0; }          /* kill extra paragraph gap inside <li> */
+.md-typeset ul ul,
+.md-typeset ol ol{ margin: .15rem 0 .25rem 1rem; }  /* nested lists tighter */
+.md-typeset li::marker{ font-size: .85em; }      /* slightly smaller bullet */
+
+/* (Optional) compact-only class you can apply to specific lists */
+.md-typeset ul.compact,
+.md-typeset ol.compact{ margin: .1rem 0 .4rem 1rem; }
+.md-typeset .compact > li{ margin: .04rem 0; line-height: 1.4; }
+
+/* Keep code/math a touch smaller to match */
+.md-typeset pre, .md-typeset code{ font-size: .85em; }
+.md-typeset mjx-container[display="true"]{ font-size: 85%; }
