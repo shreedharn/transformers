@@ -4,11 +4,71 @@ description: Standardize LaTeX mathematical typography in a markdown document
 allowed-tools: Read, Edit, MultiEdit, Bash,Bash(grep:*), Bash(sed:*), Bash(awk:*)
 ---
 
-Transform the markdown document $1 with mixed mathematical notation into a professionally formatted document with consistent LaTeX typography.
+Fix and standardize the markdown document $1 by applying appropriate formatting based on content type: professional LaTeX typography for mathematical content and clean Markdown formatting for descriptive content.
 
-**IMPORTANT**: Only apply LaTeX standardization to content that contains mathematical expressions ($$, \begin{aligned}, mathematical symbols, equations). Do NOT modify standalone markdown formatting like **Features:**, **Examples:**, **Learned Weights:**: Some Non Math text, or **Example Email:** that do not contain mathematical content.
+**IMPORTANT**: Apply LaTeX standardization only to content containing mathematical expressions ($$, \begin{aligned}, mathematical symbols, equations, variables, formulas). Fix descriptive content (features, use cases, architecture descriptions) as clean Markdown formatting.
 
 Apply the following standardizations to $1:
+
+## 0. Content Classification (Critical Decision Point)
+
+**BEFORE applying any transformations, determine the appropriate format based on content type:**
+
+### Fix as professional LaTeX blocks when content contains:
+- Mathematical symbols, equations, or expressions
+- Variables, formulas, or mathematical relationships
+- Parameter descriptions with mathematical dimensions or calculations
+- Content already using `$$`, `\begin{aligned}`, mathematical notation
+
+### Fix as clean Markdown formatting when content contains:
+- Simple descriptive text without mathematical elements
+- Feature descriptions, use cases, or narrative explanations
+- Architecture overviews, training objectives, or task descriptions
+- Plain text descriptions about capabilities or characteristics
+
+### Example - Fix as Markdown (descriptive content):
+```markdown
+### Encoder-Decoder: T5 Family
+
+**Structure**: Encoder (bidirectional) + Decoder (causal) with cross-attention
+**Training**: Various objectives (span corruption, translation, etc.)
+**Use cases**: Translation, summarization, structured tasks
+```
+
+This should remain as clean Markdown because it contains only descriptive text about capabilities and training objectives - no mathematical symbols, equations, or dimensional parameters.
+
+### Example - Fix as LaTeX (mathematical content):
+```markdown
+**Mathematical Formulation:**
+- **Weight dimensions**: $d_{model} \times d_{ffn}$ parameters
+- **Computation**: $\sigma(xW + b)$ where $W \in \mathbb{R}^{d \times d}$
+- **Total parameters**: $8d_{model}^2$ for standard FFN
+```
+
+This should be standardized as professional LaTeX blocks because it contains mathematical variables, equations, and dimensional relationships.
+
+**Rule**: Apply LaTeX standardization only to content with mathematical elements. Fix descriptive content as clean Markdown formatting.
+
+**Critical Separation Principle**: Do not include mathematical symbols, variables, or notation (e.g., `x`, `W`, `\alpha`, `O(n)`, `→`, fractions) inside Markdown sentences, bullets, headings, or captions. Promote them to a dedicated display block (or use plain words).
+
+### Example - Descriptive sentences with math symbols need rewriting:
+
+**Before (Mixed math and prose):**
+```markdown
+The attention mechanism computes Q, K, and V matrices where d_k = 512 for efficiency.
+```
+
+**After (Clean separation):**
+```markdown
+The attention mechanism computes query, key, and value matrices with specific dimensions for efficiency:
+
+$$
+\begin{aligned}
+Q, K, V &: \text{Query, key, and value matrices} \newline
+d_k &= 512 : \text{Key dimension for computational efficiency}
+\end{aligned}
+$$
+```
 
 ## 1. MathJax Format Standardization
 - Convert all `$$expression$$` notation to `\begin{aligned}...\end{aligned}` blocks
@@ -17,6 +77,7 @@ Apply the following standardizations to $1:
 - **NEVER** have markdown bullets (`-`, `*`) containing MathJax expressions (`$$`, `\begin{aligned}`)
 - **ALWAYS** separate mathematical content into dedicated `$$\begin{aligned}...\end{aligned}$$` blocks
 - **REPHRASE** sentences if necessary to maintain meaning while separating elements
+- **EXTRACT** any mathematical symbols, variables, or notation from prose sentences into dedicated math blocks
 
 ## 2. Block Consolidation with Boundary Respect
 - Identify multiple separate `\begin{aligned}` blocks that are consecutive (without intervening non-mathematical text)
@@ -40,11 +101,13 @@ Apply the following standardizations to $1:
 - **CRITICAL**: This prevents LaTeX math from breaking due to Markdown interpreting `_text_` as italics
 - Apply escaping to ALL underscore usage in mathematical contexts: subscripts, variable names, function names
 
-## 5. Content Integration
+## 5. Content Integration and Separation
+- **SEPARATE** mathematical symbols from prose: Extract any mathematical notation from Markdown sentences, bullets, headings, or captions into dedicated LaTeX blocks
 - Move standalone descriptive text into LaTeX blocks as introductory lines ONLY when it directly relates to mathematical expressions
 - Use alignment characters (`&`) to create visual hierarchy within mathematical contexts
 - Integrate mathematical symbols properly (e.g., `\rightarrow` for arrows)
 - Do NOT move general section headers, examples, or feature lists into LaTeX blocks
+- **REWRITE** sentences that mix mathematical notation with prose to achieve clean separation
 
 ## 6. Structural Consistency
 - Ensure all related mathematical content follows the same formatting pattern

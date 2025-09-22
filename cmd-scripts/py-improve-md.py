@@ -41,6 +41,8 @@ class IssueType(Enum):
     END_BEFORE_BEGIN_ALIGNED = "end{aligned} before any begin{aligned}"
     BLANK_LINES_BETWEEN_LIST_ITEMS = "Blank lines between list items (should only be before list start)"
     ESCAPED_UNDERSCORES_IN_CODE = "Escaped underscores in code blocks (breaks syntax)"
+    INLINE_DISPLAY_MATH_IN_PROSE = "Display math delimiters used inline in prose (should be blocks)"
+    CONSECUTIVE_BOLD_WITHOUT_SPACING = "Consecutive bold text lines without proper spacing"
 
 
 @dataclass
@@ -104,6 +106,8 @@ PATTERNS = {
     'end_aligned_trailing': re.compile(r'\\end\{aligned\}.*\$\$.*\S'),
     'code_fence_start': re.compile(r'^\s*```'),
     'escaped_underscore_in_code': re.compile(r'\\_'),
+    'inline_display_math_in_prose': re.compile(r'^(?!\s*\$\$\s*$).*\$\$[^$]+\$\$.*\S'),
+    'consecutive_bold_lines': re.compile(r'^\*\*[^*]+\*\*:?\s*$'),
 }
 
 
@@ -557,6 +561,57 @@ class MarkdownMathDetector:
 
         return issues
 
+    def detect_inline_display_math_in_prose(self) -> List[DetectionResult]:
+        """Detect display math delimiters ($$) used inline within prose sentences."""
+        issues = []
+        in_code_block = False
+
+        for i, line in enumerate(self.lines):
+            if PATTERNS['code_fence_start'].match(line):
+                in_code_block = not in_code_block
+                continue
+
+            if in_code_block:
+                continue
+
+            # Skip actual display math blocks (lines with only $$)
+            if re.match(r'^\s*\$\$\s*$', line):
+                continue
+
+            # Detect $$ used inline within prose
+            if PATTERNS['inline_display_math_in_prose'].search(line):
+                issues.append(DetectionResult(
+                    line_number=i + 1,
+                    issue_type=IssueType.INLINE_DISPLAY_MATH_IN_PROSE,
+                    content=line.strip(),
+                    context_lines=self._get_context_lines(i + 1)
+                ))
+
+        return issues
+
+    def detect_consecutive_bold_without_spacing(self) -> List[DetectionResult]:
+        """Detect consecutive bold text lines without proper spacing."""
+        issues = []
+        prev_was_bold = False
+
+        for i, line in enumerate(self.lines):
+            is_bold_line = bool(PATTERNS['consecutive_bold_lines'].match(line))
+            is_blank = bool(PATTERNS['blank_line'].match(line))
+
+            if is_bold_line and prev_was_bold:
+                # Check if there was no blank line between consecutive bold lines
+                if i > 0 and not PATTERNS['blank_line'].match(self.lines[i - 1]):
+                    issues.append(DetectionResult(
+                        line_number=i + 1,
+                        issue_type=IssueType.CONSECUTIVE_BOLD_WITHOUT_SPACING,
+                        content="Missing blank line between bold text lines",
+                        context_lines=self._get_context_lines(i + 1)
+                    ))
+
+            prev_was_bold = is_bold_line and not is_blank
+
+        return issues
+
     def run_all_detectors(self) -> Dict[str, List[DetectionResult]]:
         """
         Run all detection methods and return results grouped by detector type.
@@ -590,6 +645,8 @@ class MarkdownMathDetector:
             (self.detect_end_before_begin_aligned, "End before begin aligned"),
             (self.detect_blank_lines_between_list_items, "Blank lines between list items"),
             (self.detect_escaped_underscores_in_code, "Escaped underscores in code blocks"),
+            (self.detect_inline_display_math_in_prose, "Display math delimiters used inline in prose"),
+            (self.detect_consecutive_bold_without_spacing, "Consecutive bold text without spacing"),
         ]
 
         results = {}

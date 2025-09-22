@@ -43,13 +43,13 @@ where:
 
 ## Comprehensive List Formatting Detector
 
-**Optimized Python-based detector** that runs all detection patterns in a single execution:
+**Single unified Python detector** that runs detection patterns 
 
 ```bash
 python3 cmd-scripts/py-fix-list.py "$1"
 ```
 
-This comprehensive detector finds all the following issues and presents them in segmented sections:
+This comprehensive detector finds markdown list formatting issues and presents them in clearly segmented sections:
 
 **Detection Categories:**
 1. **Lists starting immediately after prose without blank line (primary issue)**
@@ -59,151 +59,43 @@ This comprehensive detector finds all the following issues and presents them in 
 5. **Lists after inline code or math expressions**
 6. **Numbered lists missing blank line separator**
 7. **Bulleted lists missing blank line separator**
+8. **Unescaped underscores in LaTeX blocks (critical for Markdown compatibility)**
+9. **Markdown bullets containing LaTeX expressions (Rule 1 violation)**
+10. **Mixed LaTeX notation - should use consistent format**
+11. **Consecutive LaTeX blocks that could be consolidated**
+12. **Typography standard violations (bold, bullets, spacing)**
+13. **Lists after blockquotes missing separation**
+14. **Lists following table rows without separation**
+15. **Lists after HTML blocks without separation**
+16. **Lists after code fence blocks**
+17. **Lists after MathJax display blocks**
+18. **Inconsistent bullet markers (mixed -, *, +)**
 
-The detector automatically:
-- Analyzes the entire file in a single pass
-- Groups results by detection type with clear separators (`---`)
-- Shows line numbers, issue counts, and context for each problem
-- Provides a summary with total issues found
-- Handles all edge cases (headers, existing blank lines, nested lists)
-- Uses optimized regex patterns compiled at startup for performance
+**Unified Detector Benefits:**
+- **Single execution**: All patterns checked in one pass for maximum efficiency
+- **Consistent output**: Grouped results by detection type with clear separators (`---`)
+- **Complete context**: Shows line numbers, issue counts, and surrounding context
+- **Performance optimized**: Compiled regex patterns and efficient algorithm
+- **Maintainable**: All detection logic in one Python file vs scattered grep commands
+- **Extensible**: Easy to add new detection patterns or modify existing ones
 
-## AI Verification Step
+## Implementation
 
-After running the Python detector, perform a final AI scan to catch any edge cases or patterns the automated detection might miss:
+Execute the Python detector to analyze the markdown file:
 
 ```bash
-echo "=== PYTHON DETECTOR RESULTS ==="
 python3 cmd-scripts/py-fix-list.py "$1"
-
-echo ""
-echo "=== AI VERIFICATION SCAN ==="
-echo "Performing intelligent review of markdown list formatting..."
 ```
 
-**Manual AI Review Guidelines:**
-1. **Verify Python results** - Check if detected issues are legitimate formatting problems
-2. **Scan for missed patterns** - Look for unusual list contexts not covered by regex patterns
-3. **Check list consistency** - Ensure bullet style consistency throughout the document
-4. **Validate context** - Confirm that adding blank lines would improve readability
-5. **Edge case detection** - Find complex nested structures or unusual markdown combinations
-6. **False positive filtering** - Identify any incorrectly flagged legitimate formatting
+This will provide a comprehensive report of all markdown list formatting issues organized by category, with line numbers and context for easy identification and fixing. After running the Python detector, perform a final AI scan to catch any edge cases or patterns the automated detection might miss.
 
-The AI verification ensures comprehensive coverage by combining automated pattern detection with intelligent contextual analysis of the original objective: "ensuring there is a blank line before every markdown list."
+## Detection Strategy
 
-8. **Lists in blockquotes missing separation**
-```bash
-grep -nE -C20 '^>\s*[^-*+0-9\s]' "$1" | grep -A1 '^>\s*([-*+]|[0-9]+\.)\s'
-```
+The unified Python detector uses optimized pattern matching to identify:
 
-9. **Lists following table rows without separation**
-```bash
-grep -nE -C20 '^\s*\|.*\|\s*$' "$1" | grep -A1 '^\s*([-*+]|[0-9]+\.)\s'
-```
-
-10. **Lists after HTML blocks without separation**
-```bash
-grep -nE -C20 '^<[^>]+>.*$' "$1" | grep -A1 '^\s*([-*+]|[0-9]+\.)\s'
-```
-
-11. **Lists after definition terms (term:)**
-```bash
-grep -nE -C20 '^[^:\n]*:$' "$1" | grep -A1 '^\s*([-*+]|[0-9]+\.)\s'
-```
-
-12. **Lists after code fence blocks**
-```bash
-grep -nE -C20 '^```.*$' "$1" | grep -A1 '^\s*([-*+]|[0-9]+\.)\s'
-```
-
-13. **Lists with inconsistent bullet markers (mixed -, *, +)**
-```bash
-grep -nE -C20 '^\s*[-*+]\s' "$1" | awk '/[-*+]/ {markers[substr($0,match($0,/[-*+]/),1)]++} END {if(length(markers)>1) print "Mixed bullet markers found"}'
-```
-
-14. **Lists after MathJax display blocks**
-```bash
-grep -nE -C20 '^\$\$.*\$\$$' "$1" | grep -A1 '^\s*([-*+]|[0-9]+\.)\s'
-```
-
-15. **Detect proper list separation (should be preserved)**
-```bash
-grep -nE -C20 '^\s*$' "$1" | grep -A1 '^\s*([-*+]|[0-9]+\.)\s'
-```
-
-16. **Lists after headings (usually acceptable)**
-```bash
-grep -nE -C20 '^#{1,6}\s+' "$1" | grep -A1 '^\s*([-*+]|[0-9]+\.)\s'
-```
-
-17. **Multiple consecutive different list types without separation**
-```bash
-grep -nE -C20 '^\s*[0-9]+\.\s' "$1" | grep -A1 '^\s*[-*+]\s'
-```
-
-18. **Lists with improper nesting (indentation issues)**
-```bash
-grep -nE -C20 '^(  )+([-*+]|[0-9]+\.)\s' "$1"
-```
-
-19. **Lists at start of file (edge case check)**
-```bash
-head -5 "$1" | grep -nE -C20 '^\s*([-*+]|[0-9]+\.)\s'
-```
-
-20. **Lists after emphasis/strong text without separation**
-```bash
-grep -nE -C20 '(\*[^*]+\*|_[^_]+_):?$' "$1" | grep -A1 '^\s*([-*+]|[0-9]+\.)\s'
-```
-
-21. **Quick scan for all list items to review context**
-```bash
-grep -nE -C20 '^\s*([-*+]|[0-9]+\.)\s' "$1"
-```
-
-22. **Detect text ending with periods followed by numbered lists**
-```bash
-grep -nE -C20 '\.$' "$1" | grep -A1 '^\s*[0-9]+\.\s'
-```
-
-23. **Find list items that might need blank lines above them**
-```bash
-python3 -c "
-import re
-with open('$1', 'r') as f:
-    lines = f.readlines()
-for i, line in enumerate(lines[1:], 2):
-    if re.match(r'^\s*[-*+]\s', line):
-        prev = lines[i-2].strip()
-        if prev and not prev.startswith('#') and not re.match(r'^\s*[-*+]\s', lines[i-2]):
-            print(f'Line {i}: List needs blank line above')
-            print(f'  Previous: {prev}')
-            print(f'  Current:  {line.strip()}')
-            print()
-"
-```
-
-24. **Lists after quoted text**
-```bash
-grep -nE -C20 '"[^"]*":?$' "$1" | grep -A1 '^\s*([-*+]|[0-9]+\.)\s'
-```
-
-25. **All potentially problematic list contexts**
-```bash
-grep -nE -C20 '^[^#\s\-\*\+0-9>|`].*[^:\s]$' "$1" | grep -B1 -A1 '^\s*([-*+]|[0-9]+\.)\s' | grep -E '^[0-9]+-[^-]'
-```
-
-## Command Implementation
-This command will:
-1. Read the specified markdown file
-2. Identify lines that immediately precede list items without a blank line
-3. Insert appropriate blank lines before list markers
-4. Preserve all other formatting and content
-5. Handle edge cases like lists at the beginning of files or after headings
-
-### Detection Strategy
-The command uses pattern matching to identify:
-- **Primary pattern**: Non-blank lines followed immediately by list markers
+- **Primary patterns**: Non-blank lines followed immediately by list markers
 - **Context awareness**: Distinguishes between acceptable cases (after headings) and problematic ones
-- **List continuation**: Preserves existing list structure by not adding blanks between list items
-- **Edge cases**: Handles special scenarios like nested lists, blockquotes, and code blocks
+- **LaTeX compatibility**: Critical underscore escaping and bullet/LaTeX separation issues
+- **List continuation**: Preserves existing list structure by not flagging blanks between list items
+- **Edge cases**: Handles special scenarios like nested lists, blockquotes, tables, code blocks, and MathJax
+- **Typography standards**: Detects mixed notation, inconsistent formatting, and styling issues

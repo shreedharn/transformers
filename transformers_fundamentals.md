@@ -67,29 +67,15 @@ Given input sequence:
 
 $$
 \begin{aligned}
-X = [x_1, x_2, \ldots, x_n]
+X &= [x\_1, x\_2, \ldots, x\_n] \newline
+\text{Step 1:} \quad Q &= XW^Q \newline
+\text{Step 1:} \quad K &= XW^K \newline
+\text{Step 1:} \quad V &= XW^V \newline
+\text{Step 2:} \quad \text{Attention}(Q, K, V) &= \text{softmax}\left(\frac{QK^T}{\sqrt{d\_k}}\right)V
 \end{aligned}
 $$
 
-1. **Create Q, K, V representations**:
-
-  $$
-  \begin{aligned}
-  Q &= XW^Q \newline
-  K &= XW^K \newline
-  V &= XW^V
-  \end{aligned}
-  $$
-
-2. **Compute attention scores**:
-
-  $$
-  \begin{aligned}
-  \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
-  \end{aligned}
-  $$
-
-**Key Properties**:
+**Key Properties:**
 
 - **Parallel Computation**: All positions processed simultaneously
 - **Full Connectivity**: Every position can attend to every other position
@@ -103,8 +89,8 @@ $$
 
 $$
 \begin{aligned}
-\text{MultiHead}(Q, K, V) &= \text{Concat}(\text{head}_1, \ldots, \text{head}_h)W^O \newline
-\text{head}_i &= \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)
+\text{MultiHead}(Q, K, V) &= \text{Concat}(\text{head}\_1, \ldots, \text{head}\_h)W^O \newline
+\text{head}\_i &= \text{Attention}(QW\_i^Q, KW\_i^K, VW\_i^V)
 \end{aligned}
 $$
 
@@ -202,7 +188,14 @@ Output: "the" (most likely next word)
 **Tensor Dimensions and Semantic Interpretation:**
 
 - **[464, 2415, 3332, 319]**: Discrete token indices mapping to vocabulary entries
-- **[4, 768]**: Sequence length × model dimension tensor representing learned embeddings
+**Tensor Dimensions:**
+
+$$
+\begin{aligned}
+\text{Shape [4, 768]:} \quad &\text{Sequence length × model dimension tensor} \newline
+&\text{representing learned embeddings}
+\end{aligned}
+$$
 - **12 layers**: Hierarchical representation learning through stacked transformer blocks
 - **50,000 words**: Vocabulary size determining output distribution dimensionality
 
@@ -229,17 +222,25 @@ Output: "the" (most likely next word)
 **Architectural Dimensions:**
 
 - **Vocabulary size (V)**: Discrete token space cardinality, typically 32K-100K
+
 - **Model dimension (d_model)**: Hidden state dimensionality determining representational capacity
+
 - **Context length (n)**: Maximum sequence length for attention computation
+
 - **Layer count (N)**: Depth of hierarchical representation learning
+
 - **Attention heads (H)**: Parallel attention subspaces for diverse relationship modeling
 
 **GPT-2 Specification:**
 
 - Vocabulary: 50,257 BPE tokens
+
 - Hidden dimension: 768
+
 - Context window: 1,024 tokens
+
 - Transformer blocks: 12 layers
+
 - Multi-head attention: 12 heads per layer
 
 ---
@@ -253,7 +254,9 @@ Output: "the" (most likely next word)
 **Why not just use individual letters or whole words?**
 
 - **Letters**: Too many combinations, loses meaning ("c-a-t" tells us less than "cat")
+
 - **Whole words**: Millions of possible words, can't handle new/misspelled words
+
 - **Subwords** (what we use): Perfect balance - captures meaning while handling new words
 
 ### Process Flow
@@ -300,32 +303,22 @@ Shape: [4] (sequence length = 4)
 
 $$
 \begin{aligned}
-T: \Sigma^* \to \{0, 1, \ldots, V-1\}^*
+T: \Sigma^* &\to \{0, 1, \ldots, V-1\}^* \newline
+\Sigma^* &: \text{Space of all possible text strings} \newline
+V &: \text{Vocabulary size} \newline
+\text{Output} &: \text{Variable-length sequence of discrete token indices}
 \end{aligned}
 $$
-
-where:
-
-- Space of all possible text strings
-- Vocabulary size
-- Output is a variable-length sequence of discrete token indices
-
-  $$
-  \begin{aligned}
-  \Sigma^* &: \text{Space of all possible text strings} \newline
-  V &: \text{Vocabulary size}
-  \end{aligned}
-  $$
 
 **BPE Algorithm**: Given text and learned merge operations:
 
 $$
 \begin{aligned}
-\text{tokenize}(s) &= [\text{vocab}[\tau_i] \mid \tau_i \in \mathrm{BPE\_segment}(s, M)] \newline
+\text{tokenize}(s) &= [\text{vocab}[\tau\_i] \mid \tau\_i \in \mathrm{BPE\_segment}(s, M)] \newline
 s &: \text{Input text} \newline
 M &: \text{Learned merge operations} \newline
 \mathrm{BPE\_segment} &: \text{Applies learned merge rules} \newline
-\tau_i &: \text{Subword tokens from segmentation}
+\tau\_i &: \text{Subword tokens from segmentation}
 \end{aligned}
 $$
 
@@ -371,39 +364,24 @@ Embedding layers transform discrete token indices into continuous vector represe
 
 **Token Embedding Lookup:**
 
-1. **Matrix indexing**: Provides learnable token representations
-2. **Batch lookup**: Extract embeddings for token indices
-3. **Result**: Dense matrix representation
-
-  $$
-  \begin{aligned}
-  E &\in \mathbb{R}^{V \times d_{\text{model}}} : \text{Token embedding matrix} \newline
-  X_{\text{tok}} &= E[T] : \text{Lookup embeddings for tokens T} \newline
-  X_{\text{tok}} &\in \mathbb{R}^{n \times d_{\text{model}}} : \text{Dense token representations}
-  \end{aligned}
-  $$
-
-**Position Encoding Addition:**
-
-1. **Position information**: Encodes sequential order
-2. **Sequence slicing**: Extract positions for current sequence length
-3. **Element-wise addition**: Combine token and position information
-
-  $$
-  \begin{aligned}
-  PE &\in \mathbb{R}^{n_{\max} \times d_{\text{model}}} : \text{Position encoding matrix} \newline
-  X_{\text{pos}} &= PE[0:n] : \text{Position encodings for sequence length n} \newline
-  X &= X_{\text{tok}} + X_{\text{pos}} : \text{Combined representation}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Step 1: Matrix indexing} \quad E &\in \mathbb{R}^{V \times d\_{\text{model}}} : \text{Token embedding matrix} \newline
+\text{Step 2: Batch lookup} \quad X\_{\text{tok}} &= E[T] : \text{Lookup embeddings for tokens T} \newline
+\text{Step 3: Dense representation} \quad X\_{\text{tok}} &\in \mathbb{R}^{n \times d\_{\text{model}}} : \text{Dense token representations} \newline
+\text{Step 4: Position encoding} \quad PE &\in \mathbb{R}^{n\_{\max} \times d\_{\text{model}}} : \text{Position encoding matrix} \newline
+\text{Step 5: Sequence slicing} \quad X\_{\text{pos}} &= PE[0:n] : \text{Position encodings for sequence length n} \newline
+\text{Step 6: Element-wise addition} \quad X &= X\_{\text{tok}} + X\_{\text{pos}} : \text{Combined representation}
+\end{aligned}
+$$
 
 **Output**: Combined semantic and positional representation
 
-  $$
-  \begin{aligned}
-  X \in \mathbb{R}^{n \times d_{\text{model}}}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+X \in \mathbb{R}^{n \times d\_{\text{model}}}
+\end{aligned}
+$$
 
 ### Mathematical Formulation
 
@@ -411,8 +389,8 @@ Embedding layers transform discrete token indices into continuous vector represe
 
 $$
 \begin{aligned}
-X_{\text{tok}} &= E[T] \text{ where } E \in \mathbb{R}^{V \times d_{\text{model}}} \newline
-X_{\text{tok}}[i] &= E[t_i] \in \mathbb{R}^{d_{\text{model}}} \text{ for token index } t_i
+X\_{\text{tok}} &= E[T] \text{ where } E \in \mathbb{R}^{V \times d\_{\text{model}}} \newline
+X\_{\text{tok}}[i] &= E[t\_i] \in \mathbb{R}^{d\_{\text{model}}} \text{ for token index } t\_i
 \end{aligned}
 $$
 
@@ -422,7 +400,7 @@ $$
 
 $$
 \begin{aligned}
-X_{\text{pos}}[i] = PE[i] \text{ where } PE \in \mathbb{R}^{n_{\max} \times d_{\text{model}}}
+X\_{\text{pos}}[i] = PE[i] \text{ where } PE \in \mathbb{R}^{n\_{\max} \times d\_{\text{model}}}
 \end{aligned}
 $$
 
@@ -430,8 +408,8 @@ $$
 
 $$
 \begin{aligned}
-PE[\text{pos}, 2i] &= \sin\left(\frac{\text{pos}}{10000^{2i/d_{\text{model}}}}\right) \newline
-PE[\text{pos}, 2i+1] &= \cos\left(\frac{\text{pos}}{10000^{2i/d_{\text{model}}}}\right)
+PE[\text{pos}, 2i] &= \sin\left(\frac{\text{pos}}{10000^{2i/d\_{\text{model}}}}\right) \newline
+PE[\text{pos}, 2i+1] &= \cos\left(\frac{\text{pos}}{10000^{2i/d\_{\text{model}}}}\right)
 \end{aligned}
 $$
 
@@ -439,9 +417,9 @@ $$
 
 $$
 \begin{aligned}
-X &= X_{\text{tok}} + X_{\text{pos}} \in \mathbb{R}^{n \times d_{\text{model}}} \newline
+X &= X\_{\text{tok}} + X\_{\text{pos}} \in \mathbb{R}^{n \times d\_{\text{model}}} \newline
 n &: \text{Sequence length} \newline
-d_{\text{model}} &: \text{Model dimension}
+d\_{\text{model}} &: \text{Model dimension}
 \end{aligned}
 $$
 
@@ -553,7 +531,7 @@ Given layer input:
 
 $$
 \begin{aligned}
-X^{(l-1)} \in \mathbb{R}^{n \times d_{\text{model}}}
+X^{(l-1)} \in \mathbb{R}^{n \times d\_{\text{model}}}
 \end{aligned}
 $$
 
@@ -601,16 +579,13 @@ While the core transformer architecture provides a flexible foundation, differen
 
 **Mathematical Formulation:**
 
-- **Input**: Complete sequence with random tokens masked
-- **Objective**: Negative log-likelihood over masked positions
-- **Attention**: Full bidirectional attention matrix (no causal masking)
-
-  $$
-  \begin{aligned}
-  \text{Input} &: [x_1, [\text{MASK}], x_3, \ldots, x_n] \newline
-  \mathcal{L} &= -\sum_{i \in \text{masked}} \log P(x_i | x_{\setminus i})
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Input} &: [x\_1, [\text{MASK}], x\_3, \ldots, x\_n] \newline
+\text{Objective} &: \mathcal{L} = -\sum\_{i \in \text{masked}} \log P(x\_i | x\_{\setminus i}) \newline
+\text{Attention} &: \text{Full bidirectional attention matrix (no causal masking)}
+\end{aligned}
+$$
 
 **Key advantage**: Full bidirectional context enables deep understanding
 **Limitation**: Cannot generate sequences autoregressively
@@ -636,17 +611,13 @@ def encoder_attention(x, mask=None):
 
 **Mathematical Formulation:**
 
-- **Input**: Sequence prefix for autoregressive prediction
-- **Objective**: Negative log-likelihood over next tokens
-- **Attention**: Lower triangular mask ensures causal ordering
-
-  $$
-  \begin{aligned}
-  \text{Input} &: [x_1, x_2, \ldots, x_t] \newline
-  \mathcal{L} &= -\sum_{t=1}^{n-1} \log P(x_{t+1} | x_1, \ldots, x_t) \newline
-  A_{ij} &= 0 \text{ for } j > i \text{ (causal mask)}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Input} &: [x\_1, x\_2, \ldots, x\_t] \newline
+\text{Objective} &: \mathcal{L} = -\sum\_{t=1}^{n-1} \log P(x\_{t+1} | x\_1, \ldots, x\_t) \newline
+\text{Attention mask} &: A\_{ij} = 0 \text{ for } j > i \text{ (causal mask)}
+\end{aligned}
+$$
 
 **Key advantage**: Natural autoregressive generation capability
 **Trade-off**: No future context during training
@@ -662,7 +633,9 @@ def causal_mask(seq_len):
 ### Encoder-Decoder: T5 Family
 
 **Structure**: Encoder (bidirectional) + Decoder (causal) with cross-attention
+
 **Training**: Various objectives (span corruption, translation, etc.)
+
 **Use cases**: Translation, summarization, structured tasks
 
 **Mathematical Components:**
@@ -675,7 +648,7 @@ def causal_mask(seq_len):
 
 $$
 \begin{aligned}
-\text{CrossAttention}(Q_{\text{dec}}, K_{\text{enc}}, V_{\text{enc}}) = \text{softmax}\left(\frac{Q_{\text{dec}}K_{\text{enc}}^T}{\sqrt{d_k}}\right)V_{\text{enc}}
+\text{CrossAttention}(Q\_{\text{dec}}, K\_{\text{enc}}, V\_{\text{enc}}) = \text{softmax}\left(\frac{Q\_{\text{dec}}K\_{\text{enc}}^T}{\sqrt{d\_k}}\right)V\_{\text{enc}}
 \end{aligned}
 $$
 
@@ -684,29 +657,18 @@ $$
 
 ### Modern Architectural Innovations
 
-**Multi-Query Attention (MQA)**:
+**Multi-Query Attention (MQA)**: Single key/value head shared across queries, reduces KV cache size for generation:
 
-- Single key/value head shared across queries
-- Reduces KV cache size for generation
-- Reduced tensor dimensions compared to multi-head attention
+$$
+\begin{aligned}
+\text{Standard MHA:} \quad K, V &\in \mathbb{R}^{n \times H \times d\_k} \newline
+\text{MQA variant:} \quad K, V &\in \mathbb{R}^{n \times d\_k} \text{ (shared across queries)}
+\end{aligned}
+$$
 
-  $$
-  \begin{aligned}
-  K, V &\in \mathbb{R}^{n \times d_k} \text{ instead of } \mathbb{R}^{n \times H \times d_k}
-  \end{aligned}
-  $$
+**Grouped-Query Attention (GQA)**: Compromise between MHA and MQA, where groups of queries share K/V heads, balancing quality and efficiency.
 
-**Grouped-Query Attention (GQA)**:
-
-- Compromise between MHA and MQA
-- Groups of queries share K/V heads
-- Balances quality and efficiency
-
-**Mixture of Experts (MoE)**:
-
-- Replace some FFNs with expert networks
-- Sparse activation based on learned routing
-- Increases capacity without proportional compute increase
+**Mixture of Experts (MoE)**: Replace some FFNs with expert networks using sparse activation based on learned routing, increasing capacity without proportional compute increase.
 
 **Position Encoding Variants:**
 
@@ -757,128 +719,109 @@ Self-attention implements a differentiable associative memory mechanism where ea
 ### Attention Weight Interpretation
 
 **Attention Weights as Soft Alignment:**
-Given query position $i$ and key positions $\{j\}$, attention weights $\alpha_{ij}$ represent the proportion of position $j$'s information incorporated into position $i$'s updated representation.
+
+Given query position and key positions, attention weights represent the proportion of information flow between sequence positions:
+
+$$
+\begin{aligned}
+\text{Query position:} \quad &i \newline
+\text{Key positions:} \quad &\{j\} \newline
+\text{Attention weights:} \quad &\alpha\_{ij} \text{ (proportion of position } j \text{'s information incorporated into position } i \text{)}
+\end{aligned}
+$$
 
 **Example: Coreference Resolution**
 For sequence "The cat sat on it" processing token "it":
 
-- Minimal syntactic relevance
-- Potential antecedent
-- Predicate information
-- Spatial relationship
-- Self-attention for local processing
+$$
+\begin{aligned}
+\alpha\_{\text{it},\text{The}} &= 0.05 \text{ (minimal syntactic relevance)} \newline
+\alpha\_{\text{it},\text{cat}} &= 0.15 \text{ (potential antecedent)} \newline
+\alpha\_{\text{it},\text{sat}} &= 0.10 \text{ (predicate information)} \newline
+\alpha\_{\text{it},\text{on}} &= 0.15 \text{ (spatial relationship)} \newline
+\alpha\_{\text{it},\text{it}} &= 0.55 \text{ (self-attention for local processing)}
+\end{aligned}
+$$
 
-  $$
-  \begin{aligned}
-  \alpha_{\text{it},\text{The}} &= 0.05 \text{ (minimal syntactic relevance)} \newline
-  \alpha_{\text{it},\text{cat}} &= 0.15 \text{ (potential antecedent)} \newline
-  \alpha_{\text{it},\text{sat}} &= 0.10 \text{ (predicate information)} \newline
-  \alpha_{\text{it},\text{on}} &= 0.15 \text{ (spatial relationship)} \newline
-  \alpha_{\text{it},\text{it}} &= 0.55 \text{ (self-attention for local processing)}
-  \end{aligned}
-  $$
+**Constraint**: Probability simplex constraint from softmax normalization:
 
-**Constraint**: Probability simplex constraint from softmax normalization
-
-  $$
-  \begin{aligned}
-  \sum_j \alpha_{ij} = 1
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\sum\_j \alpha\_{ij} = 1
+\end{aligned}
+$$
 
 ### Attention Computation Steps
 
 **Step 1: Linear Projections**
 
-- **Input**: Input sequence representations
-- **Projections**: Transform into query, key, and value representations
-- **Purpose**: Create specialized representations for attention mechanism
-
-  $$
-  \begin{aligned}
-  X &\in \mathbb{R}^{n \times d_{\text{model}}} : \text{Input sequence} \newline
-  Q &= XW^Q \in \mathbb{R}^{n \times d_{\text{model}}} : \text{Query projections} \newline
-  K &= XW^K \in \mathbb{R}^{n \times d_{\text{model}}} : \text{Key projections} \newline
-  V &= XW^V \in \mathbb{R}^{n \times d_{\text{model}}} : \text{Value projections}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Input:} \quad X &\in \mathbb{R}^{n \times d\_{\text{model}}} : \text{Input sequence representations} \newline
+\text{Query projections:} \quad Q &= XW^Q \in \mathbb{R}^{n \times d\_{\text{model}}} \newline
+\text{Key projections:} \quad K &= XW^K \in \mathbb{R}^{n \times d\_{\text{model}}} \newline
+\text{Value projections:} \quad V &= XW^V \in \mathbb{R}^{n \times d\_{\text{model}}}
+\end{aligned}
+$$
 
 **Step 2: Multi-Head Reshaping**
 
-- **Reshape**: Split each matrix into multiple heads for parallel attention
-- **Result shapes**: Reshaped tensors for multi-head processing
-- **Computational advantage**: Enables parallel processing of different attention patterns
-
-  $$
-  \begin{aligned}
-  H &: \text{Number of attention heads} \newline
-  d_k &= d_{\text{model}}/H : \text{Head dimension} \newline
-  Q, K, V &\in \mathbb{R}^{H \times n \times d_k} \text{ (batch dimension omitted)}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Number of heads:} \quad H &: \text{Attention heads for parallel processing} \newline
+\text{Head dimension:} \quad d\_k &= d\_{\text{model}}/H \newline
+\text{Reshaped tensors:} \quad Q, K, V &\in \mathbb{R}^{H \times n \times d\_k} \text{ (batch dimension omitted)}
+\end{aligned}
+$$
 
 **Step 3: Scaled Dot-Product Attention**
 
-- **Compatibility scores**: Compute attention scores between queries and keys
-- **Scaling rationale**: Prevents softmax saturation as dimensionality increases
-- **Complexity**: Quadratic in sequence length per head
-
-  $$
-  \begin{aligned}
-  S &= \frac{QK^T}{\sqrt{d_k}} \in \mathbb{R}^{H \times n \times n} \newline
-  \text{Complexity} &: O(n^2 d_k) \text{ per head, } O(n^2 d_{\text{model}}) \text{ total}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Compatibility scores:} \quad S &= \frac{QK^T}{\sqrt{d\_k}} \in \mathbb{R}^{H \times n \times n} \newline
+\text{Scaling rationale:} \quad &\text{Prevents softmax saturation as dimensionality increases} \newline
+\text{Complexity:} \quad &O(n^2 d\_k) \text{ per head, } O(n^2 d\_{\text{model}}) \text{ total}
+\end{aligned}
+$$
 
 **Step 4: Causal Masking (for autoregressive models)**
 
-- **Mask application**: Add mask to prevent attention to future positions
-- **Effect**: Ensures causal ordering in autoregressive generation
-- **Implementation**: Applied before softmax to produce zero attention weights
-
-  $$
-  \begin{aligned}
-  S_{\text{masked}} &= S + M \newline
-  M_{ij} &= -\infty \text{ for } j > i \text{ (future positions)}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Mask application:} \quad S\_{\text{masked}} &= S + M \newline
+\text{Future position mask:} \quad M\_{ij} &= -\infty \text{ for } j > i \newline
+\text{Effect:} \quad &\text{Ensures causal ordering in autoregressive generation}
+\end{aligned}
+$$
 
 **Step 5: Attention Weight Computation**
 
-- **Normalization**: Apply softmax to obtain probability distributions
-- **Properties**: Each row sums to 1, forming probability distributions
-- **Interpretation**: Attention weights represent contribution proportions
-
-  $$
-  \begin{aligned}
-  A &= \text{softmax}(S_{\text{masked}}, \text{dim}=-1) \in \mathbb{R}^{H \times n \times n} \newline
-  A_{ijh} &: \text{Position } j \text{ contribution to position } i \text{ in head } h
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Normalization:} \quad A &= \text{softmax}(S\_{\text{masked}}, \text{dim}=-1) \in \mathbb{R}^{H \times n \times n} \newline
+\text{Interpretation:} \quad A\_{ijh} &: \text{Position } j \text{ contribution to position } i \text{ in head } h \newline
+\text{Properties:} \quad &\text{Each row sums to 1, forming probability distributions}
+\end{aligned}
+$$
 
 **Step 6: Value Aggregation**
 
-- **Weighted sum**: Combine values using attention weights
-- **Information flow**: Each position receives weighted information from all positions
-
-  $$
-  \begin{aligned}
-  O = AV \in \mathbb{R}^{H \times n \times d_k}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Weighted sum:} \quad O &= AV \in \mathbb{R}^{H \times n \times d\_k} \newline
+\text{Information flow:} \quad &\text{Each position receives weighted information from all positions}
+\end{aligned}
+$$
 
 **Step 7: Head Concatenation and Output Projection**
 
-- **Concatenation**: Reshape and combine all attention heads
-- **Final projection**: Apply output projection matrix
-- **Purpose**: Integrate information from all attention heads
-
-  $$
-  \begin{aligned}
-  O_{\text{concat}} &: \text{Reshape } O \text{ to } \mathbb{R}^{n \times d_{\text{model}}} \newline
-  \text{Output} &= O_{\text{concat}}W^O \in \mathbb{R}^{n \times d_{\text{model}}}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Concatenation:} \quad O\_{\text{concat}} &: \text{Reshape } O \text{ to } \mathbb{R}^{n \times d\_{\text{model}}} \newline
+\text{Final projection:} \quad \text{Output} &= O\_{\text{concat}}W^O \in \mathbb{R}^{n \times d\_{\text{model}}} \newline
+\text{Purpose:} \quad &\text{Integrate information from all attention heads}
+\end{aligned}
+$$
 
 ### Multi-Head Attention Mathematical Formulation
 
@@ -886,54 +829,46 @@ For sequence "The cat sat on it" processing token "it":
 
 $$
 \begin{aligned}
-\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d\_k}}\right)V
 \end{aligned}
 $$
 
-where:
-
-- Query matrix (what information to retrieve)
-- Key matrix (what information is available)
-- Value matrix (actual information content)
-- Head dimension
-- Temperature scaling to prevent saturation
-
-  $$
-  \begin{aligned}
-  Q &\in \mathbb{R}^{n \times d_k} : \text{Query matrix} \newline
-  K &\in \mathbb{R}^{n \times d_k} : \text{Key matrix} \newline
-  V &\in \mathbb{R}^{n \times d_v} : \text{Value matrix} \newline
-  d_k &= d_v = d_{\text{model}}/H : \text{Head dimension} \newline
-  \sqrt{d_k} &: \text{Temperature scaling}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+Q &\in \mathbb{R}^{n \times d\_k} : \text{Query matrix (what information to retrieve)} \newline
+K &\in \mathbb{R}^{n \times d\_k} : \text{Key matrix (what information is available)} \newline
+V &\in \mathbb{R}^{n \times d\_v} : \text{Value matrix (actual information content)} \newline
+d\_k &= d\_v = d\_{\text{model}}/H : \text{Head dimension} \newline
+\sqrt{d\_k} &: \text{Temperature scaling to prevent saturation}
+\end{aligned}
+$$
 
 **Multi-Head Attention Implementation:**
 
 $$
 \begin{aligned}
-\text{MultiHead}(X) &= \text{Concat}(\text{head}_1, \ldots, \text{head}_H)W^O \newline
-\text{head}_i &= \text{Attention}(XW_i^Q, XW_i^K, XW_i^V)
+\text{MultiHead}(X) &= \text{Concat}(\text{head}\_1, \ldots, \text{head}\_H)W^O \newline
+\text{head}\_i &= \text{Attention}(XW\_i^Q, XW\_i^K, XW\_i^V)
 \end{aligned}
 $$
 
 **Linear Projection Matrices** (not MLPs):
 
-- Per-head projection matrices
-- Output projection matrix
-
-  $$
-  \begin{aligned}
-  W_i^Q, W_i^K, W_i^V &\in \mathbb{R}^{d_{\text{model}} \times d_k} : \text{Per-head projections} \newline
-  W^O &\in \mathbb{R}^{d_{\text{model}} \times d_{\text{model}}} : \text{Output projection}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+W\_i^Q, W\_i^K, W\_i^V &\in \mathbb{R}^{d\_{\text{model}} \times d\_k} : \text{Per-head projections} \newline
+W^O &\in \mathbb{R}^{d\_{\text{model}} \times d\_{\text{model}}} : \text{Output projection}
+\end{aligned}
+$$
 
 **Implementation Details:**
 
 1. **Parallel computation**: All heads computed simultaneously via reshaped tensor operations
+
 2. **Linear projections**: Simple matrix multiplications, not multi-layer perceptrons
+
 3. **Concatenation**: Head outputs concatenated along feature dimension
+
 4. **Output projection**: Single linear transformation of concatenated heads
 
 **📖 Derivation and Analysis:** See [Multi-Head Attention Theory](./transformers_math1.md#61-multi-head-as-subspace-projections) and [Scaling Analysis](./transformers_math1.md#52-why-the-sqrtd_k-scaling) for mathematical foundations.
@@ -955,7 +890,7 @@ This lower-triangular mask ensures that position cannot attend to future positio
 
 $$
 \begin{aligned}
-\text{scores} &= \frac{QK^T}{\sqrt{d_k}} + \text{mask} \newline
+\text{scores} &= \frac{QK^T}{\sqrt{d\_k}} + \text{mask} \newline
 i &: \text{Current position} \newline
 j &: \text{Attended position}
 \end{aligned}
@@ -966,12 +901,18 @@ $$
 **Tensor Shapes with Standard Convention:**
 A common convention is to use shapes like `[batch_size, num_heads, seq_len, head_dim]`. For simplicity, we omit the batch dimension.
 
-- Input $X$: `[seq_len, d_model]` (e.g., `[4, 768]`)
-- Reshaped Q, K, V for multi-head: `[num_heads, seq_len, head_dim]` (e.g., `[12, 4, 64]`)
-- Attention scores $S = QK^T$: `[num_heads, seq_len, seq_len]` (e.g., `[12, 4, 4]`)
-- Attention weights $A$: `[num_heads, seq_len, seq_len]`
-- Attention output $O = AV$: `[num_heads, seq_len, head_dim]`
-- Final output (concatenated and projected): `[seq_len, d_model]`
+$$
+{\textstyle
+\begin{aligned}
+\text{Input } X &: \text{[seq\_len, d\_model]} \text{ (e.g., [4, 768])} \newline
+\text{Reshaped Q, K, V for multi-head} &: \text{[num\_heads, seq\_len, head\_dim]} \text{ (e.g., [12, 4, 64])} \newline
+\text{Attention scores } S = QK^T &: \text{[num\_heads, seq\_len, seq\_len]} \text{ (e.g., [12, 4, 4])} \newline
+\text{Attention weights } A &: \text{[num\_heads, seq\_len, seq\_len]} \newline
+\text{Attention output } O = AV &: \text{[num\_heads, seq\_len, head\_dim]} \newline
+\text{Final output (concatenated and projected)} &: \text{[seq\_len, d\_model]}
+\end{aligned}
+}
+$$
 
 **Time Complexity:**
 
@@ -981,9 +922,9 @@ A common convention is to use shapes like `[batch_size, num_heads, seq_len, head
 
   $$
   \begin{aligned}
-  \text{Linear projections} &: O(n \cdot d_{\text{model}}^2) \newline
-  \text{Attention computation} &: O(H \cdot n^2 \cdot d_k) = O(n^2 \cdot d_{\text{model}}) \newline
-  \text{Total per layer} &: O(n^2 \cdot d_{\text{model}} + n \cdot d_{\text{model}}^2)
+  \text{Linear projections} &: O(n \cdot d\_{\text{model}}^2) \newline
+  \text{Attention computation} &: O(H \cdot n^2 \cdot d\_k) = O(n^2 \cdot d\_{\text{model}}) \newline
+  \text{Total per layer} &: O(n^2 \cdot d\_{\text{model}} + n \cdot d\_{\text{model}}^2)
   \end{aligned}
   $$
 
@@ -996,7 +937,7 @@ A common convention is to use shapes like `[batch_size, num_heads, seq_len, head
   $$
   \begin{aligned}
   \text{Attention matrices} &: O(H \cdot n^2) \newline
-  \text{Activations} &: O(n \cdot d_{\text{model}})
+  \text{Activations} &: O(n \cdot d\_{\text{model}})
   \end{aligned}
   $$
 
@@ -1021,7 +962,7 @@ During autoregressive generation, attention computations for previous tokens rem
   \begin{aligned}
   \text{Without caching} &: O(t^2) \text{ computation per step} \newline
   \text{With caching} &: O(t) \text{ compute per step} \newline
-  \text{Memory overhead} &: O(L \cdot H \cdot t \cdot d_k) \text{ for model} \newline
+  \text{Memory overhead} &: O(L \cdot H \cdot t \cdot d\_k) \text{ for model} \newline
   t &: \text{Context length} \newline
   L &: \text{Number of layers} \newline
   H &: \text{Number of heads}
@@ -1031,55 +972,42 @@ During autoregressive generation, attention computations for previous tokens rem
 ### Computational Efficiency Analysis
 
 **Problem Formulation:**
-In standard autoregressive generation at step, computing attention for the new token requires:
+In standard autoregressive generation at step $$t$$, computing attention for the new token requires:
 
-1. Recomputing K, V matrices for all previous tokens
-2. Computing attention scores
-3. Total complexity per step
-
-  $$
-  \begin{aligned}
-  \text{K, V recomputation} &: O(t \cdot d_{\text{model}}^2) \newline
-  \text{Attention scores} &: O(t^2 \cdot d_{\text{model}}) \newline
-  \text{Total per step} &: O(t^2 \cdot d_{\text{model}}) \newline
-  t &: \text{Current step}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{K, V recomputation:} \quad &O(t \cdot d\_{\text{model}}^2) \newline
+\text{Attention scores:} \quad &O(t^2 \cdot d\_{\text{model}}) \newline
+\text{Total per step:} \quad &O(t^2 \cdot d\_{\text{model}}) \newline
+t &: \text{Current step}
+\end{aligned}
+$$
 
 **KV Cache Solution:**
 
-**Without Cache (Step):**
+**Without Cache (Step t):**
 
-- Compute K, V matrices for entire sequence
-- Attention computation: Quadratic complexity
-- Memory requirement: Linear per step
-
-  $$
-  \begin{aligned}
-  K, V &\in \mathbb{R}^{t \times d_{\text{model}}} : \text{Full sequence matrices} \newline
-  \text{Attention} &: O(t^2 \cdot d_{\text{model}}) \newline
-  \text{Memory} &: O(t \cdot d_{\text{model}}) \text{ per step} \newline
-  t &: \text{Current step}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Full sequence matrices:} \quad K, V &\in \mathbb{R}^{t \times d\_{\text{model}}} \newline
+\text{Attention computation:} \quad &O(t^2 \cdot d\_{\text{model}}) \text{ (quadratic complexity)} \newline
+\text{Memory requirement:} \quad &O(t \cdot d\_{\text{model}}) \text{ per step} \newline
+t &: \text{Current step}
+\end{aligned}
+$$
 
 **Note:** This assumes a full re-forward over the context per new token; frameworks differ, but the asymptotic bottleneck is the score matrix computation.
 
-**With Cache (Step):**
+**With Cache (Step t):**
 
-- Compute only new key-value pairs
-- Concatenate with cached matrices
-- Attention computation: Linear complexity
-- Total memory requirement: Accumulated over time
-
-  $$
-  \begin{aligned}
-  k_{\text{new}}, v_{\text{new}} &\in \mathbb{R}^{1 \times d_{\text{model}}} : \text{New key-value pairs} \newline
-  K_{\text{cache}}, V_{\text{cache}} &\in \mathbb{R}^{(t-1) \times d_{\text{model}}} : \text{Cached matrices} \newline
-  \text{Attention} &: O(t \cdot d_{\text{model}}) \newline
-  \text{Memory} &: O(t \cdot d_{\text{model}}) \text{ accumulated}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{New key-value pairs:} \quad k\_{\text{new}}, v\_{\text{new}} &\in \mathbb{R}^{1 \times d\_{\text{model}}} \newline
+\text{Cached matrices:} \quad K\_{\text{cache}}, V\_{\text{cache}} &\in \mathbb{R}^{(t-1) \times d\_{\text{model}}} \newline
+\text{Attention computation:} \quad &O(t \cdot d\_{\text{model}}) \text{ (linear complexity)} \newline
+\text{Memory requirement:} \quad &O(t \cdot d\_{\text{model}}) \text{ accumulated over time}
+\end{aligned}
+$$
 
 ### KV Cache Implementation
 
@@ -1119,9 +1047,9 @@ class KVCache:
 
 $$
 \begin{aligned}
-q_{\text{new}} &= x_{\text{new}} W^Q \in \mathbb{R}^{1 \times d_k} \newline
-k_{\text{new}} &= x_{\text{new}} W^K \in \mathbb{R}^{1 \times d_k} \newline
-v_{\text{new}} &= x_{\text{new}} W^V \in \mathbb{R}^{1 \times d_v}
+q\_{\text{new}} &= x\_{\text{new}} W^Q \in \mathbb{R}^{1 \times d\_k} \newline
+k\_{\text{new}} &= x\_{\text{new}} W^K \in \mathbb{R}^{1 \times d\_k} \newline
+v\_{\text{new}} &= x\_{\text{new}} W^V \in \mathbb{R}^{1 \times d\_v}
 \end{aligned}
 $$
 
@@ -1129,8 +1057,8 @@ $$
 
 $$
 \begin{aligned}
-K_{\text{full}} &= [K_{\text{cache}}; k_{\text{new}}] \in \mathbb{R}^{t \times d_k} \newline
-V_{\text{full}} &= [V_{\text{cache}}; v_{\text{new}}] \in \mathbb{R}^{t \times d_v}
+K\_{\text{full}} &= [K\_{\text{cache}}; k\_{\text{new}}] \in \mathbb{R}^{t \times d\_k} \newline
+V\_{\text{full}} &= [V\_{\text{cache}}; v\_{\text{new}}] \in \mathbb{R}^{t \times d\_v}
 \end{aligned}
 $$
 
@@ -1138,9 +1066,9 @@ $$
 
 $$
 \begin{aligned}
-\text{scores} &= \frac{q_{\text{new}} K_{\text{full}}^T}{\sqrt{d_k}} \in \mathbb{R}^{1 \times t} \newline
+\text{scores} &= \frac{q\_{\text{new}} K\_{\text{full}}^T}{\sqrt{d\_k}} \in \mathbb{R}^{1 \times t} \newline
 \text{weights} &= \text{softmax}(\text{scores}) \in \mathbb{R}^{1 \times t} \newline
-\text{output} &= \text{weights} \cdot V_{\text{full}} \in \mathbb{R}^{1 \times d_v}
+\text{output} &= \text{weights} \cdot V\_{\text{full}} \in \mathbb{R}^{1 \times d\_v}
 \end{aligned}
 $$
 
@@ -1148,29 +1076,23 @@ $$
 
 **Time Complexity per Generation Step:**
 
-- First token: Quadratic in model dimension (no cache)
-- Subsequent tokens with KV cache: Combined linear and quadratic terms
-
-  $$
-  \begin{aligned}
-  \text{First token} &: O(d_{\text{model}}^2) \text{ (no cache)} \newline
-  \text{Subsequent tokens} &: O(d_{\text{model}}^2 + H \times \text{seq\_len} \times d_k) \text{ per token}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{First token:} \quad &O(d\_{\text{model}}^2) \text{ (no cache)} \newline
+\text{Subsequent tokens:} \quad &O(d\_{\text{model}}^2 + H \times \text{seq\_len} \times d\_k) \text{ per token}
+\end{aligned}
+$$
 
 **Space Complexity:**
 
-- Cache storage: Linear in maximum sequence length
-- Trade-off: Memory overhead for computational speedup
-
-  $$
-  \begin{aligned}
-  \text{Cache storage} &: O(L \cdot H \cdot n_{\max} \cdot d_k) \newline
-  L &: \text{Number of layers} \newline
-  H &: \text{Number of heads} \newline
-  \text{Trade-off} &: O(t) \text{ memory overhead for } O(t) \text{ speedup per step}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Cache storage:} \quad &O(L \cdot H \cdot n\_{\max} \cdot d\_k) \newline
+\text{Trade-off:} \quad &O(t) \text{ memory overhead for } O(t) \text{ speedup per step} \newline
+L &: \text{Number of layers} \newline
+H &: \text{Number of heads}
+\end{aligned}
+$$
 
 **Practical Considerations:**
 
@@ -1200,27 +1122,34 @@ FFNs serve as "computational bottlenecks" that force the model to compress and p
 
 **Standard Two-Layer MLP:**
 
-1. **Expansion layer**: $\mathbb{R}^{d_{\text{model}}} \to \mathbb{R}^{d_{\text{ffn}}}$ where $d_{\text{ffn}} = 4 \cdot d_{\text{model}}$
+**Expansion layer**:
+
+$$
+\begin{aligned}
+\mathbb{R}^{d\_{\text{model}}} \to \mathbb{R}^{d\_{\text{ffn}}} \text{ where } d\_{\text{ffn}} = 4 \cdot d\_{\text{model}}
+\end{aligned}
+$$
 
 2. **Activation function**: Element-wise nonlinearity (GELU, ReLU, or SwiGLU)
 
-3. **Contraction layer**: $\mathbb{R}^{d_{\text{ffn}}} \to \mathbb{R}^{d_{\text{model}}}$
+**Contraction layer**:
+
+$$
+\begin{aligned}
+\mathbb{R}^{d\_{\text{ffn}}} \to \mathbb{R}^{d\_{\text{model}}}
+\end{aligned}
+$$
 
 **Computational Flow:**
 
-- **Input**: Sequence representations
-- **Expansion**: Linear transformation to larger dimension
-- **Activation**: Element-wise nonlinearity
-- **Contraction**: Linear transformation back to model dimension
-
-  $$
-  \begin{aligned}
-  X &\in \mathbb{R}^{n \times d_{\text{model}}} : \text{Input sequence} \newline
-  H_1 &= XW_1 + b_1 \in \mathbb{R}^{n \times d_{\text{ffn}}} : \text{Expansion} \newline
-  H_2 &= \sigma(H_1) \in \mathbb{R}^{n \times d_{\text{ffn}}} : \text{Activation} \newline
-  Y &= H_2 W_2 + b_2 \in \mathbb{R}^{n \times d_{\text{model}}} : \text{Contraction}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Input:} \quad X &\in \mathbb{R}^{n \times d\_{\text{model}}} : \text{Sequence representations} \newline
+\text{Expansion:} \quad H\_1 &= XW\_1 + b\_1 \in \mathbb{R}^{n \times d\_{\text{ffn}}} \newline
+\text{Activation:} \quad H\_2 &= \sigma(H\_1) \in \mathbb{R}^{n \times d\_{\text{ffn}}} \newline
+\text{Contraction:} \quad Y &= H\_2 W\_2 + b\_2 \in \mathbb{R}^{n \times d\_{\text{model}}}
+\end{aligned}
+$$
 
 **Design Rationale:**
 
@@ -1234,27 +1163,19 @@ FFNs serve as "computational bottlenecks" that force the model to compress and p
 
 $$
 \begin{aligned}
-\text{FFN}(x) = W_2 \cdot \sigma(W_1 x + b_1) + b_2
+\text{FFN}(x) = W\_2 \cdot \sigma(W\_1 x + b\_1) + b\_2
 \end{aligned}
 $$
 
-where:
-
-- Expansion matrix
-- Contraction matrix
-- Bias vectors
-- Activation function
-- Standard expansion ratio
-
-  $$
-  \begin{aligned}
-  W_1 &\in \mathbb{R}^{d_{\text{model}} \times d_{\text{ffn}}} : \text{Expansion matrix} \newline
-  W_2 &\in \mathbb{R}^{d_{\text{ffn}} \times d_{\text{model}}} : \text{Contraction matrix} \newline
-  b_1 &\in \mathbb{R}^{d_{\text{ffn}}}, b_2 \in \mathbb{R}^{d_{\text{model}}} : \text{Bias vectors} \newline
-  \sigma &: \text{Activation function (GELU, ReLU, SwiGLU)} \newline
-  d_{\text{ffn}} &= 4 \cdot d_{\text{model}} : \text{Standard expansion ratio}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+W\_1 &\in \mathbb{R}^{d\_{\text{model}} \times d\_{\text{ffn}}} : \text{Expansion matrix} \newline
+W\_2 &\in \mathbb{R}^{d\_{\text{ffn}} \times d\_{\text{model}}} : \text{Contraction matrix} \newline
+b\_1 &\in \mathbb{R}^{d\_{\text{ffn}}}, b\_2 \in \mathbb{R}^{d\_{\text{model}}} : \text{Bias vectors} \newline
+\sigma &: \text{Activation function (GELU, ReLU, SwiGLU)} \newline
+d\_{\text{ffn}} &= 4 \cdot d\_{\text{model}} : \text{Standard expansion ratio}
+\end{aligned}
+$$
 
 **GELU Activation Function:**
 
@@ -1282,59 +1203,47 @@ $$
 
 $$
 \begin{aligned}
-\text{SwiGLU}(x) = (W_1 x + b_1) \odot \text{SiLU}(W_2 x + b_2)
+\text{SwiGLU}(x) = (W\_1 x + b\_1) \odot \text{SiLU}(W\_2 x + b\_2)
 \end{aligned}
 $$
 
-where:
-
-- Element-wise (Hadamard) product
-- SiLU activation function
-- Requires two parallel linear transformations instead of sequential
-- Often uses different expansion ratio to maintain parameter count
-
-  $$
-  \begin{aligned}
-  \odot &: \text{Element-wise (Hadamard) product} \newline
-  \text{SiLU}(x) &= x \cdot \sigma(x) \text{ where } \sigma \text{ is sigmoid} \newline
-  d_{\text{ffn}} &= \frac{8}{3} d_{\text{model}} \text{ (parameter count matching)}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\odot &: \text{Element-wise (Hadamard) product} \newline
+\text{SiLU}(x) &= x \cdot \sigma(x) \text{ where } \sigma \text{ is sigmoid} \newline
+d\_{\text{ffn}} &= \frac{8}{3} d\_{\text{model}} \text{ (parameter count matching)} \newline
+\text{Note:} &\text{ Requires two parallel linear transformations}
+\end{aligned}
+$$
 
 **Parameter Analysis:**
 
 **Standard FFN:**
 
-- Expansion layer: Parameter count for first linear layer
-- Contraction layer: Parameter count for second linear layer
-- Total: Combined parameter count (plus biases)
+$$
+\begin{aligned}
+\text{Expansion layer:} \quad &d\_{\text{model}} \times d\_{\text{ffn}} = 4d\_{\text{model}}^2 \text{ parameters} \newline
+\text{Contraction layer:} \quad &d\_{\text{ffn}} \times d\_{\text{model}} = 4d\_{\text{model}}^2 \text{ parameters} \newline
+\text{Total:} \quad &8d\_{\text{model}}^2 \text{ parameters (plus biases)}
+\end{aligned}
+$$
 
-  $$
-  \begin{aligned}
-  \text{Expansion} &: d_{\text{model}} \times d_{\text{ffn}} = 4d_{\text{model}}^2 \newline
-  \text{Contraction} &: d_{\text{ffn}} \times d_{\text{model}} = 4d_{\text{model}}^2 \newline
-  \text{Total} &: 8d_{\text{model}}^2 \text{ parameters (plus biases)}
-  \end{aligned}
-  $$
+**Example**: For GPT-2 scale, approximately 4.7M parameters per FFN layer:
 
-**Example**: For GPT-2 scale, approximately 4.7M parameters per FFN layer
-
-  $$
-  \begin{aligned}
-  d_{\text{model}} = 768 \Rightarrow \text{~4.7M parameters per FFN layer}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+d\_{\text{model}} = 768 \Rightarrow \text{~4.7M parameters per FFN layer}
+\end{aligned}
+$$
 
 **Computational Complexity:**
 
-- Forward pass: Linear in sequence length and quadratic in model dimension
-- Dominates transformer computation cost due to large hidden dimension
-
-  $$
-  \begin{aligned}
-  \text{Forward pass} : O(n \cdot d_{\text{model}} \cdot d_{\text{ffn}}) = O(n \cdot d_{\text{model}}^2)
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Forward pass:} \quad &O(n \cdot d\_{\text{model}} \cdot d\_{\text{ffn}}) = O(n \cdot d\_{\text{model}}^2) \newline
+\text{Note:} \quad &\text{Dominates transformer computation cost due to large hidden dimension}
+\end{aligned}
+$$
 
 ---
 
@@ -1357,54 +1266,42 @@ where:
 ### Output Generation Pipeline
 **Step 1: Hidden State Extraction**
 
-- **Input**: Final hidden states from transformer stack
-- **Selection**: Extract last position for prediction
-- **Rationale**: Only final position contains complete contextual information for next-token prediction
-
-  $$
-  \begin{aligned}
-  H &\in \mathbb{R}^{n \times d_{\text{model}}} : \text{Final hidden states} \newline
-  h_{\text{last}} &= H[-1, :] \in \mathbb{R}^{d_{\text{model}}} : \text{Last position}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Input:} \quad H &\in \mathbb{R}^{n \times d\_{\text{model}}} : \text{Final hidden states from transformer stack} \newline
+\text{Selection:} \quad h\_{\text{last}} &= H[-1, :] \in \mathbb{R}^{d\_{\text{model}}} : \text{Last position} \newline
+\text{Rationale:} \quad &\text{Only final position contains complete contextual information}
+\end{aligned}
+$$
 
 **Step 2: Language Model Head**
 
-- **Linear transformation**: Project to vocabulary space
-- **Shape transformation**: Model dimension to vocabulary size
-- **Weight tying**: Often use transpose of embedding matrix
-
-  $$
-  \begin{aligned}
-  \text{logits} &= h_{\text{last}} W_{\text{lm}} + b_{\text{lm}} \newline
-  \text{Shape} &: \mathbb{R}^{d_{\text{model}}} \to \mathbb{R}^{|V|} \newline
-  W_{\text{lm}} &= E^T \text{ (weight tying with embeddings)}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Linear transformation:} \quad \text{logits} &= h\_{\text{last}} W\_{\text{lm}} + b\_{\text{lm}} \newline
+\text{Shape transformation:} \quad &\mathbb{R}^{d\_{\text{model}}} \to \mathbb{R}^{|V|} \newline
+\text{Weight tying:} \quad W\_{\text{lm}} &= E^T \text{ (often use transpose of embedding matrix)}
+\end{aligned}
+$$
 
 **Step 3: Temperature Scaling**
 
-- **Scaled logits**: Apply temperature parameter for control
-- **Temperature effects**: Higher values increase randomness, lower values increase determinism
-
-  $$
-  \begin{aligned}
-  \text{logits}_{\text{scaled}} &= \frac{\text{logits}}{\tau} \newline
-  \tau > 1 &: \text{Increases randomness} \newline
-  \tau < 1 &: \text{Increases determinism}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Scaled logits:} \quad \text{logits}\_{\text{scaled}} &= \frac{\text{logits}}{\tau} \newline
+\text{Higher temperature:} \quad \tau > 1 &: \text{Increases randomness} \newline
+\text{Lower temperature:} \quad \tau < 1 &: \text{Increases determinism}
+\end{aligned}
+$$
 
 **Step 4: Probability Computation**
 
-- **Softmax normalization**: Convert logits to probability distribution
-- **Result**: Valid probability distribution over vocabulary
-
-  $$
-  \begin{aligned}
-  p_i = \frac{\exp(\text{logits}_i / \tau)}{\sum_{j=1}^{|V|} \exp(\text{logits}_j / \tau)}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Softmax normalization:} \quad p\_i &= \frac{\exp(\text{logits}\_i / \tau)}{\sum\_{j=1}^{|V|} \exp(\text{logits}\_j / \tau)} \newline
+\text{Result:} \quad &\text{Valid probability distribution over vocabulary}
+\end{aligned}
+$$
 
 **Step 5: Token Sampling**
 
@@ -1417,31 +1314,24 @@ where:
 
 $$
 \begin{aligned}
-\text{logits} = h_{\text{final}} W_{\text{lm}} + b_{\text{lm}}
+\text{logits} = h\_{\text{final}} W\_{\text{lm}} + b\_{\text{lm}}
 \end{aligned}
 $$
 
-where:
-
-- Final position hidden state
-- Language model projection matrix
-- Output bias (often omitted)
-- Unnormalized vocabulary scores
-
-  $$
-  \begin{aligned}
-  h_{\text{final}} &\in \mathbb{R}^{d_{\text{model}}} : \text{Final position hidden state} \newline
-  W_{\text{lm}} &\in \mathbb{R}^{d_{\text{model}} \times |V|} : \text{Language model projection matrix} \newline
-  b_{\text{lm}} &\in \mathbb{R}^{|V|} : \text{Output bias (often omitted)} \newline
-  \text{logits} &\in \mathbb{R}^{|V|} : \text{Unnormalized vocabulary scores}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+h\_{\text{final}} &\in \mathbb{R}^{d\_{\text{model}}} : \text{Final position hidden state} \newline
+W\_{\text{lm}} &\in \mathbb{R}^{d\_{\text{model}} \times |V|} : \text{Language model projection matrix} \newline
+b\_{\text{lm}} &\in \mathbb{R}^{|V|} : \text{Output bias (often omitted)} \newline
+\text{logits} &\in \mathbb{R}^{|V|} : \text{Unnormalized vocabulary scores}
+\end{aligned}
+$$
 
 **Weight Tying**: Commonly use transpose of token embedding matrix, reducing parameters and improving performance.
 
   $$
   \begin{aligned}
-  W_{\text{lm}} = E^T \text{ where } E \text{ is the token embedding matrix}
+  W\_{\text{lm}} = E^T \text{ where } E \text{ is the token embedding matrix}
   \end{aligned}
   $$
 
@@ -1449,25 +1339,20 @@ where:
 
 $$
 \begin{aligned}
-p_i = \frac{\exp(\text{logits}_i / \tau)}{\sum_{j=1}^{|V|} \exp(\text{logits}_j / \tau)}
+p\_i = \frac{\exp(\text{logits}\_i / \tau)}{\sum\_{j=1}^{|V|} \exp(\text{logits}\_j / \tau)}
 \end{aligned}
 $$
 
 **Temperature Parameter:**
 
-- Approaches deterministic (argmax) selection
-- Standard softmax distribution
-- Approaches uniform distribution
-- Can be tuned to match desired confidence levels
-
-  $$
-  \begin{aligned}
-  \tau \to 0 &: \text{Deterministic (argmax) selection} \newline
-  \tau = 1 &: \text{Standard softmax distribution} \newline
-  \tau \to \infty &: \text{Uniform distribution} \newline
-  \tau &: \text{Calibration parameter}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\tau \to 0 &: \text{Approaches deterministic (argmax) selection} \newline
+\tau = 1 &: \text{Standard softmax distribution} \newline
+\tau \to \infty &: \text{Approaches uniform distribution} \newline
+\tau &: \text{Calibration parameter for desired confidence levels}
+\end{aligned}
+$$
 
 **Decoding Strategies:**
 
@@ -1475,12 +1360,12 @@ $$
 
 $$
 \begin{aligned}
-\text{next\_token} = \arg\max_{i} p_i
+\text{next\_token} = \arg\max\_{i} p\_i
 \end{aligned}
 $$
 
-- **Advantages:** Deterministic, fast, and simple to implement.
-- **Disadvantages:** Often produces repetitive or generic text; lacks diversity.
+- **Advantages:** Deterministic, fast, and simple to implement
+- **Disadvantages:** Often produces repetitive or generic text; lacks diversity
 
 **Top-k Sampling**
 
@@ -1490,33 +1375,30 @@ $$
 \end{aligned}
 $$
 
-- **Process:** Select the tokens with the highest probabilities, renormalize their probabilities to sum to 1, and sample the next token from this subset.
-- **Effect:** Limits sampling to the most likely options, balancing diversity and quality by truncating the long tail of unlikely tokens.
-
-  $$
-  \begin{aligned}
-  k &: \text{Number of top tokens to consider}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Process:} \quad &\text{Select tokens with highest probabilities, renormalize and sample} \newline
+\text{Effect:} \quad &\text{Limits sampling to most likely options, balancing diversity and quality} \newline
+k &: \text{Number of top tokens to consider}
+\end{aligned}
+$$
 
 **Nucleus (Top-p) Sampling:**
 
 $$
 \begin{aligned}
-\text{next\_token} \sim \text{Categorical}(\{i : \sum_{j \in \text{top}(p)} p_j \leq p\})
+\text{next\_token} \sim \text{Categorical}(\{i : \sum\_{j \in \text{top}(p)} p\_j \leq p\})
 \end{aligned}
 $$
 
-- **Dynamic selection**: Includes smallest set of tokens with cumulative probability threshold
-- **Adaptive**: Adjusts vocabulary size based on confidence distribution
-- **Typical values**: Balance quality and diversity
-
-  $$
-  \begin{aligned}
-  p &\geq \text{cumulative probability threshold} \newline
-  p &\in [0.9, 0.95] : \text{Typical range}
-  \end{aligned}
-  $$
+$$
+\begin{aligned}
+\text{Dynamic selection:} \quad &\text{Includes smallest set of tokens with cumulative probability threshold} \newline
+\text{Adaptive:} \quad &\text{Adjusts vocabulary size based on confidence distribution} \newline
+p &\geq \text{cumulative probability threshold} \newline
+p &\in [0.9, 0.95] : \text{Typical range for balancing quality and diversity}
+\end{aligned}
+$$
 
 **Beam Search**: For deterministic high-quality generation, maintains top-$b$ hypotheses at each step
 

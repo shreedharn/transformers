@@ -8,7 +8,7 @@ allowed-tools: Read, Edit, MultiEdit, Bash, Bash(grep:*), Bash(sed:*), Bash(awk:
 Refactor `$1` so **all mathematics** appears in standalone MathJax display blocks and **all prose** remains pure Markdown. Move any math found in bullets, numbered items, tables, or paragraphs into a dedicated
 `$$ \begin{aligned} … \end{aligned} $$` block placed immediately after the introducing text, with correct indentation and spacing. Where multiple adjacent math blocks belong to one idea, **consolidate** them; otherwise, keep them separate.
 
-### Core Principle (rephrased)
+### Core Principle 
 
 * **Never inline math with Markdown structures.** No `$$`/`\begin{aligned}` on the same line as a list marker, heading, table cell, or paragraph sentence.
 * **One concept → one block.** Use `$$ … aligned … $$` with `\newline` for line breaks; keep short labels inside via `\text{…}`.

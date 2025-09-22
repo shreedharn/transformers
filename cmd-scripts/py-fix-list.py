@@ -647,6 +647,122 @@ class MarkdownListDetector:
 
         return issues
 
+    def detect_lists_after_blockquotes(self) -> List[DetectionResult]:
+        """Detect lists immediately following blockquotes without blank line."""
+        issues = []
+
+        for line_num, line in enumerate(self.lines[1:], 2):
+            if re.match(r'^\s*([-*+]|[0-9]+\.)\s', line):
+                prev_line = self.lines[line_num - 2].strip()
+                if prev_line.startswith('>') and not prev_line.endswith('    '):
+                    issues.append(DetectionResult(
+                        line_number=line_num,
+                        issue_type=IssueType.MISSING_BLANK_LINE_GENERAL,
+                        previous_line=prev_line,
+                        current_line=line.strip(),
+                        description="List after blockquote needs blank line"
+                    ))
+
+        return issues
+
+    def detect_lists_after_tables(self) -> List[DetectionResult]:
+        """Detect lists immediately following table rows without blank line."""
+        issues = []
+
+        for line_num, line in enumerate(self.lines[1:], 2):
+            if re.match(r'^\s*([-*+]|[0-9]+\.)\s', line):
+                prev_line = self.lines[line_num - 2].strip()
+                if re.match(r'^\s*\|.*\|\s*$', prev_line):
+                    issues.append(DetectionResult(
+                        line_number=line_num,
+                        issue_type=IssueType.MISSING_BLANK_LINE_GENERAL,
+                        previous_line=prev_line,
+                        current_line=line.strip(),
+                        description="List after table row needs blank line"
+                    ))
+
+        return issues
+
+    def detect_lists_after_html(self) -> List[DetectionResult]:
+        """Detect lists immediately following HTML blocks without blank line."""
+        issues = []
+
+        for line_num, line in enumerate(self.lines[1:], 2):
+            if re.match(r'^\s*([-*+]|[0-9]+\.)\s', line):
+                prev_line = self.lines[line_num - 2].strip()
+                if re.match(r'^<[^>]+>.*$', prev_line):
+                    issues.append(DetectionResult(
+                        line_number=line_num,
+                        issue_type=IssueType.MISSING_BLANK_LINE_GENERAL,
+                        previous_line=prev_line,
+                        current_line=line.strip(),
+                        description="List after HTML block needs blank line"
+                    ))
+
+        return issues
+
+    def detect_lists_after_code_fences(self) -> List[DetectionResult]:
+        """Detect lists immediately following code fence blocks without blank line."""
+        issues = []
+
+        for line_num, line in enumerate(self.lines[1:], 2):
+            if re.match(r'^\s*([-*+]|[0-9]+\.)\s', line):
+                prev_line = self.lines[line_num - 2].strip()
+                if re.match(r'^```.*$', prev_line):
+                    issues.append(DetectionResult(
+                        line_number=line_num,
+                        issue_type=IssueType.MISSING_BLANK_LINE_GENERAL,
+                        previous_line=prev_line,
+                        current_line=line.strip(),
+                        description="List after code fence needs blank line"
+                    ))
+
+        return issues
+
+    def detect_lists_after_mathtext_blocks(self) -> List[DetectionResult]:
+        """Detect lists immediately following MathJax display blocks without blank line."""
+        issues = []
+
+        for line_num, line in enumerate(self.lines[1:], 2):
+            if re.match(r'^\s*([-*+]|[0-9]+\.)\s', line):
+                prev_line = self.lines[line_num - 2].strip()
+                if re.match(r'^\$\$.*\$\$$', prev_line):
+                    issues.append(DetectionResult(
+                        line_number=line_num,
+                        issue_type=IssueType.MISSING_BLANK_LINE_GENERAL,
+                        previous_line=prev_line,
+                        current_line=line.strip(),
+                        description="List after MathJax block needs blank line"
+                    ))
+
+        return issues
+
+    def detect_inconsistent_bullet_markers(self) -> List[DetectionResult]:
+        """Detect mixed bullet markers (-, *, +) within the same document."""
+        issues = []
+        bullet_markers = set()
+
+        for line_num, line in enumerate(self.lines, 1):
+            match = re.match(r'^\s*([-*+])\s', line)
+            if match:
+                bullet_markers.add(match.group(1))
+
+        if len(bullet_markers) > 1:
+            # Find first occurrence of each marker type
+            for line_num, line in enumerate(self.lines, 1):
+                match = re.match(r'^\s*([-*+])\s', line)
+                if match:
+                    issues.append(DetectionResult(
+                        line_number=line_num,
+                        issue_type=IssueType.MISSING_BLANK_LINE_GENERAL,
+                        previous_line="",
+                        current_line=line.strip(),
+                        description=f"Mixed bullet markers found: {', '.join(sorted(bullet_markers))}. Consider using consistent markers."
+                    ))
+                    break  # Only report once per document
+
+        return issues
+
     def run_all_detectors(self) -> List[DetectionResult]:
         """
         Run all detection methods and return combined results.
@@ -670,6 +786,13 @@ class MarkdownListDetector:
             self.detect_mixed_latex_notation,
             self.detect_consolidatable_latex_blocks,
             self.detect_typography_issues,
+            # Additional consolidated detectors from grep patterns
+            self.detect_lists_after_blockquotes,
+            self.detect_lists_after_tables,
+            self.detect_lists_after_html,
+            self.detect_lists_after_code_fences,
+            self.detect_lists_after_mathtext_blocks,
+            self.detect_inconsistent_bullet_markers,
         ]
 
         for detector in detectors:
