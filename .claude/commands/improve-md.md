@@ -159,37 +159,126 @@ d_k &= 512 : \text{Key dimension for computational efficiency} \newline
 $$
 ```
 
-## Implementation
+## Python Detector Usage Instructions
 
-Execute the comprehensive improvement detector to analyze and improve the markdown file:
+### Step 1: Discover Available Options
+
+The detector provides comprehensive analysis with clear separation between categories and individual detectors. Start by exploring available options:
 
 ```bash
-python3 cmd-scripts/py-improve-md.py "$1"
+# See main help and usage patterns
+python3 slash-cmd-scripts/src/py_improve_md.py --help
+
+# List all 6 detector categories
+python3 slash-cmd-scripts/src/py_improve_md.py --list-categories
+
+# List all 26 individual detector names
+python3 slash-cmd-scripts/src/py_improve_md.py --list-detectors
+
+# Get detailed examples for categories
+python3 slash-cmd-scripts/src/py_improve_md.py --list-categories --help
+
+# Get detailed examples for detectors
+python3 slash-cmd-scripts/src/py_improve_md.py --list-detectors --help
 ```
-This will provide a comprehensive report of all markdown list formatting and LaTex issues organized by different catagories, with line numbers and context for easy identification and fixing. After running the Python detector, perform a final AI scan to catch any edge cases or patterns the automated detection might miss.
+
+### Step 2: Choose Detection Strategy
+
+**Strategy A: Run all detectors (comprehensive analysis):**
+```bash
+python3 slash-cmd-scripts/src/py_improve_md.py "$1"
+```
+
+**Strategy B: Run specific categories (targeted analysis):**
+```bash
+# Focus on inline math issues (variables mixed with prose)
+python3 slash-cmd-scripts/src/py_improve_md.py --category inline_math "$1"
+
+# Focus on list formatting problems
+python3 slash-cmd-scripts/src/py_improve_md.py --category list_formatting "$1"
+
+# Focus on display math positioning issues
+python3 slash-cmd-scripts/src/py_improve_md.py --category display_math "$1"
+
+# Focus on LaTeX alignment structure
+python3 slash-cmd-scripts/src/py_improve_md.py --category alignment "$1"
+
+# Get help for specific category
+python3 slash-cmd-scripts/src/py_improve_md.py --category inline_math --help
+```
+
+**Strategy C: Run individual detectors (pinpoint analysis):**
+```bash
+# Target specific known issues
+python3 slash-cmd-scripts/src/py_improve_md.py --detector missing_blank_line_before_list_items_after_text "$1"
+python3 slash-cmd-scripts/src/py_improve_md.py --detector paragraphs_with_inline_math "$1"
+python3 slash-cmd-scripts/src/py_improve_md.py --detector list_marker_lines_with_display_math "$1"
+
+# Get help for specific detector
+python3 slash-cmd-scripts/src/py_improve_md.py --detector missing_blank_line_before_list_items_after_text --help
+```
+
+**Strategy D: Debug mode with verbose logging:**
+```bash
+python3 slash-cmd-scripts/src/py_improve_md.py --verbose "$1"
+```
+
+This provides a comprehensive or targeted report of markdown formatting and LaTeX issues, organized by categories with line numbers and context for easy identification and fixing. After running the detector, perform a final AI scan to catch any edge cases or patterns the automated detection might miss.
+
+### Usage Guidelines
+
+**Getting Started:**
+- **First-time analysis**: Use `--help` to see main usage patterns and available options
+- **Explore categories**: Use `--list-categories` to see 6 main detector groups
+- **Explore detectors**: Use `--list-detectors` to see all 26 individual detector names
+- **Get examples**: Add `--help` to any `--list-*`, `--category`, or `--detector` command for detailed examples
+- **Debugging**: Use `--verbose` flag when troubleshooting detection issues
+
+**Smart Detection Strategy:**
+1. **Quick scan**: Run `--category list_formatting` first (catches most common issues)
+2. **Math-heavy documents**: Use `--category inline_math` and `--category alignment` for mathematical content
+3. **Display math issues**: Use `--category display_math` for positioning problems
+4. **Comprehensive check**: Run all detectors when thorough analysis is needed
+5. **Follow-up**: Use specific `--detector` commands based on initial findings
+
+**Progressive Approach:**
+- Start with categories (`--category`) for broad issue types
+- Drill down to specific detectors (`--detector`) for pinpoint fixes
+- Use help system (`--help`) to understand what each option fixes before running
 
 **Comprehensive Detection Categories:**
-1. **Math-prose separation violations** - Mathematical symbols mixed with descriptive text
-2. **List formatting issues** - Missing blank lines before lists, inconsistent markers
-3. **List-marker lines with display math** - Forbidden inline math in bullets/numbers
-4. **Content classification issues** - Wrong format applied to content type
-5. **LaTeX typography violations** - Inconsistent mathematical formatting
-6. **Unescaped underscores in LaTeX** - Critical Markdown compatibility issues
-7. **Block consolidation opportunities** - Adjacent math blocks that should be merged
-8. **List separation violations** - Lists after various content types without blank lines
-9. **Structural inconsistencies** - Mixed notation and spacing issues
-10. **Boundary violations** - Inappropriate consolidation across content boundaries
-11. **Bullet marker inconsistencies** - Mixed use of -, *, + markers
-12. **Context-specific violations** - Lists after blockquotes, tables, code blocks, etc.
-13. **Single-line LaTeX structure** - Missing professional aligned wrapper for equations
-14. **Table math notation** - Single $ instead of $$ in table contexts
-15. **Context-aware underscore escaping** - Wrong escaping for non-LaTeX contexts
-16. **Inline math underscore escaping** - Unescaped underscores in inline math expressions
-17. **Single dollar usage** - Single $ instead of $$ for mathematical expressions
-18. **Bold text with colon list separation** - Missing blank lines after bold headings with colons
-19. **Multiple inline math in prose** - Complex math expressions that should use display blocks
-20. **Blank lines between list items** - Incorrect spacing within lists (should only be before list start)
-21. **Escaped underscores in code blocks** - Wrong context for LaTeX escaping (breaks code syntax)
+
+**1. Inline Math Category (5 detectors):**
+- Mathematical variables and equations mixed with prose text
+- Inline math in headings and list items (forbidden patterns)
+- Display math delimiters used incorrectly in prose context
+- Mathematical tokens scattered throughout descriptive text
+
+**2. Display Math Category (8 detectors):**
+- Mathematical expressions in wrong locations (lists, headings, tables)
+- Math blocks with incorrect positioning and indentation
+- Adjacent math blocks that need consolidation
+- Over-indented display math and improper alignment
+
+**3. List Formatting Category (3 detectors):**
+- Missing blank lines before lists after text, math, and other content
+- Incorrect spacing between list items (should have no blank lines)
+- Lists appearing after various content types without proper separation
+
+**4. Alignment Category (5 detectors):**
+- Math expressions missing professional `\begin{aligned}` structure
+- Mismatched and malformed aligned blocks
+- Single-line equations without proper LaTeX wrapper
+- Incorrect positioning of `\end{aligned}` statements
+
+**5. Structural Category (2 detectors):**
+- Bold text spacing issues and missing blank lines after headings
+- Escaped underscores in code blocks (breaks syntax highlighting)
+
+**6. Syntax Category (3 detectors):**
+- Unpaired mathematical delimiters and stray braces
+- Bold markdown mixed within LaTeX expressions
+- Context-specific underscore escaping violations
 
 
 ## Quality Verification Checklist
@@ -683,4 +772,4 @@ $$
 **Input:** $$x\_1 = [0.5, 0.2]$$ **Memory:** $$h\_0 = [0.0, 0.0]$$
 ```
 
-The improve-md command provides comprehensive markdown enhancement by intelligently applying the right formatting approach for each content type while maintaining strict separation between mathematical and descriptive elements.
+The improve-md command provides comprehensive markdown enhancement by intelligently applying the right formatting approach for each content type while maintaining strict separation between mathematical and descriptive elements. The python detector CLI design with separate `--category` and `--detector` switches enables progressive discovery and targeted analysis of formatting issues.
