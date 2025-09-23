@@ -5,6 +5,8 @@
 **What you'll learn:** How MLPs combine multiple perceptrons into powerful networks, why depth enables learning complex patterns that single neurons cannot, and how these building blocks form the foundation of all modern neural architectures. We'll work through math and intuition together, with examples that demonstrate clear advantages over single perceptrons.
 
 
+---
+
 ## 1. What is an MLP?
 
 ### Recalling the Perceptron's Success and Limitations
@@ -41,6 +43,7 @@ Consider these two emails that a single perceptron struggles with:
 Input Features → Single Computation → Output
 [excl, free, caps] → w₁×excl + w₂×free + w₃×caps + b → spam probability
 ```
+
 - **Problem:** Can only draw straight lines to separate spam from non-spam
 - **Limitation:** Cannot handle complex patterns that require curved decision boundaries
 
@@ -49,6 +52,7 @@ Input Features → Single Computation → Output
 Layer 1: [excl, free, caps] → [h₁, h₂] (detect patterns like "promotional tone", "urgency signals")
 Layer 2: [h₁, h₂] → [spam probability] (combine patterns intelligently)
 ```
+
 - **Solution:** Each layer can create new features, enabling complex curved decision boundaries
 - **Power:** Can learn: "IF (urgency signals without legitimacy) OR (promotional tone with pressure) THEN spam"
 
@@ -60,18 +64,22 @@ Layer 2: [h₁, h₂] → [spam probability] (combine patterns intelligently)
 
 The heart of every MLP layer is this transformation:
 
-$$h = \sigma(x W + b)$$
+
+$$
+\begin{aligned} h &= \sigma(x W + b) \end{aligned}
+$$
+
 
 Let's break this down term by term:
 
 | Term | Size | Meaning |
 |------|------|---------|
-| $x$ | $[1, D_{in}]$ | **Input vector** - features coming into this layer |
-| $W$ | $[D_{in}, D_{out}]$ | **Weight matrix** - learned transformation |
-| $b$ | $[1, D_{out}]$ | **Bias vector** - learned offset |
-| $x W + b$ | $[1, D_{out}]$ | **Linear combination** - weighted sum of inputs |
-| $\sigma(\cdot)$ | - | **Activation function** - introduces non-linearity |
-| $h$ | $[1, D_{out}]$ | **Output vector** - transformed features |
+| $$x$$ | $$[1, D_{in}]$$ | **Input vector** - features coming into this layer |
+| $$W$$ | $$[D_{in}, D_{out}]$$ | **Weight matrix** - learned transformation |
+| $$b$$ | $$[1, D_{out}]$$ | **Bias vector** - learned offset |
+| $$x W + b$$ | $$[1, D_{out}]$$ | **Linear combination** - weighted sum of inputs |
+| $$\sigma(\cdot)$$ | - | **Activation function** - introduces non-linearity |
+| $$h$$ | $$[1, D_{out}]$$ | **Output vector** - transformed features |
 
 ### Visual Breakdown
 
@@ -84,14 +92,25 @@ Input Features     Weight Matrix     Bias        Activation
 ```
 
 **Why this structure?**
-- **$x W$:** Each output neuron gets a weighted combination of all inputs
-- **$+ b$:** Bias allows shifting the activation threshold
-- **$\sigma(\cdot)$:** Non-linearity enables learning complex patterns
+
+
+$$
+\begin{aligned}
+\mathbf{xW} \quad &: \text{Matrix multiplication combines input features with learned weights} \newline
+\mathbf{+ b} \quad &: \text{Bias allows shifting the activation threshold} \newline
+\mathbf{\sigma(\cdot)} \quad &: \text{Non-linearity enables learning complex patterns}
+\end{aligned}
+$$
 
 **Common Activation Functions:**
-- **ReLU**: $\sigma(z) = \max(0, z)$ - most popular, simple and effective
-- **Sigmoid**: $\sigma(z) = \frac{1}{1 + e^{-z}}$ - outputs between 0 and 1
-- **Tanh**: $\sigma(z) = \tanh(z)$ - outputs between -1 and 1
+
+$$
+\begin{aligned}
+\text{ReLU:} \quad &\sigma(z) = \max(0, z) \quad \text{- most popular, simple and effective} \newline
+\text{Sigmoid:} \quad &\sigma(z) = \frac{1}{1 + e^{-z}} \quad \text{- outputs between 0 and 1} \newline
+\text{Tanh:} \quad &\sigma(z) = \tanh(z) \quad \text{- outputs between -1 and 1}
+\end{aligned}
+$$
 
 ---
 
@@ -101,15 +120,26 @@ Input Features     Weight Matrix     Bias        Activation
 
 A complete MLP chains multiple layers together:
 
-$$h^{(1)} = \sigma^{(1)}(x W^{(1)} + b^{(1)})$$
-$$h^{(2)} = \sigma^{(2)}(h^{(1)} W^{(2)} + b^{(2)})$$
-$$\vdots$$
-$$y = h^{(L-1)} W^{(L)} + b^{(L)}$$
+
+$$
+\begin{aligned}
+h^{(1)} &= \sigma^{(1)}(x W^{(1)} + b^{(1)}) \newline
+h^{(2)} &= \sigma^{(2)}(h^{(1)} W^{(2)} + b^{(2)}) \newline
+&\vdots \newline
+y &= h^{(L-1)} W^{(L)} + b^{(L)}
+\end{aligned}
+$$
+
 
 **Layer Naming Convention:**
-- **Input Layer**: The original features $x$
-- **Hidden Layers**: Intermediate layers $h^{(1)}, h^{(2)}, \ldots$
-- **Output Layer**: Final predictions $y$ (often no activation for regression)
+
+$$
+\begin{aligned}
+\text{Input Layer:} \quad &\text{The original features } x \newline
+\text{Hidden Layers:} \quad &\text{Intermediate layers } h^{(1)}, h^{(2)}, \ldots \newline
+\text{Output Layer:} \quad &\text{Final predictions } y \text{ (often no activation for regression)}
+\end{aligned}
+$$
 
 ### Information Flow
 
@@ -121,9 +151,14 @@ Each layer transforms its input into increasingly abstract representations
 ```
 
 **What Each Layer Learns:**
-- **Layer 1**: Basic feature combinations (edges, simple patterns)
-- **Layer 2**: More complex features (shapes, motifs)  
-- **Layer 3+**: High-level concepts (objects, semantic meaning)
+
+$$
+\begin{aligned}
+\text{Layer 1:} \quad &\text{Basic feature combinations (edges, simple patterns)} \newline
+\text{Layer 2:} \quad &\text{More complex features (shapes, motifs)} \newline
+\text{Layer 3+:} \quad &\text{High-level concepts (objects, semantic meaning)}
+\end{aligned}
+$$
 
 ---
 
@@ -159,17 +194,27 @@ Deep (5 layers):    Input → H1 → H2 → H3 → H4 → Output
 
 ### Parameter Counting
 
-For a layer with input size $D_{in}$ and output size $D_{out}$:
-- **Weights**: $D_{in} \times D_{out}$ parameters
-- **Biases**: $D_{out}$ parameters
-- **Total**: $D_{in} \times D_{out} + D_{out} = D_{out}(D_{in} + 1)$
+For a layer with input size $$D_{in}$$ and output size $$D_{out}$$
+
+$$
+\begin{aligned}
+\text{Weights:} \quad &D_{in} \times D_{out} \text{ parameters} \newline
+\text{Biases:} \quad &D_{out} \text{ parameters} \newline
+\text{Total:} \quad &D_{in} \times D_{out} + D_{out} = D_{out}(D_{in} + 1)
+\end{aligned}
+$$
 
 **Example Network:**
-- Input: 10 features
-- Hidden 1: 20 neurons → $20 \times (10 + 1) = 220$ parameters
-- Hidden 2: 15 neurons → $15 \times (20 + 1) = 315$ parameters  
-- Output: 1 neuron → $1 \times (15 + 1) = 16$ parameters
-- **Total**: 551 parameters
+
+$$
+\begin{aligned}
+\text{Input:} \quad &\text{10 features} \newline
+\text{Hidden 1:} \quad &\text{20 neurons} \rightarrow 20 \times (10 + 1) = 220 \text{ parameters} \newline
+\text{Hidden 2:} \quad &\text{15 neurons} \rightarrow 15 \times (20 + 1) = 315 \text{ parameters} \newline
+\text{Output:} \quad &\text{1 neuron} \rightarrow 1 \times (15 + 1) = 16 \text{ parameters} \newline
+\textbf{Total:} \quad &\textbf{551 parameters}
+\end{aligned}
+$$
 
 ---
 
@@ -191,6 +236,7 @@ x = [3, 0, 15]  # [3 exclamations, no "free", 15 capitals]
 ```
 
 **Why this is hard for a single perceptron:**
+
 - Has exclamations (spam-like) but no "free" word
 - Has many capitals (spam-like) but winner congratulations can be legitimate
 - **Requires learning**: "High urgency (excl + caps) without legitimacy markers = spam"
@@ -212,12 +258,13 @@ b² = [0.2]            # 1-element bias vector
 ```
 
 **What each neuron learned to detect:**
+
 - **Neuron 1**: "Urgency signals" (high exclamations + capitals, low "free")
 - **Neuron 2**: "Legitimacy markers" (presence of "free" reduces suspicion)
 
 ### Step 1: Forward Pass Through Hidden Layer
 
-**Input:** $x = [3, 0, 15]$ (our sophisticated spam example)
+**Input:** $$x = [3, 0, 15]$$ (our sophisticated spam example)
 
 **Compute linear combination:**
 The operation is `x @ W¹ + b¹` where `x` is a row vector.
@@ -248,12 +295,13 @@ h¹ = ReLU([3.7, -4.2]) = [max(0, 3.7), max(0, -4.2)] = [3.7, 0]
 ```
 
 **Pattern Detection Results:**
+
 - **Neuron 1 (Urgency)**: Strongly activated (3.7) - detected high urgency pattern
 - **Neuron 2 (Legitimacy)**: Silent (0) - no legitimacy markers found
 
 ### Step 2: Forward Pass Through Output Layer
 
-**Input:** $h^{(1)} = [3.7, 0]$ (urgency detected, no legitimacy)
+**Input:** $$h^{(1)} = [3.7, 0]$$ (urgency detected, no legitimacy)
 
 **Compute linear combination:**
 ```
@@ -270,6 +318,7 @@ y = sigmoid(5.75) = 1/(1 + e^(-5.75)) = 1/(1 + 0.003) = 0.997
 **Result:** 99.7% probability this email is spam!
 
 **Why the MLP succeeded:**
+
 - **Hidden layer** learned to detect "urgency without legitimacy" pattern
 - **Output layer** learned that this combination strongly indicates spam
 - **Single perceptron** would have failed to capture this complex relationship
@@ -285,10 +334,12 @@ Output:           0.997      # 99.7% spam probability
 ```
 
 **Hidden Neuron Analysis:**
+
 - **Neuron 1 (Urgency Detector)**: Strongly activated by exclamations + capitals combination
 - **Neuron 2 (Legitimacy Detector)**: Silent because no "free" word (legitimacy marker) present
 
 **The Power of Multiple Layers:**
+
 1. **Layer 1**: Learned specialized pattern detectors (urgency vs legitimacy)
 2. **Layer 2**: Learned to combine these patterns intelligently
 3. **Result**: Detected sophisticated spam that exploits urgency without legitimate context
@@ -302,6 +353,7 @@ Output:           0.997      # 99.7% spam probability
 ### The Learning Process
 
 MLPs learn through **supervised learning**:
+
 1. **Forward Pass**: Compute predictions using current weights
 2. **Loss Calculation**: Measure how wrong the predictions are
 3. **Backward Pass**: Compute gradients using backpropagation
@@ -316,6 +368,7 @@ MLPs learn through **supervised learning**:
 Binary Cross-Entropy: L = -[y*log(ŷ) + (1-y)*log(1-ŷ)]
 
 Where:
+
 - y = true label (0 or 1)
 - ŷ = predicted probability
 ```
@@ -325,6 +378,7 @@ Where:
 Mean Squared Error: L = (y - ŷ)²
 
 Where:
+
 - y = true value  
 - ŷ = predicted value
 ```
@@ -356,6 +410,7 @@ b¹ = b¹ - α × ∂L/∂b¹
 
 ```
 For each batch of training examples:
+
     1. Forward pass: compute predictions
     2. Compute loss: how wrong are we?
     3. Backward pass: compute gradients
@@ -371,7 +426,7 @@ For each batch of training examples:
 
 | **Aspect** | **Linear Regression** | **MLP** |
 |------------|---------------------|---------|
-| **Equation** | $y = x W + b$ | $y = h^{(L-1)} W^L + b^L$ where $h = \sigma(x W + b)$ |
+| **Equation** | $$y = x W + b$$ | $$y = h^{(L-1)} W^L + b^L$$ where $$h = \sigma(x W + b)$$ |
 | **Decision Boundary** | Straight line/plane | Curved, complex shapes |
 | **Expressiveness** | Limited to linear patterns | Can learn any continuous function |
 | **Training** | Closed-form solution | Iterative optimization |
@@ -393,12 +448,14 @@ For each batch of training examples:
 ### When to Use MLPs
 
 **Good for:**
+
 - Tabular data (rows and columns)
 - Classification and regression tasks
 - Fixed-size feature vectors
 - When you need a simple, interpretable baseline
 
 **Not ideal for:**
+
 - Sequential data (text, time series) → Use RNNs/Transformers
 - Images → Use CNNs  
 - Variable-length inputs → Use sequence models
@@ -413,12 +470,14 @@ For each batch of training examples:
 **Problem**: Network performs well on training data but poorly on new data.
 
 **Signs:**
+
 - Training accuracy: 99%
 - Test accuracy: 60%
 - Large gap indicates overfitting
 
 **Solutions:**
 ```
+
 1. Reduce model size (fewer layers/neurons)
 2. Add regularization:
    - Dropout: Randomly turn off neurons during training
@@ -432,11 +491,13 @@ For each batch of training examples:
 **Problem**: Network can't learn the underlying patterns.
 
 **Signs:**
+
 - Both training and test accuracy are low
 - Loss plateaus at a high value
 
 **Solutions:**
 ```
+
 1. Increase model size (more layers/neurons)
 2. Train for more epochs
 3. Lower learning rate for finer adjustments
@@ -448,6 +509,7 @@ For each batch of training examples:
 **Vanishing Gradients**: Gradients become too small in deep networks
 ```
 Solutions:
+
 - Use ReLU activation (not sigmoid/tanh)
 - Better weight initialization (Xavier/He)
 - Batch normalization
@@ -457,6 +519,7 @@ Solutions:
 **Exploding Gradients**: Gradients become too large
 ```
 Solutions:  
+
 - Gradient clipping: Cap gradient magnitude
 - Lower learning rate
 - Better weight initialization
@@ -470,7 +533,11 @@ Solutions:
 
 ### ReLU (Rectified Linear Unit)
 
-$$\text{ReLU}(x) = \max(0, x)$$
+
+$$
+\begin{aligned} \text{ReLU}(x) &= \max(0, x) \end{aligned}
+$$
+
 
 ```
 Input:  [-2, -1, 0, 1, 2]
@@ -478,16 +545,22 @@ Output: [ 0,  0, 0, 1, 2]
 ```
 
 **Advantages:**
+
 - Simple and fast to compute
 - Doesn't saturate for positive values
 - Sparse activation (many neurons output 0)
 
 **Disadvantages:**
+
 - "Dead neurons" - can output 0 forever if weights become negative
 
 ### Sigmoid
 
-$$\text{Sigmoid}(x) = \frac{1}{1 + e^{-x}}$$
+
+$$
+\begin{aligned} \text{Sigmoid}(x) &= \frac{1}{1 + e^{-x}} \end{aligned}
+$$
+
 
 ```
 Input:  [-2, -1, 0, 1, 2]
@@ -495,16 +568,22 @@ Output: [0.12, 0.27, 0.5, 0.73, 0.88]
 ```
 
 **Advantages:**
+
 - Smooth, differentiable everywhere
 - Outputs between 0 and 1 (good for probabilities)
 
 **Disadvantages:**
+
 - Saturates for large |x| (gradients → 0)
 - Not zero-centered (can slow learning)
 
 ### Tanh (Hyperbolic Tangent)
 
-$$\text{Tanh}(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$$
+
+$$
+\begin{aligned} \text{Tanh}(x) &= \frac{e^x - e^{-x}}{e^x + e^{-x}} \end{aligned}
+$$
+
 
 ```
 Input:  [-2, -1, 0, 1, 2]
@@ -512,10 +591,12 @@ Output: [-0.96, -0.76, 0, 0.76, 0.96]
 ```
 
 **Advantages:**
+
 - Zero-centered (better than sigmoid)
 - Smooth and differentiable
 
 **Disadvantages:**
+
 - Still suffers from saturation
 - More expensive to compute than ReLU
 
@@ -523,10 +604,12 @@ Output: [-0.96, -0.76, 0, 0.76, 0.96]
 
 ```
 Hidden Layers: Use ReLU (default choice)
+
 - Fast, simple, works well in practice
 - Use Leaky ReLU if you see many dead neurons
 
 Output Layer:
+
 - Binary classification: Sigmoid
 - Multi-class classification: Softmax  
 - Regression: Linear (no activation)
@@ -540,6 +623,7 @@ Output Layer:
 
 **Start Simple:**
 ```
+
 1. Begin with 1-2 hidden layers
 2. Hidden size = 2-4× input size (rule of thumb)
 3. Add layers only if underfitting
@@ -547,6 +631,7 @@ Output Layer:
 
 **Common Patterns:**
 ```
+
 Small dataset (< 10K samples):
 Input → Hidden(64) → Hidden(32) → Output
 
@@ -561,6 +646,7 @@ Input → Hidden(256) → Hidden(128) → Hidden(64) → Output
 
 **Learning Rate:**
 ```
+
 Too high: Loss oscillates or explodes
 Too low:  Very slow convergence
 Sweet spot: Usually 0.001 - 0.01
@@ -577,6 +663,7 @@ Common choice: 64-128
 
 **Training Tips:**
 ```
+
 1. Normalize input features: zero mean, unit variance
 2. Initialize weights properly (Xavier/He initialization)
 3. Monitor both training and validation loss
@@ -587,6 +674,7 @@ Common choice: 64-128
 
 **If training isn't working:**
 ```
+
 1. Check data: Are labels correct? Proper preprocessing?
 2. Start tiny: Can model overfit a single batch?
 3. Verify gradients: Are they flowing properly?
@@ -614,9 +702,9 @@ Input Features → Layer 1 → Layer 2 → ... → Output
 Where each layer applies: Linear Transformation → Non-linear Activation
 ```
 
-**Weight Matrices ($W$):** "How should features be combined?"
-**Bias Vectors ($b$):** "What are the default activation thresholds?"  
-**Activations ($\sigma$):** "How should we introduce non-linearity?"
+**Weight Matrices ($$W$$):** "How should features be combined?"
+**Bias Vectors ($$b$$):** "What are the default activation thresholds?"  
+**Activations ($$\sigma$$):** "How should we introduce non-linearity?"
 
 ### Capacity Control
 
@@ -627,6 +715,7 @@ Where each layer applies: Linear Transformation → Non-linear Activation
 ### MLP's Role in Modern AI
 
 **Foundation for Everything:**
+
 - **CNNs**: MLPs + spatial structure for images
 - **RNNs**: MLPs + memory for sequences  
 - **Transformers**: MLPs + attention mechanisms
@@ -654,6 +743,7 @@ After Sigmoid:  y = 0.997  # 99.7% spam probability
 **The Journey:** From raw email features to sophisticated spam detection through specialized pattern recognition. The MLP learned to detect complex spam patterns that single perceptrons cannot handle.
 
 **What It Learned:**
+
 - **Hidden neuron 1 (Urgency Detector)**: Detects high-pressure tactics (exclamations + capitals)
 - **Hidden neuron 2 (Legitimacy Detector)**: Detects legitimate context markers (silent here)
 - **Output combination**: Learned "urgency without legitimacy = strong spam signal"
