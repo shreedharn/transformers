@@ -181,7 +181,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 - **Traditional methods**: [nn_intro.md Section 2](./nn_intro.md#challenges-with-traditional-ml-for-text) for comparison with deep learning
 
 **Masked Language Modeling (MLM)**: A training objective where some tokens are masked and the model learns to predict them.
-- **In BERT**: [transformers.md](./transformers.md) for bidirectional training context
+- **In BERT**: [transformers_advanced.md](./transformers_advanced.md) for bidirectional training context
 
 **Multi-Head Attention**: An extension of attention that runs multiple attention mechanisms in parallel to capture different types of relationships.
 - **Formula**: $\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^O$
@@ -318,7 +318,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 - **vs Top-K**: More adaptive selection for text generation
 
 **Transformer**: A neural network architecture that uses self-attention mechanisms to process sequential data efficiently.
-- **Complete reference**: [transformers.md](./transformers.md) for comprehensive technical details
+- **Complete reference**: [transformers_fundamentals.md](./transformers_fundamentals.md) for comprehensive technical details
 - **Key innovation**: [transformers_fundamentals.md Section 9](./transformers_fundamentals.md#9-stage-4-self-attention-deep-dive) for attention mechanism explanation
 - **Implementation**: [pytorch_ref.md Section 10](./pytorch_ref.md#10-transformers-in-pytorch) for code examples
 

@@ -169,7 +169,7 @@ Models like RNNs and Transformers can process text sequentially and understand w
 2. **LSTMs**: Improved RNNs that better handle long sequences
 3. **Transformers**: Revolutionary approach that processes all words simultaneously and learns attention patterns
 
-> 📖 **For sequence modeling details**: See [rnn_intro.md](./rnn_intro.md) for complete RNN/LSTM tutorial with worked examples, and [transformers.md](./transformers.md) for comprehensive transformer architecture guide.
+> 📖 **For sequence modeling details**: See [rnn_intro.md](./rnn_intro.md) for complete RNN/LSTM tutorial with worked examples, and [transformers_fundamentals.md](./transformers_fundamentals.md) for comprehensive transformer architecture guide.
 
 Having seen why deep learning outperforms traditional methods for language tasks, let's explore the fundamental building blocks that make this revolution possible, starting with the most basic unit: the artificial neuron.
 
@@ -1104,7 +1104,7 @@ With neural network fundamentals now in place, you're ready to explore deeper te
 >
 > - **🏗️ Hands-on Implementation**: [mlp_intro.md](./mlp_intro.md) - Build MLPs step-by-step with worked examples
 > - **🔄 Sequential Processing**: [rnn_intro.md](./rnn_intro.md) - Learn RNNs and understand the path to transformers
-> - **⚡ Modern Architectures**: [transformers.md](./transformers.md) - Complete transformer technical reference
+> - **⚡ Modern Architectures**: [transformers_fundamentals.md](./transformers_fundamentals.md) - Complete transformer technical reference
 > - **💻 PyTorch Coding**: [pytorch_ref.md](./pytorch_ref.md) - Practical implementation patterns
 > - **📐 Mathematical Rigor**: [transformers_math1.md](./transformers_math1.md) - Theoretical foundations (Part 1)
 > - **📐 Advanced Mathematics**: [transformers_math2.md](./transformers_math2.md) - Advanced concepts and scaling (Part 2)

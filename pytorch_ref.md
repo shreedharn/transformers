@@ -654,7 +654,7 @@ This notebook demonstrates:
 - Causal and padding masks
 - Next-token prediction with character-level models
 
-> **See also**: `./transformers.md` explains the complete Transformer block flow: multi-head self-attention → residual connection → layer norm → feed-forward network → residual connection → layer norm.
+> **See also**: `./transformers_fundamentals.md` explains the complete Transformer block flow: multi-head self-attention → residual connection → layer norm → feed-forward network → residual connection → layer norm.
 
 ### Self-Attention from Scratch
 
