@@ -43,6 +43,7 @@ class IssueType(Enum):
     ESCAPED_UNDERSCORES_IN_CODE = "Escaped underscores in code blocks (breaks syntax)"
     INLINE_DISPLAY_MATH_IN_PROSE = "Display math delimiters used inline in prose (should be blocks)"
     CONSECUTIVE_BOLD_WITHOUT_SPACING = "Consecutive bold text lines without proper spacing"
+    TEXT_TO_LIST_MISSING_BLANK_LINE = "Missing blank line before list item after text"
 
 
 @dataclass
@@ -612,6 +613,55 @@ class MarkdownMathDetector:
 
         return issues
 
+    def detect_text_to_list_missing_blank_line(self) -> List[DetectionResult]:
+        """Detect missing blank line before list items that follow descriptive text."""
+        issues = []
+        in_code_block = False
+
+        for i, line in enumerate(self.lines):
+            # Track code blocks to skip them
+            if PATTERNS['code_fence'].match(line):
+                in_code_block = not in_code_block
+                continue
+            if in_code_block:
+                continue
+
+            # Skip if not a list item
+            if not PATTERNS['list_marker'].match(line):
+                continue
+
+            # Check previous line exists
+            if i == 0:
+                continue
+
+            prev_line = self.lines[i - 1].strip()
+
+            # If previous line is blank, this is properly formatted
+            if not prev_line:
+                continue
+
+            # If previous line is also a list item, this is continuation (allowed)
+            if PATTERNS['list_marker'].match(self.lines[i - 1]):
+                continue
+
+            # If previous line is a heading, section break, or code, skip
+            if (PATTERNS['header'].match(self.lines[i - 1]) or
+                prev_line.startswith('---') or
+                PATTERNS['code_fence'].match(self.lines[i - 1])):
+                continue
+
+            # If we reach here, we have descriptive text directly followed by list item
+            # This violates the blank line requirement
+            if (prev_line.endswith('.') or prev_line.endswith(':') or
+                prev_line.endswith(')') or prev_line.endswith('.')):
+                issues.append(DetectionResult(
+                    line_number=i + 1,
+                    issue_type=IssueType.TEXT_TO_LIST_MISSING_BLANK_LINE,
+                    content=f"List item needs blank line after text: '{prev_line[:50]}...'",
+                    context_lines=self._get_context_lines(i + 1)
+                ))
+        return issues
+
     def run_all_detectors(self) -> Dict[str, List[DetectionResult]]:
         """
         Run all detection methods and return results grouped by detector type.
@@ -647,6 +697,7 @@ class MarkdownMathDetector:
             (self.detect_escaped_underscores_in_code, "Escaped underscores in code blocks"),
             (self.detect_inline_display_math_in_prose, "Display math delimiters used inline in prose"),
             (self.detect_consecutive_bold_without_spacing, "Consecutive bold text without spacing"),
+            (self.detect_text_to_list_missing_blank_line, "Missing blank line before list items after text"),
         ]
 
         results = {}
