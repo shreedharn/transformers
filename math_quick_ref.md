@@ -9,23 +9,36 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Matrix Multiplication
 
-**Formula:** $\mathbf{C} = \mathbf{A}\mathbf{B}$ where $C_{ij} = \sum_k A_{ik}B_{kj}$
+$$
+\begin{aligned}
+\mathbf{C} &= \mathbf{A}\mathbf{B} \newline
+C_{ij} &= \sum_k A_{ik}B_{kj}
+\end{aligned}
+$$
 
-**Intuition:** The fundamental operation of neural networks. Each row of $\mathbf{A}$ represents neuron weights, each column of $\mathbf{B}$ represents input vectors. The result computes weighted sums for all neurons simultaneously, enabling parallel computation. This is why a single matrix multiplication can represent an entire layer's forward pass.
+**Intuition:** The fundamental operation of neural networks. Each row of the weight matrix represents neuron weights, each column of the input matrix represents input vectors. The result computes weighted sums for all neurons simultaneously, enabling parallel computation. This is why a single matrix multiplication can represent an entire layer's forward pass.
 
 **How it affects output:** Matrix multiplication transforms input vectors from one feature space to another. Small changes in weights create proportional changes in outputs, making gradient-based learning possible.
 
 ### Matrix Transpose
 
-**Formula:** $(\mathbf{A})^T_{ij} = \mathbf{A}_{ji}$
+$$
+\begin{aligned}
+(\mathbf{A})^T_{ij} = \mathbf{A}_{ji}
+\end{aligned}
+$$
 
-**Intuition:** Essential for backpropagation. When gradients flow backward through a layer with weights $\mathbf{W}$, we need $\mathbf{W}^T$ to properly route the gradient signals back to the previous layer. The transpose "reverses" the forward direction of information flow.
+**Intuition:** Essential for backpropagation. When gradients flow backward through a layer with weights, we need the transpose to properly route the gradient signals back to the previous layer. The transpose "reverses" the forward direction of information flow.
 
 **How it affects output:** Transpose changes how information flows. In forward pass, weights map inputs to outputs. In backward pass, transpose maps output gradients back to input gradients.
 
 ### Matrix Inverse
 
-**Formula:** $\mathbf{A}\mathbf{A}^{-1} = \mathbf{I}$
+$$
+\begin{aligned}
+\mathbf{A}\mathbf{A}^{-1} = \mathbf{I}
+\end{aligned}
+$$
 
 **Intuition:** Used in analytical solutions for least squares (normal equations) and understanding linear transformations. In neural networks, helps analyze layer transformations and appears in second-order optimization methods like Newton's method.
 
@@ -33,7 +46,11 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Eigenvalues & Eigenvectors
 
-**Formula:** $\mathbf{A}\mathbf{v} = \lambda\mathbf{v}$
+$$
+\begin{aligned}
+\mathbf{A}\mathbf{v} = \lambda\mathbf{v}
+\end{aligned}
+$$
 
 **Intuition:** Reveals principal directions of data variation (PCA), helps analyze gradient flow and conditioning of weight matrices. Large eigenvalues can indicate exploding gradients, while small ones suggest vanishing gradients. Critical for understanding optimization landscapes.
 
@@ -41,7 +58,11 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Singular Value Decomposition (SVD)
 
-**Formula:** $\mathbf{A} = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^T$
+$$
+\begin{aligned}
+\mathbf{A} = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^T
+\end{aligned}
+$$
 
 **Intuition:** Decomposes any matrix into orthogonal transformations and scaling. Used in dimensionality reduction, weight initialization, and analyzing the effective rank of learned representations. Helps understand what transformations neural network layers are actually learning.
 
@@ -55,15 +76,23 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Dot Product
 
-**Formula:** $\mathbf{a} \cdot \mathbf{b} = \sum_i a_i b_i = \|\mathbf{a}\|\|\mathbf{b}\|\cos(\theta)$
+$$
+\begin{aligned}
+\mathbf{a} \cdot \mathbf{b} = \sum_i a_i b_i = \|\mathbf{a}\|\|\mathbf{b}\|\cos(\theta)
+\end{aligned}
+$$
 
-**Intuition:** Measures how "aligned" two vectors are. In neurons, the dot product between input $\mathbf{x}$ and weights $\mathbf{w}$ gives the raw activation strength—high when input pattern matches what the neuron is looking for. This is the core operation that determines neuron firing.
+**Intuition:** Measures how "aligned" two vectors are. In neurons, the dot product between input vectors and weight vectors gives the raw activation strength—high when input pattern matches what the neuron is looking for. This is the core operation that determines neuron firing.
 
 **How it affects output:** High dot product means input and weight vectors point in similar directions, creating strong positive activation. Orthogonal vectors produce zero activation.
 
 ### Cosine Similarity
 
-**Formula:** $\cos(\theta) = \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{a}\|\|\mathbf{b}\|}$
+$$
+\begin{aligned}
+\cos(\theta) = \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{a}\|\|\mathbf{b}\|}
+\end{aligned}
+$$
 
 **Intuition:** Measures similarity independent of magnitude. Used in attention mechanisms, word embeddings, and similarity-based learning. Helps neural networks focus on directional patterns rather than absolute magnitudes, making them more robust to scaling variations.
 
@@ -71,7 +100,11 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Euclidean Distance
 
-**Formula:** $d(\mathbf{a}, \mathbf{b}) = \|\mathbf{a} - \mathbf{b}\|_2 = \sqrt{\sum_i (a_i - b_i)^2}$
+$$
+\begin{aligned}
+d(\mathbf{a}, \mathbf{b}) = \|\mathbf{a} - \mathbf{b}\|_2 = \sqrt{\sum_i (a_i - b_i)^2}
+\end{aligned}
+$$
 
 **Intuition:** Measures how "far apart" two points are in feature space. Used in loss functions (MSE), clustering, and nearest neighbor methods. In neural networks, helps measure prediction errors and similarity between representations.
 
@@ -79,9 +112,13 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Lp Norms
 
-**Formula:** $\|\mathbf{x}\|_p = \left(\sum_i |x_i|^p\right)^{1/p}$
+$$
+\begin{aligned}
+\|\mathbf{x}\|_p = \left(\sum_i |x_i|^p\right)^{1/p}
+\end{aligned}
+$$
 
-**Intuition:** Measures vector "size" in different ways. $L_1$ promotes sparsity (many weights become zero), $L_2$ promotes smoothness (weights stay small). Used in regularization to control model complexity and prevent overfitting by penalizing large weights.
+**Intuition:** Measures vector "size" in different ways. L1 norm promotes sparsity (many weights become zero), L2 norm promotes smoothness (weights stay small). Used in regularization to control model complexity and prevent overfitting by penalizing large weights.
 
 **How it affects output:** L1 norm creates sparse solutions (many zeros), L2 norm creates smooth solutions (small values). Higher p values focus more on the largest elements.
 
@@ -93,7 +130,11 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Derivatives
 
-**Formula:** $f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$
+$$
+\begin{aligned}
+f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
+\end{aligned}
+$$
 
 **Intuition:** Measures how fast a function changes. In neural networks, tells us how much the loss changes when we tweak a parameter. This is the foundation of gradient-based learning—we follow the derivative to find better parameter values.
 
@@ -101,7 +142,11 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Partial Derivatives
 
-**Formula:** $\frac{\partial f}{\partial x_i}$
+$$
+\begin{aligned}
+\frac{\partial f}{\partial x_i}
+\end{aligned}
+$$
 
 **Intuition:** Derivative with respect to one variable while holding others constant. Neural networks have millions of parameters, so we need partial derivatives to see how the loss changes with respect to each individual weight or bias.
 
@@ -109,7 +154,11 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Chain Rule
 
-**Formula:** $\frac{d}{dx}f(g(x)) = f'(g(x)) \cdot g'(x)$
+$$
+\begin{aligned}
+\frac{d}{dx}f(g(x)) = f'(g(x)) \cdot g'(x)
+\end{aligned}
+$$
 
 **Intuition:** The mathematical foundation of backpropagation. Neural networks are compositions of functions (layer after layer), so to compute gradients we multiply derivatives along the chain from output back to input. This is why it's called "backpropagation"—propagating derivatives backward through the composition.
 
@@ -117,7 +166,11 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Gradient
 
-**Formula:** $\nabla f = \left[\frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, \ldots, \frac{\partial f}{\partial x_n}\right]$
+$$
+\begin{aligned}
+\nabla f = \left[\frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, \ldots, \frac{\partial f}{\partial x_n}\right]
+\end{aligned}
+$$
 
 **Intuition:** Points in the direction of steepest increase. In neural network training, we move parameters in the negative gradient direction (steepest decrease) to minimize the loss function. The gradient tells us both direction and magnitude of the best parameter update.
 
@@ -125,7 +178,11 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Hessian
 
-**Formula:** $\mathbf{H}_{ij} = \frac{\partial^2 f}{\partial x_i \partial x_j}$
+$$
+\begin{aligned}
+\mathbf{H}_{ij} = \frac{\partial^2 f}{\partial x_i \partial x_j}
+\end{aligned}
+$$
 
 **Intuition:** Matrix of second derivatives that describes the curvature of the loss surface. Helps understand convergence behavior and is used in advanced optimization methods like Newton's method and natural gradients. High curvature areas require smaller learning rates.
 
@@ -133,7 +190,11 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Jacobian
 
-**Formula:** $\mathbf{J}_{ij} = \frac{\partial f_i}{\partial x_j}$
+$$
+\begin{aligned}
+\mathbf{J}_{ij} = \frac{\partial f_i}{\partial x_j}
+\end{aligned}
+$$
 
 **Intuition:** Matrix of first derivatives for vector-valued functions. Essential for backpropagation through layers that output vectors (like hidden layers). Each element shows how one output component changes with respect to one input component, enabling gradient flow through complex architectures.
 
@@ -147,7 +208,11 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Ordinary Differential Equations (ODEs)
 
-**Formula:** $\frac{dy}{dt} = f(y, t)$
+$$
+\begin{aligned}
+\frac{dy}{dt} = f(y, t)
+\end{aligned}
+$$
 
 **Intuition:** Models how quantities change over time. Neural ODEs treat layer depth as continuous time, allowing adaptive depth and memory-efficient training. ResNets approximate the solution to ODEs, explaining why skip connections work so well for deep networks.
 
@@ -155,7 +220,11 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Partial Differential Equations (PDEs)
 
-**Formula:** $\frac{\partial u}{\partial t} = f\left(u, \frac{\partial u}{\partial x}, \frac{\partial^2 u}{\partial x^2}, \ldots\right)$
+$$
+\begin{aligned}
+\frac{\partial u}{\partial t} = f\left(u, \frac{\partial u}{\partial x}, \frac{\partial^2 u}{\partial x^2}, \ldots\right)
+\end{aligned}
+$$
 
 **Intuition:** Models complex spatiotemporal phenomena. Physics-informed neural networks (PINNs) embed PDE constraints directly into the loss function, allowing neural networks to solve scientific computing problems while respecting physical laws.
 
@@ -169,23 +238,35 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Hyperbolic Tangent (tanh)
 
-**Formula:** $\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$
+$$
+\begin{aligned}
+\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
+\end{aligned}
+$$
 
-**Intuition:** Activation function that squashes inputs to $(-1, 1)$. Provides nonlinearity needed for complex patterns while keeping outputs bounded. The S-shape introduces smooth nonlinear decision boundaries, and its zero-centered output helps with gradient flow compared to sigmoid.
+**Intuition:** Activation function that squashes inputs to (-1, 1). Provides nonlinearity needed for complex patterns while keeping outputs bounded. The S-shape introduces smooth nonlinear decision boundaries, and its zero-centered output helps with gradient flow compared to sigmoid.
 
 **How it affects output:** Tanh produces zero-centered outputs helping gradient flow, but can suffer from vanishing gradients when inputs are large.
 
 ### Sigmoid
 
-**Formula:** $\sigma(x) = \frac{1}{1 + e^{-x}}$
+$$
+\begin{aligned}
+\sigma(x) = \frac{1}{1 + e^{-x}}
+\end{aligned}
+$$
 
-**Intuition:** Squashes inputs to $(0, 1)$, naturally interpreted as probabilities. Used in binary classification and gating mechanisms (LSTM gates). However, suffers from vanishing gradients at extremes, which is why ReLU became more popular in deep networks.
+**Intuition:** Squashes inputs to (0, 1), naturally interpreted as probabilities. Used in binary classification and gating mechanisms (LSTM gates). However, suffers from vanishing gradients at extremes, which is why ReLU became more popular in deep networks.
 
 **How it affects output:** Sigmoid outputs natural probabilities but suffers from vanishing gradients, making it problematic for deep networks but perfect for gates.
 
 ### ReLU
 
-**Formula:** $\text{ReLU}(x) = \max(0, x)$
+$$
+\begin{aligned}
+\text{ReLU}(x) = \max(0, x)
+\end{aligned}
+$$
 
 **Intuition:** Simple nonlinearity that sets negative values to zero. Solves vanishing gradient problem because gradient is either 0 or 1. Promotes sparsity (many neurons inactive) which makes networks more interpretable and efficient. Biologically inspired by neuron firing thresholds.
 
@@ -199,7 +280,11 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Expectation
 
-**Formula:** $\mathbb{E}[X] = \sum_x x \cdot P(X = x)$
+$$
+\begin{aligned}
+\mathbb{E}[X] = \sum_x x \cdot P(X = x)
+\end{aligned}
+$$
 
 **Intuition:** Average value of a random variable. In neural networks, we often work with expected loss over data distributions. Batch statistics, dropout, and stochastic optimization all rely on expectation to handle randomness in training and make models robust to unseen data.
 
@@ -207,7 +292,11 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Variance
 
-**Formula:** $\text{Var}(X) = \mathbb{E}[(X - \mathbb{E}[X])^2]$
+$$
+\begin{aligned}
+\text{Var}(X) = \mathbb{E}[(X - \mathbb{E}[X])^2]
+\end{aligned}
+$$
 
 **Intuition:** Measures spread of a distribution. Critical for weight initialization (to prevent vanishing/exploding gradients) and batch normalization (to stabilize training). Understanding variance helps design networks that maintain good signal propagation through many layers.
 
@@ -215,7 +304,11 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Softmax
 
-**Formula:** $\text{softmax}(x_i) = \frac{e^{x_i}}{\sum_j e^{x_j}}$
+$$
+\begin{aligned}
+\text{softmax}(x_i) = \frac{e^{x_i}}{\sum_j e^{x_j}}
+\end{aligned}
+$$
 
 **Intuition:** Converts real values to probability distribution. Essential for multi-class classification and attention mechanisms. The exponential amplifies differences while ensuring outputs sum to 1, creating a "soft" version of selecting the maximum value that's differentiable for gradient-based learning.
 
@@ -223,7 +316,11 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Cross-Entropy Loss
 
-**Formula:** $\mathcal{L} = -\sum_i y_i \log(\hat{y}_i)$
+$$
+\begin{aligned}
+\mathcal{L} = -\sum_i y_i \log(\hat{y}_i)
+\end{aligned}
+$$
 
 **Intuition:** Measures difference between predicted and true probability distributions. Natural loss function for classification because it heavily penalizes confident wrong predictions. Mathematically connected to maximum likelihood estimation and information theory—minimizing cross-entropy maximizes the likelihood of correct predictions.
 
@@ -237,15 +334,25 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Gradient Descent
 
-**Formula:** $\theta_{t+1} = \theta_t - \alpha \nabla_\theta \mathcal{L}(\theta_t)$
+$$
+\begin{aligned}
+\theta_{t+1} = \theta_t - \alpha \nabla_\theta \mathcal{L}(\theta_t)
+\end{aligned}
+$$
 
-**Intuition:** Iteratively moves parameters in direction of steepest loss decrease. The fundamental learning algorithm for neural networks. The learning rate $\alpha$ controls step size—too large causes instability, too small causes slow convergence. Modern variants (Adam, RMSprop) adapt the learning rate automatically.
+**Intuition:** Iteratively moves parameters in direction of steepest loss decrease. The fundamental learning algorithm for neural networks. The learning rate controls step size—too large causes instability, too small causes slow convergence. Modern variants (Adam, RMSprop) adapt the learning rate automatically.
 
 **How it affects output:** Gradient descent provides the fundamental mechanism for learning by iteratively improving parameters based on loss gradients.
 
 ### Adam Optimizer
 
-**Formula:** $m_t = \beta_1 m_{t-1} + (1-\beta_1)g_t$, $v_t = \beta_2 v_{t-1} + (1-\beta_2)g_t^2$, $\theta_t = \theta_{t-1} - \frac{\alpha}{\sqrt{v_t} + \epsilon}\hat{m}_t$
+$$
+\begin{aligned}
+m_t &= \beta_1 m_{t-1} + (1-\beta_1)g_t \newline
+v_t &= \beta_2 v_{t-1} + (1-\beta_2)g_t^2 \newline
+\theta_t &= \theta_{t-1} - \frac{\alpha}{\sqrt{v_t} + \epsilon}\hat{m}_t
+\end{aligned}
+$$
 
 **Intuition:** Adaptive learning rate optimizer that maintains running averages of gradients (momentum) and squared gradients (variance). Automatically adjusts learning rates per parameter based on historical gradients. Like cruise control for optimization - speeds up in flat areas, slows down in steep areas.
 
@@ -259,9 +366,13 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Scaled Dot-Product Attention
 
-**Formula:** $\text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$
+$$
+\begin{aligned}
+\text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\end{aligned}
+$$
 
-**Intuition:** The core operation of transformers. Queries (Q) search through keys (K) to find relevant information, then retrieve corresponding values (V). The scaling by $\sqrt{d_k}$ prevents attention from becoming too sharp/peaked as dimensions grow, maintaining good gradient flow and distributed attention weights.
+**Intuition:** The core operation of transformers. Queries (Q) search through keys (K) to find relevant information, then retrieve corresponding values (V). The scaling prevents attention from becoming too sharp/peaked as dimensions grow, maintaining good gradient flow and distributed attention weights.
 
 **How it affects output:** Attention allows models to dynamically focus on relevant parts of the input, enabling long-range dependencies and context-aware representations.
 
@@ -273,7 +384,11 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Layer Normalization
 
-**Formula:** $\text{LayerNorm}(x) = \frac{x - \mu}{\sigma} \odot \gamma + \beta$ where $\mu, \sigma$ computed per sample
+$$
+\begin{aligned}
+\text{LayerNorm}(x) = \frac{x - \mu}{\sigma} \odot \gamma + \beta \quad \text{where } \mu, \sigma \text{ computed per sample}
+\end{aligned}
+$$
 
 **Intuition:** Normalizes activations within each sample to have zero mean and unit variance. Unlike batch normalization, works independently for each sample, making it stable for variable sequence lengths and small batch sizes. Helps with gradient flow and training stability.
 
@@ -281,7 +396,11 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Residual Connections
 
-**Formula:** $\mathbf{h}_{l+1} = \mathbf{h}_l + F(\mathbf{h}_l)$
+$$
+\begin{aligned}
+\mathbf{h}_{l+1} = \mathbf{h}_l + F(\mathbf{h}_l)
+\end{aligned}
+$$
 
 **Intuition:** Creates "gradient highways" that allow information to flow directly through the network. Essential for training very deep networks (like transformers with many layers) by preventing vanishing gradients. Acts like a safety net - even if some layers learn poorly, information can still reach the output.
 
@@ -295,7 +414,11 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 
 ### Temperature Scaling
 
-**Formula:** $\text{softmax}(z/\tau)$ where $\tau$ is temperature
+$$
+\begin{aligned}
+\text{softmax}(z/\tau) \quad \text{where } \tau \text{ is temperature}
+\end{aligned}
+$$
 
 **Intuition:** Controls the "sharpness" of probability distributions. Lower temperature makes the distribution more peaked (confident), higher temperature makes it more uniform (uncertain). Used in generation for creativity control and in calibration to match predicted confidence with actual accuracy.
 
