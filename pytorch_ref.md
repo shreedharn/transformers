@@ -1,6 +1,5 @@
 # PyTorch Reference: From MLPs to Transformers
 
-
 ## 1. Title & Quickstart
 
 ### Run This First
@@ -49,6 +48,7 @@ After reading this guide, you'll be able to:
 Tensors are n-dimensional arrays that carry data and gradients through neural networks. Think of them as generalized matrices that know how to compute derivatives.
 
 The notebook covers:
+
 - Basic tensor creation and manipulation
 - Vector/matrix operations and broadcasting  
 - One-hot vs embedding vectors
@@ -76,6 +76,7 @@ This notebook covers:
 📓 **Interactive Examples**: [Modules & Parameters Notebook](./pynb/basic/modules_parameters.ipynb)
 
 This notebook covers:
+
 - Basic module structure and inheritance from nn.Module
 - Parameter counting formulas for different layer types
 - Initialization strategies (Xavier, Kaiming, custom)
@@ -158,6 +159,7 @@ for name, param in model.named_parameters():
 📓 **Interactive Examples**: [Optimization & Training Notebook](./pynb/basic/optimization_training.ipynb)
 
 This notebook covers:
+
 - Canonical training loop patterns
 - Optimizer comparison (SGD vs Adam vs AdamW)
 - Common loss functions for different tasks
@@ -337,6 +339,7 @@ print(f"Gradient norm with clipping: {clipped_norm:.2f}")
 📓 **Interactive Examples**: [MLPs Notebook](./pynb/dl/mlps.ipynb)
 
 This notebook demonstrates:
+
 - From equations to PyTorch code
 - Training MLPs on synthetic datasets
 - Common gotchas and debugging tips
@@ -477,6 +480,7 @@ targets_correct = torch.tensor([0, 1, 2])      # Long - correct
 📓 **Interactive Examples**: [RNNs, LSTMs, GRUs Notebook](./pynb/dl/rnns.ipynb)
 
 This notebook covers:
+
 - Why gating mechanisms are needed
 - LSTM sequence classifier implementation
 - Variable length sequence handling with packing
@@ -644,6 +648,7 @@ compare_rnn_architectures()
 📓 **Interactive Examples**: [Transformers Notebook](./pynb/dl/transformers.ipynb)
 
 This notebook demonstrates:
+
 - Self-attention mechanisms from scratch
 - Using PyTorch's built-in Transformer layers
 - Causal and padding masks
@@ -1062,6 +1067,7 @@ tensor = tensor.to(device)
 📓 **Interactive Examples**: [Debugging & Gotchas Notebook](./pynb/basic/debugging_gotchas.ipynb)
 
 This notebook covers:
+
 - Training mode vs eval mode issues
 - Autograd pitfalls and gradient accumulation
 - Data type and shape mismatches
@@ -1637,6 +1643,7 @@ def choose_architecture():
     │       └── Use: Transformer with appropriate masking
     
     💡 Rules of thumb:
+
     - Start simple: MLP baseline for non-sequential
     - RNNs: Good for streaming/online processing
     - Transformers: Best for batch processing, parallel training

@@ -45,6 +45,7 @@ Think of these as nested boxes, where each inner box is a subset of the outer on
 **Definition**: Systems that can perform tasks that typically require human intelligence.
 
 **Examples:**
+
 - **Chatbots**: Like Siri or Alexa responding to voice commands
 - **Self-driving cars**: Navigating roads and making driving decisions
 - **Game playing**: Chess programs like Deep Blue or Go programs like AlphaGo
@@ -54,12 +55,14 @@ Think of these as nested boxes, where each inner box is a subset of the outer on
 **Definition**: A subset of AI where systems learn patterns from data without being explicitly programmed for every scenario.
 
 **Examples:**
+
 - **Email spam detection**: Learning to identify spam based on patterns in previous emails
 - **Credit scoring**: Determining loan approval based on historical financial data
 - **Image recognition**: Identifying objects in photos after training on thousands of labeled images
 - **Stock price prediction**: Using historical market data to forecast trends
 
 **Traditional ML Techniques:**
+
 - **Logistic Regression**: For binary classification (spam/not spam)
 - **Decision Trees**: For rule-based decision making
 - **Support Vector Machines**: For finding optimal boundaries between classes
@@ -69,6 +72,7 @@ Think of these as nested boxes, where each inner box is a subset of the outer on
 **Definition**: A subset of ML that uses neural networks with multiple layers to learn increasingly complex patterns.
 
 **Examples:**
+
 - **Large Language Models**: ChatGPT, GPT-4, BERT understanding and generating human-like text
 - **Computer Vision**: Self-driving cars recognizing pedestrians, traffic signs, and other vehicles
 - **Speech Recognition**: Converting spoken words to text with high accuracy
@@ -94,6 +98,7 @@ Traditional ML requires humans to manually design features that represent text d
 Original Email: "Congratulations! You've won $1000! Click here now!"
 
 Manual Feature Engineering:
+
 - Contains exclamation marks: Yes (2 count)
 - Contains dollar signs: Yes
 - Contains "click here": Yes
@@ -103,6 +108,7 @@ Manual Feature Engineering:
 ```
 
 **Problems:**
+
 - Requires domain expertise to know which features matter
 - Misses subtle patterns that humans didn't think to encode
 - Doesn't capture word relationships or context
@@ -148,6 +154,7 @@ king - man + woman ≈ queen
 Deep learning models can understand that the same word means different things in different contexts.
 
 **Example:**
+
 - "I went to the bank" (financial institution)
 - "I sat by the river bank" (edge of water)
 
@@ -157,6 +164,7 @@ A deep learning model learns different representations for "bank" based on surro
 Models like RNNs and Transformers can process text sequentially and understand word order and long-range dependencies.
 
 **Evolution of Sequence Models:**
+
 1. **RNNs**: Process text word by word, maintaining memory of previous words
 2. **LSTMs**: Improved RNNs that better handle long sequences
 3. **Transformers**: Revolutionary approach that processes all words simultaneously and learns attention patterns
@@ -191,9 +199,12 @@ Inputs → Weighted Sum → Activation Function → Output
 
 Neural networks perform three fundamental operations at each layer:
 
-$$h^{(l)} = f(W^{(l)}x + b^{(l)})$$
+
+\begin{aligned} h^{(l)} &= f(W^{(l)}x + b^{(l)}) \end{aligned}
+
 
 Where:
+
 - **Weights (W)**: Control feature importance and geometric transformations
 - **Bias (b)**: Provide flexible positioning of decision boundaries  
 - **Activation (f)**: Introduce nonlinearity through space warping
@@ -209,15 +220,25 @@ Each component serves a distinct geometric purpose that becomes clear when we vi
 
 The perceptron's mathematical operation can be expressed as:
 
-$$y = f\left(\sum_{i=1}^{n} w_i x_i + b\right)$$
+
+\begin{aligned} y &= f\left(\sum_{i=1}^{n} w_i x_i + b\right) \end{aligned}
+
 
 Where:
-- $y$ = output
-- $f$ = activation function
-- $w_i$ = weight for input $i$
-- $x_i$ = input $i$
-- $b$ = bias
-- $n$ = number of inputs
+
+$$
+{\textstyle
+\begin{aligned}
+y &= \text{output} \newline
+f &= \text{activation function} \newline
+w_i &= weight for input $$i$$ \newline
+x_i &= input $$i$$ \newline
+b &= \text{bias} \newline
+n &= \text{number of inputs}
+\end{aligned}
+}
+$$
+
 
 ### Understanding Each Component Geometrically
 
@@ -228,15 +249,19 @@ To build true intuition about neural networks, we need to understand how each co
 **Mathematical Foundation:**
 Weights determine how input features are combined and transformed:
 
-$$z = w_1x_1 + w_2x_2 + ... + w_nx_n$$
+
+\begin{aligned} z &= w_1x_1 + w_2x_2 + ... + w_nx_n \end{aligned}
+
 
 **Geometric Interpretation:**
+
 - **Direction**: Weights define the orientation of decision boundaries (lines in 2D, hyperplanes in higher dimensions)
 - **Importance**: Larger weights amplify the influence of corresponding features
 - **Scaling**: Weights stretch or compress space along different dimensions
 
 **Intuitive Analogy:**
 Think of weights as **feature importance multipliers**. If you're predicting house prices:
+
 - High weight on location → location strongly influences the prediction
 - Low weight on paint color → paint color barely affects the prediction
 
@@ -245,7 +270,9 @@ Think of weights as **feature importance multipliers**. If you're predicting hou
 **Mathematical Foundation:**
 The bias term shifts the decision boundary away from the origin:
 
-$$z = Wx + b$$
+
+\begin{aligned} z &= Wx + b \end{aligned}
+
 
 Understanding bias requires seeing how it transforms geometric boundaries. Without bias, decision boundaries are constrained to pass through the origin:
 
@@ -270,6 +297,7 @@ Decision boundary positioned optimally:
 This freedom to position boundaries anywhere in space is crucial for fitting real-world data patterns.
 
 **Geometric Intuition:**
+
 - **1D**: Bias shifts the intercept (like the 'c' in y = mx + c)
 - **2D**: Bias moves the separating line parallel to itself
 - **n-D**: Bias translates the hyperplane to the optimal position
@@ -281,43 +309,79 @@ Bias is like the **default activation level**. Even with zero input, a neuron ca
 
 Activation functions solve a fundamental limitation: without them, stacking layers merely creates deeper linear transformations that collapse to a single function:
 
-$$h(x) = W_3(W_2(W_1x)) = (W_3W_2W_1)x$$
+
+\begin{aligned} h(x) &= W_3(W_2(W_1x)) = (W_3W_2W_1)x \end{aligned}
+
 
 Regardless of depth, this remains equivalent to linear regression! Activation functions break this limitation by introducing **space bending** after each linear transformation:
 
-$$h^{(l)} = f(W^{(l)}x + b^{(l)})$$
+
+\begin{aligned} h^{(l)} &= f(W^{(l)}x + b^{(l)}) \end{aligned}
+
 
 Let's see how these components work together in a concrete example. Consider detecting spam emails using a single perceptron with three key features:
 
 **Features:**
-- $x_1$ = Number of exclamation marks
-- $x_2$ = Contains word "free" (1 if yes, 0 if no)
-- $x_3$ = Number of capital letters
+
+$$
+{\textstyle
+\begin{aligned}
+x_1 &= \text{Number of exclamation marks} \newline
+x_2 &= Contains word "free" (1 if yes, 0 if no) \newline
+x_3 &= \text{Number of capital letters}
+\end{aligned}
+}
+$$
+
 
 **Example Email**: "FREE VACATION!!! Click now!!!"
-- $x_1 = 6$ (six exclamation marks)
-- $x_2 = 1$ (contains "free")
-- $x_3 = 13$ (13 capital letters)
+
+$$
+{\textstyle
+\begin{aligned}
+x_1 &= 6  \text{ (six exclamation marks)} \newline
+x_2 &= 1  \text{ (contains "free")} \newline
+x_3 &= 13  \text{ (13 capital letters)}
+\end{aligned}
+}
+$$
+
 
 **Learned Weights** (after training):
-- $w_1 = 0.3$ (exclamation marks are somewhat important)
-- $w_2 = 0.8$ (word "free" is very important)
-- $w_3 = 0.1$ (capital letters are slightly important)
-- $b = -2.0$ (bias to prevent false positives)
+
+$$
+{\textstyle
+\begin{aligned}
+w_1 &= 0.3  \text{ (exclamation marks are somewhat important)} \newline
+w_2 &= 0.8  \text{ (word "free" is very important)} \newline
+w_3 &= 0.1  \text{ (capital letters are slightly important)} \newline
+b &= -2.0  \text{ (bias to prevent false positives)}
+\end{aligned}
+}
+$$
+
 
 **Calculation:**
-$$\text{weighted sum} = 0.3 \times 6 + 0.8 \times 1 + 0.1 \times 13 + (-2.0)$$
-$$= 1.8 + 0.8 + 1.3 - 2.0 = 1.9$$
+
+\begin{aligned} \text{weighted sum} &= 0.3 \times 6 + 0.8 \times 1 + 0.1 \times 13 + (-2.0) \end{aligned}
+
+
+\begin{aligned}  &= 1.8 + 0.8 + 1.3 - 2.0 = 1.9 \end{aligned}
+
 
 **Activation Function** (Sigmoid):
-$$f(1.9) = \frac{1}{1 + e^{-1.9}} = 0.87$$
+
+\begin{aligned} f(1.9) &= \frac{1}{1 + e^{-1.9}} = 0.87 \end{aligned}
+
 
 **Result**: 0.87 (87% probability it's spam)
 
 #### Common Activation Functions
 
 **ReLU (Rectified Linear Unit)** is the most widely used activation function:
-$$f(x) = \max(0, x)$$
+
+\begin{aligned} f(x) &= \max(0, x) \end{aligned}
+
 
 ReLU folds the negative half-space to zero, creating piecewise linear regions:
 ```
@@ -330,7 +394,9 @@ This simple operation proves remarkably effective, preventing vanishing gradient
 > 📖 **For vanishing gradients deep dive**: See [pytorch_ref.md Section 6](./pytorch_ref.md#6-vanishingexploding-gradients) for causes, detection, and solutions, plus [rnn_intro.md Section 9](./rnn_intro.md#9-the-vanishing-gradient-problem-rnns-fatal-flaw) for RNN-specific analysis.
 
 **Sigmoid** compresses any real number into probability-like values:
-$$\sigma(x) = \frac{1}{1+e^{-x}}$$
+
+\begin{aligned} \sigma(x) &= \frac{1}{1+e^{-x}} \end{aligned}
+
 
 ```
 Input:  -∞ -------- 0 -------- +∞
@@ -340,7 +406,9 @@ Output:  0 -------- 0.5 ------ 1
 While perfect for output probabilities, sigmoid can cause vanishing gradients in deep networks.
 
 **Tanh** provides symmetric squashing around zero:
-$$\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$$
+
+\begin{aligned} \tanh(x) &= \frac{e^x - e^{-x}}{e^x + e^{-x}} \end{aligned}
+
 
 ```
 Input:  -∞ -------- 0 -------- +∞
@@ -352,6 +420,7 @@ Its zero-centered nature makes it preferable to sigmoid for hidden layers in man
 #### The Space Bending Intuition
 
 Each activation function **warps the geometric space**:
+
 - **ReLU**: Folds space along hyperplanes (creates piecewise linear regions)
 - **Sigmoid/Tanh**: Smoothly compress distant regions toward boundaries
 - **Stacked layers**: Compose multiple warps to create arbitrarily complex decision surfaces
@@ -426,14 +495,17 @@ The XOR problem beautifully demonstrates why neural networks need all three comp
 #### Step 1: First Layer Without Activation
 
 Hidden neurons learn:
-- **Neuron A**: $z_A = x_1 - 0.5$ (detects "x₁ > 0.5")
-- **Neuron B**: $z_B = x_2 - 0.5$ (detects "x₂ > 0.5")  
+
+- **Neuron A**: \begin{aligned} z_A &= x_1 - 0.5  \text{ (detects "x₁ > 0.5")}\end{aligned}
+- **Neuron B**: \begin{aligned} z_B &= x_2 - 0.5  \text{ (detects "x₂ > 0.5")}\end{aligned}  
 
 Note: Bias (-0.5) shifts decision boundaries away from origin.
 
 #### Step 2: ReLU Activation Bends Space
 
-$$h_A = \max(0, x_1 - 0.5), \quad h_B = \max(0, x_2 - 0.5)$$
+
+\begin{aligned} h_A &= \max(0, x_1 - 0.5), \quad h_B = \max(0, x_2 - 0.5) \end{aligned}
+
 
 This **folds the input space** along the lines x₁=0.5 and x₂=0.5:
 
@@ -446,7 +518,7 @@ Original space:         After ReLU folding:
 
 #### Step 3: Output Layer Finds Linear Separation
 
-In the folded space, a simple line (e.g., $h_A + h_B = 0.5$) perfectly separates the classes.
+In the folded space, a simple line (e.g., $$h_A + h_B = 0.5$$) perfectly separates the classes.
 
 This elegant solution showcases why every component matters: weights oriented the folding lines correctly, bias positioned the folds away from the origin at exactly x=0.5, and activation functions created the nonlinear folding that transformed an impossible linear problem into a simple one.
 
@@ -467,6 +539,7 @@ Input Layer → Hidden Layer(s) → Output Layer
 These components orchestrate a sophisticated geometric transformation system: weights control orientation and scaling, bias ensures optimal positioning, and activation functions bend space nonlinearly. When repeated across layers, this process builds arbitrarily complex decision manifolds.
 
 **Unified Intuition**: Think of neural networks as **high-dimensional sculptors**:
+
 - **Weights**: Control the direction and strength of each sculpting tool
 - **Bias**: Position each tool at the optimal location  
 - **Activation**: Apply nonlinear bending/folding operations
@@ -483,19 +556,25 @@ Understanding how neural networks operate geometrically helps build intuition fo
 #### 1D Case: Function Approximation
 
 **Single neuron**: 
-$$z = wx + b$$
+
+\begin{aligned} z &= wx + b \end{aligned}
+
 
 This is simply a line equation (y = mx + c from algebra).
 
 **With activation**:
-$$h(x) = \max(0, wx + b)$$
+
+\begin{aligned} h(x) &= \max(0, wx + b) \end{aligned}
+
 
 Creates a "bent line" - the foundation for approximating any 1D function through piecewise linear segments.
 
 #### 2D Case: Decision Boundaries
 
 **Linear layer**:
-$$z = w_1x_1 + w_2x_2 + b$$
+
+\begin{aligned} z &= w_1x_1 + w_2x_2 + b \end{aligned}
+
 
 Defines a **line** that separates the 2D plane into two regions.
 
@@ -504,18 +583,23 @@ Defines a **line** that separates the 2D plane into two regions.
 #### n-D Case: High-Dimensional Manifolds
 
 **Linear layer**:
-$$z = w_1x_1 + w_2x_2 + ... + w_nx_n + b$$
+
+\begin{aligned} z &= w_1x_1 + w_2x_2 + ... + w_nx_n + b \end{aligned}
+
 
 Defines a **hyperplane** in n-dimensional space.
 
 **With stacked activations**: Creates arbitrarily complex decision manifolds in high-dimensional space - this is why deep networks are universal function approximators.
 
 **Key Insight: Dimensions vs Layers**
+
 - **Dimension** = number of features (components of input vector)
 - **Layers** = sequence of transformations between different feature spaces
 
 Each layer can change the dimensionality:
-$$x \in \mathbb{R}^{784} \xrightarrow{\text{Layer 1}} h_1 \in \mathbb{R}^{512} \xrightarrow{\text{Layer 2}} h_2 \in \mathbb{R}^{256} \xrightarrow{\text{Output}} y \in \mathbb{R}^{10}$$
+
+\begin{aligned} x \in \mathbb{R}^{784} \xrightarrow{\text{Layer 1}} h_1 \in \mathbb{R}^{512} \xrightarrow{\text{Layer 2}} h_2 \in \mathbb{R}^{256} \xrightarrow{\text{Output}} y \in \mathbb{R}^{10} \end{aligned}
+
 
 ### Deep Networks
 
@@ -529,10 +613,14 @@ In image recognition, this hierarchy progresses naturally from edges and simple 
 
 Each layer performs an **affine transformation** followed by **nonlinear warping**:
 
-$$\text{Layer}: \mathbb{R}^n \xrightarrow{\text{affine}} \mathbb{R}^m \xrightarrow{\text{warp}} \mathbb{R}^m$$
+
+\begin{aligned} \text{Layer}: \mathbb{R}^n \xrightarrow{\text{affine}} \mathbb{R}^m \xrightarrow{\text{warp}} \mathbb{R}^m \end{aligned}
+
 
 Stacking layers composes these operations:
-$$\text{Network}: \mathbb{R}^{n_0} \rightarrow \mathbb{R}^{n_1} \rightarrow \mathbb{R}^{n_2} \rightarrow ... \rightarrow \mathbb{R}^{n_L}$$
+
+\begin{aligned} \text{Network}: \mathbb{R}^{n_0} \rightarrow \mathbb{R}^{n_1} \rightarrow \mathbb{R}^{n_2} \rightarrow ... \rightarrow \mathbb{R}^{n_L} \end{aligned}
+
 
 Understanding network architecture reveals the potential, but the real magic unfolds during training, where networks learn to perform their tasks through experience.
 
@@ -555,11 +643,22 @@ Training a neural network means finding the optimal weights and biases that allo
 Every learning system needs a way to measure progress, and neural networks are no exception. Loss functions bridge the gap between our human goals ("I want this model to translate accurately") and the mathematical precision computers require ("minimize this specific number").
 
 **Mathematical Foundation:**
-$$\mathcal{L}(\mathbf{y}_{\text{true}}, \mathbf{y}_{\text{pred}}) \rightarrow \mathbb{R}^+$$
+
+$$
+\begin{aligned} \mathcal{L}(\mathbf{y}_{\text{true}}, \mathbf{y}_{\text{pred}}) \rightarrow \mathbb{R}^+ \end{aligned}
+$$
 
 Where:
-- $\mathbf{y}_{\text{true}}$: Ground truth (what the answer should be)
-- $\mathbf{y}_{\text{pred}}$: Model prediction (what the network thinks)
+
+$$
+{\textstyle
+\begin{aligned}
+\mathbf{y}_{\text{true}} \newline
+\mathbf{y}_{\text{pred}}
+\end{aligned}
+}
+$$
+
 - Output: Single positive number (the "badness score")
 
 Without this translation, neural networks would have no way to measure progress during training, compute the gradients essential for backpropagation, or objectively compare different models' performance.
@@ -568,12 +667,22 @@ Without this translation, neural networks would have no way to measure progress 
 
 When predicting categories like spam detection or sentiment analysis, **cross-entropy loss** provides the mathematical foundation:
 
-$$\mathcal{L} = -\sum_{i=1}^{C} y_i \log(p_i)$$
+
+\begin{aligned} \mathcal{L} &= -\sum_{i=1}^{C} y_i \log(p_i) \end{aligned}
+
 
 Where:
-- $y_i$: True label (1 for correct class, 0 for others)
-- $p_i$: Predicted probability for class $i$
-- $C$: Number of classes
+
+$$
+{\textstyle
+\begin{aligned}
+y_i &: \text{True label (1 for correct class, 0 for others)} \newline
+p_i &: Predicted probability for class $$i$$
+\end{aligned}
+}
+$$
+
+- $$C$$: Number of classes
 
 Cross-entropy elegantly captures the concept of "surprise" - it heavily penalizes confident wrong predictions while rewarding confident correct ones. Being uncertain but right yields medium loss, while being uncertain and wrong still incurs high penalty.
 
@@ -584,6 +693,7 @@ True next word: "mat" (token 1847)
 Vocabulary: 50,000 words
 
 Predicted probabilities:
+
 - P("mat") = 0.7    ← High probability for correct word
 - P("floor") = 0.2  ← Some probability for similar word  
 - P("car") = 0.001  ← Low probability for unrelated word
@@ -598,7 +708,9 @@ The logarithmic scale creates this penalty structure naturally: predicting just 
 
 When predicting continuous values like house prices or temperatures, **Mean Squared Error (MSE)** becomes our guide:
 
-$$\mathcal{L} = \frac{1}{N} \sum_{i=1}^N (y_i - \hat{y}_i)^2$$
+
+\begin{aligned} \mathcal{L} &= \frac{1}{N} \sum_{i=1}^N (y_i - \hat{y}_i)^2 \end{aligned}
+
 
 MSE measures the squared distance between predictions and targets, creating a penalty structure where small errors receive proportional punishment, but large errors face disproportionately severe consequences. This symmetric approach treats overestimation and underestimation equally.
 
@@ -615,20 +727,32 @@ Imagine standing blindfolded on a mountainside, seeking the valley that represen
 **From Calculus to Machine Learning:**
 
 **Single Variable (1D case):**
-$$x_{\text{new}} = x_{\text{old}} - \alpha \frac{df}{dx}$$
+
+\begin{aligned} x_{\text{new}} &= x_{\text{old}} - \alpha \frac{df}{dx} \end{aligned}
+
 
 **Multiple Variables (Vector case):**
-$$\mathbf{\theta}_{\text{new}} = \mathbf{\theta}_{\text{old}} - \alpha \nabla_{\mathbf{\theta}} \mathcal{L}$$
+
+\begin{aligned} \mathbf{\theta}_{\text{new}} &= \mathbf{\theta}_{\text{old}} - \alpha \nabla_{\mathbf{\theta}} \mathcal{L} \end{aligned}
+
 
 Where:
-- $\mathbf{\theta}$: All parameters (weights and biases) in the network
-- $\alpha$: Learning rate (step size)
-- $\nabla_{\mathbf{\theta}} \mathcal{L}$: Gradient of loss with respect to parameters
+
+$$
+{\textstyle
+\begin{aligned}
+\mathbf{\theta} \newline
+\alpha \newline
+\nabla_{\mathbf{\theta}} \mathcal{L}
+\end{aligned}
+}
+$$
+
 - **Negative sign**: Move opposite to gradient (downhill)
 
 #### The Gradient: Direction of Steepest Ascent
 
-The gradient symbol $\nabla$ (nabla) might look mysterious, but it represents something intuitive:
+The gradient symbol $$\nabla$$ (nabla) might look mysterious, but it represents something intuitive:
 $$\nabla_{\mathbf{\theta}} \mathcal{L} = \begin{bmatrix}
 \frac{\partial \mathcal{L}}{\partial \theta_1} \\
 \frac{\partial \mathcal{L}}{\partial \theta_2} \\
@@ -636,16 +760,17 @@ $$\nabla_{\mathbf{\theta}} \mathcal{L} = \begin{bmatrix}
 \frac{\partial \mathcal{L}}{\partial \theta_n}
 \end{bmatrix}$$
 
-Each element answers a simple question: "If I nudge parameter $\theta_i$ slightly upward, how much does my loss increase?"
+Each element answers a simple question: "If I nudge parameter $$\theta_i$$ slightly upward, how much does my loss increase?"
 
 #### Step-by-Step Gradient Descent Process
 
-1. **Compute Forward Pass**: $\text{Input} \xrightarrow{\text{Network}} \text{Predictions}$
-2. **Compute Loss**: $\mathcal{L} = \text{LossFunction}(\text{Predictions}, \text{Truth})$
-3. **Compute Gradients (Backpropagation)**: $\frac{\partial \mathcal{L}}{\partial W^{(l)}} = \frac{\partial \mathcal{L}}{\partial h^{(l+1)}} \cdot \frac{\partial h^{(l+1)}}{\partial W^{(l)}}$
+1. **Compute Forward Pass**: $$\text{Input} \xrightarrow{\text{Network}} \text{Predictions}$$
+2. **Compute Loss**: $$\mathcal{L} = \text{LossFunction}(\text{Predictions}, \text{Truth})$$
+3. **Compute Gradients (Backpropagation)**: $$\frac{\partial \mathcal{L}}{\partial W^{(l)}} = \frac{\partial \mathcal{L}}{\partial h^{(l+1)}} \cdot \frac{\partial h^{(l+1)}}{\partial W^{(l)}}$$
 
 > 📖 **For detailed backpropagation mechanics**: See [mlp_intro.md Section 6](./mlp_intro.md#6-training-how-mlps-learn) for step-by-step derivations and [pytorch_ref.md Section 3](./pytorch_ref.md#3-autograd-finding-gradients) for implementation details.
-4. **Update Parameters**: $W^{(l)} \leftarrow W^{(l)} - \alpha \frac{\partial \mathcal{L}}{\partial W^{(l)}}$
+
+4. **Update Parameters**: $$W^{(l)} \leftarrow W^{(l)} - \alpha \frac{\partial \mathcal{L}}{\partial W^{(l)}}$$
 
 #### The Learning Rate α: Speed vs. Accuracy Trade-off
 
@@ -684,7 +809,9 @@ Loss
 ### From Simple to Sophisticated: The Evolution of Optimizers
 
 #### Plain Gradient Descent
-$$\theta_t = \theta_{t-1} - \alpha \nabla \mathcal{L}$$
+
+\begin{aligned} \theta_t &= \theta_{t-1} - \alpha \nabla \mathcal{L} \end{aligned}
+
 
 While elegant in its simplicity, plain gradient descent suffers from several limitations: it lacks momentum and stops abruptly when gradients vanish, treats all parameters with the same learning rate regardless of their needs, and tends to zigzag inefficiently through valleys in the loss landscape.
 
@@ -801,19 +928,30 @@ Before we explore how neural networks excel in language applications, we need to
 #### Converting Words to Vectors
 
 **Mathematical Foundation:**
-$$\mathbf{e}_i = E[i] \in \mathbb{R}^{d_{\text{model}}}$$
+
+\begin{aligned} \mathbf{e}_i &= E[i] \in \mathbb{R}^{d_{\text{model}}} \end{aligned}
+
 
 Where:
-- $E \in \mathbb{R}^{V \times d_{\text{model}}}$ is the embedding matrix
-- $V$ = vocabulary size (number of unique words/tokens)
-- $d_{\text{model}}$ = embedding dimension (e.g., 512, 768)
-- Each row $E[i]$ represents one word's embedding vector
+
+$$
+{\textstyle
+\begin{aligned}
+E \in \mathbb{R}^{V \times d_{\text{model}}} \newline
+V &= vocabulary size (number of unique words/tokens) \newline
+d_{\text{model}}
+\end{aligned}
+}
+$$
+
+- Each row $$E[i]$$ represents one word's embedding vector
 
 > 📖 **For embedding implementation**: See [pytorch_ref.md Section 10](./pytorch_ref.md#10-transformers-in-pytorch) for practical embedding layer usage and [knowledge_store.md](./knowledge_store.md) for how embeddings store semantic knowledge.
 
 #### Geometric Intuition: Words as Points in Space
 
 Think of embeddings as a **high-dimensional map** where:
+
 - Each word becomes a **point** in space
 - **Similar words cluster together** (near each other)
 - **Different meanings spread apart**
@@ -838,6 +976,7 @@ Semantic Space (2D slice):
 **Distributional Hypothesis**: "Words appearing in similar contexts have similar meanings"
 
 If we see:
+
 - "The **cat** sat on the mat"
 - "The **dog** sat on the mat"  
 - "The **tiger** prowled in the jungle"
@@ -854,6 +993,7 @@ The network learns that words in similar positions (contexts) should have simila
 "cat" → [1, 0, 0, 0, ...]  (all zeros except position 3)
 "dog" → [0, 1, 0, 0, ...]  (all zeros except position 7)
 ```
+
 - All words are **equally distant** (orthogonal)
 - **Sparse vectors** (mostly zeros)
 - **No semantic relationships** captured
@@ -863,12 +1003,15 @@ The network learns that words in similar positions (contexts) should have simila
 "cat" → [0.2, 0.8, -0.1, 0.3, ...]  (dense vector)
 "dog" → [0.3, 0.7, -0.2, 0.4, ...]  (similar to "cat")
 ```
+
 - **Dense representations** (all dimensions used)
 - **Semantic similarity** through vector proximity
 - **Learnable relationships**
 
 **Vector arithmetic captures relationships:**
-$$\mathbf{e}_{\text{king}} - \mathbf{e}_{\text{man}} + \mathbf{e}_{\text{woman}} \approx \mathbf{e}_{\text{queen}}$$
+
+\begin{aligned} \mathbf{e}_{\text{king}} - \mathbf{e}_{\text{man}} + \mathbf{e}_{\text{woman}} \approx \mathbf{e}_{\text{queen}} \end{aligned}
+
 
 > 📖 **For vector operations**: See [math_quick_ref.md](./math_quick_ref.md) for linear algebra fundamentals and [pytorch_ref.md Section 2](./pytorch_ref.md#2-tensors-vectors--matrices-in-pytorch) for tensor operations.
 
@@ -887,9 +1030,12 @@ With the fundamentals of neural network training and text representation under o
 Neural networks are fundamentally **geometric transformation systems** operating in high-dimensional space:
 
 **Core Principle:**
-$$\boxed{\text{Linear Transform} + \text{Nonlinear Warp} \rightarrow \text{Complex Decision Boundaries}}$$
+
+\begin{aligned} \boxed{\text{Linear Transform} + \text{Nonlinear Warp} \rightarrow \text{Complex Decision Boundaries}} \end{aligned}
+
 
 **Component Roles:**
+
 - **Weights**: Feature importance and transformation direction
 - **Bias**: Flexible boundary positioning  
 - **Activation**: Space warping for nonlinearity
@@ -955,6 +1101,7 @@ With neural network fundamentals now in place, you're ready to explore deeper te
 > **Continue Learning**: Ready to build networks? 
 > 
 > **Next Steps by Learning Goal:**
+>
 > - **🏗️ Hands-on Implementation**: [mlp_intro.md](./mlp_intro.md) - Build MLPs step-by-step with worked examples
 > - **🔄 Sequential Processing**: [rnn_intro.md](./rnn_intro.md) - Learn RNNs and understand the path to transformers
 > - **⚡ Modern Architectures**: [transformers.md](./transformers.md) - Complete transformer technical reference
