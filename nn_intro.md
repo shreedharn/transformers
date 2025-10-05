@@ -2,6 +2,10 @@
 
 A foundational guide to understanding neural networks, their role in artificial intelligence, and why they revolutionized natural language processing.
 
+> ⚠️ UNDER CONSTRUCTION 
+
+> 🚧 This site requires formatting and extensive fixes related to displaying mathematical formulas with MathJax.
+
 ## ⚡ Quick Overview: Where We're Heading
 
 **What are transformers?** AI models that excel at understanding and generating human-like text.
