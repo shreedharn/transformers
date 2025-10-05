@@ -2,6 +2,10 @@
 
 A complete educational resource covering transformer architectures from historical foundations to practical implementation, designed for researchers, practitioners, and students seeking deep understanding of modern AI systems.
 
+> ⚠️ UNDER CONSTRUCTION 
+
+> 🚧 This page requires formatting and extensive fixes related to displaying mathematical formulas with MathJax.
+
 ## 📚 Repository Overview
 
 This repository provides a comprehensive exploration of transformer architectures through multiple interconnected documents, each serving a specific pedagogical purpose:
