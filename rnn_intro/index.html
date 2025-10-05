@@ -1,0 +1,3005 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../mlp_intro/">
+      
+      
+        <link rel="next" href="../transformers_fundamentals/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Sequential Modeling with RNN - Introduction to Transformers</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../styles.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#recurrent-neural-networks-rnns-a-step-by-step-tutorial" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Introduction to Transformers" class="md-header__button md-logo" aria-label="Introduction to Transformers" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Introduction to Transformers
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Sequential Modeling with RNN
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Introduction to Transformers" class="md-nav__button md-logo" aria-label="Introduction to Transformers" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Introduction to Transformers
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nn_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Neural Network Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mlp_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Building Networks with MLP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Sequential Modeling with RNN
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sequential Modeling with RNN
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-sequential-challenge-why-mlps-arent-enough" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. The Sequential Challenge: Why MLPs Aren't Enough
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. The Sequential Challenge: Why MLPs Aren&#39;t Enough">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem-with-fixed-size-inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem with Fixed-Size Inputs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failed-approaches-bags-of-words-and-padding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Failed Approaches: Bags of Words and Padding
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Failed Approaches: Bags of Words and Padding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-bag-of-words-ignoring-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Bag-of-Words (Ignoring Order)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-fixed-window-approaches" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Fixed-Window Approaches
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-truncation-and-padding" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Truncation and Padding
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-mlps-failed-for-sequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why MLPs Failed for Sequences
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-what-is-an-rnn" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. What is an RNN?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. What is an RNN?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-rnn-innovation-adding-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      The RNN Innovation: Adding Memory
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rnn-vs-regular-neural-network-mlp" class="md-nav__link">
+    <span class="md-ellipsis">
+      RNN vs Regular Neural Network (MLP)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-the-core-rnn-equation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. The Core RNN Equation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. The Core RNN Equation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#visual-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visual Breakdown
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-understanding-hidden-states-vs-hidden-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Understanding Hidden States vs Hidden Layers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Understanding Hidden States vs Hidden Layers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-concepts-states-vs-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Concepts: States vs Layers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-distinctions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Distinctions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Distinctions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hidden-layers-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hidden Layers (Architecture)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hidden-states-dynamic-representations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hidden States (Dynamic Representations)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rnn-specific-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      RNN-Specific Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RNN-Specific Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-architecture-hidden-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Architecture (Hidden Layer)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-dynamic-states-hidden-states" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Dynamic States (Hidden States)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-relationship-for-rnns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Relationship for RNNs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-vs-structure-analogy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory vs Structure Analogy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory vs Structure Analogy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hidden-layer--the-notebook-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hidden Layer = The Notebook Design
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hidden-states--the-actual-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hidden States = The Actual Notes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-confusions-clarified" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Confusions Clarified
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Confusions Clarified">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#confusion-1-hidden-layers-store-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Confusion 1: "Hidden layers store memory"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confusion-2-rnns-have-one-hidden-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Confusion 2: "RNNs have one hidden state"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confusion-3-adding-more-hidden-layers-gives-more-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Confusion 3: "Adding more hidden layers gives more memory"
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practical-implications-for-rnns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Implications for RNNs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Implications for RNNs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-model-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Model Design
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Debugging
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Training
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-insight-for-rnns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Insight for RNNs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-where-these-weights-come-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Where These Weights Come From
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Where These Weights Come From">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#weight-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Weight Initialization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-process-backpropagation-through-time-bptt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Training Process: Backpropagation Through Time (BPTT)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weight-sharing-vs-mlps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Weight Sharing vs MLPs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-hidden-size-and-embedding-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Hidden Size and Embedding Size
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Hidden Size and Embedding Size">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#embedding-size-e-input-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      Embedding Size (E): Input Detail
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hidden-size-h-memory-capacity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hidden Size (H): Memory Capacity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weight-matrix-shapes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Weight Matrix Shapes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-worked-example-cat-sat-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Worked Example: "cat sat here"
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Worked Example: &#34;cat sat here&#34;">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-0-initialize" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 0: Initialize
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1-process-cat" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Process "cat"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-process-sat" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Process "sat"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-process-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Process "here"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary-memory-evolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary: Memory Evolution
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-rnn-vs-mlp-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. RNN vs MLP Training
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. RNN vs MLP Training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mlp-training-layer-by-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      MLP Training: Layer-by-Layer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rnn-training-backpropagation-through-time-bptt" class="md-nav__link">
+    <span class="md-ellipsis">
+      RNN Training: Backpropagation Through Time (BPTT)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-gradient-flow-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Gradient Flow Challenge
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-the-vanishing-gradient-problem-rnns-fatal-flaw" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. The Vanishing Gradient Problem: RNN's Fatal Flaw
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. The Vanishing Gradient Problem: RNN&#39;s Fatal Flaw">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-gradients-vanish" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Gradients Vanish
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#impact-on-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Impact on Learning
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-evolution-beyond-vanilla-rnns" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Evolution Beyond Vanilla RNNs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Evolution Beyond Vanilla RNNs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gating-mechanisms-lstms-and-grus" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gating Mechanisms: LSTMs and GRUs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq2seq-the-encoder-decoder-revolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Seq2Seq: The Encoder-Decoder Revolution
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Seq2Seq: The Encoder-Decoder Revolution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-encoder-decoder-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Encoder-Decoder Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Framework
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-with-teacher-forcing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Training with Teacher Forcing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#applications-unlocked" class="md-nav__link">
+    <span class="md-ellipsis">
+      Applications Unlocked
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-information-bottleneck-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Information Bottleneck Problem
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-summary-the-rnn-legacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Summary: The RNN Legacy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Summary: The RNN Legacy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-rnns-changed-everything" class="md-nav__link">
+    <span class="md-ellipsis">
+      How RNNs Changed Everything
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-rnns-led-to-transformers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why RNNs Led to Transformers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rnns-lasting-impact" class="md-nav__link">
+    <span class="md-ellipsis">
+      RNN's Lasting Impact
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-final-visualization-cat-sat-here-through-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Final Visualization: "cat sat here" Through Time
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. Next Steps
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. Next Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-bridge-to-modern-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Bridge to Modern AI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#your-learning-journey-continues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Your Learning Journey Continues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-complete-historical-arc" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Complete Historical Arc
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transformers_fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transformers Fundamentals
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transformers_advanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transformers Advanced
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knowledge_store/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Knowledge Store
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            References
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pytorch_ref/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PyTorch Primer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transformers_math1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mathematical Foundations 1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transformers_math2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mathematical Foundations 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../math_quick_ref/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mathematical Quick Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../history_quick_ref/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sequence Modeling History
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    README
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LICENSE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    LICENSE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-sequential-challenge-why-mlps-arent-enough" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. The Sequential Challenge: Why MLPs Aren't Enough
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. The Sequential Challenge: Why MLPs Aren&#39;t Enough">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem-with-fixed-size-inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem with Fixed-Size Inputs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failed-approaches-bags-of-words-and-padding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Failed Approaches: Bags of Words and Padding
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Failed Approaches: Bags of Words and Padding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-bag-of-words-ignoring-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Bag-of-Words (Ignoring Order)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-fixed-window-approaches" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Fixed-Window Approaches
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-truncation-and-padding" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Truncation and Padding
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-mlps-failed-for-sequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why MLPs Failed for Sequences
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-what-is-an-rnn" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. What is an RNN?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. What is an RNN?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-rnn-innovation-adding-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      The RNN Innovation: Adding Memory
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rnn-vs-regular-neural-network-mlp" class="md-nav__link">
+    <span class="md-ellipsis">
+      RNN vs Regular Neural Network (MLP)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-the-core-rnn-equation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. The Core RNN Equation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. The Core RNN Equation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#visual-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visual Breakdown
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-understanding-hidden-states-vs-hidden-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Understanding Hidden States vs Hidden Layers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Understanding Hidden States vs Hidden Layers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-concepts-states-vs-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Concepts: States vs Layers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-distinctions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Distinctions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Distinctions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hidden-layers-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hidden Layers (Architecture)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hidden-states-dynamic-representations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hidden States (Dynamic Representations)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rnn-specific-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      RNN-Specific Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RNN-Specific Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-architecture-hidden-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Architecture (Hidden Layer)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-dynamic-states-hidden-states" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Dynamic States (Hidden States)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-relationship-for-rnns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Relationship for RNNs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-vs-structure-analogy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory vs Structure Analogy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory vs Structure Analogy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hidden-layer--the-notebook-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hidden Layer = The Notebook Design
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hidden-states--the-actual-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hidden States = The Actual Notes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-confusions-clarified" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Confusions Clarified
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Confusions Clarified">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#confusion-1-hidden-layers-store-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Confusion 1: "Hidden layers store memory"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confusion-2-rnns-have-one-hidden-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Confusion 2: "RNNs have one hidden state"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confusion-3-adding-more-hidden-layers-gives-more-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Confusion 3: "Adding more hidden layers gives more memory"
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practical-implications-for-rnns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Implications for RNNs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Implications for RNNs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-model-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Model Design
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Debugging
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Training
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-insight-for-rnns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Insight for RNNs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-where-these-weights-come-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Where These Weights Come From
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Where These Weights Come From">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#weight-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Weight Initialization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-process-backpropagation-through-time-bptt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Training Process: Backpropagation Through Time (BPTT)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weight-sharing-vs-mlps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Weight Sharing vs MLPs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-hidden-size-and-embedding-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Hidden Size and Embedding Size
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Hidden Size and Embedding Size">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#embedding-size-e-input-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      Embedding Size (E): Input Detail
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hidden-size-h-memory-capacity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hidden Size (H): Memory Capacity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weight-matrix-shapes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Weight Matrix Shapes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-worked-example-cat-sat-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Worked Example: "cat sat here"
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Worked Example: &#34;cat sat here&#34;">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-0-initialize" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 0: Initialize
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1-process-cat" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Process "cat"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-process-sat" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Process "sat"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-process-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Process "here"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary-memory-evolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary: Memory Evolution
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-rnn-vs-mlp-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. RNN vs MLP Training
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. RNN vs MLP Training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mlp-training-layer-by-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      MLP Training: Layer-by-Layer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rnn-training-backpropagation-through-time-bptt" class="md-nav__link">
+    <span class="md-ellipsis">
+      RNN Training: Backpropagation Through Time (BPTT)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-gradient-flow-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Gradient Flow Challenge
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-the-vanishing-gradient-problem-rnns-fatal-flaw" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. The Vanishing Gradient Problem: RNN's Fatal Flaw
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. The Vanishing Gradient Problem: RNN&#39;s Fatal Flaw">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-gradients-vanish" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Gradients Vanish
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#impact-on-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Impact on Learning
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-evolution-beyond-vanilla-rnns" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Evolution Beyond Vanilla RNNs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Evolution Beyond Vanilla RNNs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gating-mechanisms-lstms-and-grus" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gating Mechanisms: LSTMs and GRUs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq2seq-the-encoder-decoder-revolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Seq2Seq: The Encoder-Decoder Revolution
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Seq2Seq: The Encoder-Decoder Revolution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-encoder-decoder-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Encoder-Decoder Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Framework
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-with-teacher-forcing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Training with Teacher Forcing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#applications-unlocked" class="md-nav__link">
+    <span class="md-ellipsis">
+      Applications Unlocked
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-information-bottleneck-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Information Bottleneck Problem
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-summary-the-rnn-legacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Summary: The RNN Legacy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Summary: The RNN Legacy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-rnns-changed-everything" class="md-nav__link">
+    <span class="md-ellipsis">
+      How RNNs Changed Everything
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-rnns-led-to-transformers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why RNNs Led to Transformers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rnns-lasting-impact" class="md-nav__link">
+    <span class="md-ellipsis">
+      RNN's Lasting Impact
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-final-visualization-cat-sat-here-through-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Final Visualization: "cat sat here" Through Time
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. Next Steps
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. Next Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-bridge-to-modern-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Bridge to Modern AI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#your-learning-journey-continues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Your Learning Journey Continues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-complete-historical-arc" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Complete Historical Arc
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="recurrent-neural-networks-rnns-a-step-by-step-tutorial">Recurrent Neural Networks (RNNs): A Step-by-Step Tutorial<a class="headerlink" href="#recurrent-neural-networks-rnns-a-step-by-step-tutorial" title="Permanent link">&para;</a></h1>
+<p><strong>Building on your MLP foundation:</strong> In the <a href="../mlp_intro/">MLP Tutorial</a>, you learned how multiple layers enable learning complex, non-linear patterns. But MLPs have a crucial limitation—they can only process fixed-size inputs and have no memory between different examples. What happens when you need to understand sequences like "The cat sat on the mat" where word order matters and context builds up over time?</p>
+<p><strong>What you'll learn:</strong> How RNNs solve the sequence modeling challenge by adding memory to neural networks, why this breakthrough enabled modern language AI, and how the evolution from early RNNs to advanced architectures paved the way for transformers. We'll work through detailed examples and trace the historical journey from RNN limitations to modern solutions.</p>
+<p><strong>Prerequisites:</strong> Completed <a href="../mlp_intro/">MLP Tutorial</a> and basic understanding of sequential data (text, time series).</p>
+<h2 id="1-the-sequential-challenge-why-mlps-arent-enough">1. The Sequential Challenge: Why MLPs Aren't Enough<a class="headerlink" href="#1-the-sequential-challenge-why-mlps-arent-enough" title="Permanent link">&para;</a></h2>
+<h3 id="the-problem-with-fixed-size-inputs">The Problem with Fixed-Size Inputs<a class="headerlink" href="#the-problem-with-fixed-size-inputs" title="Permanent link">&para;</a></h3>
+<p>Remember from the <a href="../mlp_intro/">MLP Tutorial</a> how MLPs excel at learning complex patterns by stacking multiple layers? But there's a fundamental limitation: MLPs require <strong>fixed-size inputs</strong>. Every example fed into the network must have exactly the same number of features.</p>
+<p><strong>This creates a major problem for sequential data:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&quot;Hello world&quot; (2 words) vs &quot;The quick brown fox jumps&quot; (5 words)
+</code></pre></div>
+<p>How do you feed both into the same MLP when they have different lengths?</p>
+<h3 id="failed-approaches-bags-of-words-and-padding">Failed Approaches: Bags of Words and Padding<a class="headerlink" href="#failed-approaches-bags-of-words-and-padding" title="Permanent link">&para;</a></h3>
+<p><strong>Before RNNs, researchers tried several workarounds:</strong></p>
+<h4 id="1-bag-of-words-ignoring-order">1. Bag-of-Words (Ignoring Order)<a class="headerlink" href="#1-bag-of-words-ignoring-order" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&quot;The cat sat on the mat&quot; → [the: 2, cat: 1, sat: 1, on: 1, mat: 1]
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>&quot;The mat sat on the cat&quot; → [the: 2, cat: 1, sat: 1, on: 1, mat: 1]
+</code></pre></div>
+<p><strong>Problem</strong>: Both sentences get identical representations despite opposite meanings!</p>
+<h4 id="2-fixed-window-approaches">2. Fixed-Window Approaches<a class="headerlink" href="#2-fixed-window-approaches" title="Permanent link">&para;</a></h4>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&quot;The cat sat on the mat&quot; with window size 3:
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>[&quot;The cat sat&quot;, &quot;cat sat on&quot;, &quot;sat on the&quot;, &quot;on the mat&quot;]
+</code></pre></div>
+<strong>Problems</strong>:</p>
+<ul>
+<li>Can't capture dependencies longer than window size</li>
+<li>Arbitrary choice of window size</li>
+<li>Exponential vocabulary growth</li>
+</ul>
+<h4 id="3-truncation-and-padding">3. Truncation and Padding<a class="headerlink" href="#3-truncation-and-padding" title="Permanent link">&para;</a></h4>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Truncate: &quot;The quick brown fox jumps over the lazy dog&quot; → &quot;The quick brown&quot;
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Pad: &quot;Hello world&quot; → [&quot;Hello&quot;, &quot;world&quot;, PAD, PAD, PAD]
+</code></pre></div>
+<strong>Problems</strong>:</p>
+<ul>
+<li>Information loss from truncation  </li>
+<li>Computational waste from padding</li>
+<li>Still need to choose a fixed length</li>
+</ul>
+<h3 id="why-mlps-failed-for-sequences">Why MLPs Failed for Sequences<a class="headerlink" href="#why-mlps-failed-for-sequences" title="Permanent link">&para;</a></h3>
+<p><strong>Mathematical Constraint</strong>: If we have sequences of different lengths, there's no natural way to feed both into the same MLP architecture:</p>
+<p>$$
+\begin{aligned}
+\text{Sequence lengths:} \quad &amp;n \neq m \newline
+\text{Problem:} \quad &amp;\text{Weight matrix } W^{(1)} \text{ requires fixed input dimension}
+\end{aligned}
+$$</p>
+<p><strong>Missing Piece</strong>: MLPs have no mechanism to handle variable-length inputs or model temporal dependencies. Each input dimension is treated independently, with no understanding of sequential structure.</p>
+<p><strong>The Need</strong>: What if we could process sequences <strong>one element at a time</strong> while maintaining <strong>memory</strong> of what we've seen so far?</p>
+<hr />
+<h2 id="2-what-is-an-rnn">2. What is an RNN?<a class="headerlink" href="#2-what-is-an-rnn" title="Permanent link">&para;</a></h2>
+<p><strong>The Breakthrough Idea</strong>: What if we could process sequences <strong>one element at a time</strong> while maintaining <strong>internal memory</strong> that gets updated as we go? This is exactly what Recurrent Neural Networks (RNNs) introduced.</p>
+<h3 id="the-rnn-innovation-adding-memory">The RNN Innovation: Adding Memory<a class="headerlink" href="#the-rnn-innovation-adding-memory" title="Permanent link">&para;</a></h3>
+<p><strong>RNNs solved the sequential challenge</strong> with a revolutionary concept: instead of processing the entire sequence at once, process it <strong>one element at a time</strong>, maintaining a <strong>hidden state</strong> that carries information forward.</p>
+<p><strong>Core Innovation</strong>: The network has a "memory" (hidden state) that:</p>
+<ol>
+<li>Gets updated after processing each sequence element</li>
+<li>Carries information about everything seen so far  </li>
+<li>Influences how future elements are processed</li>
+</ol>
+<h3 id="rnn-vs-regular-neural-network-mlp">RNN vs Regular Neural Network (MLP)<a class="headerlink" href="#rnn-vs-regular-neural-network-mlp" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>📚 Foundational Knowledge</strong>: For a complete step-by-step tutorial on MLPs, see <strong><a href="../mlp_intro/">mlp_intro.md</a></strong>.</p>
+</blockquote>
+<p><strong>Regular MLP (Multi-Layer Perceptron):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Input → Hidden Layer → Output
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  x   →      h       →   y
+</code></pre></div></p>
+<ul>
+<li>Processes fixed-size inputs all at once</li>
+<li>No memory between different inputs</li>
+<li>Each layer has different weights</li>
+</ul>
+<p><strong>RNN (Recurrent Neural Network):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Time step 1: x₁ → RNN → h₁ → y₁
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Time step 2: x₂ → RNN → h₂ → y₂  (uses h₁ as memory)
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Time step 3: x₃ → RNN → h₃ → y₃  (uses h₂ as memory)
+</code></pre></div></p>
+<ul>
+<li>Processes sequences one element at a time</li>
+<li>Carries "hidden state" (memory) between time steps</li>
+<li>Same weights reused at every time step</li>
+</ul>
+<p><strong>Key Insight:</strong> An RNN is like having a single neural network that processes a sequence by applying itself repeatedly, each time using both the current input and its memory of the past.</p>
+<hr />
+<h2 id="3-the-core-rnn-equation">3. The Core RNN Equation<a class="headerlink" href="#3-the-core-rnn-equation" title="Permanent link">&para;</a></h2>
+<p>The heart of every RNN is this update rule:</p>
+<p>$$
+\begin{aligned}
+h_t = \tanh(x_t W_{xh} + h_{t-1} W_{hh} + b_h)
+\end{aligned}
+$$</p>
+<p>Let's break this down term by term:</p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Size</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$$x_t$$</td>
+<td>$$[1, E]$$</td>
+<td><strong>Current input</strong> - word embedding at time $$t$$</td>
+</tr>
+<tr>
+<td>$$h_{t-1}$$</td>
+<td>$$[1, H]$$</td>
+<td><strong>Past memory</strong> - hidden state from previous step</td>
+</tr>
+<tr>
+<td>$$W_{xh}$$</td>
+<td>$$[E, H]$$</td>
+<td><strong>Input weights</strong> - transform current input</td>
+</tr>
+<tr>
+<td>$$W_{hh}$$</td>
+<td>$$[H, H]$$</td>
+<td><strong>Hidden weights</strong> - transform past memory</td>
+</tr>
+<tr>
+<td>$$b_h$$</td>
+<td>$$(H,)$$</td>
+<td><strong>Bias</strong> - learned offset</td>
+</tr>
+<tr>
+<td>$$h_t$$</td>
+<td>$$(H,)$$</td>
+<td><strong>New memory</strong> - updated hidden state</td>
+</tr>
+</tbody>
+</table>
+<h3 id="visual-breakdown">Visual Breakdown<a class="headerlink" href="#visual-breakdown" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Past Memory    Current Input
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    h_{t-1}  +      x_t
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>       ↓              ↓
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>   h_{t-1} W_{hh} + x_t W_{xh} + b_h
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>                      ↓
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>                   tanh(...)
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>                      ↓
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>                New Memory h_t
+</code></pre></div>
+<p><strong>Why <code>tanh</code>?</strong></p>
+<ul>
+<li><strong>Non-linearity:</strong> Without it, the RNN would just be linear algebra (boring!)</li>
+<li><strong>Bounded output:</strong> <code>tanh</code> keeps values between -1 and +1, preventing explosion</li>
+<li><strong>Zero-centered:</strong> Helps with gradient flow during training</li>
+</ul>
+<p><strong>The Magic:</strong> At each step, the RNN combines three components:</p>
+<p>$$
+\begin{aligned}
+\text{Current Input:} \quad &amp;x_t W_{xh} \quad \text{(What's happening now)} \newline
+\text{Past Memory:} \quad &amp;h_{t-1} W_{hh} \quad \text{(What it remembers)} \newline
+\text{Learned Bias:} \quad &amp;b_h \quad \text{(Model's learned offset)}
+\end{aligned}
+$$</p>
+<hr />
+<h2 id="4-understanding-hidden-states-vs-hidden-layers">4. Understanding Hidden States vs Hidden Layers<a class="headerlink" href="#4-understanding-hidden-states-vs-hidden-layers" title="Permanent link">&para;</a></h2>
+<p>Before diving deeper into RNN implementation details, it's crucial to clarify a fundamental distinction that often confuses newcomers: <strong>hidden states</strong> vs <strong>hidden layers</strong>. This distinction is especially important for RNNs because they handle both concepts in unique ways.</p>
+<h3 id="core-concepts-states-vs-layers">Core Concepts: States vs Layers<a class="headerlink" href="#core-concepts-states-vs-layers" title="Permanent link">&para;</a></h3>
+<p><strong>Hidden State</strong>: The internal representation at a specific point in time or processing step
+<strong>Hidden Layer</strong>: The architectural component (collection of neurons) that produces hidden states</p>
+<h3 id="key-distinctions">Key Distinctions<a class="headerlink" href="#key-distinctions" title="Permanent link">&para;</a></h3>
+<h4 id="hidden-layers-architecture">Hidden Layers (Architecture)<a class="headerlink" href="#hidden-layers-architecture" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>What</strong>: Physical neural network structure between input and output</li>
+<li><strong>Purpose</strong>: Transform data through learned parameters (weights and biases)</li>
+<li><strong>Persistence</strong>: Fixed architecture throughout training and inference</li>
+<li><strong>Example</strong>: A 128-neuron recurrent layer in an RNN</li>
+</ul>
+<h4 id="hidden-states-dynamic-representations">Hidden States (Dynamic Representations)<a class="headerlink" href="#hidden-states-dynamic-representations" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>What</strong>: Actual vector values flowing through the network at any given moment</li>
+<li><strong>Purpose</strong>: Encode processed information at intermediate stages</li>
+<li><strong>Persistence</strong>: Change with each input/time step</li>
+<li><strong>Example</strong>: 128-dimensional vector of activations from that layer</li>
+</ul>
+<h3 id="rnn-specific-examples">RNN-Specific Examples<a class="headerlink" href="#rnn-specific-examples" title="Permanent link">&para;</a></h3>
+<h4 id="the-architecture-hidden-layer">The Architecture (Hidden Layer)<a class="headerlink" href="#the-architecture-hidden-layer" title="Permanent link">&para;</a></h4>
+<p>In our RNN equation, we can identify the architectural versus dynamic components:</p>
+<p>$$h_t = \tanh(x_t W_{xh} + h_{t-1} W_{hh} + b_h)$$</p>
+<p><strong>Hidden Layer (Architecture)</strong>: The fixed computational structure</p>
+<p>$$
+\begin{aligned}
+\text{Weight matrices:} \quad &amp;W_{xh}, W_{hh} \text{ and bias } b_h \newline
+\text{Layer size:} \quad &amp;\text{Fixed at } H \text{ neurons (e.g., } H = 128\text{)} \newline
+\text{Parameters:} \quad &amp;\text{Same weights used at every time step}
+\end{aligned}
+$$</p>
+<h4 id="the-dynamic-states-hidden-states">The Dynamic States (Hidden States)<a class="headerlink" href="#the-dynamic-states-hidden-states" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Hidden Layer (architecture): Fixed 128-neuron recurrent layer
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Hidden States (dynamic):
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>  h₀: [0.0, 0.0, ..., 0.0] (initial state, 128 values)
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  h₁: [0.2, 0.8, ..., 0.1] (after processing x₁, 128 values)
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  h₂: [0.7, 0.3, ..., 0.9] (after processing x₂, 128 values)
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>  h₃: [0.1, 0.5, ..., 0.4] (after processing x₃, 128 values)
+</code></pre></div>
+<p><strong>Key Insight</strong>: The <strong>same layer</strong> produces different <strong>states</strong> over time. The RNN architecture is fixed, but the hidden states evolve as the sequence is processed.</p>
+<h3 id="mathematical-relationship-for-rnns">Mathematical Relationship for RNNs<a class="headerlink" href="#mathematical-relationship-for-rnns" title="Permanent link">&para;</a></h3>
+<p>For RNNs, the relationship is:</p>
+<p>$$
+\begin{aligned}
+\text{Hidden Layer:} \quad &amp;\mathbb{R}^{E} \times \mathbb{R}^{H} \rightarrow \mathbb{R}^{H} \newline
+\text{Hidden State:} \quad &amp;h_t = \tanh(x_t W_{xh} + h_{t-1} W_{hh} + b_h)
+\end{aligned}
+$$</p>
+<p>Where the mathematical relationship is defined by:</p>
+<p>$$
+\begin{aligned}
+\text{Layer parameters:} \quad &amp;W_{xh} \in \mathbb{R}^{E \times H}, \; W_{hh} \in \mathbb{R}^{H \times H}, \; b_h \in \mathbb{R}^H \newline
+\text{State evolution:} \quad &amp;h_t \text{ depends on current input } x_t \text{ and previous state } h_{t-1}
+\end{aligned}
+$$</p>
+<h3 id="memory-vs-structure-analogy">Memory vs Structure Analogy<a class="headerlink" href="#memory-vs-structure-analogy" title="Permanent link">&para;</a></h3>
+<p>Think of it like a <strong>notebook and note-taking process</strong>:</p>
+<h4 id="hidden-layer--the-notebook-design">Hidden Layer = The Notebook Design<a class="headerlink" href="#hidden-layer--the-notebook-design" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Fixed structure</strong>: Number of pages (neurons), ruling style (activation function)</li>
+<li><strong>Consistent tools</strong>: Same pen (weights) used throughout</li>
+<li><strong>Physical constraints</strong>: Page size determines how much can be written</li>
+</ul>
+<h4 id="hidden-states--the-actual-notes">Hidden States = The Actual Notes<a class="headerlink" href="#hidden-states--the-actual-notes" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Content changes</strong>: Each page contains different information</li>
+<li><strong>Temporal evolution</strong>: Notes build up over time</li>
+<li><strong>Dynamic information</strong>: What's written depends on what you're processing</li>
+</ul>
+<h3 id="common-confusions-clarified">Common Confusions Clarified<a class="headerlink" href="#common-confusions-clarified" title="Permanent link">&para;</a></h3>
+<h4 id="confusion-1-hidden-layers-store-memory">Confusion 1: "Hidden layers store memory"<a class="headerlink" href="#confusion-1-hidden-layers-store-memory" title="Permanent link">&para;</a></h4>
+<p>❌ <strong>Wrong</strong>: Layers are architectural blueprints—they don't store anything
+✅ <strong>Correct</strong>: Hidden states carry information/memory from one time step to the next</p>
+<p><strong>RNN Context</strong>: The hidden state $$h_{t-1}$$ carries memory forward, not the layer itself.</p>
+<h4 id="confusion-2-rnns-have-one-hidden-state">Confusion 2: "RNNs have one hidden state"<a class="headerlink" href="#confusion-2-rnns-have-one-hidden-state" title="Permanent link">&para;</a></h4>
+<p>❌ <strong>Wrong</strong>: RNNs have one type of recurrent layer architecture
+✅ <strong>Correct</strong>: RNNs produce a sequence of hidden states over time ($$h_1, h_2, h_3, ..., h_T$$)</p>
+<p><strong>RNN Context</strong>: Each time step produces a new hidden state that encodes the sequence history.</p>
+<h4 id="confusion-3-adding-more-hidden-layers-gives-more-memory">Confusion 3: "Adding more hidden layers gives more memory"<a class="headerlink" href="#confusion-3-adding-more-hidden-layers-gives-more-memory" title="Permanent link">&para;</a></h4>
+<p>❌ <strong>Wrong</strong>: More layers do not equal longer memory
+✅ <strong>Correct</strong>: Layer depth affects transformation complexity; sequence length affects memory span</p>
+<p><strong>RNN Context</strong>: Memory span depends on sequence length and gradient flow, not layer count.</p>
+<h3 id="practical-implications-for-rnns">Practical Implications for RNNs<a class="headerlink" href="#practical-implications-for-rnns" title="Permanent link">&para;</a></h3>
+<h4 id="for-model-design">For Model Design<a class="headerlink" href="#for-model-design" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Layer architecture</strong>: Choose hidden size based on memory capacity needs</li>
+<li><strong>State initialization</strong>: Decide how to initialize initial state (usually zeros)</li>
+<li><strong>Layer stacking</strong>: Multiple RNN layers create deeper transformations</li>
+</ul>
+<p>$$
+\begin{aligned}
+\text{Hidden size:} \quad &amp;H \text{ (memory capacity)} \newline
+\text{Initial state:} \quad &amp;h_0 \text{ (typically zeros)} \newline
+\text{Layer depth:} \quad &amp;L \text{ (transformation complexity)}
+\end{aligned}
+$$</p>
+<h4 id="for-debugging">For Debugging<a class="headerlink" href="#for-debugging" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Analyze layer</strong>: Check weight initialization, gradient flow through parameters</li>
+<li><strong>Analyze states</strong>: Monitor hidden state evolution, detect vanishing/exploding patterns</li>
+<li><strong>Memory tracking</strong>: Watch how information flows between time steps</li>
+</ul>
+<p>$$
+\begin{aligned}
+\text{Information flow:} \quad h_{t-1} \xrightarrow{\text{carries memory}} h_t
+\end{aligned}
+$$</p>
+<h4 id="for-training">For Training<a class="headerlink" href="#for-training" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Layer-level</strong>: Adjust hidden size, learning rates, regularization</li>
+<li><strong>State-level</strong>: Monitor gradient magnitudes, use gradient clipping, detect saturation</li>
+</ul>
+<h3 id="key-insight-for-rnns">Key Insight for RNNs<a class="headerlink" href="#key-insight-for-rnns" title="Permanent link">&para;</a></h3>
+<p><strong>Hidden layers</strong> are the <strong>computational machinery</strong> (the RNN equation with its weights), while <strong>hidden states</strong> are the <strong>evolving memory</strong> that flows through this machinery at each time step.</p>
+<p>In RNNs specifically:</p>
+<ul>
+<li><strong>Same layer</strong> processes each time step</li>
+<li><strong>Different states</strong> result from each processing step</li>
+<li><strong>Memory continuity</strong> comes from passing previous states to compute new states</li>
+</ul>
+<p>$$
+\begin{aligned}
+\text{Memory flow:} \quad h_{t-1} \rightarrow h_t \quad \text{(Previous state influences current state)}
+\end{aligned}
+$$</p>
+<p>Understanding this distinction is crucial for grasping how RNNs maintain memory across time while using a fixed computational structure.</p>
+<hr />
+<h2 id="5-where-these-weights-come-from">5. Where These Weights Come From<a class="headerlink" href="#5-where-these-weights-come-from" title="Permanent link">&para;</a></h2>
+<h3 id="weight-initialization">Weight Initialization<a class="headerlink" href="#weight-initialization" title="Permanent link">&para;</a></h3>
+<p>Initially, the following parameters are <strong>random numbers</strong>:</p>
+<p>$$
+\begin{aligned}
+W_{xh}, W_{hh}, b_h \quad \text{(Input weights, hidden weights, and bias)}
+\end{aligned}
+$$</p>
+<p>The RNN learns by adjusting these weights through training.</p>
+<h3 id="training-process-backpropagation-through-time-bptt">Training Process: Backpropagation Through Time (BPTT)<a class="headerlink" href="#training-process-backpropagation-through-time-bptt" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Forward Pass (compute predictions):
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Step 1: h₁ = tanh(x₁W_xh + h₀W_hh + b_h)
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>Step 2: h₂ = tanh(x₂W_xh + h₁W_hh + b_h)
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>Step 3: h₃ = tanh(x₃W_xh + h₂W_hh + b_h)
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>Compute Loss:
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>loss = compare(predictions, true_labels)
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>Backward Pass (compute gradients):
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>loss/W_xh flows back through ALL time steps
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>loss/W_hh flows back through ALL time steps
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>loss/b_h  flows back through ALL time steps
+</code></pre></div>
+<p><strong>Key Point:</strong> The same weights are used at every time step, but gradients flow back through the entire sequence:</p>
+<p>$$
+\begin{aligned}
+\text{Shared weights:} \quad W_{xh}, W_{hh} \quad \text{(reused at each time step)}
+\end{aligned}
+$$</p>
+<h3 id="weight-sharing-vs-mlps">Weight Sharing vs MLPs<a class="headerlink" href="#weight-sharing-vs-mlps" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th><strong>MLP</strong></th>
+<th><strong>RNN</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Layer 1 has weights $$W_1$$</td>
+<td>Time step 1 uses weights $$W_{xh}, W_{hh}$$</td>
+</tr>
+<tr>
+<td>Layer 2 has weights $$W_2$$</td>
+<td>Time step 2 uses <strong>same</strong> weights $$W_{xh}, W_{hh}$$</td>
+</tr>
+<tr>
+<td>Layer 3 has weights $$W_3$$</td>
+<td>Time step 3 uses <strong>same</strong> weights $$W_{xh}, W_{hh}$$</td>
+</tr>
+<tr>
+<td>Each layer learns different transformations</td>
+<td>All time steps share the same transformation</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-hidden-size-and-embedding-size">6. Hidden Size and Embedding Size<a class="headerlink" href="#6-hidden-size-and-embedding-size" title="Permanent link">&para;</a></h2>
+<h3 id="embedding-size-e-input-detail">Embedding Size (E): Input Detail<a class="headerlink" href="#embedding-size-e-input-detail" title="Permanent link">&para;</a></h3>
+<p>Think of embedding size as the "resolution" of your input:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Low resolution (E=2):  &quot;cat&quot; → [0.1, 0.8]
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>High resolution (E=100): &quot;cat&quot; → [0.1, 0.8, -0.3, 0.5, ..., 0.2]
+</code></pre></div>
+<ul>
+<li><strong>Larger E:</strong> More detailed representation, captures more nuances</li>
+<li><strong>Smaller E:</strong> Simpler representation, less detail but faster computation</li>
+</ul>
+<p><strong>Analogy:</strong> Like describing a photo with 2 words vs 100 words.</p>
+<h3 id="hidden-size-h-memory-capacity">Hidden Size (H): Memory Capacity<a class="headerlink" href="#hidden-size-h-memory-capacity" title="Permanent link">&para;</a></h3>
+<p>Hidden size controls how much "memory" the RNN can maintain:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Small memory (H=2):  h_t = [0.3, -0.7]  # Like a small notebook
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>Large memory (H=100): h_t = [0.3, -0.7, 0.1, ..., 0.9]  # Like a large notebook
+</code></pre></div>
+<ul>
+<li><strong>Larger H:</strong> Can remember more complex patterns, longer dependencies</li>
+<li><strong>Smaller H:</strong> Limited memory, but faster and less prone to overfitting</li>
+</ul>
+<p><strong>Analogy:</strong> Like having a small backpack vs a large backpack for carrying memories.</p>
+<h3 id="weight-matrix-shapes">Weight Matrix Shapes<a class="headerlink" href="#weight-matrix-shapes" title="Permanent link">&para;</a></h3>
+<p>The dimensions determine the weight matrix shapes:</p>
+<table>
+<thead>
+<tr>
+<th>Weight</th>
+<th>Shape</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$$W_{xh}$$</td>
+<td>$$(E \times H)$$</td>
+<td>Maps input dimension to hidden dimension</td>
+</tr>
+<tr>
+<td>$$W_{hh}$$</td>
+<td>$$(H \times H)$$</td>
+<td>Maps hidden dimension to itself (recurrence)</td>
+</tr>
+<tr>
+<td>$$b_h$$</td>
+<td>$$(H,)$$</td>
+<td>Bias for each hidden unit</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong> For word embeddings and hidden size dimensions:</p>
+<p>$$
+\begin{aligned}
+\text{Given:} \quad &amp;E = 50 \text{ (word embedding size), } H = 128 \text{ (hidden size)} \newline
+\text{Parameters:} \quad &amp;W_{xh}: (50 \times 128) \text{ matrix with 6,400 parameters} \newline
+&amp;W_{hh}: (128 \times 128) \text{ matrix with 16,384 parameters} \newline
+&amp;b_h: (128,) \text{ vector with 128 parameters} \newline
+\textbf{Total:} \quad &amp;\textbf{22,912 parameters}
+\end{aligned}
+$$</p>
+<hr />
+<h2 id="7-worked-example-cat-sat-here">7. Worked Example: "cat sat here"<a class="headerlink" href="#7-worked-example-cat-sat-here" title="Permanent link">&para;</a></h2>
+<p>Let's trace through a tiny example step by step. We'll use:</p>
+<p>$$
+\begin{aligned}
+\text{Vocabulary:} \quad &amp;{\text{"cat"}: 0, \text{"sat"}: 1, \text{"here"}: 2} \newline
+\text{Embedding size:} \quad &amp;E = 2 \newline
+\text{Hidden size:} \quad &amp;H = 2 \newline
+\text{Sequence:} \quad &amp;\text{"cat sat here"}
+\end{aligned}
+$$</p>
+<h3 id="step-0-initialize">Step 0: Initialize<a class="headerlink" href="#step-0-initialize" title="Permanent link">&para;</a></h3>
+<p><strong>Embeddings (learned lookup table):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>&quot;cat&quot;  (id=0) → x₁ = [0.5, 0.2]
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>&quot;sat&quot;  (id=1) → x₂ = [0.1, 0.9]  
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>&quot;here&quot; (id=2) → x₃ = [0.8, 0.3]
+</code></pre></div></p>
+<p><strong>Initial hidden state:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>h₀ = [0.0, 0.0]  # Start with no memory
+</code></pre></div></p>
+<p><strong>Learned weights (after training):</strong></p>
+<p>$$
+\begin{aligned}
+W_{xh} &amp;= \begin{bmatrix} 0.3 &amp; 0.7 \\ 0.4 &amp; 0.2 \end{bmatrix} \quad \text{(2×2 matrix: input-to-hidden)} \newline
+W_{hh} &amp;= \begin{bmatrix} 0.1 &amp; 0.5 \\ 0.6 &amp; 0.3 \end{bmatrix} \quad \text{(2×2 matrix: hidden-to-hidden)} \newline
+b_h &amp;= \begin{bmatrix} 0.1 \\ 0.2 \end{bmatrix} \quad \text{(2-element bias vector)}
+\end{aligned}
+$$</p>
+<h3 id="step-1-process-cat">Step 1: Process "cat"<a class="headerlink" href="#step-1-process-cat" title="Permanent link">&para;</a></h3>
+<p><strong>Input:</strong> $$x_1 = [0.5, 0.2]$$ <strong>Memory:</strong> $$h_0 = [0.0, 0.0]$$</p>
+<p><strong>Compute contributions:</strong></p>
+<p>$$
+\begin{aligned}
+x_1 W_{xh} &amp;= [0.5, 0.2] \cdot \begin{bmatrix} 0.3 &amp; 0.7 \\ 0.4 &amp; 0.2 \end{bmatrix} = [0.23, 0.39] \newline
+h_0 W_{hh} &amp;= [0.0, 0.0] \cdot \begin{bmatrix} 0.1 &amp; 0.5 \\ 0.6 &amp; 0.3 \end{bmatrix} = [0.0, 0.0]
+\end{aligned}
+$$</p>
+<p><strong>Combine and activate:</strong></p>
+<p>$$
+\begin{aligned}
+x_1 W_{xh} + h_0 W_{hh} + b_h &amp;= [0.23, 0.39] + [0.0, 0.0] + [0.1, 0.2] \newline
+&amp;= [0.33, 0.59] \newline
+h_1 &amp;= \tanh([0.33, 0.59]) = [0.32, 0.53]
+\end{aligned}
+$$</p>
+<h3 id="step-2-process-sat">Step 2: Process "sat"<a class="headerlink" href="#step-2-process-sat" title="Permanent link">&para;</a></h3>
+<p><strong>Input:</strong> $$x_2 = [0.1, 0.9]$$ <strong>Memory:</strong> $$h_1 = [0.32, 0.53]$$</p>
+<p><strong>Compute contributions:</strong></p>
+<p>$$
+\begin{aligned}
+x_2 W_{xh} &amp;= [0.1, 0.9] \cdot \begin{bmatrix} 0.3 &amp; 0.7 \\ 0.4 &amp; 0.2 \end{bmatrix} = [0.39, 0.25] \newline
+h_1 W_{hh} &amp;= [0.32, 0.53] \cdot \begin{bmatrix} 0.1 &amp; 0.5 \\ 0.6 &amp; 0.3 \end{bmatrix} = [0.35, 0.32]
+\end{aligned}
+$$</p>
+<p><strong>Combine and activate:</strong></p>
+<p>$$
+\begin{aligned}
+x_2 W_{xh} + h_1 W_{hh} + b_h &amp;= [0.39, 0.25] + [0.35, 0.32] + [0.1, 0.2] \newline
+&amp;= [0.84, 0.77] \newline
+h_2 &amp;= \tanh([0.84, 0.77]) = [0.69, 0.65]
+\end{aligned}
+$$</p>
+<h3 id="step-3-process-here">Step 3: Process "here"<a class="headerlink" href="#step-3-process-here" title="Permanent link">&para;</a></h3>
+<p><strong>Input:</strong> $$x_3 = [0.8, 0.3]$$ <strong>Memory:</strong> $$h_2 = [0.69, 0.65]$$</p>
+<p><strong>Compute contributions:</strong></p>
+<p>$$
+\begin{aligned}
+x_3 W_{xh} &amp;= [0.8, 0.3] \cdot \begin{bmatrix} 0.3 &amp; 0.7 \\ 0.4 &amp; 0.2 \end{bmatrix} = [0.36, 0.62] \newline
+h_2 W_{hh} &amp;= [0.69, 0.65] \cdot \begin{bmatrix} 0.1 &amp; 0.5 \\ 0.6 &amp; 0.3 \end{bmatrix} = [0.46, 0.54]
+\end{aligned}
+$$</p>
+<p><strong>Combine and activate:</strong></p>
+<p>$$
+\begin{aligned}
+x_3 W_{xh} + h_2 W_{hh} + b_h &amp;= [0.36, 0.62] + [0.46, 0.54] + [0.1, 0.2] \newline
+&amp;= [0.92, 1.36] \newline
+h_3 &amp;= \tanh([0.92, 1.36]) = [0.73, 0.88]
+\end{aligned}
+$$</p>
+<h3 id="summary-memory-evolution">Summary: Memory Evolution<a class="headerlink" href="#summary-memory-evolution" title="Permanent link">&para;</a></h3>
+<p>$$
+\begin{aligned}
+\text{Start:} \quad &amp;h_0 = [0.00, 0.00] \quad \text{(No memory)} \newline
+\text{"cat":} \quad &amp;h_1 = [0.37, 0.41] \quad \text{(Remembers "cat")} \newline
+\text{"sat":} \quad &amp;h_2 = [0.76, 0.65] \quad \text{(Remembers "cat sat")} \newline
+\text{"here":} \quad &amp;h_3 = [0.74, 0.84] \quad \text{(Remembers "cat sat here")}
+\end{aligned}
+$$</p>
+<p><strong>Key Insight:</strong> Each hidden state $$h_t$$ encodes information about the entire sequence up to time $$t$$. The RNN builds up contextual understanding step by step.</p>
+<hr />
+<h2 id="8-rnn-vs-mlp-training">8. RNN vs MLP Training<a class="headerlink" href="#8-rnn-vs-mlp-training" title="Permanent link">&para;</a></h2>
+<h3 id="mlp-training-layer-by-layer">MLP Training: Layer-by-Layer<a class="headerlink" href="#mlp-training-layer-by-layer" title="Permanent link">&para;</a></h3>
+<p>$$
+\begin{aligned}
+\text{Architecture:} \quad &amp;\text{Input} \rightarrow \text{Layer 1} \rightarrow \text{Layer 2} \rightarrow \text{Layer 3} \rightarrow \text{Output} \newline
+&amp;x \rightarrow W_1 \rightarrow W_2 \rightarrow W_3 \rightarrow y \newline
+\text{Backprop:} \quad &amp;\frac{\partial \text{loss}}{\partial W_3} \leftarrow \text{computed from output layer} \newline
+&amp;\frac{\partial \text{loss}}{\partial W_2} \leftarrow \text{flows back one layer} \newline
+&amp;\frac{\partial \text{loss}}{\partial W_1} \leftarrow \text{flows back two layers}
+\end{aligned}
+$$</p>
+<p><strong>Characteristics:</strong>
+- Each layer has <strong>different weights</strong>
+- Gradients flow <strong>backward through layers</strong>
+- Training is <strong>straightforward</strong> - standard backprop</p>
+<h3 id="rnn-training-backpropagation-through-time-bptt">RNN Training: Backpropagation Through Time (BPTT)<a class="headerlink" href="#rnn-training-backpropagation-through-time-bptt" title="Permanent link">&para;</a></h3>
+<p>$$
+\begin{aligned}
+\text{Time steps:} \quad &amp;x_1 \rightarrow \text{RNN} \rightarrow h_1 \rightarrow y_1 \newline
+&amp;x_2 \rightarrow \text{RNN} \rightarrow h_2 \rightarrow y_2 \quad \text{(same weights!)} \newline
+&amp;x_3 \rightarrow \text{RNN} \rightarrow h_3 \rightarrow y_3 \quad \text{(same weights!)} \newline
+\text{Backprop Through Time:} \quad &amp;\frac{\partial \text{loss}}{\partial W_{xh}} \leftarrow \text{sum of gradients from ALL time steps} \newline
+&amp;\frac{\partial \text{loss}}{\partial W_{hh}} \leftarrow \text{sum of gradients from ALL time steps} \newline
+&amp;\frac{\partial \text{loss}}{\partial b_h} \leftarrow \text{sum of gradients from ALL time steps}
+\end{aligned}
+$$</p>
+<p><strong>Characteristics:</strong>
+- <strong>Same weights</strong> used at every time step
+- Gradients flow <strong>backward through time AND layers</strong>
+- Training is <strong>more complex</strong> - gradients must be accumulated across time</p>
+<h3 id="the-gradient-flow-challenge">The Gradient Flow Challenge<a class="headerlink" href="#the-gradient-flow-challenge" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>📚 Historical Context</strong>: The vanishing gradient problem was a major obstacle in early sequence modeling. For historical timeline and mathematical progression, see <strong><a href="../history_quick_ref/">History Quick Reference</a></strong>.</p>
+</blockquote>
+<p>In deep RNNs or long sequences, gradients can:</p>
+<p><strong>Vanish (become too small):</strong></p>
+<p>$$
+\begin{aligned}
+\text{Gradient flow:} \quad &amp;\text{Step 50} \rightarrow \text{Step 49} \rightarrow \ldots \rightarrow \text{Step 2} \rightarrow \text{Step 1} \newline
+\text{Magnitude:} \quad &amp;0.001 \rightarrow 0.0001 \rightarrow \ldots \rightarrow 0.000\ldots001 \rightarrow H_0
+\end{aligned}
+$$</p>
+<ul>
+<li>Early time steps receive almost no learning signal</li>
+<li>RNN forgets long-term dependencies</li>
+</ul>
+<p><strong>Explode (become too large):</strong></p>
+<p>$$
+\begin{aligned}
+\text{Gradient flow:} \quad &amp;\text{Step 1} \rightarrow \text{Step 2} \rightarrow \ldots \rightarrow \text{Step 49} \rightarrow \text{Step 50} \newline
+\text{Magnitude:} \quad &amp;1.5 \rightarrow 2.25 \rightarrow \ldots \rightarrow \text{[overflow]} \rightarrow \text{NaN}
+\end{aligned}
+$$</p>
+<ul>
+<li>Gradients grow exponentially</li>
+<li>Training becomes unstable</li>
+</ul>
+<p><strong>Solutions:</strong> Gradient clipping, LSTM/GRU architectures, careful initialization</p>
+<hr />
+<h2 id="9-the-vanishing-gradient-problem-rnns-fatal-flaw">9. The Vanishing Gradient Problem: RNN's Fatal Flaw<a class="headerlink" href="#9-the-vanishing-gradient-problem-rnns-fatal-flaw" title="Permanent link">&para;</a></h2>
+<h3 id="why-gradients-vanish">Why Gradients Vanish<a class="headerlink" href="#why-gradients-vanish" title="Permanent link">&para;</a></h3>
+<p>The <strong>vanishing gradient problem</strong> is the critical limitation that prevented vanilla RNNs from being truly successful for long sequences. To understand it, we need to examine how gradients flow backward through time during training.</p>
+<p><strong>The Mathematical Problem</strong>: When training RNNs using Backpropagation Through Time (BPTT), gradients must flow backward through all time steps to update the weights.</p>
+<p><strong>Gradient Chain</strong>: For an RNN, the gradient flowing from time T to time 1 involves:</p>
+<p>$$
+\begin{aligned}
+\text{RNN equation:} \quad &amp;h_t = \tanh(x_t W_{xh} + h_{t-1} W_{hh} + b_h) \newline
+\text{Gradient chain:} \quad &amp;\frac{\partial h_T}{\partial h_1} = \prod_{t=2}^{T} \frac{\partial h_t}{\partial h_{t-1}} = \prod_{t=2}^{T} W_{hh} \odot \tanh'(\cdot)
+\end{aligned}
+$$</p>
+<p><strong>Why This Causes Problems:</strong></p>
+<ol>
+<li><strong>Tanh Derivative Range</strong>: $$\tanh'(x) \in (0, 1]$$, typically around 0.1-0.5</li>
+<li><strong>Repeated Multiplication</strong>: Product of many small numbers approaches zero exponentially</li>
+<li><strong>Weight Matrix Effects</strong>: If eigenvalues are small, this compounds the decay</li>
+</ol>
+<p>$$
+\begin{aligned}
+\text{Condition:} \quad \text{eigenvalues of } W_{hh} &lt; 1 \quad \text{(compounds the decay)}
+\end{aligned}
+$$</p>
+<p><strong>Example</strong>: For a sequence of length 50:</p>
+<p>$$
+\begin{aligned}
+\text{Given:} \quad &amp;\tanh'(\cdot) \approx 0.3 \text{ and } |W_{hh}| \approx 0.8 \newline
+\text{Gradient magnitude:} \quad &amp;(0.3 \times 0.8)^{49} \approx 10^{-20} \newline
+\text{Result:} \quad &amp;\text{Effectively zero gradient!}
+\end{aligned}
+$$</p>
+<h3 id="impact-on-learning">Impact on Learning<a class="headerlink" href="#impact-on-learning" title="Permanent link">&para;</a></h3>
+<p><strong>Long-Range Dependencies</strong>: RNNs cannot learn patterns that span many time steps because the gradient signal from distant time steps vanishes.</p>
+<p><strong>Example Problem</strong>: In "The cat, which was sitting on the comfortable mat, was hungry", the RNN struggles to connect "cat" with "was hungry" due to the intervening words.</p>
+<hr />
+<h2 id="10-evolution-beyond-vanilla-rnns">10. Evolution Beyond Vanilla RNNs<a class="headerlink" href="#10-evolution-beyond-vanilla-rnns" title="Permanent link">&para;</a></h2>
+<h3 id="gating-mechanisms-lstms-and-grus">Gating Mechanisms: LSTMs and GRUs<a class="headerlink" href="#gating-mechanisms-lstms-and-grus" title="Permanent link">&para;</a></h3>
+<p><strong>The Solution</strong>: Add <strong>gating mechanisms</strong> that can selectively remember or forget information, solving the vanishing gradient problem.</p>
+<p><strong>Long Short-Term Memory (LSTM)</strong> networks introduced three gates:</p>
+<ul>
+<li><strong>Forget Gate</strong>: Decides what to remove from memory</li>
+<li><strong>Input Gate</strong>: Decides what new information to store  </li>
+<li><strong>Output Gate</strong>: Controls what parts of memory to output</li>
+</ul>
+<p><strong>Gated Recurrent Unit (GRU)</strong> simplified LSTMs with two gates:</p>
+<ul>
+<li><strong>Reset Gate</strong>: Controls how much past information to forget</li>
+<li><strong>Update Gate</strong>: Controls how much new information to add</li>
+</ul>
+<p><strong>Key Breakthrough</strong>: These gates create "gradient highways" that allow error signals to flow back through time without vanishing.</p>
+<h3 id="seq2seq-the-encoder-decoder-revolution">Seq2Seq: The Encoder-Decoder Revolution<a class="headerlink" href="#seq2seq-the-encoder-decoder-revolution" title="Permanent link">&para;</a></h3>
+<p><strong>The Translation Challenge</strong>: Vanilla RNNs could only produce outputs at each time step, limiting their applications. How do you translate "Hello world" to "Hola mundo" when the input and output have different lengths and structures?</p>
+<p><strong>Sequence-to-Sequence (Seq2Seq) Innovation</strong>: Sutskever et al. (2014) introduced a breakthrough solution—split the network into two specialized parts:</p>
+<h4 id="the-encoder-decoder-architecture">The Encoder-Decoder Architecture<a class="headerlink" href="#the-encoder-decoder-architecture" title="Permanent link">&para;</a></h4>
+<p><strong>Core Idea</strong>: Split sequence processing into two phases:</p>
+<ol>
+<li><strong>Encoder</strong>: Process input sequence and compress into fixed-size representation</li>
+<li><strong>Decoder</strong>: Generate output sequence from compressed representation</li>
+</ol>
+<p><strong>Architecture Visualization</strong>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Input: &quot;Hello world&quot;
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>       ↓
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>┌─────────────────────┐
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>│      Encoder        │  ← LSTM/GRU processes input
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>│   (Hello) → (world) │
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>└─────────────────────┘
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>       ↓
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>   Context Vector c
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>       ↓
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>┌─────────────────────┐
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>│      Decoder        │  ← LSTM/GRU generates output
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>│ &lt;START&gt; → Hola      │
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>│   Hola → mundo      │
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>│  mundo → &lt;END&gt;      │
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>└─────────────────────┘
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>       ↓
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>Output: &quot;Hola mundo&quot;
+</code></pre></div></p>
+<h4 id="mathematical-framework">Mathematical Framework<a class="headerlink" href="#mathematical-framework" title="Permanent link">&para;</a></h4>
+<p><strong>Encoder Process</strong>:</p>
+<p>$$
+\begin{aligned}
+h_t^{enc} &amp;= f_{enc}(x_t, h_{t-1}^{enc}) \newline
+c &amp;= h_T^{enc} \quad \text{(Final hidden state becomes context)}
+\end{aligned}
+$$</p>
+<p><strong>Decoder Process</strong>:</p>
+<p>$$
+\begin{aligned}
+h_t^{dec} &amp;= f_{dec}(y_{t-1}, h_{t-1}^{dec}, c) \newline
+p(y_t | y_{&lt;t}, x) &amp;= \text{softmax}(h_t^{dec} W_o + b_o)
+\end{aligned}
+$$</p>
+<p>Where:</p>
+<p>$$
+\begin{aligned}
+c \quad &amp;: \text{Context vector (compressed representation of entire input)} \newline
+y_{t-1} \quad &amp;: \text{Previous output token} \newline
+h_t^{dec} \quad &amp;: \text{Decoder hidden state}
+\end{aligned}
+$$</p>
+<h4 id="training-with-teacher-forcing">Training with Teacher Forcing<a class="headerlink" href="#training-with-teacher-forcing" title="Permanent link">&para;</a></h4>
+<p><strong>Smart Training Trick</strong>: During training, use ground truth previous tokens rather than model predictions:</p>
+<p>$$y_{t-1} = y_{t-1}^{truth} \quad \text{(not model prediction)}$$</p>
+<p>This speeds up training and improves stability.</p>
+<h4 id="applications-unlocked">Applications Unlocked<a class="headerlink" href="#applications-unlocked" title="Permanent link">&para;</a></h4>
+<p><strong>Seq2Seq enabled entirely new AI capabilities</strong>:</p>
+<ul>
+<li><strong>Machine Translation</strong>: "Hello world" → "Hola mundo"</li>
+<li><strong>Text Summarization</strong>: Long article → Short summary</li>
+<li><strong>Question Answering</strong>: Question + context → Answer</li>
+<li><strong>Code Generation</strong>: Natural language → Programming code</li>
+</ul>
+<h4 id="the-information-bottleneck-problem">The Information Bottleneck Problem<a class="headerlink" href="#the-information-bottleneck-problem" title="Permanent link">&para;</a></h4>
+<p><strong>Critical Discovery</strong>: Despite its success, Seq2Seq had a fundamental limitation—all information about the input sequence must pass through a single fixed-size context vector $c$.</p>
+<p><strong>Mathematical Constraint</strong>: Regardless of input length, encoder must compress everything into:</p>
+<p>$$c \in \mathbb{R}^h \quad \text{(fixed hidden size)}$$</p>
+<p><strong>Problems This Created</strong>:</p>
+<ul>
+<li><strong>Information Loss</strong>: Long inputs cannot be fully captured in fixed-size vector</li>
+<li><strong>Performance Degradation</strong>: Translation quality decreases with input length</li>
+<li><strong>Forgetting</strong>: Early input information often lost by end of encoding</li>
+</ul>
+<p><strong>Empirical Evidence</strong>:</p>
+<ul>
+<li>Sentences with 10-20 words: Good translation quality</li>
+<li>Sentences with 30-40 words: Noticeable quality degradation  </li>
+<li>Sentences with 50+ words: Poor translation quality</li>
+</ul>
+<p><strong>The Critical Realization</strong>: This bottleneck problem led researchers to ask: <em>"What if the decoder could look back at ALL encoder states, not just the final one?"</em> This question sparked the <strong>attention mechanism revolution</strong> that eventually led to Transformers.</p>
+<hr />
+<h2 id="11-summary-the-rnn-legacy">11. Summary: The RNN Legacy<a class="headerlink" href="#11-summary-the-rnn-legacy" title="Permanent link">&para;</a></h2>
+<h3 id="how-rnns-changed-everything">How RNNs Changed Everything<a class="headerlink" href="#how-rnns-changed-everything" title="Permanent link">&para;</a></h3>
+<p>RNNs introduced the revolutionary concept of <strong>neural memory</strong>, solving the fundamental challenge of processing variable-length sequences. This breakthrough enabled:</p>
+<ol>
+<li><strong>Variable-Length Processing</strong>: No more fixed-size input constraints</li>
+<li><strong>Sequential Understanding</strong>: Networks that understand word order matters</li>
+<li><strong>Context Accumulation</strong>: Memory that builds up over time</li>
+<li><strong>Weight Sharing</strong>: Efficient parameter usage across time steps</li>
+</ol>
+<h3 id="why-rnns-led-to-transformers">Why RNNs Led to Transformers<a class="headerlink" href="#why-rnns-led-to-transformers" title="Permanent link">&para;</a></h3>
+<p><strong>RNN Contributions</strong>:</p>
+<ul>
+<li>✅ Solved variable-length sequence processing</li>
+<li>✅ Introduced neural memory concepts</li>
+<li>✅ Enabled sequence-to-sequence learning</li>
+</ul>
+<p><strong>RNN Limitations</strong>:</p>
+<ul>
+<li>❌ Vanishing gradients limited long-range dependencies</li>
+<li>❌ Sequential processing prevented parallelization  </li>
+<li>❌ Hidden state bottleneck in seq2seq models</li>
+</ul>
+<p><strong>The Complete Evolution Story</strong>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>MLPs: Fixed-size inputs only
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>  ↓ (How to handle variable sequences?)
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>RNNs: Sequential processing + memory
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>  ↓ (Gradients vanish over long sequences)
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>LSTMs/GRUs: Gating mechanisms solve vanishing gradients
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>  ↓ (Still sequential, can&#39;t parallelize)
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>Seq2Seq: Encoder-decoder enables new applications
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>  ↓ (Bottleneck: everything through single context vector)
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>Attention: Decoder can look at ALL encoder states
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>  ↓ (Still have RNN sequential bottleneck)
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>Transformers: Pure attention, no recurrence = parallel processing
+</code></pre></div></p>
+<p><strong>The Critical Questions That Led to Transformers</strong>:</p>
+<ol>
+<li><strong>RNN Era</strong>: "How can we give neural networks memory?" → <strong>RNNs</strong></li>
+<li><strong>LSTM Era</strong>: "How can we solve vanishing gradients?" → <strong>LSTMs/GRUs</strong></li>
+<li><strong>Seq2Seq Era</strong>: "How can we handle different input/output lengths?" → <strong>Encoder-Decoder</strong></li>
+<li><strong>Attention Era</strong>: "How can we solve the bottleneck problem?" → <strong>Attention Mechanisms</strong></li>
+<li><strong>Transformer Era</strong>: "What if we remove recurrence entirely?" → <strong>Transformers</strong></li>
+</ol>
+<p><strong>Key Insight</strong>: Each limitation drove the next innovation. The Seq2Seq bottleneck problem was particularly crucial—it led researchers to attention mechanisms, which then sparked the revolutionary question: <em>"What if attention is all you need?"</em></p>
+<h3 id="rnns-lasting-impact">RNN's Lasting Impact<a class="headerlink" href="#rnns-lasting-impact" title="Permanent link">&para;</a></h3>
+<p><strong>Conceptual Foundations</strong>: Modern architectures still use RNN insights:</p>
+<ul>
+<li><strong>Memory mechanisms</strong>: Hidden states evolved into attention</li>
+<li><strong>Sequential processing</strong>: Influenced positional encoding</li>
+<li><strong>Encoder-decoder</strong>: Template for many modern architectures</li>
+</ul>
+<p><strong>Applications</strong>: RNNs proved neural networks could handle:</p>
+<ul>
+<li>Machine translation and text generation</li>
+<li>Speech recognition and synthesis  </li>
+<li>Time series prediction and analysis</li>
+</ul>
+<hr />
+<h2 id="12-final-visualization-cat-sat-here-through-time">12. Final Visualization: "cat sat here" Through Time<a class="headerlink" href="#12-final-visualization-cat-sat-here-through-time" title="Permanent link">&para;</a></h2>
+<p>$$
+\begin{aligned}
+\text{Time Step 1: "cat"} \quad &amp;\text{Input: } [0.5, 0.2] \newline
+&amp;\text{Memory: } [0.0, 0.0] \rightarrow \tanh([0.39, 0.44]) \rightarrow h_1 = [0.37, 0.41] \newline
+\text{Time Step 2: "sat"} \quad &amp;\text{Input: } [0.1, 0.9] \newline
+&amp;\text{Memory: } [0.37, 0.41] \rightarrow \tanh([1.00, 0.77]) \rightarrow h_2 = [0.76, 0.65] \newline
+\text{Time Step 3: "here"} \quad &amp;\text{Input: } [0.8, 0.3] \newline
+&amp;\text{Memory: } [0.76, 0.65] \rightarrow \tanh([0.95, 1.23]) \rightarrow h_3 = [0.74, 0.84] \newline
+\textbf{Final Memory:} \quad &amp;[0.74, 0.84] \text{ encodes "cat sat here"}
+\end{aligned}
+$$</p>
+<p><strong>The Journey:</strong> From no memory to rich contextual understanding, one step at a time. The RNN learns to compress the entire sequence history into a fixed-size hidden state vector.</p>
+<hr />
+<h2 id="13-next-steps">13. Next Steps<a class="headerlink" href="#13-next-steps" title="Permanent link">&para;</a></h2>
+<p>Now that you understand RNNs and their complete evolution:</p>
+<h3 id="the-bridge-to-modern-ai">The Bridge to Modern AI<a class="headerlink" href="#the-bridge-to-modern-ai" title="Permanent link">&para;</a></h3>
+<p><strong>You've learned the complete story</strong>: From MLPs that couldn't handle sequences, to RNNs that introduced memory, to LSTMs that solved vanishing gradients, to Seq2Seq that enabled translation, and finally the <strong>critical bottleneck problem</strong> that sparked the attention revolution.</p>
+<p><strong>The Transformer Breakthrough Awaits</strong>: You now understand exactly WHY researchers asked <em>"What if attention is all you need?"</em> The answer to that question created the architecture powering ChatGPT, GPT-4, and modern AI.</p>
+<h3 id="your-learning-journey-continues">Your Learning Journey Continues<a class="headerlink" href="#your-learning-journey-continues" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>The Attention Revolution</strong>: Discover how attention mechanisms solved the Seq2Seq bottleneck you just learned about</li>
+<li><strong>Transformer Architecture</strong>: See how removing recurrence entirely enabled massive parallel processing  </li>
+<li><strong>Modern Applications</strong>: Understand how these breakthroughs power today's AI systems</li>
+<li><strong>Implementation Practice</strong>: Build these architectures yourself with PyTorch</li>
+</ol>
+<blockquote>
+<p><strong>Ready for the Revolutionary Answer?</strong> See <strong><a href="../transformers_fundamentals/">Transformer Fundamentals</a></strong> to learn how the question <em>"What if attention is all you need?"</em> led to the architecture that powers modern AI. You'll see exactly how the Transformer solved every RNN limitation while preserving the core insights about memory and sequence processing.</p>
+</blockquote>
+<h3 id="the-complete-historical-arc">The Complete Historical Arc<a class="headerlink" href="#the-complete-historical-arc" title="Permanent link">&para;</a></h3>
+<p><strong>What you've mastered</strong>: The 30-year journey from simple perceptrons to the brink of the transformer revolution. Every limitation you learned about—vanishing gradients, sequential bottlenecks, information compression—directly motivated the final breakthrough that changed everything.</p>
+<p><strong>What's next</strong>: The elegant solution that solved them all.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.top", "navigation.instant", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1561 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../history_quick_ref/">
+      
+      
+        <link rel="next" href="..">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Glossary - Introduction to Transformers</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../styles.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#glossary-neural-networks-and-transformers" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Introduction to Transformers" class="md-header__button md-logo" aria-label="Introduction to Transformers" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Introduction to Transformers
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Glossary
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Introduction to Transformers" class="md-nav__button md-logo" aria-label="Introduction to Transformers" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Introduction to Transformers
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nn_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Neural Network Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mlp_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Building Networks with MLP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rnn_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sequential Modeling with RNN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transformers_fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transformers Fundamentals
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transformers_advanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transformers Advanced
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knowledge_store/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Knowledge Store
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            References
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pytorch_ref/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PyTorch Primer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transformers_math1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mathematical Foundations 1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transformers_math2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mathematical Foundations 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../math_quick_ref/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mathematical Quick Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../history_quick_ref/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sequence Modeling History
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#a" class="md-nav__link">
+    <span class="md-ellipsis">
+      A
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b" class="md-nav__link">
+    <span class="md-ellipsis">
+      B
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#c" class="md-nav__link">
+    <span class="md-ellipsis">
+      C
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d" class="md-nav__link">
+    <span class="md-ellipsis">
+      D
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e" class="md-nav__link">
+    <span class="md-ellipsis">
+      E
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#f" class="md-nav__link">
+    <span class="md-ellipsis">
+      F
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#g" class="md-nav__link">
+    <span class="md-ellipsis">
+      G
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#h" class="md-nav__link">
+    <span class="md-ellipsis">
+      H
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#i" class="md-nav__link">
+    <span class="md-ellipsis">
+      I
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#k" class="md-nav__link">
+    <span class="md-ellipsis">
+      K
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#l" class="md-nav__link">
+    <span class="md-ellipsis">
+      L
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#m" class="md-nav__link">
+    <span class="md-ellipsis">
+      M
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#n" class="md-nav__link">
+    <span class="md-ellipsis">
+      N
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#o" class="md-nav__link">
+    <span class="md-ellipsis">
+      O
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#p" class="md-nav__link">
+    <span class="md-ellipsis">
+      P
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#q" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#r" class="md-nav__link">
+    <span class="md-ellipsis">
+      R
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#s" class="md-nav__link">
+    <span class="md-ellipsis">
+      S
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#t" class="md-nav__link">
+    <span class="md-ellipsis">
+      T
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#u" class="md-nav__link">
+    <span class="md-ellipsis">
+      U
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v" class="md-nav__link">
+    <span class="md-ellipsis">
+      V
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#w" class="md-nav__link">
+    <span class="md-ellipsis">
+      W
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-additional-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 Additional Resources
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    README
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LICENSE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    LICENSE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#a" class="md-nav__link">
+    <span class="md-ellipsis">
+      A
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b" class="md-nav__link">
+    <span class="md-ellipsis">
+      B
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#c" class="md-nav__link">
+    <span class="md-ellipsis">
+      C
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d" class="md-nav__link">
+    <span class="md-ellipsis">
+      D
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e" class="md-nav__link">
+    <span class="md-ellipsis">
+      E
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#f" class="md-nav__link">
+    <span class="md-ellipsis">
+      F
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#g" class="md-nav__link">
+    <span class="md-ellipsis">
+      G
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#h" class="md-nav__link">
+    <span class="md-ellipsis">
+      H
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#i" class="md-nav__link">
+    <span class="md-ellipsis">
+      I
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#k" class="md-nav__link">
+    <span class="md-ellipsis">
+      K
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#l" class="md-nav__link">
+    <span class="md-ellipsis">
+      L
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#m" class="md-nav__link">
+    <span class="md-ellipsis">
+      M
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#n" class="md-nav__link">
+    <span class="md-ellipsis">
+      N
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#o" class="md-nav__link">
+    <span class="md-ellipsis">
+      O
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#p" class="md-nav__link">
+    <span class="md-ellipsis">
+      P
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#q" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#r" class="md-nav__link">
+    <span class="md-ellipsis">
+      R
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#s" class="md-nav__link">
+    <span class="md-ellipsis">
+      S
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#t" class="md-nav__link">
+    <span class="md-ellipsis">
+      T
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#u" class="md-nav__link">
+    <span class="md-ellipsis">
+      U
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v" class="md-nav__link">
+    <span class="md-ellipsis">
+      V
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#w" class="md-nav__link">
+    <span class="md-ellipsis">
+      W
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-additional-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 Additional Resources
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="glossary-neural-networks-and-transformers">Glossary: Neural Networks and Transformers<a class="headerlink" href="#glossary-neural-networks-and-transformers" title="Permanent link">&para;</a></h1>
+<p>A comprehensive dictionary of key terms, concepts, and technical vocabulary used throughout the neural networks and transformers learning materials. Each term includes cross-references to detailed explanations in the repository documents.</p>
+<h2 id="a">A<a class="headerlink" href="#a" title="Permanent link">&para;</a></h2>
+<p><strong>Activation Function</strong>: A mathematical function applied to the output of a neuron to introduce non-linearity. Without activation functions, neural networks would only be able to learn linear relationships.</p>
+<ul>
+<li><strong>Common types</strong>:</li>
+</ul>
+<p>$$
+  \begin{aligned}
+  \text{ReLU:} \quad &amp;f(x) = \max(0, x) \newline
+  \text{Sigmoid:} \quad &amp;\sigma(x) = \frac{1}{1+e^{-x}} \newline
+  \text{Tanh:} \quad &amp;\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
+  \end{aligned}
+  $$
+- <strong>Deep dive</strong>: <a href="../nn_intro/#the-role-of-activation-functions-space-warping">nn_intro.md Section 3</a> for geometric intuition, <a href="../mlp_intro/#9-activation-functions-deep-dive">mlp_intro.md Section 9</a> for detailed comparison</p>
+<p><strong>Attention Collapse:</strong> Phenomenon where attention weights become too peaked (concentrated on few tokens) rather than uniform, leading to poor gradient flow and reduced model expressiveness.
+- <strong>Mathematical foundation</strong>: <a href="../transformers_math1/#52-why-the-sqrtd_k-scaling">transformers_math1.md Section 5.2</a> for scaling analysis</p>
+<p><strong>Adam Optimizer</strong>: An adaptive optimization algorithm that combines momentum with per-parameter learning rate adaptation.
+- <strong>Formula</strong>:</p>
+<p>$$
+  \begin{aligned}
+  \theta_t = \theta_{t-1} - \alpha \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon} \quad \text{where } \hat{m}_t, \hat{v}_t \text{ are bias-corrected moment estimates}
+  \end{aligned}
+  $$
+- <strong>Details</strong>: <a href="../nn_intro/#adam-adaptive-moments">nn_intro.md Section 5</a> for intuition, <a href="../pytorch_ref/#5-optimization-loop--losses">pytorch_ref.md Section 5</a> for implementation</p>
+<p><strong>Artificial Intelligence (AI)</strong>: Computer systems that can perform tasks typically requiring human intelligence, such as visual perception, speech recognition, decision-making, and natural language understanding.</p>
+<ul>
+<li><strong>Context</strong>: <a href="../nn_intro/#1-what-is-ai-ml-and-deep-learning">nn_intro.md Section 1</a> for AI/ML/DL hierarchy</li>
+</ul>
+<p><strong>Attention Head</strong>: A specialized component of multi-head attention that focuses on specific types of relationships (e.g., grammar, semantics, position).
+- <strong>Implementation</strong>: <a href="../transformers_fundamentals/#9-stage-4-self-attention-deep-dive">transformers_fundamentals.md Section 9</a> for complete technical details
+- <strong>Code</strong>: <a href="../pytorch_ref/#self-attention-from-scratch">pytorch_ref.md Section 10</a> for from-scratch implementation</p>
+<p><strong>Attention Mechanism</strong>: A technique that allows models to focus on relevant parts of the input sequence when making predictions.
+- <strong>Formula</strong>:</p>
+<p>$$
+  \begin{aligned}
+  \text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+  \end{aligned}
+  $$
+- <strong>Explanation</strong>: <a href="../transformers_fundamentals/#9-stage-4-self-attention-deep-dive">transformers_fundamentals.md Section 9</a> for detailed mechanics</p>
+<hr />
+<h2 id="b">B<a class="headerlink" href="#b" title="Permanent link">&para;</a></h2>
+<p><strong>Backpropagation</strong>: The algorithm used to train neural networks by calculating gradients and propagating errors backward through the network layers.</p>
+<ul>
+<li><strong>Mathematical foundation</strong>: Uses chain rule to compute gradients:</li>
+</ul>
+<p>$$
+  \begin{aligned}
+  \frac{\partial \mathcal{L}}{\partial W^{(l)}} = \frac{\partial \mathcal{L}}{\partial h^{(l+1)}} \cdot \frac{\partial h^{(l+1)}}{\partial W^{(l)}}
+  \end{aligned}
+  $$
+- <strong>Step-by-step</strong>: <a href="../mlp_intro/#backpropagation-the-learning-algorithm">mlp_intro.md Section 6</a> for detailed derivation
+- <strong>Implementation</strong>: <a href="../pytorch_ref/#3-autograd-finding-gradients">pytorch_ref.md Section 3</a> for automatic differentiation</p>
+<p><strong>Batch Normalization</strong>: A technique that normalizes layer inputs to stabilize training and accelerate convergence.</p>
+<ul>
+<li><strong>Formula</strong>:</li>
+</ul>
+<p>$$
+  \begin{aligned}
+  \hat{x} = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} \quad \text{followed by learned scaling and shifting}
+  \end{aligned}
+  $$
+- <strong>Details</strong>: <a href="../pytorch_ref/#6-vanishingexploding-gradients">pytorch_ref.md Section 6</a> for gradient stabilization context</p>
+<p><strong>BERT (Bidirectional Encoder Representations from Transformers)</strong>: A transformer-based model that reads text bidirectionally for better context understanding.</p>
+<ul>
+<li><strong>Architecture</strong>: <a href="../transformers_fundamentals/#encoder-only-bert-family">transformers_fundamentals.md Section 8</a> for encoder-only design</li>
+<li><strong>Training</strong>: Masked Language Modeling (MLM) and Next Sentence Prediction (NSP)</li>
+</ul>
+<p><strong>Bias</strong>: An additional parameter in a neuron that allows the activation function to shift, providing flexibility in the decision boundary.</p>
+<ul>
+<li><strong>Mathematical role</strong>: Shifts hyperplane:</li>
+</ul>
+<p>$$
+  \begin{aligned}
+  z = Wx + b
+  \end{aligned}
+  $$
+- <strong>Geometric intuition</strong>: <a href="../nn_intro/#the-role-of-bias-flexible-positioning">nn_intro.md Section 3</a> for spatial understanding
+- <strong>Examples</strong>: <a href="../mlp_intro/#5-worked-example-advanced-spam-detection">mlp_intro.md Section 5</a> for worked calculations</p>
+<hr />
+<h2 id="c">C<a class="headerlink" href="#c" title="Permanent link">&para;</a></h2>
+<p><strong>Causal Mask:</strong> Lower-triangular mask preventing attention to future tokens in autoregressive models.</p>
+<ul>
+<li><strong>Mathematical implementation</strong>: <a href="../transformers_math1/#54-masked-attention">transformers_math1.md Section 5.4</a> for masking details</li>
+</ul>
+<p><strong>Centroid</strong>: The center point of a cluster in vector space, representing the average position of all vectors in that cluster.</p>
+<ul>
+<li><strong>Context</strong>: <a href="../knowledge_store/">knowledge_store.md</a> for vector search applications</li>
+</ul>
+<p><strong>Cross-Entropy Loss</strong>: The standard loss function for classification tasks that measures the difference between predicted and true probability distributions.
+- <strong>Formula</strong>:</p>
+<p>$$
+  \begin{aligned}
+  \mathcal{L} = -\sum_{i=1}^{C} y_i \log(p_i) \quad \text{where } y_i \text{ is true label and } p_i \text{ is predicted probability}
+  \end{aligned}
+  $$
+- <strong>Intuition</strong>: <a href="../nn_intro/#for-classification-problems">nn_intro.md Section 5</a> for geometric interpretation
+- <strong>Implementation</strong>: <a href="../pytorch_ref/#5-optimization-loop--losses">pytorch_ref.md Section 5</a> for PyTorch usage</p>
+<hr />
+<h2 id="d">D<a class="headerlink" href="#d" title="Permanent link">&para;</a></h2>
+<p><strong>Deep Learning</strong>: A subset of machine learning using neural networks with multiple hidden layers (typically 3 or more) to learn complex patterns in data.</p>
+<ul>
+<li><strong>Foundations</strong>: <a href="../nn_intro/#deep-learning-dl">nn_intro.md Section 1</a> for definition and examples</li>
+<li><strong>Why it works</strong>: <a href="../nn_intro/#2-why-deep-learning-for-nlp">nn_intro.md Section 2</a> for NLP advantages</li>
+</ul>
+<p><strong>Dropout</strong>: A regularization technique that randomly sets some neurons to zero during training to prevent overfitting.</p>
+<ul>
+<li><strong>Implementation</strong>: <a href="../mlp_intro/#overfitting-when-mlps-memorize">mlp_intro.md Section 8</a> for overfitting solutions</li>
+<li><strong>Code</strong>: <a href="../pytorch_ref/#8-mlps-in-pytorch">pytorch_ref.md Section 8</a> for practical usage</li>
+</ul>
+<hr />
+<h2 id="e">E<a class="headerlink" href="#e" title="Permanent link">&para;</a></h2>
+<p><strong>Embedding</strong>: A dense numerical vector representation of text, images, or other data that captures semantic meaning in high-dimensional space.</p>
+<ul>
+<li><strong>Mathematical foundation</strong>:</li>
+</ul>
+<p>$$
+  \begin{aligned}
+  \mathbf{e}<em _text_model="\text{model">i = E[i] \in \mathbb{R}^{d</em>
+  \end{aligned}
+  $$
+- }}} \quad \text{where } E \text{ is the embedding matrix<strong>Geometric intuition</strong>: <a href="../nn_intro/#text-embeddings-bridging-language-and-mathematics">nn_intro.md Section 5</a> for complete explanation
+- <strong>Applications</strong>: <a href="../knowledge_store/">knowledge_store.md</a> for semantic search and knowledge storage</p>
+<p><strong>Encoder</strong>: In transformer architecture, the component that processes input sequences to create contextualized representations.</p>
+<ul>
+<li><strong>Architecture</strong>: <a href="../transformers_fundamentals/#encoder-only-bert-family">transformers_fundamentals.md Section 8</a> for encoder-only models</li>
+<li><strong>vs Decoder</strong>: <a href="../transformers_fundamentals/#8-architectural-variants-encoder-decoder-and-encoder-decoder">transformers_fundamentals.md Section 8</a> for comparison</li>
+</ul>
+<p><strong>Epoch</strong>: One complete pass through the entire training dataset during neural network training.</p>
+<ul>
+<li><strong>Training context</strong>: <a href="../nn_intro/#1-epochs">nn_intro.md Section 5</a> for training concepts</li>
+<li><strong>Implementation</strong>: <a href="../pytorch_ref/#5-optimization-loop--losses">pytorch_ref.md Section 5</a> for training loops</li>
+</ul>
+<hr />
+<h2 id="f">F<a class="headerlink" href="#f" title="Permanent link">&para;</a></h2>
+<p><strong>Feed-Forward Network</strong>: A neural network component where information flows in one direction, typically used within transformer blocks.</p>
+<ul>
+<li><strong>In transformers</strong>: <a href="../transformers_fundamentals/#11-stage-6-feed-forward-networks">transformers_fundamentals.md Section 11</a> for detailed explanation</li>
+<li><strong>Implementation</strong>: Two linear transformations with activation:</li>
+</ul>
+<p>$$
+  \begin{aligned}
+  \text{FFN}(x) = \max(0, xW_1 + b_1)W_2 + b_2
+  \end{aligned}
+  $$</p>
+<hr />
+<h2 id="g">G<a class="headerlink" href="#g" title="Permanent link">&para;</a></h2>
+<p><strong>GPT (Generative Pre-trained Transformer)</strong>: A family of decoder-only transformer models designed for text generation.</p>
+<ul>
+<li><strong>Architecture</strong>: <a href="../transformers_fundamentals/#decoder-only-gpt-family">transformers_fundamentals.md Section 8</a> for decoder-only design</li>
+<li><strong>Training</strong>: Causal Language Modeling (CLM) for next-token prediction</li>
+</ul>
+<p><strong>Gradient Descent</strong>: An optimization algorithm that finds the minimum of a function by iteratively moving in the direction of steepest descent.</p>
+<ul>
+<li><strong>Mathematical foundation</strong>:</li>
+</ul>
+<p>$$
+  \begin{aligned}
+  \theta_{\text{new}} = \theta_{\text{old}} - \alpha \nabla_{\theta} \mathcal{L}
+  \end{aligned}
+  $$
+- <strong>Intuition</strong>: <a href="../nn_intro/#gradient-descent-the-universal-learning-algorithm">nn_intro.md Section 5</a> for complete explanation
+- <strong>Variants</strong>: <a href="../nn_intro/#from-simple-to-sophisticated-the-evolution-of-optimizers">nn_intro.md Section 5</a> for SGD, momentum, Adam</p>
+<p><strong>GRU (Gated Recurrent Unit)</strong>: A type of RNN with gating mechanisms that help handle long-term dependencies, simpler than LSTM.</p>
+<ul>
+<li><strong>Implementation</strong>: <a href="../pytorch_ref/#rnn-vs-lstm-vs-gru-comparison">pytorch_ref.md Section 9</a> for comparison with RNN/LSTM</li>
+<li><strong>Evolution</strong>: <a href="../rnn_intro/#10-evolution-beyond-vanilla-rnns">rnn_intro.md Section 10</a> for historical context</li>
+</ul>
+<hr />
+<h2 id="h">H<a class="headerlink" href="#h" title="Permanent link">&para;</a></h2>
+<p><strong>Hidden Layer</strong>: Layers in a neural network between the input and output layers that process and transform the data.</p>
+<ul>
+<li><strong>vs Hidden State</strong>: <a href="../rnn_intro/#4-understanding-hidden-states-vs-hidden-layers">rnn_intro.md Section 4</a> for crucial distinction</li>
+<li><strong>In RNNs</strong>: <a href="../rnn_intro/#4-understanding-hidden-states-vs-hidden-layers">rnn_intro.md Section 4</a> for memory vs architecture</li>
+</ul>
+<p><strong>Hidden State</strong>: The internal representation vector that flows through a neural network at a specific processing step.
+- <strong>Mathematical definition</strong>:</p>
+<p>$$
+  \begin{aligned}
+  h^{(l)} = f(W^{(l)}h^{(l-1)} + b^{(l)}) \quad \text{for layer } l
+  \end{aligned}
+  $$
+- <strong>In RNNs</strong>: <a href="../rnn_intro/#3-the-core-rnn-equation">rnn_intro.md Section 3</a> for memory across time steps
+- <strong>Worked example</strong>: <a href="../rnn_intro/#7-worked-example-cat-sat-here">rnn_intro.md Section 7</a> for "cat sat here" processing</p>
+<p><strong>HNSW (Hierarchical Navigable Small World)</strong>: A graph-based indexing method that creates multiple navigation layers for fast approximate nearest neighbor search.</p>
+<ul>
+<li><strong>Context</strong>: <a href="../knowledge_store/">knowledge_store.md</a> for vector database indexing</li>
+</ul>
+<p><strong>Hyperparameter</strong>: Configuration settings for machine learning models that are set before training begins (learning rate, batch size, etc.).</p>
+<ul>
+<li><strong>Tuning guide</strong>: <a href="../mlp_intro/#hyperparameter-tuning">mlp_intro.md Section 10</a> for practical advice</li>
+</ul>
+<hr />
+<h2 id="i">I<a class="headerlink" href="#i" title="Permanent link">&para;</a></h2>
+<p><strong>IVF (Inverted File)</strong>: A clustering-based indexing method that groups similar vectors together and searches only within relevant clusters.
+- <strong>Vector search</strong>: <a href="../knowledge_store/">knowledge_store.md</a> for database optimization techniques</p>
+<hr />
+<h2 id="k">K<a class="headerlink" href="#k" title="Permanent link">&para;</a></h2>
+<p><strong>KV Cache:</strong> Stored key-value pairs from previous tokens to accelerate autoregressive generation.
+- <strong>Mathematical foundation</strong>: <a href="../transformers_math2/#104-kv-caching-for-autoregressive-generation">transformers_math2.md Section 10.4</a> for efficiency details</p>
+<hr />
+<h2 id="l">L<a class="headerlink" href="#l" title="Permanent link">&para;</a></h2>
+<p><strong>Layer Normalization</strong>: A normalization technique applied within transformer layers to stabilize training.
+- <strong>Formula</strong>: Applied to each position independently across the feature dimension
+- <strong>In transformers</strong>: <a href="../transformers_fundamentals/#7-stage-3-through-the-transformer-stack">transformers_fundamentals.md Section 7</a> for detailed explanation</p>
+<p><strong>Learning Rate</strong>: A hyperparameter that controls the step size in gradient descent optimization.
+- <strong>Importance</strong>: <a href="../nn_intro/#the-learning-rate-α-speed-vs-accuracy-trade-off">nn_intro.md Section 5</a> for intuitive explanation
+- <strong>Schedules</strong>: <a href="../pytorch_ref/#5-optimization-loop--losses">pytorch_ref.md Section 5</a> for dynamic adjustment</p>
+<p><strong>Loss Function</strong>: A function that measures how well the neural network's predictions match the actual target values.
+- <strong>Types</strong>: Cross-entropy for classification, MSE for regression
+- <strong>Deep dive</strong>: <a href="../nn_intro/#loss-functions-the-networks-report-card">nn_intro.md Section 5</a> for complete explanation
+- <strong>Implementation</strong>: <a href="../pytorch_ref/#5-optimization-loop--losses">pytorch_ref.md Section 5</a> for PyTorch examples</p>
+<p><strong>LSTM (Long Short-Term Memory)</strong>: A type of RNN with gating mechanisms designed to handle long-term dependencies and mitigate vanishing gradients.
+- <strong>Architecture</strong>: <a href="../pytorch_ref/#why-gating-mechanisms">pytorch_ref.md Section 9</a> for gating explanation
+- <strong>vs RNN</strong>: <a href="../rnn_intro/#10-evolution-beyond-vanilla-rnns">rnn_intro.md Section 10</a> for improvements over vanilla RNNs</p>
+<hr />
+<h2 id="m">M<a class="headerlink" href="#m" title="Permanent link">&para;</a></h2>
+<p><strong>Machine Learning (ML)</strong>: A subset of AI where systems learn patterns from data without being explicitly programmed for every scenario.
+- <strong>vs AI vs DL</strong>: <a href="../nn_intro/#1-what-is-ai-ml-and-deep-learning">nn_intro.md Section 1</a> for clear hierarchy
+- <strong>Traditional methods</strong>: <a href="../nn_intro/#challenges-with-traditional-ml-for-text">nn_intro.md Section 2</a> for comparison with deep learning</p>
+<p><strong>Masked Language Modeling (MLM)</strong>: A training objective where some tokens are masked and the model learns to predict them.
+- <strong>In BERT</strong>: <a href="../transformers_advanced/">transformers_advanced.md</a> for bidirectional training context</p>
+<p><strong>Multi-Head Attention</strong>: An extension of attention that runs multiple attention mechanisms in parallel to capture different types of relationships.
+- <strong>Formula</strong>:</p>
+<p>$$
+  \begin{aligned}
+  \text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^O
+  \end{aligned}
+  $$
+- <strong>Complete explanation</strong>: <a href="../transformers_fundamentals/#9-stage-4-self-attention-deep-dive">transformers_fundamentals.md Section 9</a> for mathematical details
+- <strong>Mathematical foundation</strong>: <a href="../transformers_math1/#61-multi-head-as-subspace-projections">transformers_math1.md Section 6.1</a> for subspace projections
+- <strong>Implementation</strong>: <a href="../pytorch_ref/#10-transformers-in-pytorch">pytorch_ref.md Section 10</a> for code examples</p>
+<p><strong>Multi-Layer Perceptron (MLP)</strong>: A neural network with one or more hidden layers between input and output layers.
+- <strong>Complete tutorial</strong>: <a href="../mlp_intro/">mlp_intro.md</a> for step-by-step explanation
+- <strong>vs single perceptron</strong>: <a href="../mlp_intro/#mlp-vs-single-perceptron">mlp_intro.md Section 1</a> for capability comparison
+- <strong>Worked example</strong>: <a href="../mlp_intro/#5-worked-example-advanced-spam-detection">mlp_intro.md Section 5</a> for detailed calculations</p>
+<hr />
+<h2 id="n">N<a class="headerlink" href="#n" title="Permanent link">&para;</a></h2>
+<p><strong>Natural Language Processing (NLP)</strong>: A field of AI focused on enabling computers to understand, interpret, and generate human language.
+- <strong>Why deep learning</strong>: <a href="../nn_intro/#2-why-deep-learning-for-nlp">nn_intro.md Section 2</a> for advantages over traditional methods
+- <strong>Applications</strong>: <a href="../nn_intro/#6-where-neural-networks-shine-in-nlp">nn_intro.md Section 6</a> for practical uses</p>
+<p><strong>Neural Network</strong>: A computing system inspired by biological neural networks, consisting of interconnected nodes (neurons) that process information.
+- <strong>Foundation</strong>: <a href="../nn_intro/#3-the-neuron-and-the-perceptron">nn_intro.md Section 3</a> for basic building blocks
+- <strong>Geometric view</strong>: <a href="../nn_intro/#geometric-intuition-from-1d-to-n-d">nn_intro.md Section 4</a> for spatial understanding</p>
+<hr />
+<h2 id="o">O<a class="headerlink" href="#o" title="Permanent link">&para;</a></h2>
+<p><strong>Optimizer</strong>: An algorithm that updates neural network parameters to minimize the loss function.
+- <strong>Types</strong>: SGD, Adam, RMSprop
+- <strong>Comparison</strong>: <a href="../nn_intro/#from-simple-to-sophisticated-the-evolution-of-optimizers">nn_intro.md Section 5</a> for evolution
+- <strong>PyTorch</strong>: <a href="../pytorch_ref/#5-optimization-loop--losses">pytorch_ref.md Section 5</a> for practical implementation</p>
+<p><strong>Overfitting</strong>: When a model performs well on training data but poorly on new, unseen data because it has memorized rather than learned generalizable patterns.
+- <strong>Solutions</strong>: <a href="../mlp_intro/#overfitting-when-mlps-memorize">mlp_intro.md Section 8</a> for regularization techniques
+- <strong>vs Underfitting</strong>: <a href="../nn_intro/#4-overfitting-vs-underfitting">nn_intro.md Section 5</a> for comparison</p>
+<hr />
+<h2 id="p">P<a class="headerlink" href="#p" title="Permanent link">&para;</a></h2>
+<p><strong>Perceptron</strong>: The basic building block of neural networks, consisting of inputs, weights, a bias, and an activation function.
+- <strong>Formula</strong>:</p>
+<p>$$
+  \begin{aligned}
+  y = f\left(\sum_{i=1}^{n} w_i x_i + b\right)
+  \end{aligned}
+  $$
+- <strong>Complete explanation</strong>: <a href="../nn_intro/#3-the-neuron-and-the-perceptron">nn_intro.md Section 3</a> for biological inspiration and mathematics
+- <strong>Limitations</strong>: <a href="../nn_intro/#limitations-of-single-perceptrons">nn_intro.md Section 4</a> for XOR problem</p>
+<p><strong>Position Encoding:</strong> Method to inject sequential order information into permutation-equivariant attention.
+- <strong>Mathematical foundation</strong>: <a href="../transformers_fundamentals/#6-stage-2-tokens-to-embeddings">transformers_fundamentals.md Section 6</a> for sinusoidal encoding
+- <strong>Advanced techniques</strong>: <a href="../transformers_math1/#62-advanced-positional-encodings">transformers_math1.md Section 6.2</a> for RoPE and ALiBi
+- <strong>Implementation</strong>: <a href="../pytorch_ref/#10-transformers-in-pytorch">pytorch_ref.md Section 10</a> for code examples</p>
+<p><strong>Product Quantization (PQ)</strong>: A compression technique that splits vectors into chunks and replaces each chunk with a representative centroid ID.
+- <strong>Vector databases</strong>: <a href="../knowledge_store/">knowledge_store.md</a> for storage optimization</p>
+<hr />
+<h2 id="q">Q<a class="headerlink" href="#q" title="Permanent link">&para;</a></h2>
+<p><strong>Query Vector</strong>: In attention mechanisms, the vector representing "what information is being sought" from other positions.
+- <strong>Q, K, V mechanism</strong>: <a href="../transformers_fundamentals/#9-stage-4-self-attention-deep-dive">transformers_fundamentals.md Section 9</a> for complete attention explanation</p>
+<hr />
+<h2 id="r">R<a class="headerlink" href="#r" title="Permanent link">&para;</a></h2>
+<p><strong>RAG (Retrieval-Augmented Generation)</strong>: A system that combines vector store retrieval with LLM generation to provide informed, grounded responses.
+- <strong>Architecture</strong>: <a href="../knowledge_store/">knowledge_store.md</a> for implementation patterns</p>
+<p><strong>ReLU (Rectified Linear Unit)</strong>: An activation function that outputs the input if positive, zero otherwise.
+- <strong>Formula</strong>:</p>
+<p>$$
+  \begin{aligned}
+  f(x) = \max(0, x)
+  \end{aligned}
+  $$
+- <strong>Advantages</strong>: <a href="../nn_intro/#common-activation-functions">nn_intro.md Section 3</a> for vanishing gradient prevention
+- <strong>Geometric effect</strong>: <a href="../nn_intro/#step-2-relu-activation-bends-space">nn_intro.md Section 4</a> for space folding in XOR example</p>
+<p><strong>RNN (Recurrent Neural Network)</strong>: A neural network designed for sequential data that maintains hidden states across time steps.
+- <strong>Core equation</strong>:</p>
+<p>$$
+  \begin{aligned}
+  h_t = f(W_x x_t + W_h h_{t-1} + b)
+  \end{aligned}
+  $$
+- <strong>Complete tutorial</strong>: <a href="../rnn_intro/">rnn_intro.md</a> for step-by-step explanation
+- <strong>Limitations</strong>: <a href="../rnn_intro/#9-the-vanishing-gradient-problem-rnns-fatal-flaw">rnn_intro.md Section 9</a> for vanishing gradients</p>
+<p><strong>Regularization</strong>: Techniques to prevent overfitting by constraining model complexity.
+- <strong>Methods</strong>: Dropout, L1/L2 regularization, early stopping
+- <strong>Practical guide</strong>: <a href="../mlp_intro/#8-common-challenges-and-solutions">mlp_intro.md Section 8</a> for implementation</p>
+<hr />
+<h2 id="s">S<a class="headerlink" href="#s" title="Permanent link">&para;</a></h2>
+<p><strong>Scaled Dot-Product Attention:</strong> Core attention mechanism with the following formula:</p>
+<p>$$
+\begin{aligned}
+\text{softmax}(QK^T/\sqrt{d_k})V
+\end{aligned}
+$$
+- <strong>Mathematical derivation</strong>: <a href="../transformers_math1/#51-deriving-scaled-dot-product-attention">transformers_math1.md Section 5.1</a> for complete derivation
+- <strong>Implementation</strong>: <a href="../pytorch_ref/#self-attention-from-scratch">pytorch_ref.md Section 10</a> for from-scratch code</p>
+<p><strong>Self-Attention</strong>: An attention mechanism where queries, keys, and values all come from the same sequence, allowing positions to attend to each other.
+- <strong>Formula</strong>:</p>
+<p>$$
+  \begin{aligned}
+  \text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+  \end{aligned}
+  $$
+- <strong>Implementation</strong>: <a href="../pytorch_ref/#self-attention-from-scratch">pytorch_ref.md Section 10</a> for from-scratch code
+- <strong>Intuition</strong>: <a href="../transformers_fundamentals/#9-stage-4-self-attention-deep-dive">transformers_fundamentals.md Section 9</a> for detailed mechanics</p>
+<p><strong>Sigmoid</strong>: An activation function that maps any input to a value between 0 and 1.
+- <strong>Formula</strong>:</p>
+<p>$$
+  \begin{aligned}
+  \sigma(x) = \frac{1}{1 + e^{-x}}
+  \end{aligned}
+  $$
+- <strong>Properties</strong>: <a href="../nn_intro/#common-activation-functions">nn_intro.md Section 3</a> for squashing behavior
+- <strong>Uses</strong>: Binary classification, historical neural networks</p>
+<p><strong>Similarity Threshold</strong>: A minimum similarity score required for a document to be considered relevant in vector search.
+- <strong>Vector search</strong>: <a href="../knowledge_store/">knowledge_store.md</a> for retrieval systems</p>
+<p><strong>Softmax</strong>: A function that converts a vector of real numbers into a probability distribution.
+- <strong>Formula</strong>:</p>
+<p>$$
+  \begin{aligned}
+  \text{softmax}(x_i) = \frac{e^{x_i}}{\sum_{j=1}^{K} e^{x_j}}
+  \end{aligned}
+  $$
+- <strong>Usage</strong>: Output layer for multi-class classification, attention weights</p>
+<p><strong>Stochastic Gradient Descent (SGD)</strong>: A variant of gradient descent that uses random mini-batches instead of the full dataset.
+- <strong>Benefits</strong>: <a href="../nn_intro/#from-simple-to-sophisticated-the-evolution-of-optimizers">nn_intro.md Section 5</a> for comparison with other optimizers</p>
+<hr />
+<h2 id="t">T<a class="headerlink" href="#t" title="Permanent link">&para;</a></h2>
+<p><strong>Tanh (Hyperbolic Tangent)</strong>: An activation function that maps inputs to values between -1 and 1.
+- <strong>Formula</strong>:</p>
+<p>$$
+  \begin{aligned}
+  \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
+  \end{aligned}
+  $$
+- <strong>Advantages</strong>: <a href="../nn_intro/#common-activation-functions">nn_intro.md Section 3</a> for zero-centered output
+- <strong>Comparison</strong>: <a href="../mlp_intro/#tanh-hyperbolic-tangent">mlp_intro.md Section 9</a> for detailed analysis</p>
+<p><strong>Teacher Forcing:</strong> Training technique using ground truth tokens as inputs instead of model predictions.
+- <strong>Autoregressive training</strong>: <a href="../transformers_math1/#81-next-token-prediction">transformers_math1.md Section 8.1</a> for implementation details</p>
+<p><strong>Temperature</strong>: A parameter controlling randomness in text generation; lower values make outputs more focused, higher values more creative.
+- <strong>Text generation</strong>: Used in softmax:</p>
+<p>$$
+  \begin{aligned}
+  p_i = \frac{e^{x_i/T}}{\sum_j e^{x_j/T}}
+  \end{aligned}
+  $$</p>
+<p><strong>Token</strong>: The basic unit of text processing in NLP models (words, subwords, or characters).
+- <strong>Tokenization</strong>: <a href="../transformers_fundamentals/#5-stage-1-text-to-tokens">transformers_fundamentals.md Section 5</a> for detailed explanation
+- <strong>Embeddings</strong>: <a href="../nn_intro/#text-embeddings-bridging-language-and-mathematics">nn_intro.md Section 5</a> for vector representation</p>
+<p><strong>Top-K</strong>: A parameter limiting selection to the K most likely tokens (in LLMs) or K most similar documents (in vector stores).
+- <strong>Sampling</strong>: Controls generation diversity in language models</p>
+<p><strong>Top-P (Nucleus Sampling)</strong>: A parameter that dynamically selects tokens based on cumulative probability until reaching threshold P.
+- <strong>vs Top-K</strong>: More adaptive selection for text generation</p>
+<p><strong>Transformer</strong>: A neural network architecture that uses self-attention mechanisms to process sequential data efficiently.
+- <strong>Complete reference</strong>: <a href="../transformers_fundamentals/">transformers_fundamentals.md</a> for comprehensive technical details
+- <strong>Key innovation</strong>: <a href="../transformers_fundamentals/#9-stage-4-self-attention-deep-dive">transformers_fundamentals.md Section 9</a> for attention mechanism explanation
+- <strong>Implementation</strong>: <a href="../pytorch_ref/#10-transformers-in-pytorch">pytorch_ref.md Section 10</a> for code examples</p>
+<hr />
+<h2 id="u">U<a class="headerlink" href="#u" title="Permanent link">&para;</a></h2>
+<p><strong>Universal Approximation Theorem</strong>: A mathematical theorem stating that neural networks with sufficient neurons can approximate any continuous function.
+- <strong>Implication</strong>: <a href="../nn_intro/#multi-layer-perceptrons-mlps-high-dimensional-sculptors">nn_intro.md Section 4</a> for theoretical foundation
+- <strong>Practical meaning</strong>: Justifies why neural networks are so powerful for complex pattern learning</p>
+<p><strong>Underfitting</strong>: When a model is too simple to capture the underlying patterns in the data.
+- <strong>vs Overfitting</strong>: <a href="../nn_intro/#4-overfitting-vs-underfitting">nn_intro.md Section 5</a> for comparison
+- <strong>Solutions</strong>: <a href="../mlp_intro/#underfitting-when-mlps-are-too-simple">mlp_intro.md Section 8</a> for model complexity increase</p>
+<hr />
+<h2 id="v">V<a class="headerlink" href="#v" title="Permanent link">&para;</a></h2>
+<p><strong>Vanishing Gradient Problem</strong>: A fundamental issue in deep networks where gradients become exponentially small in earlier layers, preventing effective learning.
+- <strong>Mathematical analysis</strong>: <a href="../rnn_intro/#9-the-vanishing-gradient-problem-rnns-fatal-flaw">rnn_intro.md Section 9</a> for RNN-specific issues
+- <strong>Solutions</strong>: <a href="../pytorch_ref/#6-vanishingexploding-gradients">pytorch_ref.md Section 6</a> for practical fixes
+- <strong>Why ReLU helps</strong>: <a href="../nn_intro/#common-activation-functions">nn_intro.md Section 3</a> for gradient preservation</p>
+<p><strong>Vector Store</strong>: A database optimized for storing and searching high-dimensional numerical vectors representing semantic content.
+- <strong>Complete guide</strong>: <a href="../knowledge_store/">knowledge_store.md</a> for implementation, indexing, and comparison with LLM weights
+- <strong>Applications</strong>: Semantic search, RAG systems, recommendation engines</p>
+<p><strong>Vocabulary</strong>: The complete set of unique tokens (words, subwords, characters) that a model can process.
+- <strong>Size considerations</strong>: <a href="../transformers_fundamentals/#5-stage-1-text-to-tokens">transformers_fundamentals.md Section 5</a> for tokenization trade-offs</p>
+<hr />
+<h2 id="w">W<a class="headerlink" href="#w" title="Permanent link">&para;</a></h2>
+<p><strong>Weight</strong>: Parameters in a neural network that determine the strength of connections between neurons and are learned during training.
+- <strong>Mathematical role</strong>:</p>
+<p>$$
+  \begin{aligned}
+  z = w_1x_1 + w_2x_2 + ... + w_nx_n + b
+  \end{aligned}
+  $$
+- <strong>Geometric interpretation</strong>: <a href="../nn_intro/#the-role-of-weights-feature-importance-and-direction">nn_intro.md Section 3</a> for spatial understanding
+- <strong>Training</strong>: <a href="../nn_intro/#gradient-descent-the-universal-learning-algorithm">nn_intro.md Section 5</a> for optimization process</p>
+<p><strong>Word Embedding</strong>: A dense vector representation of words that captures semantic relationships.
+- <strong>Mathematical foundation</strong>: Words mapped to high-dimensional space:</p>
+<p>$$
+  \begin{aligned}
+  \text{Words} \rightarrow \mathbb{R}^{d} \quad \text{where similar words have similar vectors}
+  \end{aligned}
+  $$
+- <strong>Properties</strong>: <a href="../nn_intro/#why-embeddings-work">nn_intro.md Section 5</a> for distributional hypothesis
+- <strong>Applications</strong>: <a href="../knowledge_store/">knowledge_store.md</a> for semantic search and knowledge storage</p>
+<hr />
+<h2 id="-additional-resources">📚 Additional Resources<a class="headerlink" href="#-additional-resources" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Mathematical Foundations</strong>: <a href="../math_quick_ref/">math_quick_ref.md</a> for formulas and derivations</li>
+<li><strong>Implementation Patterns</strong>: <a href="../pytorch_ref/">pytorch_ref.md</a> for practical coding examples  </li>
+<li><strong>Historical Context</strong>: <a href="../history_quick_ref/">history_quick_ref.md</a> for evolution timeline</li>
+<li><strong>Hands-on Examples</strong>: <a href="../mlp_intro/">mlp_intro.md</a> and <a href="../rnn_intro/">rnn_intro.md</a> for worked calculations</li>
+</ul>
+<hr />
+<p><em>This glossary covers fundamental terms from neural networks through transformer architectures. Each term includes cross-references to detailed explanations in the repository documents for deeper understanding.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.top", "navigation.instant", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+    
+  </body>
+</html>

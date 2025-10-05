@@ -1,0 +1,2355 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../nn_intro/">
+      
+      
+        <link rel="next" href="../rnn_intro/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Building Networks with MLP - Introduction to Transformers</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../styles.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#multi-layer-perceptrons-mlps-a-step-by-step-tutorial" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Introduction to Transformers" class="md-header__button md-logo" aria-label="Introduction to Transformers" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Introduction to Transformers
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Building Networks with MLP
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Introduction to Transformers" class="md-nav__button md-logo" aria-label="Introduction to Transformers" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Introduction to Transformers
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nn_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Neural Network Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Building Networks with MLP
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Building Networks with MLP
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-is-an-mlp" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What is an MLP?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. What is an MLP?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recalling-the-perceptrons-success-and-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recalling the Perceptron's Success and Limitations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-single-perceptrons-fail-the-xor-like-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      When Single Perceptrons Fail: The XOR-like Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mlp-vs-single-perceptron" class="md-nav__link">
+    <span class="md-ellipsis">
+      MLP vs Single Perceptron
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-core-mlp-equations" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. The Core MLP Equations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The Core MLP Equations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#visual-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visual Breakdown
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-multi-layer-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Multi-Layer Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Multi-Layer Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stacking-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stacking Layers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#information-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Information Flow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-hidden-size-and-layer-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Hidden Size and Layer Depth
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Hidden Size and Layer Depth">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hidden-size-width-of-each-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hidden Size: Width of Each Layer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-depth-how-many-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer Depth: How Many Layers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameter-counting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parameter Counting
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-worked-example-advanced-spam-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Worked Example: Advanced Spam Detection
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Worked Example: Advanced Spam Detection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-0-initialize" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 0: Initialize
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1-forward-pass-through-hidden-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Forward Pass Through Hidden Layer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-forward-pass-through-output-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Forward Pass Through Output Layer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-understanding-what-happened" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Understanding What Happened
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-training-how-mlps-learn" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Training: How MLPs Learn
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Training: How MLPs Learn">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-learning-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Learning Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loss-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loss Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backpropagation-the-learning-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backpropagation: The Learning Algorithm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-loop-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Training Loop Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-mlp-vs-other-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. MLP vs Other Models
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. MLP vs Other Models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mlp-vs-linear-regression" class="md-nav__link">
+    <span class="md-ellipsis">
+      MLP vs Linear Regression
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mlp-advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      MLP Advantages
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mlp-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      MLP Limitations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-mlps" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use MLPs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-common-challenges-and-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Common Challenges and Solutions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Common Challenges and Solutions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overfitting-when-mlps-memorize" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overfitting: When MLPs Memorize
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#underfitting-when-mlps-are-too-simple" class="md-nav__link">
+    <span class="md-ellipsis">
+      Underfitting: When MLPs Are Too Simple
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gradient-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gradient Problems
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-activation-functions-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Activation Functions Deep Dive
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Activation Functions Deep Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relu-rectified-linear-unit" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReLU (Rectified Linear Unit)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sigmoid" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sigmoid
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tanh-hyperbolic-tangent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tanh (Hyperbolic Tangent)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choosing-activations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choosing Activations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-practical-implementation-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Practical Implementation Tips
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Practical Implementation Tips">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#network-architecture-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Network Architecture Design
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyperparameter-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hyperparameter Tuning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debugging-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debugging Checklist
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-summary-the-mlp-foundation" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Summary: The MLP Foundation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Summary: The MLP Foundation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-mlps-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      How MLPs Work
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-components-working-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Components Working Together
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#capacity-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Capacity Control
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mlps-role-in-modern-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      MLP's Role in Modern AI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-final-visualization-advanced-spam-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Final Visualization: Advanced Spam Detection
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rnn_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sequential Modeling with RNN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transformers_fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transformers Fundamentals
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transformers_advanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transformers Advanced
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knowledge_store/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Knowledge Store
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            References
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pytorch_ref/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PyTorch Primer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transformers_math1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mathematical Foundations 1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transformers_math2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mathematical Foundations 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../math_quick_ref/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mathematical Quick Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../history_quick_ref/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sequence Modeling History
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    README
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LICENSE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    LICENSE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-is-an-mlp" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What is an MLP?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. What is an MLP?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recalling-the-perceptrons-success-and-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recalling the Perceptron's Success and Limitations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-single-perceptrons-fail-the-xor-like-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      When Single Perceptrons Fail: The XOR-like Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mlp-vs-single-perceptron" class="md-nav__link">
+    <span class="md-ellipsis">
+      MLP vs Single Perceptron
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-core-mlp-equations" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. The Core MLP Equations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The Core MLP Equations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#visual-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visual Breakdown
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-multi-layer-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Multi-Layer Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Multi-Layer Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stacking-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stacking Layers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#information-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Information Flow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-hidden-size-and-layer-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Hidden Size and Layer Depth
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Hidden Size and Layer Depth">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hidden-size-width-of-each-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hidden Size: Width of Each Layer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-depth-how-many-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer Depth: How Many Layers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameter-counting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parameter Counting
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-worked-example-advanced-spam-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Worked Example: Advanced Spam Detection
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Worked Example: Advanced Spam Detection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-0-initialize" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 0: Initialize
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1-forward-pass-through-hidden-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Forward Pass Through Hidden Layer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-forward-pass-through-output-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Forward Pass Through Output Layer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-understanding-what-happened" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Understanding What Happened
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-training-how-mlps-learn" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Training: How MLPs Learn
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Training: How MLPs Learn">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-learning-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Learning Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loss-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loss Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backpropagation-the-learning-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backpropagation: The Learning Algorithm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-loop-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Training Loop Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-mlp-vs-other-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. MLP vs Other Models
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. MLP vs Other Models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mlp-vs-linear-regression" class="md-nav__link">
+    <span class="md-ellipsis">
+      MLP vs Linear Regression
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mlp-advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      MLP Advantages
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mlp-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      MLP Limitations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-mlps" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use MLPs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-common-challenges-and-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Common Challenges and Solutions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Common Challenges and Solutions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overfitting-when-mlps-memorize" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overfitting: When MLPs Memorize
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#underfitting-when-mlps-are-too-simple" class="md-nav__link">
+    <span class="md-ellipsis">
+      Underfitting: When MLPs Are Too Simple
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gradient-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gradient Problems
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-activation-functions-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Activation Functions Deep Dive
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Activation Functions Deep Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relu-rectified-linear-unit" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReLU (Rectified Linear Unit)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sigmoid" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sigmoid
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tanh-hyperbolic-tangent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tanh (Hyperbolic Tangent)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choosing-activations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choosing Activations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-practical-implementation-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Practical Implementation Tips
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Practical Implementation Tips">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#network-architecture-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Network Architecture Design
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyperparameter-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hyperparameter Tuning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debugging-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debugging Checklist
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-summary-the-mlp-foundation" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Summary: The MLP Foundation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Summary: The MLP Foundation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-mlps-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      How MLPs Work
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-components-working-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Components Working Together
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#capacity-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Capacity Control
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mlps-role-in-modern-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      MLP's Role in Modern AI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-final-visualization-advanced-spam-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Final Visualization: Advanced Spam Detection
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="multi-layer-perceptrons-mlps-a-step-by-step-tutorial">Multi-Layer Perceptrons (MLPs): A Step-by-Step Tutorial<a class="headerlink" href="#multi-layer-perceptrons-mlps-a-step-by-step-tutorial" title="Permanent link">&para;</a></h1>
+<p><strong>Building on your neural network foundation:</strong> In the <a href="../nn_intro/">Neural Networks Introduction</a>, you learned how a single perceptron can solve simple problems like basic spam detection. But what happens when the patterns get more complex? This tutorial shows you how stacking multiple layers of perceptrons creates networks capable of learning any pattern—no matter how intricate.</p>
+<p><strong>What you'll learn:</strong> How MLPs combine multiple perceptrons into powerful networks, why depth enables learning complex patterns that single neurons cannot, and how these building blocks form the foundation of all modern neural architectures. We'll work through math and intuition together, with examples that demonstrate clear advantages over single perceptrons.</p>
+<hr />
+<h2 id="1-what-is-an-mlp">1. What is an MLP?<a class="headerlink" href="#1-what-is-an-mlp" title="Permanent link">&para;</a></h2>
+<h3 id="recalling-the-perceptrons-success-and-limitations">Recalling the Perceptron's Success and Limitations<a class="headerlink" href="#recalling-the-perceptrons-success-and-limitations" title="Permanent link">&para;</a></h3>
+<p>In the previous tutorial, you saw a single perceptron successfully classify this spam email:</p>
+<p><strong>Email:</strong> "FREE VACATION!!! Click now!!!"<br />
+<strong>Features:</strong> [6 exclamations, has "free", 13 capitals] → <strong>87% spam probability</strong></p>
+<p>The perceptron worked great! But what if we encounter more sophisticated spam that exploits the perceptron's linear nature?</p>
+<h3 id="when-single-perceptrons-fail-the-xor-like-problem">When Single Perceptrons Fail: The XOR-like Problem<a class="headerlink" href="#when-single-perceptrons-fail-the-xor-like-problem" title="Permanent link">&para;</a></h3>
+<p>Consider these two emails that a single perceptron struggles with:</p>
+<p><strong>Email A:</strong> "You have 1 new message"<br />
+<strong>Features:</strong> [0 exclamations, no "free", 3 capitals] → <strong>Should be: NOT spam</strong></p>
+<p><strong>Email B:</strong> "Get free bitcoins with zero risk!!!"<br />
+<strong>Features:</strong> [3 exclamations, has "free", 8 capitals] → <strong>Should be: SPAM</strong></p>
+<p><strong>Email C:</strong> "FREE SHIPPING on your order"<br />
+<strong>Features:</strong> [0 exclamations, has "free", 13 capitals] → <strong>Should be: NOT spam</strong> (legitimate store)</p>
+<p><strong>Email D:</strong> "Congratulations winner!!!"<br />
+<strong>Features:</strong> [3 exclamations, no "free", 15 capitals] → <strong>Should be: SPAM</strong></p>
+<p><strong>The Problem:</strong> A single perceptron creates a linear decision boundary. It cannot learn the pattern: "Spam when (many capitals AND no 'free') OR (has 'free' AND many exclamations), but not spam when only one condition is true."</p>
+<h3 id="mlp-vs-single-perceptron">MLP vs Single Perceptron<a class="headerlink" href="#mlp-vs-single-perceptron" title="Permanent link">&para;</a></h3>
+<p><strong>Single Perceptron (Linear Decision):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Input Features → Single Computation → Output
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>[excl, free, caps] → w₁×excl + w₂×free + w₃×caps + b → spam probability
+</code></pre></div></p>
+<ul>
+<li><strong>Problem:</strong> Can only draw straight lines to separate spam from non-spam</li>
+<li><strong>Limitation:</strong> Cannot handle complex patterns that require curved decision boundaries</li>
+</ul>
+<p><strong>MLP (Non-Linear Decisions):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Layer 1: [excl, free, caps] → [h₁, h₂] (detect patterns like &quot;promotional tone&quot;, &quot;urgency signals&quot;)
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Layer 2: [h₁, h₂] → [spam probability] (combine patterns intelligently)
+</code></pre></div></p>
+<ul>
+<li><strong>Solution:</strong> Each layer can create new features, enabling complex curved decision boundaries</li>
+<li><strong>Power:</strong> Can learn: "IF (urgency signals without legitimacy) OR (promotional tone with pressure) THEN spam"</li>
+</ul>
+<p><strong>Key Insight:</strong> MLPs solve the fundamental limitation of perceptrons by stacking multiple layers, where each layer learns increasingly sophisticated feature combinations that enable non-linear pattern recognition.</p>
+<hr />
+<h2 id="2-the-core-mlp-equations">2. The Core MLP Equations<a class="headerlink" href="#2-the-core-mlp-equations" title="Permanent link">&para;</a></h2>
+<p>The heart of every MLP layer is this transformation:</p>
+<p>$$
+\begin{aligned} h &amp;= \sigma(x W + b) \end{aligned}
+$$</p>
+<p>Let's break this down term by term:</p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Size</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$$x$$</td>
+<td>$$[1, D_{in}]$$</td>
+<td><strong>Input vector</strong> - features coming into this layer</td>
+</tr>
+<tr>
+<td>$$W$$</td>
+<td>$$[D_{in}, D_{out}]$$</td>
+<td><strong>Weight matrix</strong> - learned transformation</td>
+</tr>
+<tr>
+<td>$$b$$</td>
+<td>$$[1, D_{out}]$$</td>
+<td><strong>Bias vector</strong> - learned offset</td>
+</tr>
+<tr>
+<td>$$x W + b$$</td>
+<td>$$[1, D_{out}]$$</td>
+<td><strong>Linear combination</strong> - weighted sum of inputs</td>
+</tr>
+<tr>
+<td>$$\sigma(\cdot)$$</td>
+<td>-</td>
+<td><strong>Activation function</strong> - introduces non-linearity</td>
+</tr>
+<tr>
+<td>$$h$$</td>
+<td>$$[1, D_{out}]$$</td>
+<td><strong>Output vector</strong> - transformed features</td>
+</tr>
+</tbody>
+</table>
+<h3 id="visual-breakdown">Visual Breakdown<a class="headerlink" href="#visual-breakdown" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Input Features     Weight Matrix     Bias        Activation
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>     x        ×         W         +   b       →     σ(·)      →   h
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>[x₁ x₂ x₃]    ×     [w₁₁ w₁₂]     +  [b₁ b₂]  →     σ(·)      →  [h₁ h₂]
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>                    [w₂₁ w₂₂]
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>                    [w₃₁ w₃₂]
+</code></pre></div>
+<p><strong>Why this structure?</strong></p>
+<p>$$
+\begin{aligned}
+\mathbf{xW} \quad &amp;: \text{Matrix multiplication combines input features with learned weights} \newline
+\mathbf{+ b} \quad &amp;: \text{Bias allows shifting the activation threshold} \newline
+\mathbf{\sigma(\cdot)} \quad &amp;: \text{Non-linearity enables learning complex patterns}
+\end{aligned}
+$$</p>
+<p><strong>Common Activation Functions:</strong></p>
+<p>$$
+\begin{aligned}
+\text{ReLU:} \quad &amp;\sigma(z) = \max(0, z) \quad \text{- most popular, simple and effective} \newline
+\text{Sigmoid:} \quad &amp;\sigma(z) = \frac{1}{1 + e^{-z}} \quad \text{- outputs between 0 and 1} \newline
+\text{Tanh:} \quad &amp;\sigma(z) = \tanh(z) \quad \text{- outputs between -1 and 1}
+\end{aligned}
+$$</p>
+<hr />
+<h2 id="3-multi-layer-architecture">3. Multi-Layer Architecture<a class="headerlink" href="#3-multi-layer-architecture" title="Permanent link">&para;</a></h2>
+<h3 id="stacking-layers">Stacking Layers<a class="headerlink" href="#stacking-layers" title="Permanent link">&para;</a></h3>
+<p>A complete MLP chains multiple layers together:</p>
+<p>$$
+\begin{aligned}
+h^{(1)} &amp;= \sigma^{(1)}(x W^{(1)} + b^{(1)}) \newline
+h^{(2)} &amp;= \sigma^{(2)}(h^{(1)} W^{(2)} + b^{(2)}) \newline
+&amp;\vdots \newline
+y &amp;= h^{(L-1)} W^{(L)} + b^{(L)}
+\end{aligned}
+$$</p>
+<p><strong>Layer Naming Convention:</strong></p>
+<p>$$
+\begin{aligned}
+\text{Input Layer:} \quad &amp;\text{The original features } x \newline
+\text{Hidden Layers:} \quad &amp;\text{Intermediate layers } h^{(1)}, h^{(2)}, \ldots \newline
+\text{Output Layer:} \quad &amp;\text{Final predictions } y \text{ (often no activation for regression)}
+\end{aligned}
+$$</p>
+<h3 id="information-flow">Information Flow<a class="headerlink" href="#information-flow" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Input → Hidden 1 → Hidden 2 → ... → Output
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  x   →   h¹     →   h²      →     →   y
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Each layer transforms its input into increasingly abstract representations
+</code></pre></div>
+<p><strong>What Each Layer Learns:</strong></p>
+<p>$$
+\begin{aligned}
+\text{Layer 1:} \quad &amp;\text{Basic feature combinations (edges, simple patterns)} \newline
+\text{Layer 2:} \quad &amp;\text{More complex features (shapes, motifs)} \newline
+\text{Layer 3+:} \quad &amp;\text{High-level concepts (objects, semantic meaning)}
+\end{aligned}
+$$</p>
+<hr />
+<h2 id="4-hidden-size-and-layer-depth">4. Hidden Size and Layer Depth<a class="headerlink" href="#4-hidden-size-and-layer-depth" title="Permanent link">&para;</a></h2>
+<h3 id="hidden-size-width-of-each-layer">Hidden Size: Width of Each Layer<a class="headerlink" href="#hidden-size-width-of-each-layer" title="Permanent link">&para;</a></h3>
+<p>Hidden size controls how many features each layer can learn:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Small hidden size (2 neurons):   h = [h₁, h₂]
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Large hidden size (100 neurons): h = [h₁, h₂, ..., h₁₀₀]
+</code></pre></div>
+<ul>
+<li><strong>Larger hidden size</strong>: Can learn more complex patterns, but more parameters</li>
+<li><strong>Smaller hidden size</strong>: Simpler model, less prone to overfitting</li>
+</ul>
+<p><strong>Analogy:</strong> Like having 2 vs 100 "detectors" in each layer to find patterns.</p>
+<h3 id="layer-depth-how-many-layers">Layer Depth: How Many Layers<a class="headerlink" href="#layer-depth-how-many-layers" title="Permanent link">&para;</a></h3>
+<p>Depth controls the complexity of patterns the network can learn:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Shallow (2 layers): Input → Hidden → Output
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Deep (5 layers):    Input → H1 → H2 → H3 → H4 → Output
+</code></pre></div>
+<ul>
+<li><strong>Deeper networks</strong>: Can learn more hierarchical, abstract representations</li>
+<li><strong>Shallow networks</strong>: Simpler, faster, easier to train</li>
+</ul>
+<p><strong>Rule of Thumb:</strong> Start shallow, go deeper only if needed.</p>
+<h3 id="parameter-counting">Parameter Counting<a class="headerlink" href="#parameter-counting" title="Permanent link">&para;</a></h3>
+<p>For a layer with input size $$D_{in}$$ and output size $$D_{out}$$</p>
+<p>$$
+\begin{aligned}
+\text{Weights:} \quad &amp;D_{in} \times D_{out} \text{ parameters} \newline
+\text{Biases:} \quad &amp;D_{out} \text{ parameters} \newline
+\text{Total:} \quad &amp;D_{in} \times D_{out} + D_{out} = D_{out}(D_{in} + 1)
+\end{aligned}
+$$</p>
+<p><strong>Example Network:</strong></p>
+<p>$$
+\begin{aligned}
+\text{Input:} \quad &amp;\text{10 features} \newline
+\text{Hidden 1:} \quad &amp;\text{20 neurons} \rightarrow 20 \times (10 + 1) = 220 \text{ parameters} \newline
+\text{Hidden 2:} \quad &amp;\text{15 neurons} \rightarrow 15 \times (20 + 1) = 315 \text{ parameters} \newline
+\text{Output:} \quad &amp;\text{1 neuron} \rightarrow 1 \times (15 + 1) = 16 \text{ parameters} \newline
+\textbf{Total:} \quad &amp;\textbf{551 parameters}
+\end{aligned}
+$$</p>
+<hr />
+<h2 id="5-worked-example-advanced-spam-detection">5. Worked Example: Advanced Spam Detection<a class="headerlink" href="#5-worked-example-advanced-spam-detection" title="Permanent link">&para;</a></h2>
+<p>Let's trace through a complex example that shows why MLPs are necessary. We'll use the problematic case from Section 1:</p>
+<p><strong>The Challenge:</strong> Detect sophisticated spam that fools single perceptrons<br />
+<strong>Input features</strong>: [num_exclamations, has_word_free, num_capitals]<br />
+<strong>Hidden layer size</strong>: 2 neurons (for pattern detection)<br />
+<strong>Output</strong>: spam probability</p>
+<h3 id="step-0-initialize">Step 0: Initialize<a class="headerlink" href="#step-0-initialize" title="Permanent link">&para;</a></h3>
+<p><strong>Test Email (sophisticated spam):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Email: &quot;Congratulations winner!!!&quot;
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>x = [3, 0, 15]  # [3 exclamations, no &quot;free&quot;, 15 capitals]
+</code></pre></div></p>
+<p><strong>Why this is hard for a single perceptron:</strong></p>
+<ul>
+<li>Has exclamations (spam-like) but no "free" word</li>
+<li>Has many capitals (spam-like) but winner congratulations can be legitimate</li>
+<li><strong>Requires learning</strong>: "High urgency (excl + caps) without legitimacy markers = spam"</li>
+</ul>
+<p><strong>Learned weights (after training on complex patterns):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a># Hidden Layer 1 (2 specialized pattern detectors)
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>W¹ = [[0.4, 0.1],     # 3×2 matrix: input-to-hidden
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>      [-0.8, 0.9],    # Neuron 1: urgency detector, Neuron 2: legitimacy detector  
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>      [0.3, -0.2]]
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>b¹ = [-2.0, -1.5]     # 2-element bias vector (high thresholds for pattern detection)
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a># Output Layer (1 neuron)  
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>W² = [[1.5],          # 2×1 matrix: hidden-to-output
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>      [-0.8]]         # Positive weight for urgency, negative for legitimacy
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>b² = [0.2]            # 1-element bias vector
+</code></pre></div></p>
+<p><strong>What each neuron learned to detect:</strong></p>
+<ul>
+<li><strong>Neuron 1</strong>: "Urgency signals" (high exclamations + capitals, low "free")</li>
+<li><strong>Neuron 2</strong>: "Legitimacy markers" (presence of "free" reduces suspicion)</li>
+</ul>
+<h3 id="step-1-forward-pass-through-hidden-layer">Step 1: Forward Pass Through Hidden Layer<a class="headerlink" href="#step-1-forward-pass-through-hidden-layer" title="Permanent link">&para;</a></h3>
+<p><strong>Input:</strong> $$x = [3, 0, 15]$$ (our sophisticated spam example)</p>
+<p><strong>Compute linear combination:</strong>
+The operation is <code>x @ W¹ + b¹</code> where <code>x</code> is a row vector.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>   x (1x3)      @      W¹ (3x2)        +    b¹ (1x2)     =   Result (1x2)
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>[3, 0, 15]      @    [[0.4, 0.1],      +   [-2.0, -1.5]
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>                     [-0.8, 0.9],
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>                     [0.3, -0.2]]
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>Step 1: x @ W¹
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>[3*0.4+0*(-0.8)+15*0.3,  3*0.1+0*0.9+15*(-0.2)] = [5.7, -2.7]
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>Step 2: Add bias b¹
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>[5.7, -2.7] + [-2.0, -1.5] = [3.7, -4.2]
+</code></pre></div>
+<strong>Calculation Breakdown:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Neuron 1 (Urgency Detector): 0.4×3 + (-0.8)×0 + 0.3×15 + (-2.0) 
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>                           = 1.2 + 0 + 4.5 - 2.0 = 3.7
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>Neuron 2 (Legitimacy Detector): 0.1×3 + 0.9×0 + (-0.2)×15 + (-1.5)
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>                              = 0.3 + 0 - 3.0 - 1.5 = -4.2
+</code></pre></div></p>
+<p><strong>Apply ReLU activation:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>h¹ = ReLU([3.7, -4.2]) = [max(0, 3.7), max(0, -4.2)] = [3.7, 0]
+</code></pre></div></p>
+<p><strong>Pattern Detection Results:</strong></p>
+<ul>
+<li><strong>Neuron 1 (Urgency)</strong>: Strongly activated (3.7) - detected high urgency pattern</li>
+<li><strong>Neuron 2 (Legitimacy)</strong>: Silent (0) - no legitimacy markers found</li>
+</ul>
+<h3 id="step-2-forward-pass-through-output-layer">Step 2: Forward Pass Through Output Layer<a class="headerlink" href="#step-2-forward-pass-through-output-layer" title="Permanent link">&para;</a></h3>
+<p><strong>Input:</strong> $$h^{(1)} = [3.7, 0]$$ (urgency detected, no legitimacy)</p>
+<p><strong>Compute linear combination:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>W²h¹ + b² = [[1.5],    [3.7,    [0.2] = [1.5×3.7 + (-0.8)×0] + [0.2]
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>             [-0.8]] × [0]   +         = [5.55] + [0.2]
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>                                       = [5.75]
+</code></pre></div></p>
+<p><strong>Apply sigmoid for probability:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>y = sigmoid(5.75) = 1/(1 + e^(-5.75)) = 1/(1 + 0.003) = 0.997
+</code></pre></div></p>
+<p><strong>Result:</strong> 99.7% probability this email is spam!</p>
+<p><strong>Why the MLP succeeded:</strong></p>
+<ul>
+<li><strong>Hidden layer</strong> learned to detect "urgency without legitimacy" pattern</li>
+<li><strong>Output layer</strong> learned that this combination strongly indicates spam</li>
+<li><strong>Single perceptron</strong> would have failed to capture this complex relationship</li>
+</ul>
+<h3 id="step-3-understanding-what-happened">Step 3: Understanding What Happened<a class="headerlink" href="#step-3-understanding-what-happened" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Original Features: [3 exclamations, no &quot;free&quot;, 15 capitals]
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>                         ↓
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>Hidden Layer:      [3.7, 0]  # Urgency detected, no legitimacy
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>                         ↓  
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>Output:           0.997      # 99.7% spam probability
+</code></pre></div>
+<p><strong>Hidden Neuron Analysis:</strong></p>
+<ul>
+<li><strong>Neuron 1 (Urgency Detector)</strong>: Strongly activated by exclamations + capitals combination</li>
+<li><strong>Neuron 2 (Legitimacy Detector)</strong>: Silent because no "free" word (legitimacy marker) present</li>
+</ul>
+<p><strong>The Power of Multiple Layers:</strong></p>
+<ol>
+<li><strong>Layer 1</strong>: Learned specialized pattern detectors (urgency vs legitimacy)</li>
+<li><strong>Layer 2</strong>: Learned to combine these patterns intelligently</li>
+<li><strong>Result</strong>: Detected sophisticated spam that exploits urgency without legitimate context</li>
+</ol>
+<p><strong>Key Insight:</strong> The MLP learned a complex decision rule: "High urgency signals without legitimacy markers = strong spam indicator." This non-linear pattern would be impossible for a single perceptron to capture.</p>
+<hr />
+<h2 id="6-training-how-mlps-learn">6. Training: How MLPs Learn<a class="headerlink" href="#6-training-how-mlps-learn" title="Permanent link">&para;</a></h2>
+<h3 id="the-learning-process">The Learning Process<a class="headerlink" href="#the-learning-process" title="Permanent link">&para;</a></h3>
+<p>MLPs learn through <strong>supervised learning</strong>:</p>
+<ol>
+<li><strong>Forward Pass</strong>: Compute predictions using current weights</li>
+<li><strong>Loss Calculation</strong>: Measure how wrong the predictions are</li>
+<li><strong>Backward Pass</strong>: Compute gradients using backpropagation</li>
+<li><strong>Weight Update</strong>: Adjust weights to reduce the loss</li>
+</ol>
+<blockquote>
+<p><strong>📚 Mathematical Deep Dive</strong>: For a complete step-by-step mathematical explanation of how gradient descent works from line slopes to neural network training, see <strong><a href="../transformers_math1/#211-from-line-slopes-to-neural-network-training">transformers_math1.md Section 2.1.1</a></strong> - includes worked examples and the connection between simple derivatives and MLP backpropagation.</p>
+</blockquote>
+<h3 id="loss-functions">Loss Functions<a class="headerlink" href="#loss-functions" title="Permanent link">&para;</a></h3>
+<p><strong>For Binary Classification (like spam detection):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>Binary Cross-Entropy: L = -[y*log(ŷ) + (1-y)*log(1-ŷ)]
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>Where:
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>- y = true label (0 or 1)
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>- ŷ = predicted probability
+</code></pre></div></p>
+<p><strong>For Regression (predicting numbers):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Mean Squared Error: L = (y - ŷ)²
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>Where:
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>- y = true value  
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>- ŷ = predicted value
+</code></pre></div></p>
+<h3 id="backpropagation-the-learning-algorithm">Backpropagation: The Learning Algorithm<a class="headerlink" href="#backpropagation-the-learning-algorithm" title="Permanent link">&para;</a></h3>
+<p><strong>Forward Pass</strong> (what we just did):
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>x → h¹ → y → Loss
+</code></pre></div></p>
+<p><strong>Backward Pass</strong> (compute gradients):
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>∂L/∂W² ← computed from output
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>∂L/∂W¹ ← flows back through hidden layer
+</code></pre></div></p>
+<p><strong>Weight Updates:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>W² = W² - α × ∂L/∂W²  # α is learning rate
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>W¹ = W¹ - α × ∂L/∂W¹
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>b² = b² - α × ∂L/∂b²
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>b¹ = b¹ - α × ∂L/∂b¹
+</code></pre></div></p>
+<blockquote>
+<p><strong>🔗 Mathematical Connection</strong>: The backpropagation equations above are derived step-by-step in <strong><a href="../transformers_math1/#211-from-line-slopes-to-neural-network-training">transformers_math1.md Section 2.1.1</a></strong>. See the "Single Hidden Layer MLP" subsection for the complete mathematical derivation including the δ terms and chain rule applications.</p>
+</blockquote>
+<h3 id="training-loop-example">Training Loop Example<a class="headerlink" href="#training-loop-example" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>For each batch of training examples:
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    1. Forward pass: compute predictions
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>    2. Compute loss: how wrong are we?
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    3. Backward pass: compute gradients
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>    4. Update weights: move in direction to reduce loss
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>    5. Repeat until loss is small enough
+</code></pre></div>
+<hr />
+<h2 id="7-mlp-vs-other-models">7. MLP vs Other Models<a class="headerlink" href="#7-mlp-vs-other-models" title="Permanent link">&para;</a></h2>
+<h3 id="mlp-vs-linear-regression">MLP vs Linear Regression<a class="headerlink" href="#mlp-vs-linear-regression" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th><strong>Aspect</strong></th>
+<th><strong>Linear Regression</strong></th>
+<th><strong>MLP</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Equation</strong></td>
+<td>$$y = x W + b$$</td>
+<td>$$y = h^{(L-1)} W^L + b^L$$ where $$h = \sigma(x W + b)$$</td>
+</tr>
+<tr>
+<td><strong>Decision Boundary</strong></td>
+<td>Straight line/plane</td>
+<td>Curved, complex shapes</td>
+</tr>
+<tr>
+<td><strong>Expressiveness</strong></td>
+<td>Limited to linear patterns</td>
+<td>Can learn any continuous function</td>
+</tr>
+<tr>
+<td><strong>Training</strong></td>
+<td>Closed-form solution</td>
+<td>Iterative optimization</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mlp-advantages">MLP Advantages<a class="headerlink" href="#mlp-advantages" title="Permanent link">&para;</a></h3>
+<p>✅ <strong>Universal Approximation</strong>: Can learn any continuous function with enough neurons
+✅ <strong>Non-linear Patterns</strong>: Captures complex relationships in data
+✅ <strong>Automatic Features</strong>: Learns useful feature combinations
+✅ <strong>Scalable</strong>: Works with large datasets and many features</p>
+<h3 id="mlp-limitations">MLP Limitations<a class="headerlink" href="#mlp-limitations" title="Permanent link">&para;</a></h3>
+<p>❌ <strong>No Sequential Memory</strong>: Processes each input independently
+❌ <strong>Fixed Input Size</strong>: Can't handle variable-length inputs
+❌ <strong>No Spatial Structure</strong>: Doesn't understand image/text structure
+❌ <strong>Many Parameters</strong>: Can overfit with small datasets</p>
+<h3 id="when-to-use-mlps">When to Use MLPs<a class="headerlink" href="#when-to-use-mlps" title="Permanent link">&para;</a></h3>
+<p><strong>Good for:</strong></p>
+<ul>
+<li>Tabular data (rows and columns)</li>
+<li>Classification and regression tasks</li>
+<li>Fixed-size feature vectors</li>
+<li>When you need a simple, interpretable baseline</li>
+</ul>
+<p><strong>Not ideal for:</strong></p>
+<ul>
+<li>Sequential data (text, time series) → Use RNNs/Transformers</li>
+<li>Images → Use CNNs  </li>
+<li>Variable-length inputs → Use sequence models</li>
+<li>When you need to understand spatial relationships</li>
+</ul>
+<hr />
+<h2 id="8-common-challenges-and-solutions">8. Common Challenges and Solutions<a class="headerlink" href="#8-common-challenges-and-solutions" title="Permanent link">&para;</a></h2>
+<h3 id="overfitting-when-mlps-memorize">Overfitting: When MLPs Memorize<a class="headerlink" href="#overfitting-when-mlps-memorize" title="Permanent link">&para;</a></h3>
+<p><strong>Problem</strong>: Network performs well on training data but poorly on new data.</p>
+<p><strong>Signs:</strong></p>
+<ul>
+<li>Training accuracy: 99%</li>
+<li>Test accuracy: 60%</li>
+<li>Large gap indicates overfitting</li>
+</ul>
+<p><strong>Solutions:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>1. Reduce model size (fewer layers/neurons)
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>2. Add regularization:
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>   - Dropout: Randomly turn off neurons during training
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>   - L2 penalty: Penalize large weights
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>3. More training data
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>4. Early stopping: Stop when validation loss increases
+</code></pre></div></p>
+<h3 id="underfitting-when-mlps-are-too-simple">Underfitting: When MLPs Are Too Simple<a class="headerlink" href="#underfitting-when-mlps-are-too-simple" title="Permanent link">&para;</a></h3>
+<p><strong>Problem</strong>: Network can't learn the underlying patterns.</p>
+<p><strong>Signs:</strong></p>
+<ul>
+<li>Both training and test accuracy are low</li>
+<li>Loss plateaus at a high value</li>
+</ul>
+<p><strong>Solutions:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>1. Increase model size (more layers/neurons)
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>2. Train for more epochs
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>3. Lower learning rate for finer adjustments
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>4. Check for bugs in data preprocessing
+</code></pre></div></p>
+<h3 id="gradient-problems">Gradient Problems<a class="headerlink" href="#gradient-problems" title="Permanent link">&para;</a></h3>
+<p><strong>Vanishing Gradients</strong>: Gradients become too small in deep networks
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>Solutions:
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>- Use ReLU activation (not sigmoid/tanh)
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>- Better weight initialization (Xavier/He)
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>- Batch normalization
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>- Skip connections
+</code></pre></div></p>
+<p><strong>Exploding Gradients</strong>: Gradients become too large
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>Solutions:  
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>- Gradient clipping: Cap gradient magnitude
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>- Lower learning rate
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>- Better weight initialization
+</code></pre></div></p>
+<blockquote>
+<p><strong>🎯 Gradient Flow Mathematics</strong>: To understand the mathematical foundations of why gradients vanish or explode, and how gradient descent fundamentally works, see <strong><a href="../transformers_math1/#211-from-line-slopes-to-neural-network-training">transformers_math1.md Section 2.1.1</a></strong>. The section builds intuition from simple 1D slopes to complex neural network training.</p>
+</blockquote>
+<hr />
+<h2 id="9-activation-functions-deep-dive">9. Activation Functions Deep Dive<a class="headerlink" href="#9-activation-functions-deep-dive" title="Permanent link">&para;</a></h2>
+<h3 id="relu-rectified-linear-unit">ReLU (Rectified Linear Unit)<a class="headerlink" href="#relu-rectified-linear-unit" title="Permanent link">&para;</a></h3>
+<p>$$
+\begin{aligned} \text{ReLU}(x) &amp;= \max(0, x) \end{aligned}
+$$</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>Input:  [-2, -1, 0, 1, 2]
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>Output: [ 0,  0, 0, 1, 2]
+</code></pre></div>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li>Simple and fast to compute</li>
+<li>Doesn't saturate for positive values</li>
+<li>Sparse activation (many neurons output 0)</li>
+</ul>
+<p><strong>Disadvantages:</strong></p>
+<ul>
+<li>"Dead neurons" - can output 0 forever if weights become negative</li>
+</ul>
+<h3 id="sigmoid">Sigmoid<a class="headerlink" href="#sigmoid" title="Permanent link">&para;</a></h3>
+<p>$$
+\begin{aligned} \text{Sigmoid}(x) &amp;= \frac{1}{1 + e^{-x}} \end{aligned}
+$$</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>Input:  [-2, -1, 0, 1, 2]
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>Output: [0.12, 0.27, 0.5, 0.73, 0.88]
+</code></pre></div>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li>Smooth, differentiable everywhere</li>
+<li>Outputs between 0 and 1 (good for probabilities)</li>
+</ul>
+<p><strong>Disadvantages:</strong></p>
+<ul>
+<li>Saturates for large |x| (gradients → 0)</li>
+<li>Not zero-centered (can slow learning)</li>
+</ul>
+<h3 id="tanh-hyperbolic-tangent">Tanh (Hyperbolic Tangent)<a class="headerlink" href="#tanh-hyperbolic-tangent" title="Permanent link">&para;</a></h3>
+<p>$$
+\begin{aligned} \text{Tanh}(x) &amp;= \frac{e^x - e^{-x}}{e^x + e^{-x}} \end{aligned}
+$$</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>Input:  [-2, -1, 0, 1, 2]
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>Output: [-0.96, -0.76, 0, 0.76, 0.96]
+</code></pre></div>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li>Zero-centered (better than sigmoid)</li>
+<li>Smooth and differentiable</li>
+</ul>
+<p><strong>Disadvantages:</strong></p>
+<ul>
+<li>Still suffers from saturation</li>
+<li>More expensive to compute than ReLU</li>
+</ul>
+<h3 id="choosing-activations">Choosing Activations<a class="headerlink" href="#choosing-activations" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>Hidden Layers: Use ReLU (default choice)
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>- Fast, simple, works well in practice
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>- Use Leaky ReLU if you see many dead neurons
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>Output Layer:
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a>
+<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a>- Binary classification: Sigmoid
+<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a>- Multi-class classification: Softmax  
+<a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a>- Regression: Linear (no activation)
+</code></pre></div>
+<hr />
+<h2 id="10-practical-implementation-tips">10. Practical Implementation Tips<a class="headerlink" href="#10-practical-implementation-tips" title="Permanent link">&para;</a></h2>
+<h3 id="network-architecture-design">Network Architecture Design<a class="headerlink" href="#network-architecture-design" title="Permanent link">&para;</a></h3>
+<p><strong>Start Simple:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>1. Begin with 1-2 hidden layers
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>2. Hidden size = 2-4× input size (rule of thumb)
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>3. Add layers only if underfitting
+</code></pre></div></p>
+<p><strong>Common Patterns:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>Small dataset (&lt; 10K samples):
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>Input → Hidden(64) → Hidden(32) → Output
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>Medium dataset (10K-100K samples):  
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>Input → Hidden(128) → Hidden(64) → Hidden(32) → Output
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a>Large dataset (&gt; 100K samples):
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>Input → Hidden(256) → Hidden(128) → Hidden(64) → Output
+</code></pre></div></p>
+<h3 id="hyperparameter-tuning">Hyperparameter Tuning<a class="headerlink" href="#hyperparameter-tuning" title="Permanent link">&para;</a></h3>
+<p><strong>Learning Rate:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>Too high: Loss oscillates or explodes
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>Too low:  Very slow convergence
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>Sweet spot: Usually 0.001 - 0.01
+</code></pre></div></p>
+<blockquote>
+<p><strong>📊 Learning Rate Intuition</strong>: For a visual and mathematical explanation of why learning rate choice matters, see the worked example with f(x) = x² in <strong><a href="../transformers_math1/#211-from-line-slopes-to-neural-network-training">transformers_math1.md Section 2.1.1</a></strong> - shows exactly how different learning rates affect convergence behavior.</p>
+</blockquote>
+<p><strong>Batch Size:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>Small (32): Noisy gradients, more exploration
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>Large (512): Stable gradients, faster per epoch
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>Common choice: 64-128
+</code></pre></div></p>
+<p><strong>Training Tips:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>1. Normalize input features: zero mean, unit variance
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>2. Initialize weights properly (Xavier/He initialization)
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>3. Monitor both training and validation loss
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>4. Use learning rate scheduling (reduce over time)
+</code></pre></div></p>
+<h3 id="debugging-checklist">Debugging Checklist<a class="headerlink" href="#debugging-checklist" title="Permanent link">&para;</a></h3>
+<p><strong>If training isn't working:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>1. Check data: Are labels correct? Proper preprocessing?
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>2. Start tiny: Can model overfit a single batch?
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>3. Verify gradients: Are they flowing properly?
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>4. Learning rate: Try 10× higher and 10× lower
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>5. Model capacity: Too big (overfit) or too small (underfit)?
+</code></pre></div></p>
+<hr />
+<h2 id="11-summary-the-mlp-foundation">11. Summary: The MLP Foundation<a class="headerlink" href="#11-summary-the-mlp-foundation" title="Permanent link">&para;</a></h2>
+<h3 id="how-mlps-work">How MLPs Work<a class="headerlink" href="#how-mlps-work" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Layer-wise Processing</strong>: Transform inputs through multiple layers</li>
+<li><strong>Non-linear Combinations</strong>: Each layer learns complex feature combinations  </li>
+<li><strong>Universal Approximation</strong>: Can learn any continuous function with enough neurons</li>
+<li><strong>Supervised Learning</strong>: Learn from input-output examples through backpropagation</li>
+</ol>
+<h3 id="key-components-working-together">Key Components Working Together<a class="headerlink" href="#key-components-working-together" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>Input Features → Layer 1 → Layer 2 → ... → Output
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>     x       → σ(xW¹+b¹) → σ(h¹W²+b²) →  → h^(L-1)W^L+b^L
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>Where each layer applies: Linear Transformation → Non-linear Activation
+</code></pre></div>
+<p><strong>Weight Matrices ($$W$$):</strong> "How should features be combined?"
+<strong>Bias Vectors ($$b$$):</strong> "What are the default activation thresholds?"<br />
+<strong>Activations ($$\sigma$$):</strong> "How should we introduce non-linearity?"</p>
+<h3 id="capacity-control">Capacity Control<a class="headerlink" href="#capacity-control" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Width (hidden size)</strong>: How many patterns each layer can detect</li>
+<li><strong>Depth (num layers)</strong>: How complex/hierarchical patterns can be</li>
+<li><strong>Regularization</strong>: Controls overfitting vs underfitting balance</li>
+</ul>
+<h3 id="mlps-role-in-modern-ai">MLP's Role in Modern AI<a class="headerlink" href="#mlps-role-in-modern-ai" title="Permanent link">&para;</a></h3>
+<p><strong>Foundation for Everything:</strong></p>
+<ul>
+<li><strong>CNNs</strong>: MLPs + spatial structure for images</li>
+<li><strong>RNNs</strong>: MLPs + memory for sequences  </li>
+<li><strong>Transformers</strong>: MLPs + attention mechanisms</li>
+<li><strong>Modern architectures</strong>: All use MLP components</li>
+</ul>
+<p><strong>Key Insight:</strong> MLPs are the "universal building block" - understanding them deeply helps with all neural network architectures.</p>
+<hr />
+<h2 id="12-final-visualization-advanced-spam-detection">12. Final Visualization: Advanced Spam Detection<a class="headerlink" href="#12-final-visualization-advanced-spam-detection" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>Email: &quot;Congratulations winner!!!&quot;
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>Features: [3, 0, 15]  # [exclamations, no_free, capitals]
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>                ↓
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>Hidden Layer 1: xW¹ + b¹ = [3.7, -4.2]
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>                ↓  
+<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a>After ReLU:     h¹ = [3.7, 0]  # Urgency detected, no legitimacy
+<a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a>                ↓
+<a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a>Output Layer:   h¹W² + b² = [5.75] 
+<a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a>                ↓
+<a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a>After Sigmoid:  y = 0.997  # 99.7% spam probability
+</code></pre></div>
+<p><strong>The Journey:</strong> From raw email features to sophisticated spam detection through specialized pattern recognition. The MLP learned to detect complex spam patterns that single perceptrons cannot handle.</p>
+<p><strong>What It Learned:</strong></p>
+<ul>
+<li><strong>Hidden neuron 1 (Urgency Detector)</strong>: Detects high-pressure tactics (exclamations + capitals)</li>
+<li><strong>Hidden neuron 2 (Legitimacy Detector)</strong>: Detects legitimate context markers (silent here)</li>
+<li><strong>Output combination</strong>: Learned "urgency without legitimacy = strong spam signal"</li>
+</ul>
+<p><strong>Why This Matters:</strong> This example shows MLPs solving problems beyond single perceptron capabilities—the foundation for all complex neural network architectures.</p>
+<hr />
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<p>Now that you understand MLPs:</p>
+<ol>
+<li><strong>Limitations</strong>: MLPs can't handle sequences well (no memory)</li>
+<li><strong>Next Architecture</strong>: RNNs add memory for sequential data</li>
+<li><strong>Modern Context</strong>: MLPs are components in Transformers and other architectures</li>
+<li><strong>Implementation</strong>: Try building an MLP in PyTorch or TensorFlow</li>
+</ol>
+<blockquote>
+<p><strong>Continue Learning</strong>: Ready for sequences? See <strong><a href="../rnn_intro/">rnn_intro.md</a></strong> to learn how RNNs add memory to the MLP foundation.</p>
+</blockquote>
+<p><strong>Remember:</strong> MLPs taught us that neural networks could learn complex, non-linear patterns through simple transformations. Every modern architecture builds on these core principles - making MLPs essential foundational knowledge.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.top", "navigation.instant", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+    
+  </body>
+</html>

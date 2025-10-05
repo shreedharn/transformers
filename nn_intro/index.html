@@ -1,0 +1,3116 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+        <link rel="next" href="../mlp_intro/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Neural Network Introduction - Introduction to Transformers</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../styles.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#neural-networks-introduction-from-biological-inspiration-to-deep-learning" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Introduction to Transformers" class="md-header__button md-logo" aria-label="Introduction to Transformers" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Introduction to Transformers
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Neural Network Introduction
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Introduction to Transformers" class="md-nav__button md-logo" aria-label="Introduction to Transformers" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Introduction to Transformers
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Neural Network Introduction
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Neural Network Introduction
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#-quick-overview-where-were-heading" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚡ Quick Overview: Where We're Heading
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-is-ai-ml-and-deep-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What is AI, ML, and Deep Learning?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. What is AI, ML, and Deep Learning?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-hierarchy-ai--ml--dl" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Hierarchy: AI → ML → DL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artificial-intelligence-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      Artificial Intelligence (AI)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#machine-learning-ml" class="md-nav__link">
+    <span class="md-ellipsis">
+      Machine Learning (ML)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deep-learning-dl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deep Learning (DL)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-why-deep-learning-for-nlp" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Why Deep Learning for NLP?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Why Deep Learning for NLP?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#challenges-with-traditional-ml-for-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenges with Traditional ML for Text
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Challenges with Traditional ML for Text">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-feature-engineering-complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Feature Engineering Complexity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-bag-of-words-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Bag of Words Limitations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-long-range-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Long-Range Dependencies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-deep-learning-solves-these-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Deep Learning Solves These Problems
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How Deep Learning Solves These Problems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-automatic-feature-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Automatic Feature Learning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-context-awareness" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Context Awareness
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-sequence-understanding" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Sequence Understanding
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-the-neuron-and-the-perceptron" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. The Neuron and the Perceptron
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. The Neuron and the Perceptron">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#biological-inspiration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Biological Inspiration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-artificial-neuron-perceptron" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Artificial Neuron (Perceptron)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Artificial Neuron (Perceptron)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#components-of-a-perceptron" class="md-nav__link">
+    <span class="md-ellipsis">
+      Components of a Perceptron
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#understanding-each-component-geometrically" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Each Component Geometrically
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding Each Component Geometrically">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-role-of-weights-feature-importance-and-direction" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Role of Weights: Feature Importance and Direction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-role-of-bias-flexible-positioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Role of Bias: Flexible Positioning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-role-of-activation-functions-space-warping" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Role of Activation Functions: Space Warping
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-activation-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Activation Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-space-bending-intuition" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Space Bending Intuition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pytorch-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      PyTorch Implementation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-from-single-neurons-to-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. From Single Neurons to Networks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. From Single Neurons to Networks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#limitations-of-single-perceptrons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations of Single Perceptrons
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-neural-networks-solve-xor-the-geometric-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Neural Networks Solve XOR: The Geometric Solution
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How Neural Networks Solve XOR: The Geometric Solution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-first-layer-without-activation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: First Layer Without Activation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-relu-activation-bends-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: ReLU Activation Bends Space
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-output-layer-finds-linear-separation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Output Layer Finds Linear Separation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-layer-perceptrons-mlps-high-dimensional-sculptors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Layer Perceptrons (MLPs): High-Dimensional Sculptors
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multi-Layer Perceptrons (MLPs): High-Dimensional Sculptors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#network-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Network Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#geometric-intuition-from-1d-to-n-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      Geometric Intuition: From 1D to n-D
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Geometric Intuition: From 1D to n-D">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1d-case-function-approximation" class="md-nav__link">
+    <span class="md-ellipsis">
+      1D Case: Function Approximation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2d-case-decision-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      2D Case: Decision Boundaries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#n-d-case-high-dimensional-manifolds" class="md-nav__link">
+    <span class="md-ellipsis">
+      n-D Case: High-Dimensional Manifolds
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deep-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deep Networks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-perspective" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Perspective
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-training-a-neural-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Training a Neural Network
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Training a Neural Network">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-training-process-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Training Process Overview
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loss-functions-the-networks-report-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loss Functions: The Network's Report Card
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Loss Functions: The Network&#39;s Report Card">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-classification-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Classification Problems
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-regression-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Regression Problems
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gradient-descent-the-universal-learning-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gradient Descent: The Universal Learning Algorithm
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gradient Descent: The Universal Learning Algorithm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-core-idea-following-the-slope-downhill" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Core Idea: Following the Slope Downhill
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-foundation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Foundation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-gradient-direction-of-steepest-ascent" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Gradient: Direction of Steepest Ascent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-by-step-gradient-descent-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step-by-Step Gradient Descent Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-learning-rate-α-speed-vs-accuracy-trade-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Learning Rate α: Speed vs. Accuracy Trade-off
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-simple-to-sophisticated-the-evolution-of-optimizers" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Simple to Sophisticated: The Evolution of Optimizers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="From Simple to Sophisticated: The Evolution of Optimizers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plain-gradient-descent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plain Gradient Descent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sgd-with-momentum" class="md-nav__link">
+    <span class="md-ellipsis">
+      SGD with Momentum
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adam-adaptive-moments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adam: Adaptive Moments
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complete-training-loop-in-pytorch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete Training Loop in PyTorch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-training-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Training Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Training Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-epochs" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Epochs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-batch-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Batch Size
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-learning-rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Learning Rate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-overfitting-vs-underfitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Overfitting vs Underfitting
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#text-embeddings-bridging-language-and-mathematics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Text Embeddings: Bridging Language and Mathematics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Text Embeddings: Bridging Language and Mathematics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#converting-words-to-vectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Converting Words to Vectors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#geometric-intuition-words-as-points-in-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      Geometric Intuition: Words as Points in Space
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-embeddings-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Embeddings Work
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-discrete-to-continuous" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Discrete to Continuous
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-neural-networks-store-knowledge" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Neural Networks Store Knowledge
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-insight-the-geometric-transformation-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Insight: The Geometric Transformation Principle
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-where-neural-networks-shine-in-nlp" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Where Neural Networks Shine in NLP
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Where Neural Networks Shine in NLP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#limitations-of-mlps-for-language" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations of MLPs for Language
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-neural-networks-excel-in-nlp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where Neural Networks Excel in NLP
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Where Neural Networks Excel in NLP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-text-classification" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Text Classification
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-named-entity-recognition-ner" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Named Entity Recognition (NER)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-question-answering" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Question Answering
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-machine-translation" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Machine Translation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mlp_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Building Networks with MLP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rnn_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sequential Modeling with RNN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transformers_fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transformers Fundamentals
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transformers_advanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transformers Advanced
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knowledge_store/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Knowledge Store
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            References
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pytorch_ref/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PyTorch Primer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transformers_math1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mathematical Foundations 1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transformers_math2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mathematical Foundations 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../math_quick_ref/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mathematical Quick Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../history_quick_ref/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sequence Modeling History
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    README
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LICENSE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    LICENSE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#-quick-overview-where-were-heading" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚡ Quick Overview: Where We're Heading
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-is-ai-ml-and-deep-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What is AI, ML, and Deep Learning?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. What is AI, ML, and Deep Learning?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-hierarchy-ai--ml--dl" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Hierarchy: AI → ML → DL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artificial-intelligence-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      Artificial Intelligence (AI)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#machine-learning-ml" class="md-nav__link">
+    <span class="md-ellipsis">
+      Machine Learning (ML)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deep-learning-dl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deep Learning (DL)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-why-deep-learning-for-nlp" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Why Deep Learning for NLP?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Why Deep Learning for NLP?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#challenges-with-traditional-ml-for-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenges with Traditional ML for Text
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Challenges with Traditional ML for Text">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-feature-engineering-complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Feature Engineering Complexity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-bag-of-words-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Bag of Words Limitations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-long-range-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Long-Range Dependencies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-deep-learning-solves-these-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Deep Learning Solves These Problems
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How Deep Learning Solves These Problems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-automatic-feature-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Automatic Feature Learning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-context-awareness" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Context Awareness
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-sequence-understanding" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Sequence Understanding
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-the-neuron-and-the-perceptron" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. The Neuron and the Perceptron
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. The Neuron and the Perceptron">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#biological-inspiration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Biological Inspiration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-artificial-neuron-perceptron" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Artificial Neuron (Perceptron)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Artificial Neuron (Perceptron)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#components-of-a-perceptron" class="md-nav__link">
+    <span class="md-ellipsis">
+      Components of a Perceptron
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#understanding-each-component-geometrically" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Each Component Geometrically
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding Each Component Geometrically">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-role-of-weights-feature-importance-and-direction" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Role of Weights: Feature Importance and Direction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-role-of-bias-flexible-positioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Role of Bias: Flexible Positioning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-role-of-activation-functions-space-warping" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Role of Activation Functions: Space Warping
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-activation-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Activation Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-space-bending-intuition" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Space Bending Intuition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pytorch-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      PyTorch Implementation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-from-single-neurons-to-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. From Single Neurons to Networks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. From Single Neurons to Networks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#limitations-of-single-perceptrons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations of Single Perceptrons
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-neural-networks-solve-xor-the-geometric-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Neural Networks Solve XOR: The Geometric Solution
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How Neural Networks Solve XOR: The Geometric Solution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-first-layer-without-activation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: First Layer Without Activation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-relu-activation-bends-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: ReLU Activation Bends Space
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-output-layer-finds-linear-separation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Output Layer Finds Linear Separation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-layer-perceptrons-mlps-high-dimensional-sculptors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Layer Perceptrons (MLPs): High-Dimensional Sculptors
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multi-Layer Perceptrons (MLPs): High-Dimensional Sculptors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#network-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Network Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#geometric-intuition-from-1d-to-n-d" class="md-nav__link">
+    <span class="md-ellipsis">
+      Geometric Intuition: From 1D to n-D
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Geometric Intuition: From 1D to n-D">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1d-case-function-approximation" class="md-nav__link">
+    <span class="md-ellipsis">
+      1D Case: Function Approximation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2d-case-decision-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      2D Case: Decision Boundaries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#n-d-case-high-dimensional-manifolds" class="md-nav__link">
+    <span class="md-ellipsis">
+      n-D Case: High-Dimensional Manifolds
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deep-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deep Networks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-perspective" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Perspective
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-training-a-neural-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Training a Neural Network
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Training a Neural Network">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-training-process-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Training Process Overview
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loss-functions-the-networks-report-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loss Functions: The Network's Report Card
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Loss Functions: The Network&#39;s Report Card">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-classification-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Classification Problems
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-regression-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Regression Problems
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gradient-descent-the-universal-learning-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gradient Descent: The Universal Learning Algorithm
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gradient Descent: The Universal Learning Algorithm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-core-idea-following-the-slope-downhill" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Core Idea: Following the Slope Downhill
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-foundation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Foundation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-gradient-direction-of-steepest-ascent" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Gradient: Direction of Steepest Ascent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-by-step-gradient-descent-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step-by-Step Gradient Descent Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-learning-rate-α-speed-vs-accuracy-trade-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Learning Rate α: Speed vs. Accuracy Trade-off
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-simple-to-sophisticated-the-evolution-of-optimizers" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Simple to Sophisticated: The Evolution of Optimizers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="From Simple to Sophisticated: The Evolution of Optimizers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plain-gradient-descent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plain Gradient Descent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sgd-with-momentum" class="md-nav__link">
+    <span class="md-ellipsis">
+      SGD with Momentum
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adam-adaptive-moments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adam: Adaptive Moments
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complete-training-loop-in-pytorch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete Training Loop in PyTorch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-training-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Training Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Training Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-epochs" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Epochs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-batch-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Batch Size
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-learning-rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Learning Rate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-overfitting-vs-underfitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Overfitting vs Underfitting
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#text-embeddings-bridging-language-and-mathematics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Text Embeddings: Bridging Language and Mathematics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Text Embeddings: Bridging Language and Mathematics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#converting-words-to-vectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Converting Words to Vectors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#geometric-intuition-words-as-points-in-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      Geometric Intuition: Words as Points in Space
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-embeddings-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Embeddings Work
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-discrete-to-continuous" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Discrete to Continuous
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-neural-networks-store-knowledge" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Neural Networks Store Knowledge
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-insight-the-geometric-transformation-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Insight: The Geometric Transformation Principle
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-where-neural-networks-shine-in-nlp" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Where Neural Networks Shine in NLP
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Where Neural Networks Shine in NLP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#limitations-of-mlps-for-language" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations of MLPs for Language
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-neural-networks-excel-in-nlp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where Neural Networks Excel in NLP
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Where Neural Networks Excel in NLP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-text-classification" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Text Classification
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-named-entity-recognition-ner" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Named Entity Recognition (NER)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-question-answering" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Question Answering
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-machine-translation" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Machine Translation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="neural-networks-introduction-from-biological-inspiration-to-deep-learning">Neural Networks Introduction: From Biological Inspiration to Deep Learning<a class="headerlink" href="#neural-networks-introduction-from-biological-inspiration-to-deep-learning" title="Permanent link">&para;</a></h1>
+<p>A foundational guide to understanding neural networks, their role in artificial intelligence, and why they revolutionized natural language processing.</p>
+<h2 id="-quick-overview-where-were-heading">⚡ Quick Overview: Where We're Heading<a class="headerlink" href="#-quick-overview-where-were-heading" title="Permanent link">&para;</a></h2>
+<p><strong>What are transformers?</strong> AI models that excel at understanding and generating human-like text.</p>
+<p><strong>Why do they matter?</strong> They power ChatGPT, GPT-4, BERT, and most modern AI systems.</p>
+<p><strong>How do they work?</strong> Instead of reading text word-by-word (like humans), they read all words simultaneously and figure out which words are most important to pay attention to for understanding meaning.</p>
+<p><strong>🔍 Key Innovation</strong>: The "attention mechanism" - the ability to focus on relevant parts of text while ignoring irrelevant parts.</p>
+<p><strong>📈 Real-world impact</strong>: 
+- <strong>ChatGPT</strong>: Conversational AI
+- <strong>GitHub Copilot</strong>: Code completion
+- <strong>Google Translate</strong>: Language translation</p>
+<p><strong>👆 How do we get there?</strong> This guide will take you from the basics of neural networks through the foundations that make transformers possible!</p>
+<h2 id="1-what-is-ai-ml-and-deep-learning">1. What is AI, ML, and Deep Learning?<a class="headerlink" href="#1-what-is-ai-ml-and-deep-learning" title="Permanent link">&para;</a></h2>
+<p>Understanding the relationship between these three fields is crucial for grasping where neural networks fit in the broader landscape of artificial intelligence.</p>
+<h3 id="the-hierarchy-ai--ml--dl">The Hierarchy: AI → ML → DL<a class="headerlink" href="#the-hierarchy-ai--ml--dl" title="Permanent link">&para;</a></h3>
+<p>Think of these as nested boxes, where each inner box is a subset of the outer one:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────┐
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│ Artificial Intelligence (AI)            │
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│ ┌─────────────────────────────────────┐ │
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│ │ Machine Learning (ML)               │ │
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│ │ ┌─────────────────────────────────┐ │ │
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│ │ │ Deep Learning (DL)              │ │ │
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│ │ │                                 │ │ │
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│ │ └─────────────────────────────────┘ │ │
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│ └─────────────────────────────────────┘ │
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>└─────────────────────────────────────────┘
+</code></pre></div>
+<h3 id="artificial-intelligence-ai">Artificial Intelligence (AI)<a class="headerlink" href="#artificial-intelligence-ai" title="Permanent link">&para;</a></h3>
+<p><strong>Definition</strong>: Systems that can perform tasks that typically require human intelligence.</p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><strong>Chatbots</strong>: Like Siri or Alexa responding to voice commands</li>
+<li><strong>Self-driving cars</strong>: Navigating roads and making driving decisions</li>
+<li><strong>Game playing</strong>: Chess programs like Deep Blue or Go programs like AlphaGo</li>
+<li><strong>Recommendation systems</strong>: Netflix suggesting movies you might like</li>
+</ul>
+<h3 id="machine-learning-ml">Machine Learning (ML)<a class="headerlink" href="#machine-learning-ml" title="Permanent link">&para;</a></h3>
+<p><strong>Definition</strong>: A subset of AI where systems learn patterns from data without being explicitly programmed for every scenario.</p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><strong>Email spam detection</strong>: Learning to identify spam based on patterns in previous emails</li>
+<li><strong>Credit scoring</strong>: Determining loan approval based on historical financial data</li>
+<li><strong>Image recognition</strong>: Identifying objects in photos after training on thousands of labeled images</li>
+<li><strong>Stock price prediction</strong>: Using historical market data to forecast trends</li>
+</ul>
+<p><strong>Traditional ML Techniques:</strong></p>
+<ul>
+<li><strong>Logistic Regression</strong>: For binary classification (spam/not spam)</li>
+<li><strong>Decision Trees</strong>: For rule-based decision making</li>
+<li><strong>Support Vector Machines</strong>: For finding optimal boundaries between classes</li>
+<li><strong>Random Forest</strong>: Combining multiple decision trees for better predictions</li>
+</ul>
+<h3 id="deep-learning-dl">Deep Learning (DL)<a class="headerlink" href="#deep-learning-dl" title="Permanent link">&para;</a></h3>
+<p><strong>Definition</strong>: A subset of ML that uses neural networks with multiple layers to learn increasingly complex patterns.</p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><strong>Large Language Models</strong>: ChatGPT, GPT-4, BERT understanding and generating human-like text</li>
+<li><strong>Computer Vision</strong>: Self-driving cars recognizing pedestrians, traffic signs, and other vehicles</li>
+<li><strong>Speech Recognition</strong>: Converting spoken words to text with high accuracy</li>
+<li><strong>Machine Translation</strong>: Google Translate converting between languages</li>
+</ul>
+<p><strong>Key Difference</strong>: Deep learning can automatically discover the features it needs to learn from raw data, while traditional ML often requires humans to manually engineer these features.</p>
+<p>Now that we understand where deep learning fits in the AI landscape, let's explore why it has become the dominant approach for natural language processing tasks.</p>
+<hr />
+<h2 id="2-why-deep-learning-for-nlp">2. Why Deep Learning for NLP?<a class="headerlink" href="#2-why-deep-learning-for-nlp" title="Permanent link">&para;</a></h2>
+<p>Natural Language Processing (NLP) involves teaching computers to understand, interpret, and generate human language. This is inherently challenging because language is complex, nuanced, and context-dependent. While traditional machine learning made progress in NLP, deep learning has revolutionized the field by solving fundamental limitations that had persisted for decades.</p>
+<h3 id="challenges-with-traditional-ml-for-text">Challenges with Traditional ML for Text<a class="headerlink" href="#challenges-with-traditional-ml-for-text" title="Permanent link">&para;</a></h3>
+<h4 id="1-feature-engineering-complexity">1. Feature Engineering Complexity<a class="headerlink" href="#1-feature-engineering-complexity" title="Permanent link">&para;</a></h4>
+<p>Traditional ML requires humans to manually design features that represent text data.</p>
+<p><strong>Example: Email Spam Detection with Traditional ML</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Original Email: &quot;Congratulations! You&#39;ve won $1000! Click here now!&quot;
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Manual Feature Engineering:
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>- Contains exclamation marks: Yes (2 count)
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>- Contains dollar signs: Yes
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>- Contains &quot;click here&quot;: Yes
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>- Word count: 8
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>- Contains &quot;congratulations&quot;: Yes
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>- Contains &quot;won&quot;: Yes
+</code></pre></div></p>
+<p><strong>Problems:</strong></p>
+<ul>
+<li>Requires domain expertise to know which features matter</li>
+<li>Misses subtle patterns that humans didn't think to encode</li>
+<li>Doesn't capture word relationships or context</li>
+<li>Fails with new, unseen patterns</li>
+</ul>
+<h4 id="2-bag-of-words-limitations">2. Bag of Words Limitations<a class="headerlink" href="#2-bag-of-words-limitations" title="Permanent link">&para;</a></h4>
+<p>Traditional approaches often use "Bag of Words" - treating text as an unordered collection of words.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Sentence 1: &quot;The cat sat on the mat&quot;
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Sentence 2: &quot;The mat sat on the cat&quot;
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Bag of Words representation (same for both):
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>{the: 2, cat: 1, sat: 1, on: 1, mat: 1}
+</code></pre></div></p>
+<p><strong>Problem</strong>: Both sentences have identical representations despite completely different meanings!</p>
+<h4 id="3-long-range-dependencies">3. Long-Range Dependencies<a class="headerlink" href="#3-long-range-dependencies" title="Permanent link">&para;</a></h4>
+<p>Traditional ML struggles to capture relationships between words that are far apart in a sentence.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&quot;The book that I bought yesterday at the store was interesting.&quot;
+</code></pre></div></p>
+<p>Traditional ML has difficulty connecting "book" with "interesting" because they're separated by many words.</p>
+<h3 id="how-deep-learning-solves-these-problems">How Deep Learning Solves These Problems<a class="headerlink" href="#how-deep-learning-solves-these-problems" title="Permanent link">&para;</a></h3>
+<h4 id="1-automatic-feature-learning">1. Automatic Feature Learning<a class="headerlink" href="#1-automatic-feature-learning" title="Permanent link">&para;</a></h4>
+<p>Neural networks automatically learn useful features from raw text data.</p>
+<p><strong>Word Embeddings</strong>: Neural networks learn to represent words as vectors that capture semantic meaning.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>king - man + woman ≈ queen
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>(vector arithmetic that emerges automatically!)
+</code></pre></div>
+<h4 id="2-context-awareness">2. Context Awareness<a class="headerlink" href="#2-context-awareness" title="Permanent link">&para;</a></h4>
+<p>Deep learning models can understand that the same word means different things in different contexts.</p>
+<p><strong>Example:</strong></p>
+<ul>
+<li>"I went to the bank" (financial institution)</li>
+<li>"I sat by the river bank" (edge of water)</li>
+</ul>
+<p>A deep learning model learns different representations for "bank" based on surrounding context.</p>
+<h4 id="3-sequence-understanding">3. Sequence Understanding<a class="headerlink" href="#3-sequence-understanding" title="Permanent link">&para;</a></h4>
+<p>Models like RNNs and Transformers can process text sequentially and understand word order and long-range dependencies.</p>
+<p><strong>Evolution of Sequence Models:</strong></p>
+<ol>
+<li><strong>RNNs</strong>: Process text word by word, maintaining memory of previous words</li>
+<li><strong>LSTMs</strong>: Improved RNNs that better handle long sequences</li>
+<li><strong>Transformers</strong>: Revolutionary approach that processes all words simultaneously and learns attention patterns</li>
+</ol>
+<blockquote>
+<p>📖 <strong>For sequence modeling details</strong>: See <a href="../rnn_intro/">rnn_intro.md</a> for complete RNN/LSTM tutorial with worked examples, and <a href="../transformers_fundamentals/">transformers_fundamentals.md</a> for comprehensive transformer architecture guide.</p>
+</blockquote>
+<p>Having seen why deep learning outperforms traditional methods for language tasks, let's explore the fundamental building blocks that make this revolution possible, starting with the most basic unit: the artificial neuron.</p>
+<hr />
+<h2 id="3-the-neuron-and-the-perceptron">3. The Neuron and the Perceptron<a class="headerlink" href="#3-the-neuron-and-the-perceptron" title="Permanent link">&para;</a></h2>
+<p>Neural networks are inspired by how biological neurons work in the human brain. Let's start with the basic building block: the artificial neuron or perceptron, and understand not just <em>what</em> each component does, but <em>why</em> each component is essential through geometric intuition.</p>
+<h3 id="biological-inspiration">Biological Inspiration<a class="headerlink" href="#biological-inspiration" title="Permanent link">&para;</a></h3>
+<p>A biological neuron receives signals from other neurons through dendrites, processes these signals in the cell body, and sends output through the axon to other neurons.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Dendrites → Cell Body → Axon → Synapses
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>(inputs)   (processing) (output) (connections)
+</code></pre></div>
+<h3 id="the-artificial-neuron-perceptron">The Artificial Neuron (Perceptron)<a class="headerlink" href="#the-artificial-neuron-perceptron" title="Permanent link">&para;</a></h3>
+<p>An artificial neuron mimics this process mathematically:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Inputs → Weighted Sum → Activation Function → Output
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>(x₁,x₂,x₃) → (w₁x₁+w₂x₂+w₃x₃+b) → f(sum) → y
+</code></pre></div>
+<p>Neural networks perform three fundamental operations at each layer:</p>
+<p>\begin{aligned} h^{(l)} &amp;= f(W^{(l)}x + b^{(l)}) \end{aligned}</p>
+<p>Where:</p>
+<ul>
+<li><strong>Weights (W)</strong>: Control feature importance and geometric transformations</li>
+<li><strong>Bias (b)</strong>: Provide flexible positioning of decision boundaries  </li>
+<li><strong>Activation (f)</strong>: Introduce nonlinearity through space warping</li>
+</ul>
+<p>Each component serves a distinct geometric purpose that becomes clear when we visualize how neural networks transform data through high-dimensional space.</p>
+<h4 id="components-of-a-perceptron">Components of a Perceptron<a class="headerlink" href="#components-of-a-perceptron" title="Permanent link">&para;</a></h4>
+<ol>
+<li><strong>Inputs (x₁, x₂, ..., xₙ)</strong>: The data features fed into the neuron</li>
+<li><strong>Weights (w₁, w₂, ..., wₙ)</strong>: Numbers that determine the importance of each input</li>
+<li><strong>Bias (b)</strong>: An additional parameter that allows the neuron to shift its output</li>
+<li><strong>Activation Function (f)</strong>: A function that determines the final output</li>
+</ol>
+<p>The perceptron's mathematical operation can be expressed as:</p>
+<p>\begin{aligned} y &amp;= f\left(\sum_{i=1}^{n} w_i x_i + b\right) \end{aligned}</p>
+<p>Where:</p>
+<p>$$
+{\textstyle
+\begin{aligned}
+y &amp;= \text{output} \newline
+f &amp;= \text{activation function} \newline
+w_i &amp;= weight for input $$i$$ \newline
+x_i &amp;= input $$i$$ \newline
+b &amp;= \text{bias} \newline
+n &amp;= \text{number of inputs}
+\end{aligned}
+}
+$$</p>
+<h3 id="understanding-each-component-geometrically">Understanding Each Component Geometrically<a class="headerlink" href="#understanding-each-component-geometrically" title="Permanent link">&para;</a></h3>
+<p>To build true intuition about neural networks, we need to understand how each component transforms data in high-dimensional space. Let's start with weights, which serve as both feature selectors and space transformers.</p>
+<h4 id="the-role-of-weights-feature-importance-and-direction">The Role of Weights: Feature Importance and Direction<a class="headerlink" href="#the-role-of-weights-feature-importance-and-direction" title="Permanent link">&para;</a></h4>
+<p><strong>Mathematical Foundation:</strong>
+Weights determine how input features are combined and transformed:</p>
+<p>\begin{aligned} z &amp;= w_1x_1 + w_2x_2 + ... + w_nx_n \end{aligned}</p>
+<p><strong>Geometric Interpretation:</strong></p>
+<ul>
+<li><strong>Direction</strong>: Weights define the orientation of decision boundaries (lines in 2D, hyperplanes in higher dimensions)</li>
+<li><strong>Importance</strong>: Larger weights amplify the influence of corresponding features</li>
+<li><strong>Scaling</strong>: Weights stretch or compress space along different dimensions</li>
+</ul>
+<p><strong>Intuitive Analogy:</strong>
+Think of weights as <strong>feature importance multipliers</strong>. If you're predicting house prices:</p>
+<ul>
+<li>High weight on location → location strongly influences the prediction</li>
+<li>Low weight on paint color → paint color barely affects the prediction</li>
+</ul>
+<h4 id="the-role-of-bias-flexible-positioning">The Role of Bias: Flexible Positioning<a class="headerlink" href="#the-role-of-bias-flexible-positioning" title="Permanent link">&para;</a></h4>
+<p><strong>Mathematical Foundation:</strong>
+The bias term shifts the decision boundary away from the origin:</p>
+<p>\begin{aligned} z &amp;= Wx + b \end{aligned}</p>
+<p>Understanding bias requires seeing how it transforms geometric boundaries. Without bias, decision boundaries are constrained to pass through the origin:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Decision boundary stuck at origin:
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>   \
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    \
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>-----\----- (0,0)
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>      \
+</code></pre></div>
+<p>This severely limits the network's flexibility. With bias, the boundary can slide to any optimal position:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Decision boundary positioned optimally:
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>      \
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>       \
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>--------\------
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>         \
+</code></pre></div>
+<p>This freedom to position boundaries anywhere in space is crucial for fitting real-world data patterns.</p>
+<p><strong>Geometric Intuition:</strong></p>
+<ul>
+<li><strong>1D</strong>: Bias shifts the intercept (like the 'c' in y = mx + c)</li>
+<li><strong>2D</strong>: Bias moves the separating line parallel to itself</li>
+<li><strong>n-D</strong>: Bias translates the hyperplane to the optimal position</li>
+</ul>
+<p><strong>Practical Analogy:</strong>
+Bias is like the <strong>default activation level</strong>. Even with zero input, a neuron can still fire due to its bias, similar to how a light switch might have a default "dim" setting.</p>
+<h4 id="the-role-of-activation-functions-space-warping">The Role of Activation Functions: Space Warping<a class="headerlink" href="#the-role-of-activation-functions-space-warping" title="Permanent link">&para;</a></h4>
+<p>Activation functions solve a fundamental limitation: without them, stacking layers merely creates deeper linear transformations that collapse to a single function:</p>
+<p>\begin{aligned} h(x) &amp;= W_3(W_2(W_1x)) = (W_3W_2W_1)x \end{aligned}</p>
+<p>Regardless of depth, this remains equivalent to linear regression! Activation functions break this limitation by introducing <strong>space bending</strong> after each linear transformation:</p>
+<p>\begin{aligned} h^{(l)} &amp;= f(W^{(l)}x + b^{(l)}) \end{aligned}</p>
+<p>Let's see how these components work together in a concrete example. Consider detecting spam emails using a single perceptron with three key features:</p>
+<p><strong>Features:</strong></p>
+<p>$$
+{\textstyle
+\begin{aligned}
+x_1 &amp;= \text{Number of exclamation marks} \newline
+x_2 &amp;= Contains word "free" (1 if yes, 0 if no) \newline
+x_3 &amp;= \text{Number of capital letters}
+\end{aligned}
+}
+$$</p>
+<p><strong>Example Email</strong>: "FREE VACATION!!! Click now!!!"</p>
+<p>$$
+{\textstyle
+\begin{aligned}
+x_1 &amp;= 6  \text{ (six exclamation marks)} \newline
+x_2 &amp;= 1  \text{ (contains "free")} \newline
+x_3 &amp;= 13  \text{ (13 capital letters)}
+\end{aligned}
+}
+$$</p>
+<p><strong>Learned Weights</strong> (after training):</p>
+<p>$$
+{\textstyle
+\begin{aligned}
+w_1 &amp;= 0.3  \text{ (exclamation marks are somewhat important)} \newline
+w_2 &amp;= 0.8  \text{ (word "free" is very important)} \newline
+w_3 &amp;= 0.1  \text{ (capital letters are slightly important)} \newline
+b &amp;= -2.0  \text{ (bias to prevent false positives)}
+\end{aligned}
+}
+$$</p>
+<p><strong>Calculation:</strong></p>
+<p>\begin{aligned} \text{weighted sum} &amp;= 0.3 \times 6 + 0.8 \times 1 + 0.1 \times 13 + (-2.0) \end{aligned}</p>
+<p>\begin{aligned}  &amp;= 1.8 + 0.8 + 1.3 - 2.0 = 1.9 \end{aligned}</p>
+<p><strong>Activation Function</strong> (Sigmoid):</p>
+<p>\begin{aligned} f(1.9) &amp;= \frac{1}{1 + e^{-1.9}} = 0.87 \end{aligned}</p>
+<p><strong>Result</strong>: 0.87 (87% probability it's spam)</p>
+<h4 id="common-activation-functions">Common Activation Functions<a class="headerlink" href="#common-activation-functions" title="Permanent link">&para;</a></h4>
+<p><strong>ReLU (Rectified Linear Unit)</strong> is the most widely used activation function:</p>
+<p>\begin{aligned} f(x) &amp;= \max(0, x) \end{aligned}</p>
+<p>ReLU folds the negative half-space to zero, creating piecewise linear regions:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Input:  -∞ -------- 0 -------- +∞
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>Output:  0 -------- 0 -------- +∞
+</code></pre></div></p>
+<p>This simple operation proves remarkably effective, preventing vanishing gradients while creating sparse, efficient representations.</p>
+<blockquote>
+<p>📖 <strong>For vanishing gradients deep dive</strong>: See <a href="../pytorch_ref/#6-vanishingexploding-gradients">pytorch_ref.md Section 6</a> for causes, detection, and solutions, plus <a href="../rnn_intro/#9-the-vanishing-gradient-problem-rnns-fatal-flaw">rnn_intro.md Section 9</a> for RNN-specific analysis.</p>
+</blockquote>
+<p><strong>Sigmoid</strong> compresses any real number into probability-like values:</p>
+<p>\begin{aligned} \sigma(x) &amp;= \frac{1}{1+e^{-x}} \end{aligned}</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Input:  -∞ -------- 0 -------- +∞
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>Output:  0 -------- 0.5 ------ 1
+</code></pre></div>
+<p>While perfect for output probabilities, sigmoid can cause vanishing gradients in deep networks.</p>
+<p><strong>Tanh</strong> provides symmetric squashing around zero:</p>
+<p>\begin{aligned} \tanh(x) &amp;= \frac{e^x - e^{-x}}{e^x + e^{-x}} \end{aligned}</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Input:  -∞ -------- 0 -------- +∞
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>Output: -1 -------- 0 -------- +1
+</code></pre></div>
+<p>Its zero-centered nature makes it preferable to sigmoid for hidden layers in many architectures.</p>
+<h4 id="the-space-bending-intuition">The Space Bending Intuition<a class="headerlink" href="#the-space-bending-intuition" title="Permanent link">&para;</a></h4>
+<p>Each activation function <strong>warps the geometric space</strong>:</p>
+<ul>
+<li><strong>ReLU</strong>: Folds space along hyperplanes (creates piecewise linear regions)</li>
+<li><strong>Sigmoid/Tanh</strong>: Smoothly compress distant regions toward boundaries</li>
+<li><strong>Stacked layers</strong>: Compose multiple warps to create arbitrarily complex decision surfaces</li>
+</ul>
+<h4 id="pytorch-implementation">PyTorch Implementation<a class="headerlink" href="#pytorch-implementation" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">Perceptron</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_size</span><span class="p">):</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">Perceptron</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>        <span class="c1"># Weighted sum + bias</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>        <span class="n">weighted_sum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>        <span class="c1"># Apply activation function</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">weighted_sum</span><span class="p">)</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>        <span class="k">return</span> <span class="n">output</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="c1"># Create a perceptron with 3 inputs</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="n">model</span> <span class="o">=</span> <span class="n">Perceptron</span><span class="p">(</span><span class="n">input_size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="c1"># Example input: [exclamation_marks, has_free, capital_letters]</span>
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="n">example_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">6.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">13.0</span><span class="p">]])</span>
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="n">prediction</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">example_input</span><span class="p">)</span>
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Spam probability: </span><span class="si">{</span><span class="n">prediction</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Now that we understand how a single neuron transforms input through its geometric operations, let's discover how combining many neurons creates the powerful networks capable of understanding language.</p>
+<hr />
+<h2 id="4-from-single-neurons-to-networks">4. From Single Neurons to Networks<a class="headerlink" href="#4-from-single-neurons-to-networks" title="Permanent link">&para;</a></h2>
+<p>A single perceptron can only learn simple patterns and make linear decisions. To handle complex problems like understanding language, we need to combine many neurons into networks. Let's understand this through the lens of geometric transformations.</p>
+<h3 id="limitations-of-single-perceptrons">Limitations of Single Perceptrons<a class="headerlink" href="#limitations-of-single-perceptrons" title="Permanent link">&para;</a></h3>
+<p>A single perceptron faces a fundamental geometric constraint: it can only draw straight lines (or hyperplanes in higher dimensions) to separate data. This limitation becomes apparent when we encounter problems that aren't "linearly separable."</p>
+<p><strong>Example: XOR Problem</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Input A | Input B | Output (A XOR B)
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>   0    |    0    |       0
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>   0    |    1    |       1
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>   1    |    0    |       1
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>   1    |    1    |       0
+</code></pre></div></p>
+<p>Visualizing the XOR data points:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>(0,1) ✓     (1,1) ✗
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>       |     
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>       |
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>(0,0) ✗     (1,0) ✓
+</code></pre></div></p>
+<p>No single straight line can separate the 1s from the 0s in this case! Classes are on opposite diagonals.</p>
+<h3 id="how-neural-networks-solve-xor-the-geometric-solution">How Neural Networks Solve XOR: The Geometric Solution<a class="headerlink" href="#how-neural-networks-solve-xor-the-geometric-solution" title="Permanent link">&para;</a></h3>
+<p>The XOR problem beautifully demonstrates why neural networks need all three components working together. Here's how a simple 2-layer network transforms the impossible into the trivial:</p>
+<p><strong>Network Architecture</strong>: Input(2) → Hidden(2, ReLU) → Output(1, sigmoid)</p>
+<blockquote>
+<p>📖 <strong>For complete worked examples</strong>: See <a href="../mlp_intro/#5-worked-example-advanced-spam-detection">mlp_intro.md Section 5</a> for detailed forward pass calculations with real numbers you can trace by hand.</p>
+</blockquote>
+<h4 id="step-1-first-layer-without-activation">Step 1: First Layer Without Activation<a class="headerlink" href="#step-1-first-layer-without-activation" title="Permanent link">&para;</a></h4>
+<p>Hidden neurons learn:</p>
+<ul>
+<li><strong>Neuron A</strong>: \begin{aligned} z_A &amp;= x_1 - 0.5  \text{ (detects "x₁ &gt; 0.5")}\end{aligned}</li>
+<li><strong>Neuron B</strong>: \begin{aligned} z_B &amp;= x_2 - 0.5  \text{ (detects "x₂ &gt; 0.5")}\end{aligned}  </li>
+</ul>
+<p>Note: Bias (-0.5) shifts decision boundaries away from origin.</p>
+<h4 id="step-2-relu-activation-bends-space">Step 2: ReLU Activation Bends Space<a class="headerlink" href="#step-2-relu-activation-bends-space" title="Permanent link">&para;</a></h4>
+<p>\begin{aligned} h_A &amp;= \max(0, x_1 - 0.5), \quad h_B = \max(0, x_2 - 0.5) \end{aligned}</p>
+<p>This <strong>folds the input space</strong> along the lines x₁=0.5 and x₂=0.5:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Original space:         After ReLU folding:
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>✓ | ✗                   ✓  ✗
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>--+--          →        -----
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>✗ | ✓                   ✗  ✓
+</code></pre></div>
+<h4 id="step-3-output-layer-finds-linear-separation">Step 3: Output Layer Finds Linear Separation<a class="headerlink" href="#step-3-output-layer-finds-linear-separation" title="Permanent link">&para;</a></h4>
+<p>In the folded space, a simple line (e.g., $$h_A + h_B = 0.5$$) perfectly separates the classes.</p>
+<p>This elegant solution showcases why every component matters: weights oriented the folding lines correctly, bias positioned the folds away from the origin at exactly x=0.5, and activation functions created the nonlinear folding that transformed an impossible linear problem into a simple one.</p>
+<h3 id="multi-layer-perceptrons-mlps-high-dimensional-sculptors">Multi-Layer Perceptrons (MLPs): High-Dimensional Sculptors<a class="headerlink" href="#multi-layer-perceptrons-mlps-high-dimensional-sculptors" title="Permanent link">&para;</a></h3>
+<p>Now we arrive at the heart of neural networks' power: by stacking multiple layers, we create systems that can sculpt arbitrarily complex decision boundaries through repeated geometric transformations.</p>
+<h4 id="network-architecture">Network Architecture<a class="headerlink" href="#network-architecture" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>Input Layer → Hidden Layer(s) → Output Layer
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>[x₁]     [h₁]     [h₃]     [y₁]
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>[x₂]  →  [h₂]  →  [h₄]  →  [y₂]
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>[x₃]              [h₅]
+</code></pre></div>
+<p>These components orchestrate a sophisticated geometric transformation system: weights control orientation and scaling, bias ensures optimal positioning, and activation functions bend space nonlinearly. When repeated across layers, this process builds arbitrarily complex decision manifolds.</p>
+<p><strong>Unified Intuition</strong>: Think of neural networks as <strong>high-dimensional sculptors</strong>:</p>
+<ul>
+<li><strong>Weights</strong>: Control the direction and strength of each sculpting tool</li>
+<li><strong>Bias</strong>: Position each tool at the optimal location  </li>
+<li><strong>Activation</strong>: Apply nonlinear bending/folding operations</li>
+<li><strong>Depth</strong>: Compose many sculpting operations to create arbitrarily complex shapes</li>
+</ul>
+<p>Multiple layers create a natural hierarchy of abstraction. Early layers learn simple patterns and features, middle layers combine these into complex patterns, and the output layer makes final decisions. In text processing, this might progress from detecting individual words and punctuation, to recognizing phrases and local context, and finally to understanding complete sentence meaning and intent.</p>
+<p>The <strong>Universal Approximation Theorem</strong> provides theoretical backing for this power: a neural network with just one hidden layer can approximate any continuous function, given enough neurons. This remarkable result means neural networks are theoretically capable of learning any pattern that exists in data!</p>
+<h3 id="geometric-intuition-from-1d-to-n-d">Geometric Intuition: From 1D to n-D<a class="headerlink" href="#geometric-intuition-from-1d-to-n-d" title="Permanent link">&para;</a></h3>
+<p>Understanding how neural networks operate geometrically helps build intuition for their power and limitations.</p>
+<h4 id="1d-case-function-approximation">1D Case: Function Approximation<a class="headerlink" href="#1d-case-function-approximation" title="Permanent link">&para;</a></h4>
+<p><strong>Single neuron</strong>: </p>
+<p>\begin{aligned} z &amp;= wx + b \end{aligned}</p>
+<p>This is simply a line equation (y = mx + c from algebra).</p>
+<p><strong>With activation</strong>:</p>
+<p>\begin{aligned} h(x) &amp;= \max(0, wx + b) \end{aligned}</p>
+<p>Creates a "bent line" - the foundation for approximating any 1D function through piecewise linear segments.</p>
+<h4 id="2d-case-decision-boundaries">2D Case: Decision Boundaries<a class="headerlink" href="#2d-case-decision-boundaries" title="Permanent link">&para;</a></h4>
+<p><strong>Linear layer</strong>:</p>
+<p>\begin{aligned} z &amp;= w_1x_1 + w_2x_2 + b \end{aligned}</p>
+<p>Defines a <strong>line</strong> that separates the 2D plane into two regions.</p>
+<p><strong>With activation</strong>: The line becomes a "fold" where space gets bent, enabling complex decision boundaries when layers are stacked.</p>
+<h4 id="n-d-case-high-dimensional-manifolds">n-D Case: High-Dimensional Manifolds<a class="headerlink" href="#n-d-case-high-dimensional-manifolds" title="Permanent link">&para;</a></h4>
+<p><strong>Linear layer</strong>:</p>
+<p>\begin{aligned} z &amp;= w_1x_1 + w_2x_2 + ... + w_nx_n + b \end{aligned}</p>
+<p>Defines a <strong>hyperplane</strong> in n-dimensional space.</p>
+<p><strong>With stacked activations</strong>: Creates arbitrarily complex decision manifolds in high-dimensional space - this is why deep networks are universal function approximators.</p>
+<p><strong>Key Insight: Dimensions vs Layers</strong></p>
+<ul>
+<li><strong>Dimension</strong> = number of features (components of input vector)</li>
+<li><strong>Layers</strong> = sequence of transformations between different feature spaces</li>
+</ul>
+<p>Each layer can change the dimensionality:</p>
+<p>\begin{aligned} x \in \mathbb{R}^{784} \xrightarrow{\text{Layer 1}} h_1 \in \mathbb{R}^{512} \xrightarrow{\text{Layer 2}} h_2 \in \mathbb{R}^{256} \xrightarrow{\text{Output}} y \in \mathbb{R}^{10} \end{aligned}</p>
+<h3 id="deep-networks">Deep Networks<a class="headerlink" href="#deep-networks" title="Permanent link">&para;</a></h3>
+<p>"Deep" in deep learning refers to having many layers (typically 3 or more hidden layers).</p>
+<p>Depth brings distinct advantages: hierarchical learning allows each layer to build increasingly abstract features, parameter efficiency means complex functions can be learned with fewer total parameters than wide shallow networks, and better generalization helps deep networks perform well on unseen data.</p>
+<p>In image recognition, this hierarchy progresses naturally from edges and simple shapes, to textures and patterns, to object parts like eyes and wheels, to complete objects like faces and cars, and finally to full scene understanding distinguishing offices from outdoor environments.</p>
+<h3 id="mathematical-perspective">Mathematical Perspective<a class="headerlink" href="#mathematical-perspective" title="Permanent link">&para;</a></h3>
+<p>Each layer performs an <strong>affine transformation</strong> followed by <strong>nonlinear warping</strong>:</p>
+<p>\begin{aligned} \text{Layer}: \mathbb{R}^n \xrightarrow{\text{affine}} \mathbb{R}^m \xrightarrow{\text{warp}} \mathbb{R}^m \end{aligned}</p>
+<p>Stacking layers composes these operations:</p>
+<p>\begin{aligned} \text{Network}: \mathbb{R}^{n_0} \rightarrow \mathbb{R}^{n_1} \rightarrow \mathbb{R}^{n_2} \rightarrow ... \rightarrow \mathbb{R}^{n_L} \end{aligned}</p>
+<p>Understanding network architecture reveals the potential, but the real magic unfolds during training, where networks learn to perform their tasks through experience.</p>
+<hr />
+<h2 id="5-training-a-neural-network">5. Training a Neural Network<a class="headerlink" href="#5-training-a-neural-network" title="Permanent link">&para;</a></h2>
+<p>Training a neural network means finding the optimal weights and biases that allow the network to make accurate predictions. This is fundamentally about <strong>geometric optimization</strong> - finding the best point in a high-dimensional landscape of all possible parameter values.</p>
+<h3 id="the-training-process-overview">The Training Process Overview<a class="headerlink" href="#the-training-process-overview" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Forward Pass</strong>: Feed data through the network to get predictions</li>
+<li><strong>Loss Calculation</strong>: Compare predictions to actual answers</li>
+<li><strong>Backward Pass</strong>: Calculate how to adjust weights to reduce errors</li>
+<li><strong>Weight Update</strong>: Modify weights in the direction that reduces loss</li>
+<li><strong>Repeat</strong>: Continue until the network performs well</li>
+</ol>
+<h3 id="loss-functions-the-networks-report-card">Loss Functions: The Network's Report Card<a class="headerlink" href="#loss-functions-the-networks-report-card" title="Permanent link">&para;</a></h3>
+<p>Every learning system needs a way to measure progress, and neural networks are no exception. Loss functions bridge the gap between our human goals ("I want this model to translate accurately") and the mathematical precision computers require ("minimize this specific number").</p>
+<p><strong>Mathematical Foundation:</strong></p>
+<p>$$
+\begin{aligned} \mathcal{L}(\mathbf{y}<em _text_pred="\text{pred">{\text{true}}, \mathbf{y}</em>
+$$}}) \rightarrow \mathbb{R}^+ \end{aligned</p>
+<p>Where:</p>
+<p>$$
+{\textstyle
+\begin{aligned}
+\mathbf{y}<em _text_pred="\text{pred">{\text{true}} \newline
+\mathbf{y}</em>
+\end{aligned}
+}
+$$}</p>
+<ul>
+<li>Output: Single positive number (the "badness score")</li>
+</ul>
+<p>Without this translation, neural networks would have no way to measure progress during training, compute the gradients essential for backpropagation, or objectively compare different models' performance.</p>
+<h4 id="for-classification-problems">For Classification Problems<a class="headerlink" href="#for-classification-problems" title="Permanent link">&para;</a></h4>
+<p>When predicting categories like spam detection or sentiment analysis, <strong>cross-entropy loss</strong> provides the mathematical foundation:</p>
+<p>\begin{aligned} \mathcal{L} &amp;= -\sum_{i=1}^{C} y_i \log(p_i) \end{aligned}</p>
+<p>Where:</p>
+<p>$$
+{\textstyle
+\begin{aligned}
+y_i &amp;: \text{True label (1 for correct class, 0 for others)} \newline
+p_i &amp;: Predicted probability for class $$i$$
+\end{aligned}
+}
+$$</p>
+<ul>
+<li>$$C$$: Number of classes</li>
+</ul>
+<p>Cross-entropy elegantly captures the concept of "surprise" - it heavily penalizes confident wrong predictions while rewarding confident correct ones. Being uncertain but right yields medium loss, while being uncertain and wrong still incurs high penalty.</p>
+<p><strong>Example: Next Word Prediction</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Context: &quot;The cat sat on the&quot;
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>True next word: &quot;mat&quot; (token 1847)
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>Vocabulary: 50,000 words
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>Predicted probabilities:
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>- P(&quot;mat&quot;) = 0.7    ← High probability for correct word
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>- P(&quot;floor&quot;) = 0.2  ← Some probability for similar word  
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>- P(&quot;car&quot;) = 0.001  ← Low probability for unrelated word
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>- P(others) = 0.099
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>Loss = -log(0.7) ≈ 0.36 (relatively low - good prediction!)
+</code></pre></div></p>
+<p>The logarithmic scale creates this penalty structure naturally: predicting just 1% chance for the correct answer yields a harsh penalty of 4.6, while 99% confidence gives a gentle 0.01 penalty, with 50% confidence falling at 0.69.</p>
+<h4 id="for-regression-problems">For Regression Problems<a class="headerlink" href="#for-regression-problems" title="Permanent link">&para;</a></h4>
+<p>When predicting continuous values like house prices or temperatures, <strong>Mean Squared Error (MSE)</strong> becomes our guide:</p>
+<p>\begin{aligned} \mathcal{L} &amp;= \frac{1}{N} \sum_{i=1}^N (y_i - \hat{y}_i)^2 \end{aligned}</p>
+<p>MSE measures the squared distance between predictions and targets, creating a penalty structure where small errors receive proportional punishment, but large errors face disproportionately severe consequences. This symmetric approach treats overestimation and underestimation equally.</p>
+<h3 id="gradient-descent-the-universal-learning-algorithm">Gradient Descent: The Universal Learning Algorithm<a class="headerlink" href="#gradient-descent-the-universal-learning-algorithm" title="Permanent link">&para;</a></h3>
+<p>At the heart of every neural network's learning process lies gradient descent - the elegant answer to a deceptively simple question: "Given that my current predictions are wrong, how should I adjust my parameters to make them better?"</p>
+<h4 id="the-core-idea-following-the-slope-downhill">The Core Idea: Following the Slope Downhill<a class="headerlink" href="#the-core-idea-following-the-slope-downhill" title="Permanent link">&para;</a></h4>
+<p>Imagine standing blindfolded on a mountainside, seeking the valley that represents minimum error. With only the slope beneath your feet as guidance, gradient descent offers a beautifully simple strategy: always step in the direction of steepest descent.</p>
+<h4 id="mathematical-foundation">Mathematical Foundation<a class="headerlink" href="#mathematical-foundation" title="Permanent link">&para;</a></h4>
+<p><strong>From Calculus to Machine Learning:</strong></p>
+<p><strong>Single Variable (1D case):</strong></p>
+<p>\begin{aligned} x_{\text{new}} &amp;= x_{\text{old}} - \alpha \frac{df}{dx} \end{aligned}</p>
+<p><strong>Multiple Variables (Vector case):</strong></p>
+<p>\begin{aligned} \mathbf{\theta}<em _text_old="\text{old">{\text{new}} &amp;= \mathbf{\theta}</em>}} - \alpha \nabla_{\mathbf{\theta}} \mathcal{L} \end{aligned</p>
+<p>Where:</p>
+<p>$$
+{\textstyle
+\begin{aligned}
+\mathbf{\theta} \newline
+\alpha \newline
+\nabla_{\mathbf{\theta}} \mathcal{L}
+\end{aligned}
+}
+$$</p>
+<ul>
+<li><strong>Negative sign</strong>: Move opposite to gradient (downhill)</li>
+</ul>
+<h4 id="the-gradient-direction-of-steepest-ascent">The Gradient: Direction of Steepest Ascent<a class="headerlink" href="#the-gradient-direction-of-steepest-ascent" title="Permanent link">&para;</a></h4>
+<p>The gradient symbol $$\nabla$$ (nabla) might look mysterious, but it represents something intuitive:
+$$\nabla_{\mathbf{\theta}} \mathcal{L} = \begin{bmatrix}
+\frac{\partial \mathcal{L}}{\partial \theta_1} \
+\frac{\partial \mathcal{L}}{\partial \theta_2} \
+\vdots \
+\frac{\partial \mathcal{L}}{\partial \theta_n}
+\end{bmatrix}$$</p>
+<p>Each element answers a simple question: "If I nudge parameter $$\theta_i$$ slightly upward, how much does my loss increase?"</p>
+<h4 id="step-by-step-gradient-descent-process">Step-by-Step Gradient Descent Process<a class="headerlink" href="#step-by-step-gradient-descent-process" title="Permanent link">&para;</a></h4>
+<ol>
+<li><strong>Compute Forward Pass</strong>: $$\text{Input} \xrightarrow{\text{Network}} \text{Predictions}$$</li>
+<li><strong>Compute Loss</strong>: $$\mathcal{L} = \text{LossFunction}(\text{Predictions}, \text{Truth})$$</li>
+<li><strong>Compute Gradients (Backpropagation)</strong>: $$\frac{\partial \mathcal{L}}{\partial W^{(l)}} = \frac{\partial \mathcal{L}}{\partial h^{(l+1)}} \cdot \frac{\partial h^{(l+1)}}{\partial W^{(l)}}$$</li>
+</ol>
+<blockquote>
+<p>📖 <strong>For detailed backpropagation mechanics</strong>: See <a href="../mlp_intro/#6-training-how-mlps-learn">mlp_intro.md Section 6</a> for step-by-step derivations and <a href="../pytorch_ref/#3-autograd-finding-gradients">pytorch_ref.md Section 3</a> for implementation details.</p>
+</blockquote>
+<ol>
+<li><strong>Update Parameters</strong>: $$W^{(l)} \leftarrow W^{(l)} - \alpha \frac{\partial \mathcal{L}}{\partial W^{(l)}}$$</li>
+</ol>
+<h4 id="the-learning-rate-α-speed-vs-accuracy-trade-off">The Learning Rate α: Speed vs. Accuracy Trade-off<a class="headerlink" href="#the-learning-rate-α-speed-vs-accuracy-trade-off" title="Permanent link">&para;</a></h4>
+<p><strong>Too Large (α = 1.0):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>Loss
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>  |     /\
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>  |    /  \
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>  |   /    \
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>  |  •      \    ← Start here
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>  |   \    •/    ← Jump too far!
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>  |    \  /      ← Oscillate
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>  |     \/       ← Never converge
+</code></pre></div></p>
+<p><strong>Too Small (α = 0.001):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>Loss
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>  |     /\
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>  |    /  \
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>  |   /    \
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>  |  • • • •\    ← Tiny steps
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>  |  (very slow progress)
+</code></pre></div></p>
+<p><strong>Just Right (α = 0.01):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>Loss
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>  |     /\
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>  |    /  \
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>  |   /    \
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>  |  • → • →\  ← Steady progress
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>  |         ×  ← Reaches minimum
+</code></pre></div></p>
+<h3 id="from-simple-to-sophisticated-the-evolution-of-optimizers">From Simple to Sophisticated: The Evolution of Optimizers<a class="headerlink" href="#from-simple-to-sophisticated-the-evolution-of-optimizers" title="Permanent link">&para;</a></h3>
+<h4 id="plain-gradient-descent">Plain Gradient Descent<a class="headerlink" href="#plain-gradient-descent" title="Permanent link">&para;</a></h4>
+<p>\begin{aligned} \theta_t &amp;= \theta_{t-1} - \alpha \nabla \mathcal{L} \end{aligned}</p>
+<p>While elegant in its simplicity, plain gradient descent suffers from several limitations: it lacks momentum and stops abruptly when gradients vanish, treats all parameters with the same learning rate regardless of their needs, and tends to zigzag inefficiently through valleys in the loss landscape.</p>
+<h4 id="sgd-with-momentum">SGD with Momentum<a class="headerlink" href="#sgd-with-momentum" title="Permanent link">&para;</a></h4>
+<p>$$\begin{align}
+v_t &amp;= \beta v_{t-1} + (1-\beta) \nabla \mathcal{L} \
+\theta_t &amp;= \theta_{t-1} - \alpha v_t
+\end{align}$$</p>
+<p>Momentum transforms gradient descent into a "rolling ball" that builds velocity over time, smoothing updates and helping escape shallow local minima.</p>
+<h4 id="adam-adaptive-moments">Adam: Adaptive Moments<a class="headerlink" href="#adam-adaptive-moments" title="Permanent link">&para;</a></h4>
+<p>$$\begin{align}
+m_t &amp;= \beta_1 m_{t-1} + (1-\beta_1) \nabla \mathcal{L} \quad \text{(momentum)}\
+v_t &amp;= \beta_2 v_{t-1} + (1-\beta_2) (\nabla \mathcal{L})^2 \quad \text{(variance)}\
+\theta_t &amp;= \theta_{t-1} - \alpha \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}
+\end{align}$$</p>
+<p>Adam's breakthrough innovation lies in adaptive per-parameter learning rates: parameters with large gradients get smaller effective steps, while those with small gradients get larger ones. This automatic adjustment, combined with excellent handling of sparse gradients and minimal tuning requirements, explains Adam's widespread adoption.</p>
+<blockquote>
+<p>📖 <strong>For optimizer comparison</strong>: See <a href="../pytorch_ref/#5-optimization-loop--losses">pytorch_ref.md Section 5</a> for practical optimizer selection guide and <a href="../transformers_math2/">transformers_math2.md</a> for theoretical analysis.</p>
+</blockquote>
+<h3 id="complete-training-loop-in-pytorch">Complete Training Loop in PyTorch<a class="headerlink" href="#complete-training-loop-in-pytorch" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">optim</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="c1"># For complete PyTorch patterns, see pytorch_ref.md</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="c1"># Define a simple neural network for text classification</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="k">class</span><span class="w"> </span><span class="nc">TextClassifier</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">):</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">TextClassifier</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">)</span>
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">embedding_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">)</span>
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_dim</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">)</span>
+<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">relu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+<a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+<a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a>
+<a id="__codelineno-21-17" name="__codelineno-21-17" href="#__codelineno-21-17"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-21-18" name="__codelineno-21-18" href="#__codelineno-21-18"></a>        <span class="c1"># Convert word indices to embeddings</span>
+<a id="__codelineno-21-19" name="__codelineno-21-19" href="#__codelineno-21-19"></a>        <span class="n">embedded</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Average word embeddings</span>
+<a id="__codelineno-21-20" name="__codelineno-21-20" href="#__codelineno-21-20"></a>
+<a id="__codelineno-21-21" name="__codelineno-21-21" href="#__codelineno-21-21"></a>        <span class="c1"># Hidden layer with activation and dropout</span>
+<a id="__codelineno-21-22" name="__codelineno-21-22" href="#__codelineno-21-22"></a>        <span class="n">hidden</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">embedded</span><span class="p">))</span>
+<a id="__codelineno-21-23" name="__codelineno-21-23" href="#__codelineno-21-23"></a>        <span class="n">hidden</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">hidden</span><span class="p">)</span>
+<a id="__codelineno-21-24" name="__codelineno-21-24" href="#__codelineno-21-24"></a>
+<a id="__codelineno-21-25" name="__codelineno-21-25" href="#__codelineno-21-25"></a>        <span class="c1"># Output layer</span>
+<a id="__codelineno-21-26" name="__codelineno-21-26" href="#__codelineno-21-26"></a>        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">hidden</span><span class="p">)</span>
+<a id="__codelineno-21-27" name="__codelineno-21-27" href="#__codelineno-21-27"></a>        <span class="k">return</span> <span class="n">output</span>
+<a id="__codelineno-21-28" name="__codelineno-21-28" href="#__codelineno-21-28"></a>
+<a id="__codelineno-21-29" name="__codelineno-21-29" href="#__codelineno-21-29"></a><span class="c1"># Training setup</span>
+<a id="__codelineno-21-30" name="__codelineno-21-30" href="#__codelineno-21-30"></a><span class="n">model</span> <span class="o">=</span> <span class="n">TextClassifier</span><span class="p">(</span><span class="n">vocab_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> 
+<a id="__codelineno-21-31" name="__codelineno-21-31" href="#__codelineno-21-31"></a>                      <span class="n">hidden_dim</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-21-32" name="__codelineno-21-32" href="#__codelineno-21-32"></a><span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>  <span class="c1"># For classification</span>
+<a id="__codelineno-21-33" name="__codelineno-21-33" href="#__codelineno-21-33"></a><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+<a id="__codelineno-21-34" name="__codelineno-21-34" href="#__codelineno-21-34"></a>
+<a id="__codelineno-21-35" name="__codelineno-21-35" href="#__codelineno-21-35"></a><span class="c1"># Training loop</span>
+<a id="__codelineno-21-36" name="__codelineno-21-36" href="#__codelineno-21-36"></a><span class="k">def</span><span class="w"> </span><span class="nf">train_epoch</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">):</span>
+<a id="__codelineno-21-37" name="__codelineno-21-37" href="#__codelineno-21-37"></a>    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>  <span class="c1"># Set to training mode</span>
+<a id="__codelineno-21-38" name="__codelineno-21-38" href="#__codelineno-21-38"></a>    <span class="n">total_loss</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-21-39" name="__codelineno-21-39" href="#__codelineno-21-39"></a>
+<a id="__codelineno-21-40" name="__codelineno-21-40" href="#__codelineno-21-40"></a>    <span class="k">for</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataloader</span><span class="p">):</span>
+<a id="__codelineno-21-41" name="__codelineno-21-41" href="#__codelineno-21-41"></a>        <span class="c1"># 1. Forward pass</span>
+<a id="__codelineno-21-42" name="__codelineno-21-42" href="#__codelineno-21-42"></a>        <span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<a id="__codelineno-21-43" name="__codelineno-21-43" href="#__codelineno-21-43"></a>
+<a id="__codelineno-21-44" name="__codelineno-21-44" href="#__codelineno-21-44"></a>        <span class="c1"># 2. Calculate loss</span>
+<a id="__codelineno-21-45" name="__codelineno-21-45" href="#__codelineno-21-45"></a>        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+<a id="__codelineno-21-46" name="__codelineno-21-46" href="#__codelineno-21-46"></a>
+<a id="__codelineno-21-47" name="__codelineno-21-47" href="#__codelineno-21-47"></a>        <span class="c1"># 3. Backward pass</span>
+<a id="__codelineno-21-48" name="__codelineno-21-48" href="#__codelineno-21-48"></a>        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>  <span class="c1"># Clear previous gradients</span>
+<a id="__codelineno-21-49" name="__codelineno-21-49" href="#__codelineno-21-49"></a>        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>        <span class="c1"># Calculate gradients</span>
+<a id="__codelineno-21-50" name="__codelineno-21-50" href="#__codelineno-21-50"></a>
+<a id="__codelineno-21-51" name="__codelineno-21-51" href="#__codelineno-21-51"></a>        <span class="c1"># 4. Update weights</span>
+<a id="__codelineno-21-52" name="__codelineno-21-52" href="#__codelineno-21-52"></a>        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<a id="__codelineno-21-53" name="__codelineno-21-53" href="#__codelineno-21-53"></a>
+<a id="__codelineno-21-54" name="__codelineno-21-54" href="#__codelineno-21-54"></a>        <span class="n">total_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<a id="__codelineno-21-55" name="__codelineno-21-55" href="#__codelineno-21-55"></a>
+<a id="__codelineno-21-56" name="__codelineno-21-56" href="#__codelineno-21-56"></a>        <span class="c1"># Print progress</span>
+<a id="__codelineno-21-57" name="__codelineno-21-57" href="#__codelineno-21-57"></a>        <span class="k">if</span> <span class="n">batch_idx</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-21-58" name="__codelineno-21-58" href="#__codelineno-21-58"></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Batch </span><span class="si">{</span><span class="n">batch_idx</span><span class="si">}</span><span class="s1">, Loss: </span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<a id="__codelineno-21-59" name="__codelineno-21-59" href="#__codelineno-21-59"></a>
+<a id="__codelineno-21-60" name="__codelineno-21-60" href="#__codelineno-21-60"></a>    <span class="k">return</span> <span class="n">total_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="p">)</span>
+<a id="__codelineno-21-61" name="__codelineno-21-61" href="#__codelineno-21-61"></a>
+<a id="__codelineno-21-62" name="__codelineno-21-62" href="#__codelineno-21-62"></a><span class="c1"># Train for multiple epochs</span>
+<a id="__codelineno-21-63" name="__codelineno-21-63" href="#__codelineno-21-63"></a><span class="n">num_epochs</span> <span class="o">=</span> <span class="mi">10</span>
+<a id="__codelineno-21-64" name="__codelineno-21-64" href="#__codelineno-21-64"></a><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
+<a id="__codelineno-21-65" name="__codelineno-21-65" href="#__codelineno-21-65"></a>    <span class="n">avg_loss</span> <span class="o">=</span> <span class="n">train_epoch</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_dataloader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">)</span>
+<a id="__codelineno-21-66" name="__codelineno-21-66" href="#__codelineno-21-66"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">num_epochs</span><span class="si">}</span><span class="s1">, Average Loss: </span><span class="si">{</span><span class="n">avg_loss</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="key-training-concepts">Key Training Concepts<a class="headerlink" href="#key-training-concepts" title="Permanent link">&para;</a></h3>
+<h4 id="1-epochs">1. Epochs<a class="headerlink" href="#1-epochs" title="Permanent link">&para;</a></h4>
+<p>An epoch represents one complete journey through the entire training dataset.</p>
+<h4 id="2-batch-size">2. Batch Size<a class="headerlink" href="#2-batch-size" title="Permanent link">&para;</a></h4>
+<p>This determines how many examples we process before updating weights. Small batches provide frequent, noisy updates that can help escape local minima, while large batches offer more stable updates at the cost of memory requirements.</p>
+<h4 id="3-learning-rate">3. Learning Rate<a class="headerlink" href="#3-learning-rate" title="Permanent link">&para;</a></h4>
+<p>This critical hyperparameter controls our step size through the parameter space. Set it too high and we'll overshoot optimal solutions, bouncing around chaotically; too low and training crawls at an impractical pace.</p>
+<h4 id="4-overfitting-vs-underfitting">4. Overfitting vs Underfitting<a class="headerlink" href="#4-overfitting-vs-underfitting" title="Permanent link">&para;</a></h4>
+<p>These represent the two failure modes of machine learning: overfitting occurs when models memorize training examples rather than learning generalizable patterns, while underfitting happens when models are too simple to capture the underlying data structure.</p>
+<blockquote>
+<p>📖 <strong>For practical solutions</strong>: See <a href="../mlp_intro/#8-common-challenges-and-solutions">mlp_intro.md Section 8</a> for detailed strategies including dropout, regularization, and early stopping.</p>
+</blockquote>
+<h3 id="text-embeddings-bridging-language-and-mathematics">Text Embeddings: Bridging Language and Mathematics<a class="headerlink" href="#text-embeddings-bridging-language-and-mathematics" title="Permanent link">&para;</a></h3>
+<p>Before we explore how neural networks excel in language applications, we need to understand a crucial component: <strong>text embeddings</strong>. These solve a fundamental problem: computers can only work with numbers, but language consists of discrete symbols (words, characters, tokens).</p>
+<h4 id="converting-words-to-vectors">Converting Words to Vectors<a class="headerlink" href="#converting-words-to-vectors" title="Permanent link">&para;</a></h4>
+<p><strong>Mathematical Foundation:</strong></p>
+<p>\begin{aligned} \mathbf{e}<em _text_model="\text{model">i &amp;= E[i] \in \mathbb{R}^{d</em>}}} \end{aligned</p>
+<p>Where:</p>
+<p>$$
+{\textstyle
+\begin{aligned}
+E \in \mathbb{R}^{V \times d_{\text{model}}} \newline
+V &amp;= vocabulary size (number of unique words/tokens) \newline
+d_{\text{model}}
+\end{aligned}
+}
+$$</p>
+<ul>
+<li>Each row $$E[i]$$ represents one word's embedding vector</li>
+</ul>
+<blockquote>
+<p>📖 <strong>For embedding implementation</strong>: See <a href="../pytorch_ref/#10-transformers-in-pytorch">pytorch_ref.md Section 10</a> for practical embedding layer usage and <a href="../knowledge_store/">knowledge_store.md</a> for how embeddings store semantic knowledge.</p>
+</blockquote>
+<h4 id="geometric-intuition-words-as-points-in-space">Geometric Intuition: Words as Points in Space<a class="headerlink" href="#geometric-intuition-words-as-points-in-space" title="Permanent link">&para;</a></h4>
+<p>Think of embeddings as a <strong>high-dimensional map</strong> where:</p>
+<ul>
+<li>Each word becomes a <strong>point</strong> in space</li>
+<li><strong>Similar words cluster together</strong> (near each other)</li>
+<li><strong>Different meanings spread apart</strong></li>
+</ul>
+<p><strong>2D Visualization (actual embeddings use 100s-1000s of dimensions):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>Semantic Space (2D slice):
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>          animals
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>            |
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>    cat •  dog •  tiger
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>       \    |    /
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>        \   |   /
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>          mammal
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>            |
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>    --------+---------- (other concepts)
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a>            |
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a>         plant •
+</code></pre></div></p>
+<h4 id="why-embeddings-work">Why Embeddings Work<a class="headerlink" href="#why-embeddings-work" title="Permanent link">&para;</a></h4>
+<p><strong>Distributional Hypothesis</strong>: "Words appearing in similar contexts have similar meanings"</p>
+<p>If we see:</p>
+<ul>
+<li>"The <strong>cat</strong> sat on the mat"</li>
+<li>"The <strong>dog</strong> sat on the mat"  </li>
+<li>"The <strong>tiger</strong> prowled in the jungle"</li>
+<li>"The <strong>lion</strong> prowled in the jungle"</li>
+</ul>
+<p>The network learns that words in similar positions (contexts) should have similar embeddings.</p>
+<h4 id="from-discrete-to-continuous">From Discrete to Continuous<a class="headerlink" href="#from-discrete-to-continuous" title="Permanent link">&para;</a></h4>
+<p><strong>Embedding vs. One-Hot Encoding:</strong></p>
+<p><strong>One-Hot Problems:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>&quot;cat&quot; → [1, 0, 0, 0, ...]  (all zeros except position 3)
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>&quot;dog&quot; → [0, 1, 0, 0, ...]  (all zeros except position 7)
+</code></pre></div></p>
+<ul>
+<li>All words are <strong>equally distant</strong> (orthogonal)</li>
+<li><strong>Sparse vectors</strong> (mostly zeros)</li>
+<li><strong>No semantic relationships</strong> captured</li>
+</ul>
+<p><strong>Embeddings Solution:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>&quot;cat&quot; → [0.2, 0.8, -0.1, 0.3, ...]  (dense vector)
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>&quot;dog&quot; → [0.3, 0.7, -0.2, 0.4, ...]  (similar to &quot;cat&quot;)
+</code></pre></div></p>
+<ul>
+<li><strong>Dense representations</strong> (all dimensions used)</li>
+<li><strong>Semantic similarity</strong> through vector proximity</li>
+<li><strong>Learnable relationships</strong></li>
+</ul>
+<p><strong>Vector arithmetic captures relationships:</strong></p>
+<p>\begin{aligned} \mathbf{e}<em _text_man="\text{man">{\text{king}} - \mathbf{e}</em>}} + \mathbf{e<em _text_queen="\text{queen">{\text{woman}} \approx \mathbf{e}</em>}} \end{aligned</p>
+<blockquote>
+<p>📖 <strong>For vector operations</strong>: See <a href="../math_quick_ref/">math_quick_ref.md</a> for linear algebra fundamentals and <a href="../pytorch_ref/#2-tensors-vectors--matrices-in-pytorch">pytorch_ref.md Section 2</a> for tensor operations.</p>
+</blockquote>
+<h4 id="how-neural-networks-store-knowledge">How Neural Networks Store Knowledge<a class="headerlink" href="#how-neural-networks-store-knowledge" title="Permanent link">&para;</a></h4>
+<p>This embedding approach reveals something profound: <strong>neural networks store knowledge as geometric relationships in high-dimensional space</strong>. When a model "knows" that cats and dogs are similar, this knowledge is encoded as the spatial proximity of their embedding vectors.</p>
+<blockquote>
+<p>📖 <strong>Deep dive into knowledge storage</strong>: See <a href="../knowledge_store/">knowledge_store.md</a> for a comprehensive exploration of how Large Language Models store and retrieve knowledge through embeddings vs. external vector databases. Includes hands-on Python examples showing semantic search, similarity computation, and the fundamental differences between internalized neural weights and external knowledge stores.</p>
+</blockquote>
+<p>With the fundamentals of neural network training and text representation under our belt, let's explore how these powerful learning systems excel in practical language applications.</p>
+<hr />
+<h3 id="key-insight-the-geometric-transformation-principle">Key Insight: The Geometric Transformation Principle<a class="headerlink" href="#key-insight-the-geometric-transformation-principle" title="Permanent link">&para;</a></h3>
+<p>Neural networks are fundamentally <strong>geometric transformation systems</strong> operating in high-dimensional space:</p>
+<p><strong>Core Principle:</strong></p>
+<p>\begin{aligned} \boxed{\text{Linear Transform} + \text{Nonlinear Warp} \rightarrow \text{Complex Decision Boundaries}} \end{aligned}</p>
+<p><strong>Component Roles:</strong></p>
+<ul>
+<li><strong>Weights</strong>: Feature importance and transformation direction</li>
+<li><strong>Bias</strong>: Flexible boundary positioning  </li>
+<li><strong>Activation</strong>: Space warping for nonlinearity</li>
+<li><strong>Embeddings</strong>: Convert discrete symbols to continuous representations</li>
+<li><strong>Loss Functions</strong>: Guide learning toward task objectives</li>
+<li><strong>Gradient Descent</strong>: Navigate parameter space to minimize error</li>
+</ul>
+<p>Neural networks succeed by <strong>repeatedly bending high-dimensional space</strong> until complex data patterns become linearly separable. Each component plays a crucial role in this geometric dance that transforms raw data into learnable representations.</p>
+<hr />
+<h2 id="6-where-neural-networks-shine-in-nlp">6. Where Neural Networks Shine in NLP<a class="headerlink" href="#6-where-neural-networks-shine-in-nlp" title="Permanent link">&para;</a></h2>
+<p>Neural networks have transformed our relationship with language technology, solving problems that seemed intractable for decades and opening doors to applications we barely imagined possible.</p>
+<h3 id="limitations-of-mlps-for-language">Limitations of MLPs for Language<a class="headerlink" href="#limitations-of-mlps-for-language" title="Permanent link">&para;</a></h3>
+<p>While MLPs are powerful, they have a fundamental limitation for language tasks: <strong>they don't understand word order</strong>.</p>
+<p><strong>Example Problem:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>Sentence 1: &quot;The dog chased the cat&quot;
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>Sentence 2: &quot;The cat chased the dog&quot;
+</code></pre></div></p>
+<p>An MLP treating these as bags of words would see them as identical, missing the crucial difference in meaning!</p>
+<h3 id="where-neural-networks-excel-in-nlp">Where Neural Networks Excel in NLP<a class="headerlink" href="#where-neural-networks-excel-in-nlp" title="Permanent link">&para;</a></h3>
+<p>Despite sequential processing limitations in basic MLPs, neural networks have revolutionized natural language processing by solving fundamental challenges that traditional methods couldn't address.</p>
+<h4 id="1-text-classification">1. Text Classification<a class="headerlink" href="#1-text-classification" title="Permanent link">&para;</a></h4>
+<p>The challenge of automatically categorizing text into meaningful groups showcases neural networks' pattern recognition strength. From sentiment analysis that distinguishes positive from negative reviews, to topic classification that separates sports articles from political commentary, to intent recognition that helps chatbots understand customer requests, neural networks excel by learning semantic word embeddings, handling variable-length inputs naturally, and discovering relevant features automatically.</p>
+<p><strong>Example Architecture:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>Input Text → Word Embeddings → Hidden Layers → Classification Output
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>&quot;This movie is amazing!&quot; 
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>→ [word vectors] 
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>→ [hidden representations] 
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>→ Positive (95% confidence)
+</code></pre></div></p>
+<h4 id="2-named-entity-recognition-ner">2. Named Entity Recognition (NER)<a class="headerlink" href="#2-named-entity-recognition-ner" title="Permanent link">&para;</a></h4>
+<p>Identifying and classifying entities within text demonstrates neural networks' contextual understanding. Consider the challenge of processing "Apple Inc. was founded by Steve Jobs in Cupertino" - neural networks excel by recognizing "Apple Inc." as an organization, "Steve Jobs" as a person, and "Cupertino" as a location. This success comes from context awareness that distinguishes "Apple" the fruit from "Apple" the company, pattern recognition that associates capitalization with entity names, and sequential understanding that recognizes "Inc." following "Apple" as a strong company indicator.</p>
+<h4 id="3-question-answering">3. Question Answering<a class="headerlink" href="#3-question-answering" title="Permanent link">&para;</a></h4>
+<p>The ability to find answers within text showcases neural networks' reading comprehension capabilities. When presented with context like "The capital of France is Paris. Paris is known for the Eiffel Tower" and asked "What is the capital of France?", neural networks demonstrate remarkable understanding. Success comes from simultaneously encoding questions and context, learning attention patterns that highlight relevant text passages, and understanding the myriad ways humans can phrase the same question.</p>
+<h4 id="4-machine-translation">4. Machine Translation<a class="headerlink" href="#4-machine-translation" title="Permanent link">&para;</a></h4>
+<p>Perhaps the most impressive demonstration of neural language understanding lies in translation between human languages. Converting "Hello, how are you?" to "Hola, ¿cómo estás?" might seem straightforward, but neural networks succeed by learning shared semantic representations that transcend language barriers, adapting to different grammatical structures and word orders, and translating even rare words through contextual understanding.</p>
+<hr />
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<p>With neural network fundamentals now in place, you're ready to explore deeper territories. The journey ahead offers multiple paths: diving into how individual neurons combine into powerful multi-layer networks, working through hands-on mathematics with real numbers you can trace by hand, understanding the building blocks used in all advanced architectures, or seeing how these concepts translate to actual code.</p>
+<blockquote>
+<p><strong>Continue Learning</strong>: Ready to build networks? </p>
+<p><strong>Next Steps by Learning Goal:</strong></p>
+<ul>
+<li><strong>🏗️ Hands-on Implementation</strong>: <a href="../mlp_intro/">mlp_intro.md</a> - Build MLPs step-by-step with worked examples</li>
+<li><strong>🔄 Sequential Processing</strong>: <a href="../rnn_intro/">rnn_intro.md</a> - Learn RNNs and understand the path to transformers</li>
+<li><strong>⚡ Modern Architectures</strong>: <a href="../transformers_fundamentals/">transformers_fundamentals.md</a> - Complete transformer technical reference</li>
+<li><strong>💻 PyTorch Coding</strong>: <a href="../pytorch_ref/">pytorch_ref.md</a> - Practical implementation patterns</li>
+<li><strong>📐 Mathematical Rigor</strong>: <a href="../transformers_math1/">transformers_math1.md</a> - Theoretical foundations (Part 1)</li>
+<li><strong>📐 Advanced Mathematics</strong>: <a href="../transformers_math2/">transformers_math2.md</a> - Advanced concepts and scaling (Part 2)</li>
+</ul>
+</blockquote>
+<p><strong>Remember:</strong> Neural networks taught us that simple mathematical operations, when combined in layers, can learn to recognize complex patterns in data. This insight revolutionized AI and remains the foundation of every modern architecture - from image recognition to language models.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.top", "navigation.instant", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+    
+  </body>
+</html>

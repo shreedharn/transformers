@@ -1,0 +1,3042 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../rnn_intro/">
+      
+      
+        <link rel="next" href="../transformers_advanced/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Transformers Fundamentals - Introduction to Transformers</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../styles.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#transformer-fundamentals-architecture-and-core-concepts" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Introduction to Transformers" class="md-header__button md-logo" aria-label="Introduction to Transformers" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Introduction to Transformers
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Transformers Fundamentals
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Introduction to Transformers" class="md-nav__button md-logo" aria-label="Introduction to Transformers" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Introduction to Transformers
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nn_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Neural Network Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mlp_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Building Networks with MLP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rnn_intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sequential Modeling with RNN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Transformers Fundamentals
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transformers Fundamentals
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-historical-context-the-transformer-breakthrough" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Historical Context: The Transformer Breakthrough
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Historical Context: The Transformer Breakthrough">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attention-is-all-you-need" class="md-nav__link">
+    <span class="md-ellipsis">
+      "Attention Is All You Need"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#removing-sequential-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Removing Sequential Processing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#self-attention-the-core-mechanism" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Attention: The Core Mechanism
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-head-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Head Attention
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#position-encoding-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Position Encoding Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complete-transformer-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete Transformer Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-transformers-work-so-well" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Transformers Work So Well
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Pipeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#computational-pipeline-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Computational Pipeline Overview
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detailed-process-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Detailed Process Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-how-models-learn-optional-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      Training: How Models Learn (Optional Detail)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model-hyperparameters-and-complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Model Hyperparameters and Complexity
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-stage-1-text-to-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Stage 1: Text to Tokens
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Stage 1: Text to Tokens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-intuition-breaking-text-into-computer-friendly-pieces" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Intuition: Breaking Text into Computer-Friendly Pieces
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#process-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Process Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simple-example-with-real-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simple Example with Real Numbers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-formulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Formulation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tokenization-challenges-and-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tokenization Challenges and Considerations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Considerations:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-stage-2-tokens-to-embeddings" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Stage 2: Tokens to Embeddings
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Stage 2: Tokens to Embeddings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dense-vector-representation-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dense Vector Representation Learning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#embedding-computation-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Embedding Computation Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-formulation_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Formulation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concrete-example-with-actual-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concrete Example with Actual Numbers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tensor-shapes-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tensor Shapes Example:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-what-could-go-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      🛠️ What Could Go Wrong?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-stage-3-through-the-transformer-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Stage 3: Through the Transformer Stack
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Stage 3: Through the Transformer Stack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hierarchical-representation-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hierarchical Representation Learning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture Overview
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#single-layer-mathematical-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Single Layer Mathematical Flow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-architectural-variants-encoder-decoder-and-encoder-decoder" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Architectural Variants: Encoder, Decoder, and Encoder-Decoder
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Architectural Variants: Encoder, Decoder, and Encoder-Decoder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-different-transformer-architectures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Different Transformer Architectures
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#encoder-only-bert-family" class="md-nav__link">
+    <span class="md-ellipsis">
+      Encoder-Only: BERT Family
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decoder-only-gpt-family" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decoder-Only: GPT Family
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#encoder-decoder-t5-family" class="md-nav__link">
+    <span class="md-ellipsis">
+      Encoder-Decoder: T5 Family
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modern-architectural-innovations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modern Architectural Innovations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choosing-the-right-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choosing the Right Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-stage-4-self-attention-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Stage 4: Self-Attention Deep Dive
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Stage 4: Self-Attention Deep Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attention-as-differentiable-key-value-retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attention as Differentiable Key-Value Retrieval
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attention-weight-interpretation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attention Weight Interpretation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attention-computation-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attention Computation Steps
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-head-attention-mathematical-formulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Head Attention Mathematical Formulation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-stage-5-kv-cache-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Stage 5: KV Cache Operations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Stage 5: KV Cache Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#autoregressive-generation-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Autoregressive Generation Optimization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#computational-efficiency-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Computational Efficiency Analysis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kv-cache-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      KV Cache Implementation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-stage-6-feed-forward-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Stage 6: Feed-Forward Networks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Stage 6: Feed-Forward Networks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#position-wise-nonlinear-transformations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Position-wise Nonlinear Transformations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ffn-architecture-and-computation" class="md-nav__link">
+    <span class="md-ellipsis">
+      FFN Architecture and Computation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-formulation_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Formulation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-stage-7-output-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Stage 7: Output Generation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Stage 7: Output Generation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-intuition-making-the-final-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Intuition: Making the Final Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-generation-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Output Generation Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-formulation_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Formulation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps-advanced-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps: Advanced Topics
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transformers_advanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transformers Advanced
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../knowledge_store/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Knowledge Store
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            References
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pytorch_ref/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PyTorch Primer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transformers_math1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mathematical Foundations 1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transformers_math2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mathematical Foundations 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../math_quick_ref/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mathematical Quick Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../history_quick_ref/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sequence Modeling History
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    README
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LICENSE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    LICENSE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-historical-context-the-transformer-breakthrough" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Historical Context: The Transformer Breakthrough
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Historical Context: The Transformer Breakthrough">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attention-is-all-you-need" class="md-nav__link">
+    <span class="md-ellipsis">
+      "Attention Is All You Need"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#removing-sequential-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Removing Sequential Processing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#self-attention-the-core-mechanism" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-Attention: The Core Mechanism
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-head-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Head Attention
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#position-encoding-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Position Encoding Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complete-transformer-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete Transformer Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-transformers-work-so-well" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Transformers Work So Well
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Pipeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#computational-pipeline-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Computational Pipeline Overview
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detailed-process-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Detailed Process Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-how-models-learn-optional-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      Training: How Models Learn (Optional Detail)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model-hyperparameters-and-complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Model Hyperparameters and Complexity
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-stage-1-text-to-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Stage 1: Text to Tokens
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Stage 1: Text to Tokens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-intuition-breaking-text-into-computer-friendly-pieces" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Intuition: Breaking Text into Computer-Friendly Pieces
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#process-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Process Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simple-example-with-real-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simple Example with Real Numbers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-formulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Formulation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tokenization-challenges-and-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tokenization Challenges and Considerations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Considerations:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-stage-2-tokens-to-embeddings" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Stage 2: Tokens to Embeddings
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Stage 2: Tokens to Embeddings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dense-vector-representation-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dense Vector Representation Learning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#embedding-computation-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Embedding Computation Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-formulation_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Formulation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concrete-example-with-actual-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concrete Example with Actual Numbers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tensor-shapes-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tensor Shapes Example:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-what-could-go-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      🛠️ What Could Go Wrong?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-stage-3-through-the-transformer-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Stage 3: Through the Transformer Stack
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Stage 3: Through the Transformer Stack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hierarchical-representation-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hierarchical Representation Learning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture Overview
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#single-layer-mathematical-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Single Layer Mathematical Flow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-architectural-variants-encoder-decoder-and-encoder-decoder" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Architectural Variants: Encoder, Decoder, and Encoder-Decoder
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Architectural Variants: Encoder, Decoder, and Encoder-Decoder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-different-transformer-architectures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Different Transformer Architectures
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#encoder-only-bert-family" class="md-nav__link">
+    <span class="md-ellipsis">
+      Encoder-Only: BERT Family
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decoder-only-gpt-family" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decoder-Only: GPT Family
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#encoder-decoder-t5-family" class="md-nav__link">
+    <span class="md-ellipsis">
+      Encoder-Decoder: T5 Family
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modern-architectural-innovations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modern Architectural Innovations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choosing-the-right-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choosing the Right Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-stage-4-self-attention-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Stage 4: Self-Attention Deep Dive
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Stage 4: Self-Attention Deep Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attention-as-differentiable-key-value-retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attention as Differentiable Key-Value Retrieval
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attention-weight-interpretation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attention Weight Interpretation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attention-computation-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attention Computation Steps
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-head-attention-mathematical-formulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Head Attention Mathematical Formulation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-stage-5-kv-cache-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Stage 5: KV Cache Operations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Stage 5: KV Cache Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#autoregressive-generation-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Autoregressive Generation Optimization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#computational-efficiency-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Computational Efficiency Analysis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kv-cache-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      KV Cache Implementation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-stage-6-feed-forward-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Stage 6: Feed-Forward Networks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Stage 6: Feed-Forward Networks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#position-wise-nonlinear-transformations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Position-wise Nonlinear Transformations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ffn-architecture-and-computation" class="md-nav__link">
+    <span class="md-ellipsis">
+      FFN Architecture and Computation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-formulation_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Formulation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-stage-7-output-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Stage 7: Output Generation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Stage 7: Output Generation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-intuition-making-the-final-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Intuition: Making the Final Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-generation-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Output Generation Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-formulation_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical Formulation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps-advanced-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps: Advanced Topics
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="transformer-fundamentals-architecture-and-core-concepts">Transformer Fundamentals: Architecture and Core Concepts<a class="headerlink" href="#transformer-fundamentals-architecture-and-core-concepts" title="Permanent link">&para;</a></h1>
+<p><strong>Building on the RNN journey:</strong> In the <a href="../rnn_intro/">RNN Tutorial</a>, you learned how neural networks gained memory and why this revolutionized sequence processing. You also discovered RNN's fundamental limitations—vanishing gradients, sequential bottlenecks, and the inability to process long sequences efficiently. The Transformer architecture solved all these problems while preserving RNN's core insights about sequential understanding.</p>
+<p><strong>What you'll learn in this foundational guide:</strong> How the "Attention Is All You Need" breakthrough created the architecture powering ChatGPT, GPT-4, and modern AI. We'll cover the complete technical flow from input text to output generation, with mathematical rigor and implementation details for each component.</p>
+<p><strong>Part of a two-part series:</strong> This guide covers the foundational transformer architecture and core concepts (sections 1-12). For advanced topics including training, optimization, fine-tuning, and deployment, see <a href="../transformers_advanced/">Transformer Advanced Topics</a>.</p>
+<p><strong>Prerequisites:</strong> Completed <a href="../rnn_intro/">RNN Tutorial</a> and the mathematical foundations listed below.</p>
+<h2 id="1-prerequisites">1. Prerequisites<a class="headerlink" href="#1-prerequisites" title="Permanent link">&para;</a></h2>
+<p><strong>Mathematical Foundations:</strong></p>
+<ul>
+<li><strong>Linear Algebra</strong>: Matrix operations, eigenvalues, vector spaces (📚 See <a href="../transformers_math1/#221-vectors-as-word-meanings">Linear Algebra Essentials</a>)</li>
+<li><strong>Probability Theory</strong>: Distributions, information theory, maximum likelihood estimation (📚 See <a href="../transformers_math1/#224-softmax-and-cross-entropy-from-scores-to-decisions">Probability &amp; Information Theory</a>)</li>
+<li><strong>Calculus</strong>: Gradients, chain rule, optimization theory (📚 See <a href="../transformers_math1/#223-gradients-as-learning-signals">Matrix Calculus Essentials</a>)</li>
+<li><strong>Machine Learning</strong>: Backpropagation, gradient descent, regularization techniques</li>
+</ul>
+<h2 id="2-overview">2. Overview<a class="headerlink" href="#2-overview" title="Permanent link">&para;</a></h2>
+<p>Transformer architectures represent a fundamental paradigm shift in sequence modeling, replacing recurrent and convolutional approaches with attention-based mechanisms for parallel processing of sequential data. The architecture's core innovation lies in the self-attention mechanism, which enables direct modeling of dependencies between any two positions in a sequence, regardless of their distance.</p>
+<p><strong>Architectural Significance:</strong> Transformers solve the fundamental bottleneck of sequential processing inherent in RNNs while capturing long-range dependencies more effectively than CNNs. The attention mechanism provides explicit, learnable routing of information between sequence positions, enabling the model to dynamically focus on relevant context.</p>
+<p><strong>Key Innovations:</strong></p>
+<ul>
+<li><strong>Parallelizable attention computation:</strong> Unlike RNNs, all positions can be processed simultaneously</li>
+<li><strong>Direct dependency modeling:</strong> Attention weights explicitly model relationships between any pair of sequence positions</li>
+<li><strong>Position-invariant processing:</strong> The base attention mechanism is permutation-equivariant, requiring explicit positional encoding</li>
+</ul>
+<h2 id="3-historical-context-the-transformer-breakthrough">3. Historical Context: The Transformer Breakthrough<a class="headerlink" href="#3-historical-context-the-transformer-breakthrough" title="Permanent link">&para;</a></h2>
+<p>The transformer architecture represents the culmination of decades of research in sequence modeling. While earlier architectures like MLPs struggled with variable-length inputs, RNNs suffered from vanishing gradients, and LSTMs remained sequential bottlenecks, the transformer solved all these problems with a single revolutionary insight.</p>
+<h3 id="attention-is-all-you-need">"Attention Is All You Need"<a class="headerlink" href="#attention-is-all-you-need" title="Permanent link">&para;</a></h3>
+<p><strong>The Revolutionary Question</strong>: Vaswani et al. (2017) asked a simple but profound question: <em>What if we remove recurrence entirely and rely purely on attention?</em></p>
+<p><strong>Key Insight</strong>: If attention can help RNNs access any part of the input, why not use attention as the <strong>primary mechanism</strong> for processing sequences, rather than just an auxiliary tool?</p>
+<p><strong>Previous Evolution:</strong></p>
+<ul>
+<li><strong>MLPs</strong>: Established neural foundations but couldn't handle variable-length sequences</li>
+<li><strong>RNNs</strong>: Introduced sequential processing but suffered from vanishing gradient problems</li>
+<li><strong>LSTMs/GRUs</strong>: Solved vanishing gradients through gating mechanisms but remained sequential</li>
+<li><strong>Seq2Seq + Attention</strong>: Eliminated information bottlenecks but still relied on recurrence</li>
+</ul>
+<h3 id="removing-sequential-processing">Removing Sequential Processing<a class="headerlink" href="#removing-sequential-processing" title="Permanent link">&para;</a></h3>
+<p><strong>RNN Limitation</strong>: Even with attention, RNNs must process sequences step-by-step:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>h₁ → h₂ → h₃ → h₄ → h₅  (sequential dependency)
+</code></pre></div></p>
+<p><strong>Transformer Innovation</strong>: Process all positions simultaneously using self-attention:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>All positions computed in parallel using attention
+</code></pre></div></p>
+<h3 id="self-attention-the-core-mechanism">Self-Attention: The Core Mechanism<a class="headerlink" href="#self-attention-the-core-mechanism" title="Permanent link">&para;</a></h3>
+<p><strong>Self-Attention Concept</strong>: Instead of attending from decoder to encoder, have each position in a sequence attend to all positions in the same sequence (including itself).</p>
+<p><strong>Mathematical Foundation:</strong>
+Given input sequence:</p>
+<p>$$
+\begin{aligned}
+X &amp;= [x_1, x_2, \ldots, x_n] \newline
+\text{Step 1:} \quad Q &amp;= XW^Q \newline
+\text{Step 1:} \quad K &amp;= XW^K \newline
+\text{Step 1:} \quad V &amp;= XW^V \newline
+\text{Step 2:} \quad \text{Attention}(Q, K, V) &amp;= \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\end{aligned}
+$$</p>
+<p><strong>Key Properties:</strong></p>
+<ul>
+<li><strong>Parallel Computation</strong>: All positions processed simultaneously</li>
+<li><strong>Full Connectivity</strong>: Every position can attend to every other position</li>
+<li><strong>No Recurrence</strong>: No sequential dependencies in computation</li>
+</ul>
+<h3 id="multi-head-attention">Multi-Head Attention<a class="headerlink" href="#multi-head-attention" title="Permanent link">&para;</a></h3>
+<p><strong>Motivation</strong>: Different attention heads can capture different types of relationships (syntactic, semantic, positional, etc.).</p>
+<p><strong>Implementation</strong>:</p>
+<p>$$
+\begin{aligned}
+\text{MultiHead}(Q, K, V) &amp;= \text{Concat}(\text{head}_1, \ldots, \text{head}_h)W^O \newline
+\text{head}_i &amp;= \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)
+\end{aligned}
+$$</p>
+<h3 id="position-encoding-solution">Position Encoding Solution<a class="headerlink" href="#position-encoding-solution" title="Permanent link">&para;</a></h3>
+<p><strong>Problem</strong>: Attention is permutation-equivariant—"cat sat on mat" and "mat on sat cat" would be processed identically.</p>
+<p><strong>Solution</strong>: Add positional information to input embeddings:</p>
+<p>$$
+\begin{aligned}
+\text{input} = \text{token_embedding} + \text{positional_encoding}
+\end{aligned}
+$$</p>
+<p>Each token's embedding is combined with a positional encoding vector, ensuring the model can distinguish between different positions in the sequence.</p>
+<h3 id="complete-transformer-architecture">Complete Transformer Architecture<a class="headerlink" href="#complete-transformer-architecture" title="Permanent link">&para;</a></h3>
+<p><strong>Encoder Block (Pre-LayerNorm)</strong>:</p>
+<ol>
+<li>LayerNorm → Multi-head self-attention → Add residual</li>
+<li>LayerNorm → Feed-forward network → Add residual</li>
+</ol>
+<p><strong>Decoder Block (Pre-LayerNorm)</strong>:</p>
+<ol>
+<li>LayerNorm → Masked multi-head self-attention → Add residual</li>
+<li>LayerNorm → Multi-head cross-attention → Add residual</li>
+<li>LayerNorm → Feed-forward network → Add residual</li>
+</ol>
+<h3 id="why-transformers-work-so-well">Why Transformers Work So Well<a class="headerlink" href="#why-transformers-work-so-well" title="Permanent link">&para;</a></h3>
+<p><strong>1. Parallelization</strong>: All sequence positions processed simultaneously, enabling efficient GPU utilization</p>
+<p><strong>2. Long-Range Dependencies</strong>: Direct connections between any two positions eliminate information bottlenecks</p>
+<p><strong>3. Computational Efficiency</strong>: Can leverage modern parallel hardware effectively</p>
+<p><strong>4. Modeling Flexibility</strong>: Minimal inductive biases allow learning patterns from data</p>
+<p><strong>5. Transfer Learning</strong>: Pre-trained transformers transfer exceptionally well to new tasks</p>
+<p><strong>6. Direct Information Flow</strong>: No information bottlenecks—every position can directly access information from every other position</p>
+<p>The sections that follow will dive deep into the technical implementation of these concepts, showing exactly how transformers process text from input to output generation.</p>
+<h2 id="4-pipeline">4. Pipeline<a class="headerlink" href="#4-pipeline" title="Permanent link">&para;</a></h2>
+<p><strong>Let's trace through what happens when you type "The cat sat on" and the AI predicts the next word.</strong></p>
+<p>Think of this process like a sophisticated translation system - but instead of translating between languages, we're translating from "human text" to "AI understanding" and back to "human text".</p>
+<h3 id="computational-pipeline-overview">Computational Pipeline Overview<a class="headerlink" href="#computational-pipeline-overview" title="Permanent link">&para;</a></h3>
+<p><strong>Core Processing Stages:</strong></p>
+<ol>
+<li><strong>Tokenization:</strong> Subword segmentation and vocabulary mapping</li>
+<li><strong>Embedding:</strong> Dense vector representation learning</li>
+<li><strong>Position Encoding:</strong> Sequence order information injection</li>
+<li><strong>Transformer Layers:</strong> Attention-based representation refinement</li>
+<li><strong>Output Projection:</strong> Vocabulary distribution computation</li>
+<li><strong>Decoding:</strong> Next-token selection strategies</li>
+</ol>
+<h3 id="detailed-process-flow">Detailed Process Flow<a class="headerlink" href="#detailed-process-flow" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>User Input: &quot;The cat sat on&quot;
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>       ↓
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>┌─────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>│                    FORWARD PASS                                 │
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>│              (How AI Understands Text)                          │
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>├─────────────────────────────────────────────────────────────────┤
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>│ 1. Tokenization:     &quot;The cat sat on&quot; → [464, 2415, 3332, 319]  │
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>│    (Break into computer-friendly pieces)                        │
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>│                                                                 │
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>│ 2. Embedding:        tokens → vectors [4, 768]                  │
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>│    (Convert numbers to meaning representations)                 │
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>│                                                                 │
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>│ 3. Position Encoding: add positional info [4, 768]              │
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>│    (Tell the model WHERE each word appears)                     │
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>│                                                                 │
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>│ 4. Transformer Stack: 12 layers of attention + processing       │
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>│    (Deep understanding - like reading comprehension)            │
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>│                                                                 │
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>│ 5. Output Projection: → probabilities for all 50,000 words.     │
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>│    (Consider every possible next word)                          │
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>│                                                                 │
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>│ 6. Sampling:         choose from top candidates                 │
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>│    (Make the final decision)                                    │
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>└─────────────────────────────────────────────────────────────────┘
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>       ↓
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>Output: &quot;the&quot; (most likely next word)
+</code></pre></div>
+<p><strong>Tensor Dimensions and Semantic Interpretation:</strong></p>
+<ul>
+<li><strong>[464, 2415, 3332, 319]</strong>: Discrete token indices mapping to vocabulary entries
+<strong>Tensor Dimensions:</strong></li>
+</ul>
+<p>$$
+\begin{aligned}
+\text{Shape [4, 768]:} \quad &amp;\text{Sequence length × model dimension tensor} \newline
+&amp;\text{representing learned embeddings}
+\end{aligned}
+$$
+- <strong>12 layers</strong>: Hierarchical representation learning through stacked transformer blocks
+- <strong>50,000 words</strong>: Vocabulary size determining output distribution dimensionality</p>
+<h3 id="training-how-models-learn-optional-detail">Training: How Models Learn (Optional Detail)<a class="headerlink" href="#training-how-models-learn-optional-detail" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>┌─────────────────────────────────────────────────────────────┐
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>│                   TRAINING: BACKWARD PASS                   │
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>│                (How AI Learns from Mistakes)                │
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>├─────────────────────────────────────────────────────────────┤
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>│ 1. Compute Loss:     Compare prediction with correct answer │
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>│    (Like grading a test - how wrong was the guess?)         │
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>│                                                             │
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>│ 2. Backpropagation: Find what caused the mistake            │
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>│    (Trace back through all the steps to find errors)        │
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>│                                                             │
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>│ 3. Weight Updates:   Adjust internal parameters             │
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>│    (Fine-tune the model to do better next time)             │
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>└─────────────────────────────────────────────────────────────┘
+</code></pre></div>
+<h3 id="model-hyperparameters-and-complexity">Model Hyperparameters and Complexity<a class="headerlink" href="#model-hyperparameters-and-complexity" title="Permanent link">&para;</a></h3>
+<p><strong>Architectural Dimensions:</strong></p>
+<ul>
+<li>
+<p><strong>Vocabulary size (V)</strong>: Discrete token space cardinality, typically 32K-100K</p>
+</li>
+<li>
+<p><strong>Model dimension (d_model)</strong>: Hidden state dimensionality determining representational capacity</p>
+</li>
+<li>
+<p><strong>Context length (n)</strong>: Maximum sequence length for attention computation</p>
+</li>
+<li>
+<p><strong>Layer count (N)</strong>: Depth of hierarchical representation learning</p>
+</li>
+<li>
+<p><strong>Attention heads (H)</strong>: Parallel attention subspaces for diverse relationship modeling</p>
+</li>
+</ul>
+<p><strong>GPT-2 Specification:</strong></p>
+<ul>
+<li>
+<p>Vocabulary: 50,257 BPE tokens</p>
+</li>
+<li>
+<p>Hidden dimension: 768</p>
+</li>
+<li>
+<p>Context window: 1,024 tokens</p>
+</li>
+<li>
+<p>Transformer blocks: 12 layers</p>
+</li>
+<li>
+<p>Multi-head attention: 12 heads per layer</p>
+</li>
+</ul>
+<hr />
+<h2 id="5-stage-1-text-to-tokens">5. Stage 1: Text to Tokens<a class="headerlink" href="#5-stage-1-text-to-tokens" title="Permanent link">&para;</a></h2>
+<h3 id="-intuition-breaking-text-into-computer-friendly-pieces">🎯 Intuition: Breaking Text into Computer-Friendly Pieces<a class="headerlink" href="#-intuition-breaking-text-into-computer-friendly-pieces" title="Permanent link">&para;</a></h3>
+<p><strong>Think of tokenization like chopping vegetables for a recipe.</strong> You can't feed raw text directly to a computer - you need to break it into standardized pieces (tokens) that the computer can work with, just like chopping vegetables into uniform sizes for cooking.</p>
+<p><strong>Why not just use individual letters or whole words?</strong></p>
+<ul>
+<li>
+<p><strong>Letters</strong>: Too many combinations, loses meaning ("c-a-t" tells us less than "cat")</p>
+</li>
+<li>
+<p><strong>Whole words</strong>: Millions of possible words, can't handle new/misspelled words</p>
+</li>
+<li>
+<p><strong>Subwords</strong> (what we use): Perfect balance - captures meaning while handling new words</p>
+</li>
+</ul>
+<h3 id="process-flow">Process Flow<a class="headerlink" href="#process-flow" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&quot;The cat sat on&quot;
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>       ↓
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>┌─────────────────┐
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>│   Tokenizer     │  ← BPE/SentencePiece algorithm
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>│   - Split text  │    (Like a smart word chopper)
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>│   - Map to IDs  │
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>└─────────────────┘
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>       ↓
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>[464, 2415, 3332, 319]
+</code></pre></div>
+<h3 id="simple-example-with-real-numbers">Simple Example with Real Numbers<a class="headerlink" href="#simple-example-with-real-numbers" title="Permanent link">&para;</a></h3>
+<p>Let's trace through tokenizing "The cat sat on":</p>
+<p><strong>Step 1: Smart Splitting</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&quot;The cat sat on&quot; → [&quot;The&quot;, &quot; cat&quot;, &quot; sat&quot;, &quot; on&quot;]
+</code></pre></div>
+Notice: Spaces are included with words (except the first)</p>
+<p><strong>Step 2: Look Up Numbers</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&quot;The&quot;   → 464   (most common word, low number)
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>&quot; cat&quot;  → 2415  (common word)
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>&quot; sat&quot;  → 3332  (less common)
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>&quot; on&quot;   → 319   (very common, low number)
+</code></pre></div></p>
+<p><strong>Final Result:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Input: &quot;The cat sat on&quot;      (18 characters)
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Output: [464, 2415, 3332, 319]  (4 tokens)
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Shape: [4] (sequence length = 4)
+</code></pre></div></p>
+<h3 id="mathematical-formulation">Mathematical Formulation<a class="headerlink" href="#mathematical-formulation" title="Permanent link">&para;</a></h3>
+<p><strong>Tokenization Mapping</strong>:</p>
+<p>$$
+\begin{aligned}
+T: \Sigma^<em> &amp;\to {0, 1, \ldots, V-1}^</em> \newline
+\Sigma^* &amp;: \text{Space of all possible text strings} \newline
+V &amp;: \text{Vocabulary size} \newline
+\text{Output} &amp;: \text{Variable-length sequence of discrete token indices}
+\end{aligned}
+$$</p>
+<p><strong>BPE Algorithm</strong>: Given text and learned merge operations:</p>
+<p>$$
+\begin{aligned}
+\text{tokenize}(s) &amp;= [\text{vocab}[\tau_i] \mid \tau_i \in \mathrm{BPE_segment}(s, M)] \newline
+s &amp;: \text{Input text} \newline
+M &amp;: \text{Learned merge operations} \newline
+\mathrm{BPE_segment} &amp;: \text{Applies learned merge rules} \newline
+\tau_i &amp;: \text{Subword tokens from segmentation}
+\end{aligned}
+$$</p>
+<p><strong>📖 Detailed Algorithm:</strong> See <a href="../transformers_math1/#82-embedding-mathematics">Tokenization Mathematics</a> for BPE training and inference procedures.</p>
+<h3 id="tokenization-challenges-and-considerations">Tokenization Challenges and Considerations<a class="headerlink" href="#tokenization-challenges-and-considerations" title="Permanent link">&para;</a></h3>
+<p><strong>Out-of-Vocabulary Handling:</strong></p>
+<ul>
+<li><strong>Unknown words</strong>: Long or rare words decompose into character-level tokens, increasing sequence length</li>
+<li><strong>Domain mismatch</strong>: Models trained on general text may poorly tokenize specialized domains (code, scientific notation)</li>
+<li><strong>Multilingual complexity</strong>: Subword boundaries vary across languages, affecting cross-lingual transfer</li>
+</ul>
+<p><strong>Performance Implications:</strong></p>
+<ul>
+<li><strong>Vocabulary size vs. sequence length trade-off</strong>: Larger vocabularies reduce sequence length but increase computational cost</li>
+<li><strong>Compression efficiency</strong>: Good tokenization minimizes information loss while maximizing compression</li>
+</ul>
+<h3 id="implementation-considerations">Implementation Considerations:<a class="headerlink" href="#implementation-considerations" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Subword algorithms</strong>: BPE, WordPiece, SentencePiece each have different inductive biases</li>
+<li><strong>Special tokens</strong>: Sequence delimiters (<code>&lt;|endoftext|&gt;</code>, <code>&lt;|pad|&gt;</code>, <code>&lt;|unk|&gt;</code>) require careful handling</li>
+<li><strong>Context limitations</strong>: Finite attention window constrains sequence length (typically 512-8192 tokens)</li>
+<li><strong>Batching requirements</strong>: Variable-length sequences necessitate padding strategies</li>
+</ul>
+<hr />
+<h2 id="6-stage-2-tokens-to-embeddings">6. Stage 2: Tokens to Embeddings<a class="headerlink" href="#6-stage-2-tokens-to-embeddings" title="Permanent link">&para;</a></h2>
+<h3 id="dense-vector-representation-learning">Dense Vector Representation Learning<a class="headerlink" href="#dense-vector-representation-learning" title="Permanent link">&para;</a></h3>
+<p>Embedding layers transform discrete token indices into continuous vector representations within a learned semantic space. This mapping enables the model to capture distributional semantics and enables gradient-based optimization over the discrete vocabulary.</p>
+<p><strong>Representational Advantages:</strong></p>
+<ul>
+<li><strong>Continuous optimization</strong>: Dense vectors enable gradient-based learning over discrete token spaces</li>
+<li><strong>Semantic similarity</strong>: Geometrically related vectors capture semantic relationships through distance metrics</li>
+<li><strong>Compositional structure</strong>: Linear operations in embedding space can capture meaningful transformations</li>
+</ul>
+<p><strong>Position encoding</strong> addresses the permutation-invariance of attention mechanisms by injecting sequential order information into the representation space.</p>
+<h3 id="embedding-computation-pipeline">Embedding Computation Pipeline<a class="headerlink" href="#embedding-computation-pipeline" title="Permanent link">&para;</a></h3>
+<p><strong>Token Embedding Lookup:</strong></p>
+<p>$$
+\begin{aligned}
+\text{Step 1: Matrix indexing} \quad E &amp;\in \mathbb{R}^{V \times d_{\text{model}}} : \text{Token embedding matrix} \newline
+\text{Step 2: Batch lookup} \quad X_{\text{tok}} &amp;= E[T] : \text{Lookup embeddings for tokens T} \newline
+\text{Step 3: Dense representation} \quad X_{\text{tok}} &amp;\in \mathbb{R}^{n \times d_{\text{model}}} : \text{Dense token representations} \newline
+\text{Step 4: Position encoding} \quad PE &amp;\in \mathbb{R}^{n_{\max} \times d_{\text{model}}} : \text{Position encoding matrix} \newline
+\text{Step 5: Sequence slicing} \quad X_{\text{pos}} &amp;= PE[0:n] : \text{Position encodings for sequence length n} \newline
+\text{Step 6: Element-wise addition} \quad X &amp;= X_{\text{tok}} + X_{\text{pos}} : \text{Combined representation}
+\end{aligned}
+$$</p>
+<p><strong>Output</strong>: Combined semantic and positional representation</p>
+<p>$$
+\begin{aligned}
+X \in \mathbb{R}^{n \times d_{\text{model}}}
+\end{aligned}
+$$</p>
+<h3 id="mathematical-formulation_1">Mathematical Formulation<a class="headerlink" href="#mathematical-formulation_1" title="Permanent link">&para;</a></h3>
+<p><strong>Token Embedding Transformation:</strong></p>
+<p>$$
+\begin{aligned}
+X_{\text{tok}} &amp;= E[T] \text{ where } E \in \mathbb{R}^{V \times d_{\text{model}}} \newline
+X_{\text{tok}}[i] &amp;= E[t_i] \in \mathbb{R}^{d_{\text{model}}} \text{ for token index } t_i
+\end{aligned}
+$$</p>
+<p><strong>Position Encoding Variants:</strong></p>
+<p><strong>Learned Positional Embeddings:</strong></p>
+<p>$$
+\begin{aligned}
+X_{\text{pos}}[i] = PE[i] \text{ where } PE \in \mathbb{R}^{n_{\max} \times d_{\text{model}}}
+\end{aligned}
+$$</p>
+<p><strong>Sinusoidal Position Encoding:</strong></p>
+<p>$$
+\begin{aligned}
+PE[\text{pos}, 2i] &amp;= \sin\left(\frac{\text{pos}}{10000^{2i/d_{\text{model}}}}\right) \newline
+PE[\text{pos}, 2i+1] &amp;= \cos\left(\frac{\text{pos}}{10000^{2i/d_{\text{model}}}}\right)
+\end{aligned}
+$$</p>
+<p><strong>Combined Representation:</strong></p>
+<p>$$
+\begin{aligned}
+X &amp;= X_{\text{tok}} + X_{\text{pos}} \in \mathbb{R}^{n \times d_{\text{model}}} \newline
+n &amp;: \text{Sequence length} \newline
+d_{\text{model}} &amp;: \text{Model dimension}
+\end{aligned}
+$$</p>
+<p><strong>📖 Theoretical Foundation:</strong> See <a href="../transformers_math1/#82-embedding-mathematics">Embedding Mathematics</a> and <a href="../transformers_math1/#62-advanced-positional-encodings">Positional Encodings</a> for detailed analysis of learned vs. fixed position encodings.</p>
+<h3 id="concrete-example-with-actual-numbers">Concrete Example with Actual Numbers<a class="headerlink" href="#concrete-example-with-actual-numbers" title="Permanent link">&para;</a></h3>
+<p>Let's see what happens with our tokens [464, 2415, 3332, 319] ("The cat sat on"):</p>
+<p><strong>Step 1: Token Embedding Lookup</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Token 464 (&quot;The&quot;) → [0.1, -0.3, 0.7, 0.2, ...] (768 numbers total)
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Token 2415 (&quot;cat&quot;) → [-0.2, 0.8, -0.1, 0.5, ...]
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>Token 3332 (&quot;sat&quot;) → [0.4, 0.1, -0.6, 0.3, ...]
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>Token 319 (&quot;on&quot;) → [0.2, -0.4, 0.3, -0.1, ...]
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>Result: [4, 768] array (4 words × 768 features each)
+</code></pre></div></p>
+<p><strong>Step 2: Position Embeddings</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Position 0 → [0.01, 0.02, -0.01, 0.03, ...] (for &quot;The&quot;)
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>Position 1 → [0.02, -0.01, 0.02, -0.01, ...] (for &quot;cat&quot;)
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>Position 2 → [-0.01, 0.03, 0.01, 0.02, ...] (for &quot;sat&quot;)
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>Position 3 → [0.03, 0.01, -0.02, 0.01, ...] (for &quot;on&quot;)
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>Result: [4, 768] array (position info for each word)
+</code></pre></div></p>
+<p><strong>Step 3: Add Together</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Final embedding for &quot;The&quot; = [0.1, -0.3, 0.7, 0.2, ...] + [0.01, 0.02, -0.01, 0.03, ...]
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>                           = [0.11, -0.28, 0.69, 0.23, ...]
+</code></pre></div></p>
+<h3 id="tensor-shapes-example">Tensor Shapes Example:<a class="headerlink" href="#tensor-shapes-example" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>seq_len = 4, d_model = 768, vocab_size = 50257
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>Token IDs:     [4]         (4 tokens: &quot;The&quot;, &quot;cat&quot;, &quot;sat&quot;, &quot;on&quot;)
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>Embeddings:    [4, 768]    (lookup from [50257, 768] - each token → 768 numbers)
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>Pos Embed:     [4, 768]    (slice from [2048, 768] - position info for each token)
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>Final X:       [4, 768]    (combine token + position info)
+</code></pre></div>
+<p><strong>🎯 Shape Intuition:</strong> Think of shapes like <code>[4, 768]</code> as a table with 4 rows (tokens) and 768 columns (features). Each row represents one word, each column represents one aspect of meaning.</p>
+<h3 id="-what-could-go-wrong">🛠️ What Could Go Wrong?<a class="headerlink" href="#-what-could-go-wrong" title="Permanent link">&para;</a></h3>
+<p><strong>Common Misconceptions:</strong></p>
+<ul>
+<li><strong>"Why 768 dimensions?"</strong> It's like having 768 different personality traits - enough to capture complex meaning relationships</li>
+<li><strong>"Why add position info?"</strong> Without it, "cat sat on mat" and "mat on sat cat" would look identical to the model</li>
+<li><strong>"What if we run out of positions?"</strong> Models have maximum sequence lengths (like 2048) - longer texts get truncated</li>
+</ul>
+<hr />
+<h2 id="7-stage-3-through-the-transformer-stack">7. Stage 3: Through the Transformer Stack<a class="headerlink" href="#7-stage-3-through-the-transformer-stack" title="Permanent link">&para;</a></h2>
+<h3 id="hierarchical-representation-learning">Hierarchical Representation Learning<a class="headerlink" href="#hierarchical-representation-learning" title="Permanent link">&para;</a></h3>
+<p>The transformer stack implements hierarchical feature extraction through stacked self-attention and feed-forward blocks. Each layer refines the input representations by modeling increasingly complex relationships and patterns within the sequence.</p>
+<p><strong>Layer-wise Functionality:</strong></p>
+<ol>
+<li><strong>Self-attention sublayer</strong>: Models pairwise interactions between sequence positions</li>
+<li><strong>Feed-forward sublayer</strong>: Applies position-wise transformations to individual token representations</li>
+<li><strong>Residual connections</strong>: Preserve gradient flow and enable identity mappings</li>
+<li><strong>Layer normalization</strong>: Stabilizes training dynamics and accelerates convergence</li>
+</ol>
+<p><strong>Representational Hierarchy:</strong> Empirical analysis suggests progressive abstraction:</p>
+<ul>
+<li><strong>Early layers</strong>: Syntactic patterns, local dependencies, surface-level features</li>
+<li><strong>Middle layers</strong>: Semantic relationships, discourse structure, compositional meaning</li>
+<li><strong>Late layers</strong>: Task-specific abstractions, high-level reasoning patterns</li>
+</ul>
+<h3 id="architecture-overview">Architecture Overview<a class="headerlink" href="#architecture-overview" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>X [seq_len, d_model] ← Our embedded words: [4, 768]
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>       ↓
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>┌─────────────────────────────────┐
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>│        Layer 1                  │
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>│  ┌─────────────────────────────┐│
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>│  │    Multi-Head Attention     ││ ← &quot;What words relate to what?&quot;
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>│  └─────────────────────────────┘│
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>│               ↓                 │
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>│  ┌─────────────────────────────┐│
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>│  │     Feed Forward            ││ ← &quot;What does this combination mean?&quot;
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>│  └─────────────────────────────┘│
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>└─────────────────────────────────┘
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>       ↓ (Better understanding)
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>┌─────────────────────────────────┐
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>│        Layer 2                  │
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>│           ...                   │ ← Even deeper analysis
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>└─────────────────────────────────┘
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>       ↓
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>       ... (10 more layers)
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>       ↓
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>┌─────────────────────────────────┐
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a>│        Layer 12                 │ ← Final, sophisticated understanding
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>└─────────────────────────────────┘
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>       ↓
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>Final Hidden States [4, 768] ← Deeply processed word meanings
+</code></pre></div>
+<h3 id="single-layer-mathematical-flow">Single Layer Mathematical Flow<a class="headerlink" href="#single-layer-mathematical-flow" title="Permanent link">&para;</a></h3>
+<p><strong>Transformer Block Architecture (Pre-LayerNorm):</strong></p>
+<p>Given layer input:</p>
+<p>$$
+\begin{aligned}
+X^{(l-1)} \in \mathbb{R}^{n \times d_{\text{model}}}
+\end{aligned}
+$$</p>
+<p><strong>Self-Attention Sublayer:</strong></p>
+<p>$$
+\begin{aligned}
+\tilde{X}^{(l-1)} &amp;= \text{LayerNorm}(X^{(l-1)}) \newline
+A^{(l)} &amp;= \text{MultiHeadAttention}(\tilde{X}^{(l-1)}, \tilde{X}^{(l-1)}, \tilde{X}^{(l-1)}) \newline
+X'^{(l)} &amp;= X^{(l-1)} + A^{(l)} \quad \text{(residual connection)}
+\end{aligned}
+$$</p>
+<p><strong>Feed-Forward Sublayer:</strong></p>
+<p>$$
+\begin{aligned}
+\tilde{X}'^{(l)} &amp;= \text{LayerNorm}(X'^{(l)}) \newline
+F^{(l)} &amp;= \text{FFN}(\tilde{X}'^{(l)}) \newline
+X^{(l)} &amp;= X'^{(l)} + F^{(l)} \quad \text{(residual connection)}
+\end{aligned}
+$$</p>
+<p><strong>Design Rationale:</strong></p>
+<ul>
+<li><strong>Pre-normalization</strong>: Stabilizes gradients and enables deeper networks compared to post-norm</li>
+<li><strong>Residual connections</strong>: Address vanishing gradient problem via identity shortcuts</li>
+<li><strong>Two-sublayer structure</strong>: Separates relationship modeling (attention) from feature transformation (FFN)</li>
+</ul>
+<p><strong>📖 Theoretical Analysis:</strong> See <a href="../transformers_math1/#71-complete-block-equations">Transformer Block Mathematics</a> and <a href="../transformers_math1/#213-residual-connections-as-discretized-dynamics">Residual Connections as Discretized Dynamics</a> for detailed mathematical foundations.</p>
+<hr />
+<h2 id="8-architectural-variants-encoder-decoder-and-encoder-decoder">8. Architectural Variants: Encoder, Decoder, and Encoder-Decoder<a class="headerlink" href="#8-architectural-variants-encoder-decoder-and-encoder-decoder" title="Permanent link">&para;</a></h2>
+<h3 id="understanding-different-transformer-architectures">Understanding Different Transformer Architectures<a class="headerlink" href="#understanding-different-transformer-architectures" title="Permanent link">&para;</a></h3>
+<p>While the core transformer architecture provides a flexible foundation, different variants optimize for specific use cases through architectural modifications. The choice between encoder-only, decoder-only, and encoder-decoder architectures fundamentally affects the model's capabilities and training dynamics.</p>
+<h3 id="encoder-only-bert-family">Encoder-Only: BERT Family<a class="headerlink" href="#encoder-only-bert-family" title="Permanent link">&para;</a></h3>
+<p><strong>Structure</strong>: Bidirectional self-attention across all positions
+<strong>Training</strong>: Masked Language Modeling (MLM) - predict randomly masked tokens
+<strong>Use cases</strong>: Classification, entity recognition, semantic similarity</p>
+<p><strong>Mathematical Formulation:</strong></p>
+<p>$$
+\begin{aligned}
+\text{Input} &amp;: [x_1, [\text{MASK}], x_3, \ldots, x_n] \newline
+\text{Objective} &amp;: \mathcal{L} = -\sum_{i \in \text{masked}} \log P(x_i | x_{\setminus i}) \newline
+\text{Attention} &amp;: \text{Full bidirectional attention matrix (no causal masking)}
+\end{aligned}
+$$</p>
+<p><strong>Key advantage</strong>: Full bidirectional context enables deep understanding
+<strong>Limitation</strong>: Cannot generate sequences autoregressively</p>
+<p><strong>Example Implementation Pattern:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># BERT-style encoder block</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">encoder_attention</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="c1"># No causal masking - full bidirectional attention</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="n">Q</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">project_qkv</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="n">scores</span> <span class="o">=</span> <span class="n">Q</span> <span class="o">@</span> <span class="n">K</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">d_k</span><span class="p">)</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>        <span class="n">scores</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">masked_fill</span><span class="p">(</span><span class="n">mask</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1e9</span><span class="p">)</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>    <span class="n">weights</span> <span class="o">=</span> <span class="n">softmax</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>    <span class="k">return</span> <span class="n">weights</span> <span class="o">@</span> <span class="n">V</span>
+</code></pre></div></p>
+<h3 id="decoder-only-gpt-family">Decoder-Only: GPT Family<a class="headerlink" href="#decoder-only-gpt-family" title="Permanent link">&para;</a></h3>
+<p><strong>Structure</strong>: Causal self-attention - each position only attends to previous positions
+<strong>Training</strong>: Causal Language Modeling (CLM) - predict next token
+<strong>Use cases</strong>: Text generation, completion, few-shot learning</p>
+<p><strong>Mathematical Formulation:</strong></p>
+<p>$$
+\begin{aligned}
+\text{Input} &amp;: [x_1, x_2, \ldots, x_t] \newline
+\text{Objective} &amp;: \mathcal{L} = -\sum_{t=1}^{n-1} \log P(x_{t+1} | x_1, \ldots, x_t) \newline
+\text{Attention mask} &amp;: A_{ij} = 0 \text{ for } j &gt; i \text{ (causal mask)}
+\end{aligned}
+$$</p>
+<p><strong>Key advantage</strong>: Natural autoregressive generation capability
+<strong>Trade-off</strong>: No future context during training</p>
+<p><strong>Causal Masking Implementation:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">causal_mask</span><span class="p">(</span><span class="n">seq_len</span><span class="p">):</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="c1"># Create lower triangular mask</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>    <span class="n">mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tril</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">seq_len</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">))</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="k">return</span> <span class="n">mask</span><span class="o">.</span><span class="n">masked_fill</span><span class="p">(</span><span class="n">mask</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">))</span>
+</code></pre></div></p>
+<h3 id="encoder-decoder-t5-family">Encoder-Decoder: T5 Family<a class="headerlink" href="#encoder-decoder-t5-family" title="Permanent link">&para;</a></h3>
+<p><strong>Structure</strong>: Encoder (bidirectional) + Decoder (causal) with cross-attention</p>
+<p><strong>Training</strong>: Various objectives (span corruption, translation, etc.)</p>
+<p><strong>Use cases</strong>: Translation, summarization, structured tasks</p>
+<p><strong>Mathematical Components:</strong></p>
+<ol>
+<li><strong>Encoder self-attention</strong>: Bidirectional processing of input sequence</li>
+<li><strong>Decoder self-attention</strong>: Causal attention over generated tokens</li>
+<li><strong>Cross-attention</strong>: Decoder attends to encoder outputs</li>
+</ol>
+<p><strong>Cross-Attention Formulation:</strong></p>
+<p>$$
+\begin{aligned}
+\text{CrossAttention}(Q_{\text{dec}}, K_{\text{enc}}, V_{\text{enc}}) = \text{softmax}\left(\frac{Q_{\text{dec}}K_{\text{enc}}^T}{\sqrt{d_k}}\right)V_{\text{enc}}
+\end{aligned}
+$$</p>
+<p><strong>Key advantage</strong>: Combines bidirectional understanding with generation
+<strong>Cost</strong>: Higher parameter count and computational complexity</p>
+<h3 id="modern-architectural-innovations">Modern Architectural Innovations<a class="headerlink" href="#modern-architectural-innovations" title="Permanent link">&para;</a></h3>
+<p><strong>Multi-Query Attention (MQA)</strong>: Single key/value head shared across queries, reduces KV cache size for generation:</p>
+<p>$$
+\begin{aligned}
+\text{Standard MHA:} \quad K, V &amp;\in \mathbb{R}^{n \times H \times d_k} \newline
+\text{MQA variant:} \quad K, V &amp;\in \mathbb{R}^{n \times d_k} \text{ (shared across queries)}
+\end{aligned}
+$$</p>
+<p><strong>Grouped-Query Attention (GQA)</strong>: Compromise between MHA and MQA, where groups of queries share K/V heads, balancing quality and efficiency.</p>
+<p><strong>Mixture of Experts (MoE)</strong>: Replace some FFNs with expert networks using sparse activation based on learned routing, increasing capacity without proportional compute increase.</p>
+<p><strong>Position Encoding Variants:</strong></p>
+<ul>
+<li><strong>RoPE (Rotary Position Embedding)</strong>: Rotates query/key vectors by position-dependent angles</li>
+<li><strong>ALiBi (Attention with Linear Biases)</strong>: Adds position-based linear bias to attention scores</li>
+<li><strong>Learned vs. Sinusoidal</strong>: Trainable position vectors vs. fixed mathematical functions</li>
+</ul>
+<h3 id="choosing-the-right-architecture">Choosing the Right Architecture<a class="headerlink" href="#choosing-the-right-architecture" title="Permanent link">&para;</a></h3>
+<p><strong>For Understanding Tasks</strong>: Use encoder-only (BERT-style)</p>
+<ul>
+<li>Classification, named entity recognition, semantic similarity</li>
+<li>Full bidirectional context is crucial</li>
+</ul>
+<p><strong>For Generation Tasks</strong>: Use decoder-only (GPT-style)</p>
+<ul>
+<li>Text completion, creative writing, code generation</li>
+<li>Autoregressive capability is primary requirement</li>
+</ul>
+<p><strong>For Sequence-to-Sequence Tasks</strong>: Use encoder-decoder (T5-style)</p>
+<ul>
+<li>Translation, summarization, question answering</li>
+<li>Clear input/output distinction with different processing needs</li>
+</ul>
+<p><strong>Performance Considerations:</strong></p>
+<ul>
+<li><strong>Parameter efficiency</strong>: Decoder-only reuses weights for both understanding and generation</li>
+<li><strong>Training efficiency</strong>: Encoder-only can process full sequences in parallel</li>
+<li><strong>Inference patterns</strong>: Consider whether bidirectional context or autoregressive generation is needed</li>
+</ul>
+<hr />
+<h2 id="9-stage-4-self-attention-deep-dive">9. Stage 4: Self-Attention Deep Dive<a class="headerlink" href="#9-stage-4-self-attention-deep-dive" title="Permanent link">&para;</a></h2>
+<h3 id="attention-as-differentiable-key-value-retrieval">Attention as Differentiable Key-Value Retrieval<a class="headerlink" href="#attention-as-differentiable-key-value-retrieval" title="Permanent link">&para;</a></h3>
+<p>Self-attention implements a differentiable associative memory mechanism where each sequence position (query) retrieves information from all positions (keys) based on learned compatibility functions. This enables modeling arbitrary dependencies without the sequential constraints of RNNs or the locality constraints of CNNs.</p>
+<p><strong>Attention Mechanism Properties:</strong></p>
+<ul>
+<li><strong>Permutation equivariance</strong>: Output permutes consistently with input permutation (before positional encoding)</li>
+<li><strong>Dynamic routing</strong>: Information flow adapts based on input content rather than fixed connectivity</li>
+<li><strong>Parallel computation</strong>: All pairwise interactions computed simultaneously</li>
+<li><strong>Global receptive field</strong>: Each position can directly attend to any other position</li>
+</ul>
+<p><strong>Self-attention vs. Cross-attention</strong>: In self-attention, queries, keys, and values all derive from the same input sequence, enabling the model to relate different positions within a single sequence.</p>
+<h3 id="attention-weight-interpretation">Attention Weight Interpretation<a class="headerlink" href="#attention-weight-interpretation" title="Permanent link">&para;</a></h3>
+<p><strong>Attention Weights as Soft Alignment:</strong></p>
+<p>Given query position and key positions, attention weights represent the proportion of information flow between sequence positions:</p>
+<p>$$
+\begin{aligned}
+\text{Query position:} \quad &amp;i \newline
+\text{Key positions:} \quad &amp;{j} \newline
+\text{Attention weights:} \quad &amp;\alpha_{ij} \text{ (proportion of position } j \text{'s information incorporated into position } i \text{)}
+\end{aligned}
+$$</p>
+<p><strong>Example: Coreference Resolution</strong>
+For sequence "The cat sat on it" processing token "it":</p>
+<p>$$
+\begin{aligned}
+\alpha_{\text{it},\text{The}} &amp;= 0.05 \text{ (minimal syntactic relevance)} \newline
+\alpha_{\text{it},\text{cat}} &amp;= 0.15 \text{ (potential antecedent)} \newline
+\alpha_{\text{it},\text{sat}} &amp;= 0.10 \text{ (predicate information)} \newline
+\alpha_{\text{it},\text{on}} &amp;= 0.15 \text{ (spatial relationship)} \newline
+\alpha_{\text{it},\text{it}} &amp;= 0.55 \text{ (self-attention for local processing)}
+\end{aligned}
+$$</p>
+<p><strong>Constraint</strong>: Probability simplex constraint from softmax normalization:</p>
+<p>$$
+\begin{aligned}
+\sum_j \alpha_{ij} = 1
+\end{aligned}
+$$</p>
+<h3 id="attention-computation-steps">Attention Computation Steps<a class="headerlink" href="#attention-computation-steps" title="Permanent link">&para;</a></h3>
+<p><strong>Step 1: Linear Projections</strong></p>
+<p>$$
+\begin{aligned}
+\text{Input:} \quad X &amp;\in \mathbb{R}^{n \times d_{\text{model}}} : \text{Input sequence representations} \newline
+\text{Query projections:} \quad Q &amp;= XW^Q \in \mathbb{R}^{n \times d_{\text{model}}} \newline
+\text{Key projections:} \quad K &amp;= XW^K \in \mathbb{R}^{n \times d_{\text{model}}} \newline
+\text{Value projections:} \quad V &amp;= XW^V \in \mathbb{R}^{n \times d_{\text{model}}}
+\end{aligned}
+$$</p>
+<p><strong>Step 2: Multi-Head Reshaping</strong></p>
+<p>$$
+\begin{aligned}
+\text{Number of heads:} \quad H &amp;: \text{Attention heads for parallel processing} \newline
+\text{Head dimension:} \quad d_k &amp;= d_{\text{model}}/H \newline
+\text{Reshaped tensors:} \quad Q, K, V &amp;\in \mathbb{R}^{H \times n \times d_k} \text{ (batch dimension omitted)}
+\end{aligned}
+$$</p>
+<p><strong>Step 3: Scaled Dot-Product Attention</strong></p>
+<p>$$
+\begin{aligned}
+\text{Compatibility scores:} \quad S &amp;= \frac{QK^T}{\sqrt{d_k}} \in \mathbb{R}^{H \times n \times n} \newline
+\text{Scaling rationale:} \quad &amp;\text{Prevents softmax saturation as dimensionality increases} \newline
+\text{Complexity:} \quad &amp;O(n^2 d_k) \text{ per head, } O(n^2 d_{\text{model}}) \text{ total}
+\end{aligned}
+$$</p>
+<p><strong>Step 4: Causal Masking (for autoregressive models)</strong></p>
+<p>$$
+\begin{aligned}
+\text{Mask application:} \quad S_{\text{masked}} &amp;= S + M \newline
+\text{Future position mask:} \quad M_{ij} &amp;= -\infty \text{ for } j &gt; i \newline
+\text{Effect:} \quad &amp;\text{Ensures causal ordering in autoregressive generation}
+\end{aligned}
+$$</p>
+<p><strong>Step 5: Attention Weight Computation</strong></p>
+<p>$$
+\begin{aligned}
+\text{Normalization:} \quad A &amp;= \text{softmax}(S_{\text{masked}}, \text{dim}=-1) \in \mathbb{R}^{H \times n \times n} \newline
+\text{Interpretation:} \quad A_{ijh} &amp;: \text{Position } j \text{ contribution to position } i \text{ in head } h \newline
+\text{Properties:} \quad &amp;\text{Each row sums to 1, forming probability distributions}
+\end{aligned}
+$$</p>
+<p><strong>Step 6: Value Aggregation</strong></p>
+<p>$$
+\begin{aligned}
+\text{Weighted sum:} \quad O &amp;= AV \in \mathbb{R}^{H \times n \times d_k} \newline
+\text{Information flow:} \quad &amp;\text{Each position receives weighted information from all positions}
+\end{aligned}
+$$</p>
+<p><strong>Step 7: Head Concatenation and Output Projection</strong></p>
+<p>$$
+\begin{aligned}
+\text{Concatenation:} \quad O_{\text{concat}} &amp;: \text{Reshape } O \text{ to } \mathbb{R}^{n \times d_{\text{model}}} \newline
+\text{Final projection:} \quad \text{Output} &amp;= O_{\text{concat}}W^O \in \mathbb{R}^{n \times d_{\text{model}}} \newline
+\text{Purpose:} \quad &amp;\text{Integrate information from all attention heads}
+\end{aligned}
+$$</p>
+<h3 id="multi-head-attention-mathematical-formulation">Multi-Head Attention Mathematical Formulation<a class="headerlink" href="#multi-head-attention-mathematical-formulation" title="Permanent link">&para;</a></h3>
+<p><strong>Core Attention Mechanism (Scaled Dot-Product):</strong></p>
+<p>$$
+\begin{aligned}
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\end{aligned}
+$$</p>
+<p>$$
+\begin{aligned}
+Q &amp;\in \mathbb{R}^{n \times d_k} : \text{Query matrix (what information to retrieve)} \newline
+K &amp;\in \mathbb{R}^{n \times d_k} : \text{Key matrix (what information is available)} \newline
+V &amp;\in \mathbb{R}^{n \times d_v} : \text{Value matrix (actual information content)} \newline
+d_k &amp;= d_v = d_{\text{model}}/H : \text{Head dimension} \newline
+\sqrt{d_k} &amp;: \text{Temperature scaling to prevent saturation}
+\end{aligned}
+$$</p>
+<p><strong>Multi-Head Attention Implementation:</strong></p>
+<p>$$
+\begin{aligned}
+\text{MultiHead}(X) &amp;= \text{Concat}(\text{head}_1, \ldots, \text{head}_H)W^O \newline
+\text{head}_i &amp;= \text{Attention}(XW_i^Q, XW_i^K, XW_i^V)
+\end{aligned}
+$$</p>
+<p><strong>Linear Projection Matrices</strong> (not MLPs):</p>
+<p>$$
+\begin{aligned}
+W_i^Q, W_i^K, W_i^V &amp;\in \mathbb{R}^{d_{\text{model}} \times d_k} : \text{Per-head projections} \newline
+W^O &amp;\in \mathbb{R}^{d_{\text{model}} \times d_{\text{model}}} : \text{Output projection}
+\end{aligned}
+$$</p>
+<p><strong>Implementation Details:</strong></p>
+<ol>
+<li>
+<p><strong>Parallel computation</strong>: All heads computed simultaneously via reshaped tensor operations</p>
+</li>
+<li>
+<p><strong>Linear projections</strong>: Simple matrix multiplications, not multi-layer perceptrons</p>
+</li>
+<li>
+<p><strong>Concatenation</strong>: Head outputs concatenated along feature dimension</p>
+</li>
+<li>
+<p><strong>Output projection</strong>: Single linear transformation of concatenated heads</p>
+</li>
+</ol>
+<p><strong>📖 Derivation and Analysis:</strong> See <a href="../transformers_math1/#61-multi-head-as-subspace-projections">Multi-Head Attention Theory</a> and <a href="../transformers_math1/#52-why-the-sqrtd_k-scaling">Scaling Analysis</a> for mathematical foundations.</p>
+<p><strong>Causal Masking for Autoregressive Models:</strong></p>
+<p>$$
+\begin{aligned}
+\text{mask}[i, j] = \begin{cases}
+0 &amp; \text{if } j \leq i \newline
+-\infty &amp; \text{if } j &gt; i
+\end{cases}
+\end{aligned}
+$$</p>
+<p>This lower-triangular mask ensures that position cannot attend to future positions, maintaining the autoregressive property necessary for language modeling.</p>
+<p><strong>Computational Implementation</strong>: Typically applied as additive bias before softmax:</p>
+<p>$$
+\begin{aligned}
+\text{scores} &amp;= \frac{QK^T}{\sqrt{d_k}} + \text{mask} \newline
+i &amp;: \text{Current position} \newline
+j &amp;: \text{Attended position}
+\end{aligned}
+$$</p>
+<p><strong>Computational Complexity Analysis:</strong></p>
+<p><strong>Tensor Shapes with Standard Convention:</strong>
+A common convention is to use shapes like <code>[batch_size, num_heads, seq_len, head_dim]</code>. For simplicity, we omit the batch dimension.</p>
+<p>$$
+{\textstyle
+\begin{aligned}
+\text{Input } X &amp;: \text{[seq_len, d_model]} \text{ (e.g., [4, 768])} \newline
+\text{Reshaped Q, K, V for multi-head} &amp;: \text{[num_heads, seq_len, head_dim]} \text{ (e.g., [12, 4, 64])} \newline
+\text{Attention scores } S = QK^T &amp;: \text{[num_heads, seq_len, seq_len]} \text{ (e.g., [12, 4, 4])} \newline
+\text{Attention weights } A &amp;: \text{[num_heads, seq_len, seq_len]} \newline
+\text{Attention output } O = AV &amp;: \text{[num_heads, seq_len, head_dim]} \newline
+\text{Final output (concatenated and projected)} &amp;: \text{[seq_len, d_model]}
+\end{aligned}
+}
+$$</p>
+<p><strong>Time Complexity:</strong></p>
+<ul>
+<li>Linear projections: Quadratic in model dimension</li>
+<li>Attention computation: Quadratic in sequence length</li>
+<li>Total per layer: Combined complexity</li>
+</ul>
+<p>$$
+  \begin{aligned}
+  \text{Linear projections} &amp;: O(n \cdot d_{\text{model}}^2) \newline
+  \text{Attention computation} &amp;: O(H \cdot n^2 \cdot d_k) = O(n^2 \cdot d_{\text{model}}) \newline
+  \text{Total per layer} &amp;: O(n^2 \cdot d_{\text{model}} + n \cdot d_{\text{model}}^2)
+  \end{aligned}
+  $$</p>
+<p><strong>Space Complexity:</strong></p>
+<ul>
+<li>Attention matrices: Quadratic in sequence length per head</li>
+<li>Activations: Linear in sequence length and model dimension</li>
+<li>Quadratic scaling with sequence length motivates efficient attention variants</li>
+</ul>
+<p>$$
+  \begin{aligned}
+  \text{Attention matrices} &amp;: O(H \cdot n^2) \newline
+  \text{Activations} &amp;: O(n \cdot d_{\text{model}})
+  \end{aligned}
+  $$</p>
+<hr />
+<h2 id="10-stage-5-kv-cache-operations">10. Stage 5: KV Cache Operations<a class="headerlink" href="#10-stage-5-kv-cache-operations" title="Permanent link">&para;</a></h2>
+<h3 id="autoregressive-generation-optimization">Autoregressive Generation Optimization<a class="headerlink" href="#autoregressive-generation-optimization" title="Permanent link">&para;</a></h3>
+<p>KV caching addresses the computational inefficiency of autoregressive generation by storing and reusing previously computed key-value pairs. This optimization reduces the time complexity of each generation step from quadratic to linear in the context length.</p>
+<p><strong>Computational Motivation:</strong>
+During autoregressive generation, attention computations for previous tokens remain unchanged when processing new tokens. Caching eliminates redundant recomputation of these static attention components.</p>
+<p><strong>Performance Impact:</strong></p>
+<ul>
+<li><strong>Without caching</strong>: Quadratic computation per step</li>
+<li><strong>With caching</strong>: Linear compute per step with memory overhead</li>
+<li><strong>Trade-off</strong>: Memory consumption for computational efficiency</li>
+</ul>
+<p>$$
+  \begin{aligned}
+  \text{Without caching} &amp;: O(t^2) \text{ computation per step} \newline
+  \text{With caching} &amp;: O(t) \text{ compute per step} \newline
+  \text{Memory overhead} &amp;: O(L \cdot H \cdot t \cdot d_k) \text{ for model} \newline
+  t &amp;: \text{Context length} \newline
+  L &amp;: \text{Number of layers} \newline
+  H &amp;: \text{Number of heads}
+  \end{aligned}
+  $$</p>
+<h3 id="computational-efficiency-analysis">Computational Efficiency Analysis<a class="headerlink" href="#computational-efficiency-analysis" title="Permanent link">&para;</a></h3>
+<p><strong>Problem Formulation:</strong>
+In standard autoregressive generation at step $$t$$, computing attention for the new token requires:</p>
+<p>$$
+\begin{aligned}
+\text{K, V recomputation:} \quad &amp;O(t \cdot d_{\text{model}}^2) \newline
+\text{Attention scores:} \quad &amp;O(t^2 \cdot d_{\text{model}}) \newline
+\text{Total per step:} \quad &amp;O(t^2 \cdot d_{\text{model}}) \newline
+t &amp;: \text{Current step}
+\end{aligned}
+$$</p>
+<p><strong>KV Cache Solution:</strong></p>
+<p><strong>Without Cache (Step t):</strong></p>
+<p>$$
+\begin{aligned}
+\text{Full sequence matrices:} \quad K, V &amp;\in \mathbb{R}^{t \times d_{\text{model}}} \newline
+\text{Attention computation:} \quad &amp;O(t^2 \cdot d_{\text{model}}) \text{ (quadratic complexity)} \newline
+\text{Memory requirement:} \quad &amp;O(t \cdot d_{\text{model}}) \text{ per step} \newline
+t &amp;: \text{Current step}
+\end{aligned}
+$$</p>
+<p><strong>Note:</strong> This assumes a full re-forward over the context per new token; frameworks differ, but the asymptotic bottleneck is the score matrix computation.</p>
+<p><strong>With Cache (Step t):</strong></p>
+<p>$$
+\begin{aligned}
+\text{New key-value pairs:} \quad k_{\text{new}}, v_{\text{new}} &amp;\in \mathbb{R}^{1 \times d_{\text{model}}} \newline
+\text{Cached matrices:} \quad K_{\text{cache}}, V_{\text{cache}} &amp;\in \mathbb{R}^{(t-1) \times d_{\text{model}}} \newline
+\text{Attention computation:} \quad &amp;O(t \cdot d_{\text{model}}) \text{ (linear complexity)} \newline
+\text{Memory requirement:} \quad &amp;O(t \cdot d_{\text{model}}) \text{ accumulated over time}
+\end{aligned}
+$$</p>
+<h3 id="kv-cache-implementation">KV Cache Implementation<a class="headerlink" href="#kv-cache-implementation" title="Permanent link">&para;</a></h3>
+<p><strong>Cache Architecture:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">KVCache</span><span class="p">:</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_layers</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">d_head</span><span class="p">,</span> <span class="n">max_seq_len</span><span class="p">):</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>        <span class="c1"># Per-layer cache storage</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>            <span class="n">layer_idx</span><span class="p">:</span> <span class="p">{</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>                <span class="s1">&#39;keys&#39;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">max_seq_len</span><span class="p">,</span> <span class="n">d_head</span><span class="p">),</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>                <span class="s1">&#39;values&#39;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">max_seq_len</span><span class="p">,</span> <span class="n">d_head</span><span class="p">),</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>                <span class="s1">&#39;current_length&#39;</span><span class="p">:</span> <span class="mi">0</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>            <span class="p">}</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>            <span class="k">for</span> <span class="n">layer_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_layers</span><span class="p">)</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>        <span class="p">}</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_idx</span><span class="p">,</span> <span class="n">new_keys</span><span class="p">,</span> <span class="n">new_values</span><span class="p">):</span>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Append new key-value pairs to cache&quot;&quot;&quot;</span>
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>        <span class="n">cache_entry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">layer_idx</span><span class="p">]</span>
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>        <span class="n">curr_len</span> <span class="o">=</span> <span class="n">cache_entry</span><span class="p">[</span><span class="s1">&#39;current_length&#39;</span><span class="p">]</span>
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>        <span class="c1"># Insert new keys and values</span>
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>        <span class="n">cache_entry</span><span class="p">[</span><span class="s1">&#39;keys&#39;</span><span class="p">][:,</span> <span class="p">:,</span> <span class="n">curr_len</span><span class="p">:</span><span class="n">curr_len</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_keys</span>
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>        <span class="n">cache_entry</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">][:,</span> <span class="p">:,</span> <span class="n">curr_len</span><span class="p">:</span><span class="n">curr_len</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_values</span>
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a>        <span class="n">cache_entry</span><span class="p">[</span><span class="s1">&#39;current_length&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a>
+<a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a>        <span class="k">return</span> <span class="p">(</span>
+<a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a>            <span class="n">cache_entry</span><span class="p">[</span><span class="s1">&#39;keys&#39;</span><span class="p">][:,</span> <span class="p">:,</span> <span class="p">:</span><span class="n">cache_entry</span><span class="p">[</span><span class="s1">&#39;current_length&#39;</span><span class="p">]],</span>
+<a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a>            <span class="n">cache_entry</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">][:,</span> <span class="p">:,</span> <span class="p">:</span><span class="n">cache_entry</span><span class="p">[</span><span class="s1">&#39;current_length&#39;</span><span class="p">]]</span>
+<a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a>        <span class="p">)</span>
+</code></pre></div></p>
+<p><strong>Mathematical Formulation:</strong></p>
+<p><strong>Cache Update (Step):</strong></p>
+<p>$$
+\begin{aligned}
+q_{\text{new}} &amp;= x_{\text{new}} W^Q \in \mathbb{R}^{1 \times d_k} \newline
+k_{\text{new}} &amp;= x_{\text{new}} W^K \in \mathbb{R}^{1 \times d_k} \newline
+v_{\text{new}} &amp;= x_{\text{new}} W^V \in \mathbb{R}^{1 \times d_v}
+\end{aligned}
+$$</p>
+<p><strong>Cache Concatenation:</strong></p>
+<p>$$
+\begin{aligned}
+K_{\text{full}} &amp;= [K_{\text{cache}}; k_{\text{new}}] \in \mathbb{R}^{t \times d_k} \newline
+V_{\text{full}} &amp;= [V_{\text{cache}}; v_{\text{new}}] \in \mathbb{R}^{t \times d_v}
+\end{aligned}
+$$</p>
+<p><strong>Cached Attention Computation:</strong></p>
+<p>$$
+\begin{aligned}
+\text{scores} &amp;= \frac{q_{\text{new}} K_{\text{full}}^T}{\sqrt{d_k}} \in \mathbb{R}^{1 \times t} \newline
+\text{weights} &amp;= \text{softmax}(\text{scores}) \in \mathbb{R}^{1 \times t} \newline
+\text{output} &amp;= \text{weights} \cdot V_{\text{full}} \in \mathbb{R}^{1 \times d_v}
+\end{aligned}
+$$</p>
+<p><strong>Complexity Summary:</strong></p>
+<p><strong>Time Complexity per Generation Step:</strong></p>
+<p>$$
+\begin{aligned}
+\text{First token:} \quad &amp;O(d_{\text{model}}^2) \text{ (no cache)} \newline
+\text{Subsequent tokens:} \quad &amp;O(d_{\text{model}}^2 + H \times \text{seq_len} \times d_k) \text{ per token}
+\end{aligned}
+$$</p>
+<p><strong>Space Complexity:</strong></p>
+<p>$$
+\begin{aligned}
+\text{Cache storage:} \quad &amp;O(L \cdot H \cdot n_{\max} \cdot d_k) \newline
+\text{Trade-off:} \quad &amp;O(t) \text{ memory overhead for } O(t) \text{ speedup per step} \newline
+L &amp;: \text{Number of layers} \newline
+H &amp;: \text{Number of heads}
+\end{aligned}
+$$</p>
+<p><strong>Practical Considerations:</strong></p>
+<ul>
+<li>Memory bandwidth becomes bottleneck for large models</li>
+<li>Cache pre-allocation avoids dynamic memory allocation overhead</li>
+<li>Quantization (FP16, INT8) can reduce cache memory requirements</li>
+</ul>
+<hr />
+<h2 id="11-stage-6-feed-forward-networks">11. Stage 6: Feed-Forward Networks<a class="headerlink" href="#11-stage-6-feed-forward-networks" title="Permanent link">&para;</a></h2>
+<h3 id="position-wise-nonlinear-transformations">Position-wise Nonlinear Transformations<a class="headerlink" href="#position-wise-nonlinear-transformations" title="Permanent link">&para;</a></h3>
+<p>Feed-forward networks in transformers implement position-wise MLP layers that process each token representation independently. This component provides the model's primary source of nonlinear transformation capacity and parametric memory.</p>
+<p><strong>Architectural Role:</strong></p>
+<ul>
+<li><strong>Nonlinearity injection</strong>: Introduces essential nonlinear transformations between attention layers</li>
+<li><strong>Representation expansion</strong>: Temporarily expands representation space for complex computations</li>
+<li><strong>Parameter concentration</strong>: Contains majority of model parameters (~2/3 in standard architectures)</li>
+<li><strong>Position independence</strong>: Applies identical transformations to each sequence position</li>
+</ul>
+<p><strong>Design Philosophy:</strong>
+FFNs serve as "computational bottlenecks" that force the model to compress and process information efficiently, similar to autoencoder architectures.</p>
+<h3 id="ffn-architecture-and-computation">FFN Architecture and Computation<a class="headerlink" href="#ffn-architecture-and-computation" title="Permanent link">&para;</a></h3>
+<p><strong>Standard Two-Layer MLP:</strong></p>
+<p><strong>Expansion layer</strong>:</p>
+<p>$$
+\begin{aligned}
+\mathbb{R}^{d_{\text{model}}} \to \mathbb{R}^{d_{\text{ffn}}} \text{ where } d_{\text{ffn}} = 4 \cdot d_{\text{model}}
+\end{aligned}
+$$</p>
+<ol>
+<li><strong>Activation function</strong>: Element-wise nonlinearity (GELU, ReLU, or SwiGLU)</li>
+</ol>
+<p><strong>Contraction layer</strong>:</p>
+<p>$$
+\begin{aligned}
+\mathbb{R}^{d_{\text{ffn}}} \to \mathbb{R}^{d_{\text{model}}}
+\end{aligned}
+$$</p>
+<p><strong>Computational Flow:</strong></p>
+<p>$$
+\begin{aligned}
+\text{Input:} \quad X &amp;\in \mathbb{R}^{n \times d_{\text{model}}} : \text{Sequence representations} \newline
+\text{Expansion:} \quad H_1 &amp;= XW_1 + b_1 \in \mathbb{R}^{n \times d_{\text{ffn}}} \newline
+\text{Activation:} \quad H_2 &amp;= \sigma(H_1) \in \mathbb{R}^{n \times d_{\text{ffn}}} \newline
+\text{Contraction:} \quad Y &amp;= H_2 W_2 + b_2 \in \mathbb{R}^{n \times d_{\text{model}}}
+\end{aligned}
+$$</p>
+<p><strong>Design Rationale:</strong></p>
+<ul>
+<li><strong>4× expansion</strong>: Provides sufficient representational capacity for complex transformations</li>
+<li><strong>Position-wise</strong>: Each token processed independently, enabling parallelization</li>
+<li><strong>Bottleneck structure</strong>: Forces efficient information compression and processing</li>
+</ul>
+<h3 id="mathematical-formulation_2">Mathematical Formulation<a class="headerlink" href="#mathematical-formulation_2" title="Permanent link">&para;</a></h3>
+<p><strong>Standard FFN Transformation:</strong></p>
+<p>$$
+\begin{aligned}
+\text{FFN}(x) = W_2 \cdot \sigma(W_1 x + b_1) + b_2
+\end{aligned}
+$$</p>
+<p>$$
+\begin{aligned}
+W_1 &amp;\in \mathbb{R}^{d_{\text{model}} \times d_{\text{ffn}}} : \text{Expansion matrix} \newline
+W_2 &amp;\in \mathbb{R}^{d_{\text{ffn}} \times d_{\text{model}}} : \text{Contraction matrix} \newline
+b_1 &amp;\in \mathbb{R}^{d_{\text{ffn}}}, b_2 \in \mathbb{R}^{d_{\text{model}}} : \text{Bias vectors} \newline
+\sigma &amp;: \text{Activation function (GELU, ReLU, SwiGLU)} \newline
+d_{\text{ffn}} &amp;= 4 \cdot d_{\text{model}} : \text{Standard expansion ratio}
+\end{aligned}
+$$</p>
+<p><strong>GELU Activation Function:</strong></p>
+<p>$$
+\begin{aligned}
+\text{GELU}(x) &amp;= x \cdot \Phi(x) \newline
+&amp;= x \cdot \frac{1}{2}\left[1 + \text{erf}\left(\frac{x}{\sqrt{2}}\right)\right] \newline
+\Phi(x) &amp;: \text{Standard normal CDF}
+\end{aligned}
+$$</p>
+<p>GELU provides smooth, differentiable activation with improved gradient flow compared to ReLU.</p>
+<p><strong>Approximation</strong>:</p>
+<p>$$
+\begin{aligned}
+\text{GELU}(x) \approx 0.5x\left(1 + \tanh\left(\sqrt{\frac{2}{\pi}}(x + 0.044715x^3)\right)\right)
+\end{aligned}
+$$</p>
+<p><strong>📖 Activation Function Analysis:</strong> See <a href="../transformers_math1/#72-why-gelu-over-relu">GELU vs ReLU</a> and <a href="../transformers_math1/#71-complete-block-equations">SwiGLU Variants</a> for detailed comparisons.</p>
+<p><strong>SwiGLU Variant (Gated FFN):</strong></p>
+<p>$$
+\begin{aligned}
+\text{SwiGLU}(x) = (W_1 x + b_1) \odot \text{SiLU}(W_2 x + b_2)
+\end{aligned}
+$$</p>
+<p>$$
+\begin{aligned}
+\odot &amp;: \text{Element-wise (Hadamard) product} \newline
+\text{SiLU}(x) &amp;= x \cdot \sigma(x) \text{ where } \sigma \text{ is sigmoid} \newline
+d_{\text{ffn}} &amp;= \frac{8}{3} d_{\text{model}} \text{ (parameter count matching)} \newline
+\text{Note:} &amp;\text{ Requires two parallel linear transformations}
+\end{aligned}
+$$</p>
+<p><strong>Parameter Analysis:</strong></p>
+<p><strong>Standard FFN:</strong></p>
+<p>$$
+\begin{aligned}
+\text{Expansion layer:} \quad &amp;d_{\text{model}} \times d_{\text{ffn}} = 4d_{\text{model}}^2 \text{ parameters} \newline
+\text{Contraction layer:} \quad &amp;d_{\text{ffn}} \times d_{\text{model}} = 4d_{\text{model}}^2 \text{ parameters} \newline
+\text{Total:} \quad &amp;8d_{\text{model}}^2 \text{ parameters (plus biases)}
+\end{aligned}
+$$</p>
+<p><strong>Example</strong>: For GPT-2 scale, approximately 4.7M parameters per FFN layer:</p>
+<p>$$
+\begin{aligned}
+d_{\text{model}} = 768 \Rightarrow \text{~4.7M parameters per FFN layer}
+\end{aligned}
+$$</p>
+<p><strong>Computational Complexity:</strong></p>
+<p>$$
+\begin{aligned}
+\text{Forward pass:} \quad &amp;O(n \cdot d_{\text{model}} \cdot d_{\text{ffn}}) = O(n \cdot d_{\text{model}}^2) \newline
+\text{Note:} \quad &amp;\text{Dominates transformer computation cost due to large hidden dimension}
+\end{aligned}
+$$</p>
+<hr />
+<h2 id="12-stage-7-output-generation">12. Stage 7: Output Generation<a class="headerlink" href="#12-stage-7-output-generation" title="Permanent link">&para;</a></h2>
+<h3 id="-intuition-making-the-final-decision">🎯 Intuition: Making the Final Decision<a class="headerlink" href="#-intuition-making-the-final-decision" title="Permanent link">&para;</a></h3>
+<p><strong>Think of output generation like a multiple-choice test with 50,000 possible answers.</strong> After all the deep processing, the model has to decide: "What's the most likely next word?"</p>
+<p><strong>The process:</strong></p>
+<ol>
+<li><strong>Focus on the last word</strong>: Only the final word's understanding matters for prediction</li>
+<li><strong>Consider all possibilities</strong>: Calculate how likely each of the 50,000 vocabulary words is to come next</li>
+<li><strong>Make a choice</strong>: Use various strategies to pick the final word</li>
+</ol>
+<p><strong>Real-world analogy:</strong> Like a game show where you've analyzed all the clues, and now you must choose your final answer from all possible options.</p>
+<p><strong>Why only the last word?</strong> In "The cat sat on ___", only the understanding after "on" matters for predicting the next word. Previous words have already influenced this final representation through attention.</p>
+<h3 id="output-generation-pipeline">Output Generation Pipeline<a class="headerlink" href="#output-generation-pipeline" title="Permanent link">&para;</a></h3>
+<p><strong>Step 1: Hidden State Extraction</strong></p>
+<p>$$
+\begin{aligned}
+\text{Input:} \quad H &amp;\in \mathbb{R}^{n \times d_{\text{model}}} : \text{Final hidden states from transformer stack} \newline
+\text{Selection:} \quad h_{\text{last}} &amp;= H[-1, :] \in \mathbb{R}^{d_{\text{model}}} : \text{Last position} \newline
+\text{Rationale:} \quad &amp;\text{Only final position contains complete contextual information}
+\end{aligned}
+$$</p>
+<p><strong>Step 2: Language Model Head</strong></p>
+<p>$$
+\begin{aligned}
+\text{Linear transformation:} \quad \text{logits} &amp;= h_{\text{last}} W_{\text{lm}} + b_{\text{lm}} \newline
+\text{Shape transformation:} \quad &amp;\mathbb{R}^{d_{\text{model}}} \to \mathbb{R}^{|V|} \newline
+\text{Weight tying:} \quad W_{\text{lm}} &amp;= E^T \text{ (often use transpose of embedding matrix)}
+\end{aligned}
+$$</p>
+<p><strong>Step 3: Temperature Scaling</strong></p>
+<p>$$
+\begin{aligned}
+\text{Scaled logits:} \quad \text{logits}_{\text{scaled}} &amp;= \frac{\text{logits}}{\tau} \newline
+\text{Higher temperature:} \quad \tau &gt; 1 &amp;: \text{Increases randomness} \newline
+\text{Lower temperature:} \quad \tau &lt; 1 &amp;: \text{Increases determinism}
+\end{aligned}
+$$</p>
+<p><strong>Step 4: Probability Computation</strong></p>
+<p>$$
+\begin{aligned}
+\text{Softmax normalization:} \quad p_i &amp;= \frac{\exp(\text{logits}_i / \tau)}{\sum_{j=1}^{|V|} \exp(\text{logits}_j / \tau)} \newline
+\text{Result:} \quad &amp;\text{Valid probability distribution over vocabulary}
+\end{aligned}
+$$</p>
+<p><strong>Step 5: Token Sampling</strong></p>
+<ul>
+<li><strong>Sampling strategy</strong>: Select next token according to chosen decoding algorithm</li>
+<li><strong>Options</strong>: Greedy, top-k, nucleus (top-p), beam search</li>
+</ul>
+<h3 id="mathematical-formulation_3">Mathematical Formulation<a class="headerlink" href="#mathematical-formulation_3" title="Permanent link">&para;</a></h3>
+<p><strong>Language Model Head:</strong></p>
+<p>$$
+\begin{aligned}
+\text{logits} = h_{\text{final}} W_{\text{lm}} + b_{\text{lm}}
+\end{aligned}
+$$</p>
+<p>$$
+\begin{aligned}
+h_{\text{final}} &amp;\in \mathbb{R}^{d_{\text{model}}} : \text{Final position hidden state} \newline
+W_{\text{lm}} &amp;\in \mathbb{R}^{d_{\text{model}} \times |V|} : \text{Language model projection matrix} \newline
+b_{\text{lm}} &amp;\in \mathbb{R}^{|V|} : \text{Output bias (often omitted)} \newline
+\text{logits} &amp;\in \mathbb{R}^{|V|} : \text{Unnormalized vocabulary scores}
+\end{aligned}
+$$</p>
+<p><strong>Weight Tying</strong>: Commonly use transpose of token embedding matrix, reducing parameters and improving performance.</p>
+<p>$$
+  \begin{aligned}
+  W_{\text{lm}} = E^T \text{ where } E \text{ is the token embedding matrix}
+  \end{aligned}
+  $$</p>
+<p><strong>Temperature-Scaled Softmax:</strong></p>
+<p>$$
+\begin{aligned}
+p_i = \frac{\exp(\text{logits}_i / \tau)}{\sum_{j=1}^{|V|} \exp(\text{logits}_j / \tau)}
+\end{aligned}
+$$</p>
+<p><strong>Temperature Parameter:</strong></p>
+<p>$$
+\begin{aligned}
+\tau \to 0 &amp;: \text{Approaches deterministic (argmax) selection} \newline
+\tau = 1 &amp;: \text{Standard softmax distribution} \newline
+\tau \to \infty &amp;: \text{Approaches uniform distribution} \newline
+\tau &amp;: \text{Calibration parameter for desired confidence levels}
+\end{aligned}
+$$</p>
+<p><strong>Decoding Strategies:</strong></p>
+<p><strong>Greedy Decoding</strong></p>
+<p>$$
+\begin{aligned}
+\text{next_token} = \arg\max_{i} p_i
+\end{aligned}
+$$</p>
+<ul>
+<li><strong>Advantages:</strong> Deterministic, fast, and simple to implement</li>
+<li><strong>Disadvantages:</strong> Often produces repetitive or generic text; lacks diversity</li>
+</ul>
+<p><strong>Top-k Sampling</strong></p>
+<p>$$
+\begin{aligned}
+\text{next_token} \sim \text{Categorical}(\text{top-k}(p, k))
+\end{aligned}
+$$</p>
+<p>$$
+\begin{aligned}
+\text{Process:} \quad &amp;\text{Select tokens with highest probabilities, renormalize and sample} \newline
+\text{Effect:} \quad &amp;\text{Limits sampling to most likely options, balancing diversity and quality} \newline
+k &amp;: \text{Number of top tokens to consider}
+\end{aligned}
+$$</p>
+<p><strong>Nucleus (Top-p) Sampling:</strong></p>
+<p>$$
+\begin{aligned}
+\text{next_token} \sim \text{Categorical}({i : \sum_{j \in \text{top}(p)} p_j \leq p})
+\end{aligned}
+$$</p>
+<p>$$
+\begin{aligned}
+\text{Dynamic selection:} \quad &amp;\text{Includes smallest set of tokens with cumulative probability threshold} \newline
+\text{Adaptive:} \quad &amp;\text{Adjusts vocabulary size based on confidence distribution} \newline
+p &amp;\geq \text{cumulative probability threshold} \newline
+p &amp;\in [0.9, 0.95] : \text{Typical range for balancing quality and diversity}
+\end{aligned}
+$$</p>
+<p><strong>Beam Search</strong>: For deterministic high-quality generation, maintains top-$b$ hypotheses at each step</p>
+<hr />
+<h2 id="next-steps-advanced-topics">Next Steps: Advanced Topics<a class="headerlink" href="#next-steps-advanced-topics" title="Permanent link">&para;</a></h2>
+<p>This completes our journey through the foundational transformer architecture. You now understand how transformers process text from raw input to output generation, including:</p>
+<ul>
+<li><strong>Tokenization and embedding</strong>: Converting text to dense vectors</li>
+<li><strong>Self-attention mechanism</strong>: How models relate different parts of sequences</li>
+<li><strong>Transformer blocks</strong>: The core building blocks that process representations</li>
+<li><strong>Architectural variants</strong>: Encoder-only, decoder-only, and encoder-decoder designs</li>
+<li><strong>Output generation</strong>: How models produce final predictions</li>
+</ul>
+<p><strong>Continue your learning with advanced topics:</strong> For deeper understanding of how these models are trained, optimized, and deployed in practice, see <a href="../transformers_advanced/">Transformer Advanced Topics</a>, which covers:</p>
+<ul>
+<li>Training objectives and data curriculum</li>
+<li>Backpropagation and optimization</li>
+<li>Parameter-efficient fine-tuning methods</li>
+<li>Quantization for deployment</li>
+<li>Evaluation and diagnostics</li>
+<li>Complete mathematical summaries</li>
+</ul>
+<p>Together, these guides provide comprehensive coverage of transformer architectures from theoretical foundations to practical implementation.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.top", "navigation.instant", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+    
+  </body>
+</html>
