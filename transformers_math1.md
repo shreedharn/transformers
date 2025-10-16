@@ -46,8 +46,9 @@ y = mx + b
 ```
 
 where:
-- $m$ is the **slope** - tells us how steep the line is
-- $b$ is the **y-intercept** - where the line crosses the y-axis
+
+- m is the **slope** - tells us how steep the line is
+- b is the **y-intercept** - where the line crosses the y-axis
 
 **What does slope mean intuitively?** Slope tells us "for every step I move right, how much do I move up or down?" If the slope is 2, then moving 1 step right means moving 2 steps up. If the slope is -0.5, then moving 1 step right means moving 0.5 steps down.
 
