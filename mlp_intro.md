@@ -4,7 +4,6 @@
 
 **What you'll learn:** How MLPs combine multiple perceptrons into powerful networks, why depth enables learning complex patterns that single neurons cannot, and how these building blocks form the foundation of all modern neural architectures. We'll work through math and intuition together, with examples that demonstrate clear advantages over single perceptrons.
 
-
 ---
 
 ## 1. What is an MLP?
@@ -64,11 +63,9 @@ Layer 2: [h₁, h₂] → [spam probability] (combine patterns intelligently)
 
 The heart of every MLP layer is this transformation:
 
-
 $$
 \begin{aligned} h &= \sigma(x W + b) \end{aligned}
 $$
-
 
 Let's break this down term by term:
 
@@ -92,7 +89,6 @@ Input Features     Weight Matrix     Bias        Activation
 ```
 
 **Why this structure?**
-
 
 $$
 \begin{aligned}
@@ -120,7 +116,6 @@ $$
 
 A complete MLP chains multiple layers together:
 
-
 $$
 \begin{aligned}
 h^{(1)} &= \sigma^{(1)}(x W^{(1)} + b^{(1)}) \newline
@@ -129,7 +124,6 @@ h^{(2)} &= \sigma^{(2)}(h^{(1)} W^{(2)} + b^{(2)}) \newline
 y &= h^{(L-1)} W^{(L)} + b^{(L)}
 \end{aligned}
 $$
-
 
 **Layer Naming Convention:**
 
@@ -434,15 +428,21 @@ For each batch of training examples:
 ### MLP Advantages
 
 ✅ **Universal Approximation**: Can learn any continuous function with enough neurons
+
 ✅ **Non-linear Patterns**: Captures complex relationships in data
+
 ✅ **Automatic Features**: Learns useful feature combinations
+
 ✅ **Scalable**: Works with large datasets and many features
 
 ### MLP Limitations
 
 ❌ **No Sequential Memory**: Processes each input independently
+
 ❌ **Fixed Input Size**: Can't handle variable-length inputs
+
 ❌ **No Spatial Structure**: Doesn't understand image/text structure
+
 ❌ **Many Parameters**: Can overfit with small datasets
 
 ### When to Use MLPs
@@ -533,11 +533,9 @@ Solutions:
 
 ### ReLU (Rectified Linear Unit)
 
-
 $$
 \begin{aligned} \text{ReLU}(x) &= \max(0, x) \end{aligned}
 $$
-
 
 ```
 Input:  [-2, -1, 0, 1, 2]
@@ -556,11 +554,9 @@ Output: [ 0,  0, 0, 1, 2]
 
 ### Sigmoid
 
-
 $$
 \begin{aligned} \text{Sigmoid}(x) &= \frac{1}{1 + e^{-x}} \end{aligned}
 $$
-
 
 ```
 Input:  [-2, -1, 0, 1, 2]
@@ -579,11 +575,9 @@ Output: [0.12, 0.27, 0.5, 0.73, 0.88]
 
 ### Tanh (Hyperbolic Tangent)
 
-
 $$
 \begin{aligned} \text{Tanh}(x) &= \frac{e^x - e^{-x}}{e^x + e^{-x}} \end{aligned}
 $$
-
 
 ```
 Input:  [-2, -1, 0, 1, 2]

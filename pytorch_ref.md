@@ -62,6 +62,7 @@ The notebook covers:
 📓 **Interactive Examples**: [Autograd Notebook](./pynb/basic/autograd.ipynb)
 
 This notebook covers:
+
 - Basic gradient computation and the chain rule
 - Optimizer integration patterns
 - No-grad context and detach operations  
@@ -1674,6 +1675,7 @@ def pytorch_checklist():
     Essential checklist for PyTorch development
     """
     checklist = """
+
     ✅ PyTorch Development Checklist:
     
     🔧 Setup:

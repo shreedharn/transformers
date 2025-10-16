@@ -8,6 +8,7 @@ This second part builds upon the foundational concepts from [Part 1: Building In
 **Prerequisites:** We assume you've completed Part 1, which covers mathematical preliminaries, basic neural networks, attention mechanisms, multi-head attention, and Transformer blocks. If you haven't read Part 1 yet, please start there for the foundational understanding.
 
 **What You'll Learn:**
+
 - Advanced optimization algorithms (SGD momentum, Adam, AdamW) and their mathematical foundations
 - Learning rate schedules and gradient clipping techniques
 - Efficient attention implementations for scaling to long sequences
@@ -16,10 +17,12 @@ This second part builds upon the foundational concepts from [Part 1: Building In
 - Implementation best practices for numerical stability
 
 **Appendices:**
+
 - [A. Symbol/Shape Reference](#appendix-a-symbolshape-reference)
 - [B. Key Derivations](#appendix-b-key-derivations)
 
 **Additional Resources:**
+
 - [Part 1: Building Intuition and Core Concepts](./transformers_math1.md)
 - [Glossary](./glossary.md) - Comprehensive terms and definitions
 
@@ -58,6 +61,7 @@ W \sim \mathcal{N}\left(0, \frac{2}{n_{\text{in}} + n_{\text{out}}}\right) \quad
 ```
 
 **What momentum does:** Like a ball rolling down a hill. Instead of just following the current slope (gradient), momentum keeps some memory of where you were going before. This helps you:
+
 - **Roll through small bumps** (escape local minima)
 - **Speed up in consistent directions** (valleys)  
 - **Slow down when direction changes** (near the bottom)
@@ -65,6 +69,7 @@ W \sim \mathcal{N}\left(0, \frac{2}{n_{\text{in}} + n_{\text{out}}}\right) \quad
 **Bowling ball analogy:** A heavy bowling ball doesn't stop immediately when it hits a small bump - it uses its momentum to keep rolling toward the pins (optimal solution).
 
 **Understanding the formula:**
+
 - $\mathbf{v}_t$: Current \"velocity\" (combination of current gradient + previous velocity)
 - $\beta \approx 0.9$: How much previous velocity to keep (90%)  
 - $(1-\beta) = 0.1$: How much current gradient to use (10%)
@@ -91,6 +96,7 @@ Adam is like having a smart GPS that adjusts your driving based on two things:
 **The key insight:** If the road has been very bumpy (high variance in gradients), take smaller steps. If it's been smooth and consistent, you can take bigger steps.
 
 **Breaking down the symbols:**
+
 - $\beta_1 \approx 0.9$: How much to remember from previous direction (90%)
 - $\beta_2 \approx 0.999$: How much to remember from previous bumpiness (99.9%) 
 - $\epsilon \approx 10^{-8}$: Tiny number to prevent division by zero
@@ -99,6 +105,7 @@ Adam is like having a smart GPS that adjusts your driving based on two things:
 **Bias correction intuition:** At the beginning, $\mathbf{m}_0 = \mathbf{v}_0 = 0$, so the averages are biased toward zero. We correct for this by dividing by $(1-\beta^t)$, which starts small and approaches 1.
 
 **Car analogy:** Adam is like cruise control that:
+
 - Remembers which direction you've been driving (momentum)
 - Adjusts speed based on road conditions (adaptive learning rate)
 - Starts cautiously but gets more confident over time (bias correction)
@@ -134,6 +141,7 @@ Adam is like having a smart GPS that adjusts your driving based on two things:
 ```
 
 **Why warmup works:**
+
 - **Early training is chaotic:** Random initial weights create wild gradients
 - **Start gentle:** Small learning rate prevents the model from making terrible early decisions
 - **Build confidence gradually:** As the model learns basic patterns, we can be more aggressive
@@ -143,6 +151,7 @@ Adam is like having a smart GPS that adjusts your driving based on two things:
 **Cosine Decay:** Smooth reduction following cosine curve prevents abrupt changes.
 
 **Why cosine decay?** 
+
 - **Smooth slowdown:** Like gradually applying brakes instead of slamming them
 - **Fine-tuning phase:** Later in training, we want to make small adjustments, not big jumps
 - **Mathematical smoothness:** Cosine provides a natural, smooth curve from 1 to 0
@@ -173,6 +182,7 @@ Adam is like having a smart GPS that adjusts your driving based on two things:
 ```
 
 **What this does intuitively:**
+
 - Calculate the total "size" of all gradients combined: $\|\mathbf{g}\|_2$
 - If this size exceeds our limit $c$, scale all gradients down proportionally
 - If it's within the limit, leave gradients unchanged
@@ -182,6 +192,7 @@ Adam is like having a smart GPS that adjusts your driving based on two things:
 **Why proportional scaling?** We want to keep the relative direction of updates the same, just make them smaller. It's like turning down the volume on music - all frequencies get reduced equally.
 
 **Example:**
+
 - Your gradients total to norm 50, but your clip value is 5
 - Scaling factor: $\min(1, 5/50) = 0.1$  
 - All gradients get multiplied by 0.1 (reduced to 10% of original size)
@@ -200,18 +211,21 @@ where $c = \max_i x_i$ prevents overflow.
 ### 10.1 Complexity Analysis
 
 **Standard Attention Complexity:**
+
 - Time: $O(n^2 d)$ for sequence length $n$, model dimension $d$
 - Space: $O(n^2 + nd)$ for attention matrix and activations
 
 **Memory Bottleneck:** Attention matrix $A \in \mathbb{R}^{n \times n}$ dominates memory usage for long sequences.
 
 **Detailed Complexity Breakdown:**
+
 1. **QK^T computation**: $O(n^2 d)$ time, $O(n^2)$ space
 2. **Softmax normalization**: $O(n^2)$ time and space
 3. **Attention-Value multiplication**: $O(n^2 d)$ time, $O(nd)$ space
 4. **Total**: $O(n^2 d)$ time, $O(n^2 + nd)$ space
 
 **Scaling Challenges:**
+
 - Quadratic scaling limits practical sequence lengths
 - Memory requirements grow quadratically with sequence length
 - Computational cost increases quadratically even with parallelization
@@ -221,6 +235,7 @@ where $c = \max_i x_i$ prevents overflow.
 **Core Idea:** Compute attention without materializing the full $n \times n$ attention matrix.
 
 **Tiling Strategy:**
+
 1. Divide $Q$, $K$, $V$ into blocks
 2. Compute attention scores block by block
 3. Use online softmax to maintain numerical stability
@@ -235,15 +250,18 @@ where $c = \max_i x_i$ prevents overflow.
 ### 10.3 Multi-Query and Grouped-Query Attention
 
 **Multi-Query Attention (MQA):** Share key and value projections across heads:
+
 - Queries: $Q \in \mathbb{R}^{B \times H \times n \times d_k}$ (per-head)
 - Keys/Values: $K, V \in \mathbb{R}^{B \times 1 \times n \times d_k}$ (shared)
 
 **Grouped-Query Attention (GQA):** Intermediate approach - group heads:
+
 - Divide $H$ heads into $G$ groups
 - Each group shares K, V projections
 - Reduces KV cache size by factor $H/G$
 
 **KV Cache Memory Analysis:**
+
 - **Standard MHA:** $2 \cdot B \cdot H \cdot n \cdot d_k$ parameters
 - **MQA:** $2 \cdot B \cdot 1 \cdot n \cdot d_k$ parameters (H× reduction)
 - **GQA:** $2 \cdot B \cdot G \cdot n \cdot d_k$ parameters
@@ -313,22 +331,26 @@ where $T > 1$ makes predictions less confident, $T < 1$ more confident.
 **Perplexity Dependence on Tokenizer:** PPL comparisons only valid with same tokenizer. Different tokenizers create different sequence lengths and vocabulary sizes.
 
 **Example:** "hello world" might be:
+
 - GPT tokenizer: ["hel", "lo", " wor", "ld"] (4 tokens)
 - Character-level: ["h", "e", "l", "l", "o", " ", "w", "o", "r", "l", "d"] (11 tokens)
 
 ### 11.3 Advanced Tokenization
 
 **Byte-Level BPE vs Unigram:**
+
 - **BPE:** Greedily merges frequent character pairs, handles any Unicode
 - **Unigram:** Probabilistic model, often better for morphologically rich languages
 
 **Special Token Handling:**
+
 - **BOS (Beginning of Sequence):** Often used for unconditional generation
 - **EOS (End of Sequence):** Signals completion, crucial for proper training
 - **PAD:** For batching variable-length sequences
 
 **Embedding/LM-Head Tying Caveats:**
 When sharing weights, ensure shape compatibility:
+
 - Embedding: $E \in \mathbb{R}^{V \times d_{\text{model}}}$
 - LM head: needs $\mathbb{R}^{d_{\text{model}} \times V}$
 - Solution: Use $E^T$ for output projection (as shown in equation 40)
@@ -365,6 +387,7 @@ y_{\text{smooth}} = (1-\alpha) y_{\text{true}} + \frac{\alpha}{V} \mathbf{1} \qu
 
 **Pitfall:** Applying temperature scaling inconsistently.
 **Correct Usage:** Temperature $\tau$ in $\text{softmax}(\mathbf{z}/\tau)$ controls sharpness:
+
 - $\tau > 1$: Smoother distribution
 - $\tau < 1$: Sharper distribution
 

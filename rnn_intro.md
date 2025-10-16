@@ -6,8 +6,6 @@
 
 **Prerequisites:** Completed [MLP Tutorial](./mlp_intro.md) and basic understanding of sequential data (text, time series).
 
-
-
 ## 1. The Sequential Challenge: Why MLPs Aren't Enough
 
 ### The Problem with Fixed-Size Inputs
@@ -260,18 +258,21 @@ Think of it like a **notebook and note-taking process**:
 
 #### Confusion 1: "Hidden layers store memory"
 ❌ **Wrong**: Layers are architectural blueprints—they don't store anything
+
 ✅ **Correct**: Hidden states carry information/memory from one time step to the next
 
 **RNN Context**: The hidden state $$h\_{t-1}$$ carries memory forward, not the layer itself.
 
 #### Confusion 2: "RNNs have one hidden state"  
 ❌ **Wrong**: RNNs have one type of recurrent layer architecture
+
 ✅ **Correct**: RNNs produce a sequence of hidden states over time ($$h\_1, h\_2, h\_3, ..., h\_T$$)
 
 **RNN Context**: Each time step produces a new hidden state that encodes the sequence history.
 
 #### Confusion 3: "Adding more hidden layers gives more memory"
 ❌ **Wrong**: More layers do not equal longer memory
+
 ✅ **Correct**: Layer depth affects transformation complexity; sequence length affects memory span
 
 **RNN Context**: Memory span depends on sequence length and gradient flow, not layer count.
@@ -567,6 +568,7 @@ $$
 $$
 
 **Characteristics:**
+
 - Each layer has **different weights**
 - Gradients flow **backward through layers**
 - Training is **straightforward** - standard backprop
@@ -585,6 +587,7 @@ $$
 $$
 
 **Characteristics:**
+
 - **Same weights** used at every time step
 - Gradients flow **backward through time AND layers**
 - Training is **more complex** - gradients must be accumulated across time

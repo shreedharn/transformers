@@ -381,7 +381,6 @@ How it's computed:
 
 This process mixes information from the entire sequence into each token's representation, guided by the learned attention patterns. The result is that `h_cat'` is no longer just the generic embedding for "cat", but a new vector that has absorbed context—it now "knows" it's a "big cat".
 
-
 Now "cat" understands it's a "big cat" (not just any cat).
 
 ```
@@ -684,7 +683,6 @@ Level 0: [doc1] ←→ [doc2] ←→ [doc3] ←→ [doc4] ←→ [doc5] ←→ .
 > - Recall vs speed trade-offs with real data
 > - Parameter tuning effects on search quality
 
-
 **Method 3: IVF - The Clustering Approach**
 
 **The Filing Cabinet Analogy:** Think of IVF (Inverted File) like organizing documents in labeled filing cabinets:
@@ -733,7 +731,6 @@ Cluster 2 (House docs): centroid = [0.1, 0.8, 0.3]
 > - Effect of cluster count (nlist) on performance
 > - Search probe tuning (nprobes) for accuracy vs speed
 > - Cluster distribution analysis and optimization
-
 
 **Method 4: Product Quantization - The Compression Master**
 
@@ -801,7 +798,6 @@ Compression ratio: 24,576 ÷ 64 = 384× smaller!
 > - Compression ratio calculations (384× memory reduction)
 > - Asymmetric distance computation for search
 > - Combined IVF+PQ implementation for best of both worlds
-
 
 **Performance Comparison with Real Numbers:**
 
@@ -1161,6 +1157,7 @@ This document focuses on conceptual understanding. For detailed mathematical der
 
 #### [Transformers Mathematics Guide Part 1](./transformers_math1.md)
 **Essential sections for this document:**
+
 - **Sections 2.1-2.3:** Mathematical preliminaries (linear algebra, matrix calculus, probability theory)
 - **Section 4.2-4.3:** High-dimensional geometry and similarity metrics (cosine similarity, euclidean distance, concentration of measure)
 - **Section 5:** Attention mechanism derivations (scaled dot-product attention, softmax gradients, backpropagation)  
@@ -1168,6 +1165,7 @@ This document focuses on conceptual understanding. For detailed mathematical der
 
 #### [Transformers Mathematics Guide Part 2](./transformers_math2.md)
 **Essential sections for this document:**
+
 - **Section 9:** Optimization theory (gradient descent, Adam optimizer, learning rate schedules)
 - **Section 10:** Efficient attention implementations for scaling
 - **Section 11:** Regularization and calibration techniques
@@ -1253,7 +1251,6 @@ Final ranking: doc2 (0.96), doc1 (0.94)
 
 - **LLMs**: Internal similarity for attention → generates new content
 - **Vector Stores**: External similarity for retrieval → finds existing content
-
 3. **RAG Pipeline (Retrieval-Augmented Generation):**
 
 **Complete Workflow:**
@@ -1332,7 +1329,6 @@ LLM processes augmented prompt → Generates informed response
 |--------|----------------|----------------------|
 | **LLM Weights** | • Hallucinations and confabulation<br>• Outdated information (training cutoff)<br>• Expensive retraining for updates<br>• Fixed knowledge capacity | • Use confidence scoring<br>• Combine with retrieval systems<br>• Regular model updates<br>• Parameter-efficient fine-tuning |
 | **Vector Stores** | • Dependent on embedding quality<br>• Potential stale/outdated data<br>• Limited semantic understanding<br>• Retrieval relevance challenges | • High-quality embedding models<br>• Regular data refreshing<br>• Hybrid search (semantic + keyword)<br>• Query expansion techniques |
-
 
 ---
 

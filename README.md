@@ -33,17 +33,20 @@ This repository provides a comprehensive exploration of transformer architecture
 ## 🔧 Technical Specifications
 
 ### Covered Architectures
+
 - **Encoder-Only**: BERT, RoBERTa, ELECTRA
 - **Decoder-Only**: GPT family, PaLM, LLaMA
 - **Encoder-Decoder**: T5, BART, UL2
 
 ### Implementation Topics
+
 - **Core Components**: Multi-head attention, feed-forward networks, normalization
 - **Training**: Objectives, data curriculum, optimization
 - **Efficiency**: KV caching, quantization, parameter-efficient fine-tuning
 - **Evaluation**: Metrics, benchmarks, diagnostic tools
 
 ### Mathematical Rigor
+
 - **Tensor operations**: Detailed shape analysis and complexity bounds
 - **Gradient computation**: Complete backpropagation derivations
 - **Optimization theory**: Adam, learning rate schedules, gradient clipping
@@ -63,6 +66,7 @@ After completing this repository, you will understand:
 ## 📚 Further Reading
 
 ### Foundation Papers
+
 - **[Attention Is All You Need](https://arxiv.org/abs/1706.03762)** (Vaswani et al., 2017): Original transformer paper
 - **[BERT: Pre-training of Deep Bidirectional Transformers](https://arxiv.org/abs/1810.04805)** (Devlin et al., 2018): Bidirectional encoder representations
 - **[Improving Language Understanding by Generative Pre-Training](https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf)** (Radford et al., 2018): Original GPT paper
@@ -70,6 +74,7 @@ After completing this repository, you will understand:
 - **[T5: Exploring the Limits of Transfer Learning](https://arxiv.org/abs/1910.10683)** (Raffel et al., 2019): Text-to-text transfer transformer
 
 ### Modern Developments
+
 - **[Scaling Laws for Neural Language Models](https://arxiv.org/abs/2001.08361)** (Kaplan et al., 2020): Optimal compute allocation strategies
 - **[FlashAttention: Fast and Memory-Efficient Exact Attention](https://arxiv.org/abs/2205.14135)** (Dao et al., 2022): Memory-efficient attention computation
 - **[LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685)** (Hu et al., 2021): Parameter-efficient fine-tuning

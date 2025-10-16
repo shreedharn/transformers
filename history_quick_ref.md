@@ -128,7 +128,6 @@ $$
 \begin{aligned} y &= \sigma(Wx + b) \end{aligned}
 $$
 
-
 - **Limitation**: Fixed input size
 - **Innovation**: Learned nonlinear transformations
 
@@ -137,7 +136,6 @@ $$
 $$
 \begin{aligned} h_t &= \tanh(W_{hh}h_{t-1} + W_{xh}x_t + b) \end{aligned}
 $$
-
 
 - **Innovation**: Sequential state, variable length
 - **Limitation**: Vanishing gradients
@@ -148,7 +146,6 @@ $$
 \begin{aligned} C_t &= f_t \odot C_{t-1} + i_t \odot \tilde{C}_t \end{aligned}
 $$
 
-
 - **Innovation**: Selective information flow
 - **Limitation**: Sequential processing
 
@@ -158,7 +155,6 @@ $$
 \begin{aligned} c_t &= \sum_{i=1}^{T} \alpha_{t,i} h_i^{enc} \end{aligned}
 $$
 
-
 - **Innovation**: Direct access to all encoder states
 - **Limitation**: Still sequential in encoder/decoder
 
@@ -167,7 +163,6 @@ $$
 $$
 \begin{aligned} \text{Attention}(Q, K, V) &= \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V \end{aligned}
 $$
-
 
 - **Innovation**: Parallel processing, direct all-to-all connections
 - **Achievement**: Scalable, efficient, powerful

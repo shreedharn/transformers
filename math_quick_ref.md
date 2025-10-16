@@ -2,7 +2,6 @@
 
 A comprehensive reference of core mathematical concepts used in neural networks and deep learning, with detailed intuitions and practical PyTorch examples.
 
-
 ## Linear Algebra
 
 > 📓 **Jupyter Notebook:** [pynb/math_ref/linear_algebra.ipynb](pynb/math_ref/linear_algebra.ipynb)

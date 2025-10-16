@@ -222,25 +222,17 @@ $$
 **Architectural Dimensions:**
 
 - **Vocabulary size (V)**: Discrete token space cardinality, typically 32K-100K
-
 - **Model dimension (d_model)**: Hidden state dimensionality determining representational capacity
-
 - **Context length (n)**: Maximum sequence length for attention computation
-
 - **Layer count (N)**: Depth of hierarchical representation learning
-
 - **Attention heads (H)**: Parallel attention subspaces for diverse relationship modeling
 
 **GPT-2 Specification:**
 
 - Vocabulary: 50,257 BPE tokens
-
 - Hidden dimension: 768
-
 - Context window: 1,024 tokens
-
 - Transformer blocks: 12 layers
-
 - Multi-head attention: 12 heads per layer
 
 ---
@@ -254,9 +246,7 @@ $$
 **Why not just use individual letters or whole words?**
 
 - **Letters**: Too many combinations, loses meaning ("c-a-t" tells us less than "cat")
-
 - **Whole words**: Millions of possible words, can't handle new/misspelled words
-
 - **Subwords** (what we use): Perfect balance - captures meaning while handling new words
 
 ### Process Flow
@@ -864,11 +854,8 @@ $$
 **Implementation Details:**
 
 1. **Parallel computation**: All heads computed simultaneously via reshaped tensor operations
-
 2. **Linear projections**: Simple matrix multiplications, not multi-layer perceptrons
-
 3. **Concatenation**: Head outputs concatenated along feature dimension
-
 4. **Output projection**: Single linear transformation of concatenated heads
 
 **📖 Derivation and Analysis:** See [Multi-Head Attention Theory](./transformers_math1.md#61-multi-head-as-subspace-projections) and [Scaling Analysis](./transformers_math1.md#52-why-the-sqrtd_k-scaling) for mathematical foundations.

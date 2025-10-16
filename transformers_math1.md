@@ -10,6 +10,7 @@ For advanced topics including optimization, training stability, scaling laws, an
 ## Assumptions & Conventions
 
 **Mathematical Notation:**
+
 - Vectors are row-major; matrices multiply on the right
 - Shapes annotated as [seq, dim] or [batch, seq, heads, dim]
 - Masking uses additive large negative values (-∞) before softmax
@@ -19,9 +20,11 @@ For advanced topics including optimization, training stability, scaling laws, an
 - Equations numbered sequentially throughout document
 
 **For Advanced Topics:**
+
 - [Part 2: Advanced Concepts and Scaling](./transformers_math2.md) covers optimization, efficient attention, regularization, and implementation details
 
 **Additional Resources:**
+
 - [Glossary](./glossary.md) - Comprehensive terms and definitions
 
 ## 1. Roadmap
@@ -125,6 +128,7 @@ Iteration 10: x ≈ 0.27, f(x) ≈ 0.07
 #### Matrix Form for Machine Learning
 
 **Setting up the Problem:** In machine learning, we have:
+
 - **X**: Input matrix with shape (samples × features) - each row is one data point
 - **W**: Weight matrix with shape (features × outputs) - the parameters we want to learn  
 - **b**: Bias vector with shape (outputs,) - additional adjustable parameters
@@ -220,6 +224,7 @@ b_2 \leftarrow b_2 - \alpha \frac{\partial L}{\partial b_2}
 ```
 
 **Understanding the δ terms:**
+
 - $\delta_2$: "How much does changing each output neuron's value affect the loss?"
 - $\delta_1$: "How much does changing each hidden neuron's value affect the loss?"
 
@@ -228,12 +233,14 @@ The $\delta$ terms flow backwards through the network, carrying error informatio
 #### The Learning Rate α: Universal Step Size Controller
 
 **Same Role Everywhere:** Notice that $\alpha$ plays the identical role in:
+
 - 1D gradient descent: $x \leftarrow x - \alpha \frac{df}{dx}$
 - Vector gradient descent: $\mathbf{x} \leftarrow \mathbf{x} - \alpha \nabla f$
 - Matrix gradient descent: $W \leftarrow W - \alpha \frac{\partial L}{\partial W}$
 - Neural network training: All parameters use the same $\alpha$
 
 **Choosing α:**
+
 - **Too large:** Updates overshoot the minimum, causing oscillation or divergence
 - **Too small:** Updates are tiny, causing very slow convergence
 - **Just right:** Steady progress toward the minimum without overshooting
@@ -274,6 +281,7 @@ This is why understanding the simple case of line slopes gives us insight into t
 ```
 
 **Understanding the symbols:**
+
 - $\theta$ (theta): The parameters we want to learn - think of these as the "knobs" we can adjust
 - $\eta$ (eta): Learning rate - how big steps we take. Like deciding whether to take baby steps or giant leaps when hiking downhill
 - $\nabla$ (nabla): The gradient symbol - points in the direction of steepest ascent (we go opposite direction to descend)
@@ -309,6 +317,7 @@ This enables training very deep networks by maintaining gradient flow.
 #### 2.2.1 Vectors as Word Meanings
 
 **What vectors represent in transformers:** Vectors are not just mathematical objects—they encode semantic meaning. Each word becomes a point in high-dimensional space where:
+
 - **Similar words cluster together:** "king" and "queen" vectors point in similar directions
 - **Vector arithmetic captures relationships:** "king" - "man" + "woman" ≈ "queen"
 - **Distance measures semantic similarity:** Cosine similarity between "cat" and "dog" is higher than between "cat" and "airplane"
@@ -318,6 +327,7 @@ This enables training very deep networks by maintaining gradient flow.
 #### 2.2.2 Matrices as Transformations of Meaning
 
 **Linear transformations in neural networks:**
+
 - **Weight matrices** $W$ transform input meanings: $\mathbf{h}_{\text{new}} = \mathbf{h}_{\text{old}} W$
 - **Multiple transformations compose:** $\mathbf{h}_3 = \mathbf{h}_1 W_1 W_2$ applies two sequential meaning transformations
 - **Transpose operations** $W^T$ reverse transformations during backpropagation
@@ -331,6 +341,7 @@ This processes entire sequences simultaneously instead of word-by-word.
 #### 2.2.3 Gradients as Learning Signals
 
 **What gradients mean in neural networks:** Gradients tell us "if I adjust this parameter slightly, how much will my prediction error change?" This guides learning:
+
 - **Large gradients:** Parameter strongly affects error → make bigger adjustments
 - **Small gradients:** Parameter weakly affects error → make smaller adjustments
 - **Zero gradients:** Parameter doesn't affect error → don't change it
@@ -348,6 +359,7 @@ This processes entire sequences simultaneously instead of word-by-word.
 ```
 
 **Why transformers use this combination:**
+
 1. **Neural networks output raw scores** (logits) that can be any real number
 2. **Softmax normalizes these into probabilities** that sum to 1
 3. **Cross-entropy loss measures prediction quality** using these probabilities
@@ -358,6 +370,7 @@ This processes entire sequences simultaneously instead of word-by-word.
 ```
 
 **Why cross-entropy is perfect for language modeling:**
+
 - **Encourages confident correct predictions:** Low loss when p_i ≈ 1 for correct answer
 - **Harshly penalizes confident wrong predictions:** High loss when p_i ≈ 0 for correct answer
 - **Provides clean gradients:** $\nabla \mathcal{L} = \mathbf{p} - \mathbf{y}$ (predicted - true)
@@ -372,6 +385,7 @@ This processes entire sequences simultaneously instead of word-by-word.
 **Two-layer MLP:**
 
 **Shape Analysis:** If input $\mathbf{x} \in \mathbb{R}^{1 \times d_{\text{in}}}$:
+
 - $W^{(1)} \in \mathbb{R}^{d_{\text{in}} \times d_{\text{hidden}}}$
 - $W^{(2)} \in \mathbb{R}^{d_{\text{hidden}} \times d_{\text{out}}}$
 
@@ -391,13 +405,9 @@ This processes entire sequences simultaneously instead of word-by-word.
 \end{aligned}
 ```
 
-
-
-
 - Where $\odot$ denotes element-wise multiplication.
 - $\sigma'(\mathbf{z}^{(1)})$ is the derivative of the activation function applied elementwise.
 - $\frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}}$ is the gradient of the loss with respect to the pre-activation output of the second layer.
-
 
 where $\odot$ denotes element-wise multiplication.
 
@@ -411,6 +421,7 @@ where $\odot$ denotes element-wise multiplication.
 **Shape Analysis:** For $\mathbf{x} \in \mathbb{R}^{n \times d}$: $\gamma, \beta \in \mathbb{R}^{d}$ (learnable per-feature parameters)
 
 **Understanding the Greek letters:**
+
 - $\mu$ (mu): The mean (average) of all the numbers
 - $\sigma$ (sigma): The standard deviation - how spread out the numbers are from the average
 - $\gamma$ (gamma): A learnable scale parameter - lets the model decide how much to amplify the result
@@ -439,6 +450,7 @@ where $\mu = \frac{1}{d}\sum_{i=1}^d x_i$ and $\sigma^2 = \frac{1}{d}\sum_{i=1}^
 where $\alpha < 1$ prevents residual explosion.
 
 **Pre-LN vs Post-LN:**
+
 - **Pre-LN (modern):** $\mathbf{h}_{l+1} = \mathbf{h}_l + F(\text{LN}(\mathbf{h}_l))$
 - **Post-LN (original):** $\mathbf{h}_{l+1} = \text{LN}(\mathbf{h}_l + F(\mathbf{h}_l))$
 
@@ -463,6 +475,7 @@ d_2(\mathbf{u}, \mathbf{v}) = \|\mathbf{u} - \mathbf{v}\|_2
 ### 4.2 Distance Calculations with Concrete Examples
 
 Using simple example vectors to illustrate the concepts:
+
 - "cat" vector: [0.8, 0.2, 0.1]
 - "dog" vector: [0.7, 0.3, 0.2]
 
@@ -476,7 +489,6 @@ Using simple example vectors to illustrate the concepts:
 **Step-by-step calculation:**
 
 1. **Dot product:** A·B = (0.8×0.7) + (0.2×0.3) + (0.1×0.2) = 0.56 + 0.06 + 0.02 = 0.64
-
 2. **Magnitudes:**
    - ||A|| = √(0.8² + 0.2² + 0.1²) = √(0.64 + 0.04 + 0.01) = √0.69 ≈ 0.83
    - ||B|| = √(0.7² + 0.3² + 0.2²) = √(0.49 + 0.09 + 0.04) = √0.62 ≈ 0.79
@@ -495,12 +507,12 @@ d = \sqrt{(x_1-x_2)^2 + (y_1-y_2)^2 + (z_1-z_2)^2}
 **Step-by-step calculation:**
 
 1. **Differences:** (0.8-0.7)² + (0.2-0.3)² + (0.1-0.2)² = 0.01 + 0.01 + 0.01 = 0.03
-
 2. **Distance:** √0.03 ≈ **0.17**
 
 **Interpretation:** Lower values indicate closer proximity. 0.17 is small, confirming "cat" and "dog" are close in space.
 
 **When to use each:**
+
 - **Cosine:** When direction matters more than magnitude (text similarity, semantic relationships)
 - **Euclidean:** When absolute distance matters (image features, exact matching)
 
@@ -536,6 +548,7 @@ s_i = \mathbf{q}^T \mathbf{k}_i \quad (20)
 **Understanding $\alpha$ (alpha):** These are the attention weights - they tell us "how much should I pay attention to each word?" The $\alpha_i$ values all add up to 1, like percentages.
 
 **Why use softmax instead of just raw similarities?**
+
 1. **Probabilities must sum to 1:** We want a weighted average, so weights must be between 0 and 1 and sum to 1. Raw similarities could be negative or not sum to 1.
 2. **Differentiable selection:** Softmax provides a "soft" way to pick the most relevant items. Instead of hard selection (pick the best, ignore the rest), it gives more weight to better matches while still considering others.
 3. **Handles different scales:** Raw similarity scores might vary wildly in range. Softmax normalizes them into a consistent 0-1 probability scale.
@@ -559,6 +572,7 @@ s_i = \mathbf{q}^T \mathbf{k}_i \quad (20)
 **Shape Analysis:** $Q \in \mathbb{R}^{n \times d_k}, K \in \mathbb{R}^{n \times d_k}, V \in \mathbb{R}^{n \times d_v} \Rightarrow \text{Output} \in \mathbb{R}^{n \times d_v}$
 
 **What this equation accomplishes step-by-step:**
+
 1. $QK^T$ creates a "compatibility matrix" - every query checks against every key
 2. $\frac{1}{\sqrt{d_k}}$ scales the scores to prevent them from getting too large
 3. $\text{softmax}$ converts raw compatibility scores into probability-like weights
@@ -642,6 +656,7 @@ G_Q &= G_S K/\sqrt{d_k},\quad G_K = G_S^T Q/\sqrt{d_k}.
 ```
 
 **Why multiple heads instead of one big head?** Different heads can specialize in different types of relationships:
+
 - **Head 1 might focus on syntax:** "What words are grammatically related?"
 - **Head 2 might focus on semantics:** "What words are conceptually similar?"
 - **Head 3 might focus on position:** "What words are nearby?"
@@ -655,18 +670,21 @@ G_Q &= G_S K/\sqrt{d_k},\quad G_K = G_S^T Q/\sqrt{d_k}.
 
 **Linear Projections (Not MLPs):**
 Each head uses simple linear transformations:
+
 - $W_i^Q, W_i^K, W_i^V \in \mathbb{R}^{d_{\text{model}} \times d_k}$ where $d_k = d_{\text{model}}/h$
 - These are **single linear layers**, not multi-layer perceptrons
 - Total projection parameters per layer: $3 \times h \times d_{\text{model}} \times d_k = 3d_{\text{model}}^2$
 
 **Efficient Implementation:**
 Instead of computing each head separately, implementations often:
+
 1. Concatenate all head projections: $W^Q = [W_1^Q, W_2^Q, ..., W_h^Q] \in \mathbb{R}^{d_{\text{model}} \times d_{\text{model}}}$
 2. Compute $Q = XW^Q, K = XW^K, V = XW^V$ in parallel
 3. Reshape tensors to separate heads: $(n, d_{\text{model}}) \to (n, h, d_k)$
 4. Apply attention computation across all heads simultaneously
 
 **Parameter Analysis:**
+
 - **Per-head projections**: $3 \times d_{\text{model}} \times d_k = 3 \times d_{\text{model}} \times (d_{\text{model}}/h)$
 - **Total projections**: $3d_{\text{model}}^2$ (same as single-head with full dimension)
 - **Output projection**: $W^O \in \mathbb{R}^{d_{\text{model}} \times d_{\text{model}}}$ adds $d_{\text{model}}^2$ parameters
@@ -683,6 +701,7 @@ PE_{(pos,2i+1)} &= \cos(pos/10000^{2i/d_{\text{model}}}) \quad (29)
 ```
 
 **Mathematical Properties of Sinusoidal Encoding:**
+
 - **Linearity**: For any fixed offset $k$, $PE_{pos+k}$ can be expressed as a linear function of $PE_{pos}$
 - **Relative position encoding**: The dot product $PE_{pos_i} \cdot PE_{pos_j}$ depends only on $|pos_i - pos_j|$
 - **Extrapolation**: Can handle sequences longer than seen during training
@@ -706,6 +725,7 @@ R_{\Theta,m}^{(i)} = \begin{pmatrix}
 where $\theta_i = 10000^{-2i/d_{\text{model}}}$ for dimension pairs.
 
 **Key RoPE Properties:**
+
 - **Relative position dependency**: $\mathbf{q}_m^T \mathbf{k}_n$ depends only on $(m-n)$, not absolute positions
 - **Length preservation**: Rotation matrices preserve vector norms
 - **Computational efficiency**: Can be implemented without explicit matrix multiplication
@@ -726,6 +746,7 @@ where $\theta_i = 10000^{-2i/d_{\text{model}}}$ for dimension pairs.
 where $\text{bias}_{ij} = -m \cdot |i - j|$ and $m$ is a head-specific slope.
 
 **Benefits of ALiBi:**
+
 - No position embeddings needed
 - Excellent extrapolation to longer sequences
 - Linear relationship between position distance and attention bias
@@ -738,6 +759,7 @@ A_{ij} = \frac{q_i^T k_j}{\sqrt{d_k}} + b_{\text{rel}(i,j)}
 where $b_{\text{rel}(i,j)}$ is a learned bias based on relative distance $\text{rel}(i,j)$.
 
 **RoPE Scaling Variants:**
+
 - **Base scaling:** Increase base frequency: $\theta_i = \alpha^{-2i/d} \cdot 10000^{-2i/d}$
 - **NTK scaling:** Interpolate frequencies for better long-context performance
 - **When to use:** Base scaling for modest extensions (2-4x), NTK for extreme length
@@ -768,6 +790,7 @@ where $b_{\text{rel}(i,j)}$ is a learned bias based on relative distance $\text{
 **Why expand then contract?** The FFN first expands the representation to a higher dimension (usually 4× larger), applies a nonlinearity, then contracts back down. This is like having a "working space" where the model can perform more complex computations before producing the final result.
 
 **Shape Tracking:** For input $\mathbf{x} \in \mathbb{R}^{n \times d_{\text{model}}}$:
+
 - $W_1 \in \mathbb{R}^{d_{\text{model}} \times d_{\text{ffn}}}$ (typically $d_{\text{ffn}} = 4d_{\text{model}}$) - "expansion layer"
 - $W_2 \in \mathbb{R}^{d_{\text{ffn}} \times d_{\text{model}}}$ - "contraction layer"
 
@@ -781,6 +804,7 @@ where $b_{\text{rel}(i,j)}$ is a learned bias based on relative distance $\text{
 **What GELU does intuitively:** GELU is like a "smooth switch." Unlike ReLU which harshly cuts off negative values to zero, GELU gradually transitions from "mostly off" to "mostly on." It asks "how much should I activate this neuron?" and gives a smooth answer between 0 and the input value.
 
 **Why smoother is better:**
+
 - **Better gradients:** ReLU has a sharp corner at zero (gradient jumps from 0 to 1). GELU is smooth everywhere, so gradients flow better during training.
 - **Probabilistic interpretation:** GELU can be seen as randomly dropping out inputs based on their value - inputs closer to the mean of a normal distribution are more likely to "survive."
 - **More expressive:** The smooth transition lets the model make more nuanced decisions about what information to keep.
@@ -817,11 +841,11 @@ P(w_t | \text{context}) = \text{softmax}(\mathbf{h}_t E^T) \quad (40)
 ```
 
 **Shape Analysis:** For $\mathbf{h}_t \in \mathbb{R}^{1 \times d_{\text{model}}}$ and $E \in \mathbb{R}^{V \times d_{\text{model}}}$:
+
 - $\mathbf{h}_t E^T \in \mathbb{R}^{1 \times V}$ (logits over vocabulary)
 - Consistent with row-vector convention
 
 **Perplexity:** Measures model uncertainty:
-
 
 ```math
 \mathrm{PPL} = \exp\left(-\frac{1}{T} \sum_{t=1}^{T} \log P\left(x_t \mid x_{<t}\right) \right) \quad (41)
@@ -852,6 +876,7 @@ S = \frac{QK^T}{\sqrt{3}} = \begin{bmatrix}0.577 & 1.155\\0.577 & 0.577\end{bmat
 ```
 
 **Step 3:** Apply softmax (row-wise, rounded to 3 d.p.):
+
 - Row 1: $e^{0.577} = 1.781, e^{1.155} = 3.173$, sum $= 4.954$
 - Row 2: $e^{0.577} = 1.781, e^{0.577} = 1.781$, sum $= 3.562$
 
@@ -898,6 +923,7 @@ This concludes Part 1 of the mathematics tutorial, covering the foundational con
 5. **Training objectives** - next-token prediction and embeddings
 
 **Continue to [Part 2: Advanced Concepts and Scaling](./transformers_math2.md)** to learn about:
+
 - Advanced optimization techniques (Adam, learning rate schedules)
 - Efficient attention implementations (FlashAttention, KV caching)
 - Regularization and generalization techniques
