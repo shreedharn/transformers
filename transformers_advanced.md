@@ -22,11 +22,11 @@ Causal Language Modeling (CLM):
 - Properties: Enables natural text completion and few-shot learning
 
   $$
-  \begin{aligned}
-  p(x\_{t+1} | x\_1, \ldots, x\_t) &: \text{Autoregressive prediction probability} \newline
+\begin{aligned}
+p(x\_{t+1} | x\_1, \ldots, x\_t) &: \text{Autoregressive prediction probability} \newline
   \mathcal{L}\_{CLM} &= -\sum\_{t=1}^{n-1} \log P(x\_{t+1} | x\_1, \ldots, x\_t)
-  \end{aligned}
-  $$
+\end{aligned}
+$$
 
 Masked Language Modeling (MLM):
 
@@ -36,10 +36,10 @@ Masked Language Modeling (MLM):
 - Limitations: Doesn't naturally generate sequences, requires special handling for generation
 
   $$
-  \begin{aligned}
-  \mathcal{L}\_{MLM} &= -\sum\_{i \in \text{masked}} \log P(x\_i | x\_{\setminus i})
-  \end{aligned}
-  $$
+\begin{aligned}
+\mathcal{L}\_{MLM} &= -\sum\_{i \in \text{masked}} \log P(x\_i | x\_{\setminus i})
+\end{aligned}
+$$
 
 Span Corruption (T5-style):
 
@@ -49,10 +49,10 @@ Span Corruption (T5-style):
 - Use case: Sequence-to-sequence tasks like summarization, translation
 
   $$
-  \begin{aligned}
-  \mathcal{L}\_{span} &= -\sum\_{s \in \text{spans}} \sum\_{t \in s} \log P(x\_t | \text{prefix}, \text{context})
-  \end{aligned}
-  $$
+\begin{aligned}
+\mathcal{L}\_{span} &= -\sum\_{s \in \text{spans}} \sum\_{t \in s} \log P(x\_t | \text{prefix}, \text{context})
+\end{aligned}
+$$
 
 ### Supervised Fine-Tuning and Instruction Tuning
 
@@ -92,13 +92,13 @@ Reinforcement Learning from Human Feedback (RLHF):
 3. Iterative refinement: Alternate between reward model updates and policy optimization
 
   $$
-  \begin{aligned}
-  \mathcal{L}\_{reward} &= -\mathbb{E}\_{(x,y\_w,y\_l)} [\log \sigma(r(x,y\_w) - r(x,y\_l))] \newline
+\begin{aligned}
+\mathcal{L}\_{reward} &= -\mathbb{E}\_{(x,y\_w,y\_l)} [\log \sigma(r(x,y\_w) - r(x,y\_l))] \newline
   &\text{where } y\_w \text{ is preferred over } y\_l \text{ by humans} \newline
   \mathcal{L}\_{RLHF} &= \mathbb{E}\_x [r(x, \pi(x))] - \beta \cdot \mathbb{KL}[\pi(x) || \pi\_{ref}(x)] \newline
   &\text{where } \pi\_{ref} \text{ is the reference model and } \beta \text{ controls KL divergence}
-  \end{aligned}
-  $$
+\end{aligned}
+$$
 
 3. Iterative refinement: Alternate between reward model updates and policy optimization
 
@@ -108,10 +108,10 @@ Direct Preference Optimization (DPO):
 - Advantages: Simpler pipeline, more stable training, avoids reward hacking
 
   $$
-  \begin{aligned}
-  \mathcal{L}\_{DPO} &= -\mathbb{E}\_{(x,y\_w,y\_l)} \left[\log \sigma\left(\beta \log \frac{\pi(y\_w|x)}{\pi\_{ref}(y\_w|x)} - \beta \log \frac{\pi(y\_l|x)}{\pi\_{ref}(y\_l|x)}\right)\right]
-  \end{aligned}
-  $$
+\begin{aligned}
+\mathcal{L}\_{DPO} &= -\mathbb{E}\_{(x,y\_w,y\_l)} \left[\log \sigma\left(\beta \log \frac{\pi(y\_w|x)}{\pi\_{ref}(y\_w|x)} - \beta \log \frac{\pi(y\_l|x)}{\pi\_{ref}(y\_l|x)}\right)\right]
+\end{aligned}
+$$
 
 Constitutional AI (CAI):
 
@@ -420,11 +420,11 @@ Key Parameters:
 - Target modules: Which layers to adapt (attention projections, FFN layers)
 
   $$
-  \begin{aligned}
-  r &: \text{Rank parameter} \newline
+\begin{aligned}
+r &: \text{Rank parameter} \newline
   \alpha &: \text{Scaling factor (typically } 2r\text{)}
-  \end{aligned}
-  $$
+\end{aligned}
+$$
 
 Benefits:
 
@@ -473,11 +473,11 @@ Prefix Tuning:
 - Use cases: Task-specific conditioning without weight modification
 
   $$
-  \begin{aligned}
-  h\_0 &= [P\_{\text{prefix}}; E\_{\text{input}}] \newline
+\begin{aligned}
+h\_0 &= [P\_{\text{prefix}}; E\_{\text{input}}] \newline
   &\text{where } P\_{\text{prefix}} \text{ are learned virtual tokens}
-  \end{aligned}
-  $$
+\end{aligned}
+$$
 
 P-Tuning v2:
 
@@ -485,10 +485,10 @@ P-Tuning v2:
 - Advantages: More expressive than single-layer prefix tuning
 
   $$
-  \begin{aligned}
-  P^{(l)} &: \text{Learnable prompt tokens at layer } l
-  \end{aligned}
-  $$
+\begin{aligned}
+P^{(l)} &: \text{Learnable prompt tokens at layer } l
+\end{aligned}
+$$
 
 Adapter Layers:
 
@@ -496,21 +496,21 @@ Adapter Layers:
 - Bottleneck: Down-project, activate, up-project architecture
 
   $$
-  \begin{aligned}
-  \text{Adapter}(x) &= x + \text{MLP}\_{\text{down,up}}(\text{LayerNorm}(x))
-  \end{aligned}
-  $$
+\begin{aligned}
+\text{Adapter}(x) &= x + \text{MLP}\_{\text{down,up}}(\text{LayerNorm}(x))
+\end{aligned}
+$$
 
 IA³ (Infused Adapter by Inhibiting and Amplifying Inner Activations):
 
 - Mechanism: Element-wise scaling of intermediate activations
 
   $$
-  \begin{aligned}
-  y &= x \odot \ell\_v \newline
+\begin{aligned}
+y &= x \odot \ell\_v \newline
   &\text{where } \ell\_v \text{ are learned scaling vectors}
-  \end{aligned}
-  $$
+\end{aligned}
+$$
 
 - Ultra-efficiency: Introduces only ~0.01% additional parameters
 
@@ -621,10 +621,10 @@ GPTQ (Gradual Post-Training Quantization):
 - Process: Use Hessian information to guide quantization decisions
 
   $$
-  \begin{aligned}
-  \min\_{\hat{W}} \|WX - \hat{W}X\|\_{F}^2 \quad \text{where } \hat{W} \text{ is quantized}
-  \end{aligned}
-  $$
+\begin{aligned}
+\min\_{\hat{W}} \|WX - \hat{W}X\|\_{F}^2 \quad \text{where } \hat{W} \text{ is quantized}
+\end{aligned}
+$$
 
 AWQ (Activation-aware Weight Quantization):
 
@@ -796,10 +796,10 @@ Attention Collapse:
 - Causes: Poor initialization, insufficient training, inappropriate learning rates
 
   $$
-  \begin{aligned}
-  H &= -\sum\_j A\_{ij} \log A\_{ij} \quad \text{(Attention entropy for diagnosis)}
-  \end{aligned}
-  $$
+\begin{aligned}
+H &= -\sum\_j A\_{ij} \log A\_{ij} \quad \text{(Attention entropy for diagnosis)}
+\end{aligned}
+$$
 
 Gradient Vanishing/Exploding:
 

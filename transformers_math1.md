@@ -59,7 +59,7 @@ Connecting to Optimization: In machine learning, we want to find the "bottom of 
 
 #### From 2D Slopes to Gradient Descent
 
-The Derivative as Slope: For any function $f(x)$, the derivative $\frac{df}{dx}$ tells us the slope at any point:
+The Derivative as Slope: For any function $$f(x)$$, the derivative $$\frac{df}{dx}$$ tells us the slope at any point:
 
 ```math
 \frac{df}{dx} = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
@@ -67,23 +67,23 @@ The Derivative as Slope: For any function $f(x)$, the derivative $\frac{df}{dx}$
 
 What this equation means: "If I move a tiny amount h to the right, how much does f change?" The derivative is the limit as that tiny amount approaches zero.
 
-Gradient Descent in One Dimension: If we want to minimize $f(x)$, we update $x$ using:
+Gradient Descent in One Dimension: If we want to minimize $$f(x)$$, we update $$x$$ using:
 
 ```math
 x_{\text{new}} = x_{\text{old}} - \alpha \frac{df}{dx}
 ```
 
-where $\alpha$ (alpha) is the learning rate - how big steps we take.
+where $$\alpha$$ (alpha) is the learning rate - how big steps we take.
 
 The key insight: The negative sign makes us go *opposite* to the slope direction. If the slope is positive (going uphill to the right), we move left. If the slope is negative (going downhill to the right), we move right.
 
 #### Worked Example: f(x) = x²
 
-Let's minimize $f(x) = x^2$ starting from $x = 3$:
+Let's minimize $$f(x) = x^2$$ starting from $$x = 3$$:
 
-Step 1: Compute the derivative: $\frac{df}{dx} = 2x$
+Step 1: Compute the derivative: $$\frac{df}{dx} = 2x$$
 
-Step 2: Choose learning rate: $\alpha = 0.1$
+Step 2: Choose learning rate: $$\alpha = 0.1$$
 
 Step 3: Update step by step:
 
@@ -106,10 +106,10 @@ What's happening: We're taking steps toward x = 0 (the minimum of x²), and each
 
 #### Extending to Multiple Variables: Gradients as Vectors
 
-From Derivatives to Gradients: When we have multiple variables, like $f(x, y) = x^2 + y^2$, we need partial derivatives:
+From Derivatives to Gradients: When we have multiple variables, like $$f(x, y) = x^2 + y^2$$, we need partial derivatives:
 
-- $\frac{\partial f}{\partial x} = 2x$ (rate of change with respect to x, holding y fixed)
-- $\frac{\partial f}{\partial y} = 2y$ (rate of change with respect to y, holding x fixed)
+- $$\frac{\partial f}{\partial x} = 2x$$ (rate of change with respect to x, holding y fixed)
+- $$\frac{\partial f}{\partial y} = 2y$$ (rate of change with respect to y, holding x fixed)
 
 The Gradient Vector: We combine these into a gradient vector:
 
@@ -160,7 +160,7 @@ W_{\text{new}} = W_{\text{old}} - \alpha \frac{\partial L}{\partial W}
 b_{\text{new}} = b_{\text{old}} - \alpha \frac{\partial L}{\partial b}
 ```
 
-Key Insight: The same learning rate $\alpha$ controls the step size for all parameters, just like in our simple 1D case.
+Key Insight: The same learning rate $$\alpha$$ controls the step size for all parameters, just like in our simple 1D case.
 
 #### Single Hidden Layer MLP: Putting It All Together
 
@@ -179,7 +179,7 @@ Z_2 = A_1 W_2 + b_2 \quad \text{(shape: samples x outputs)}
 Y_{\text{hat}} = Z_2 \quad \text{(final predictions)}
 ```
 
-where $\sigma$ is an activation function like ReLU or sigmoid.
+where $$\sigma$$ is an activation function like ReLU or sigmoid.
 
 Backward Pass (Backpropagation):
 
@@ -225,19 +225,19 @@ b_2 \leftarrow b_2 - \alpha \frac{\partial L}{\partial b_2}
 
 Understanding the δ terms:
 
-- $\delta_2$: "How much does changing each output neuron's value affect the loss?"
-- $\delta_1$: "How much does changing each hidden neuron's value affect the loss?"
+- $$\delta\_\1$$: "How much does changing each output neuron's value affect the loss?"
+- $$\delta\_\1$$: "How much does changing each hidden neuron's value affect the loss?"
 
-The $\delta$ terms flow backwards through the network, carrying error information from the output back to earlier layers.
+The $$\delta$$ terms flow backwards through the network, carrying error information from the output back to earlier layers.
 
 #### The Learning Rate α: Universal Step Size Controller
 
-Same Role Everywhere: Notice that $\alpha$ plays the identical role in:
+Same Role Everywhere: Notice that $$\alpha$$ plays the identical role in:
 
-- 1D gradient descent: $x \leftarrow x - \alpha \frac{df}{dx}$
-- Vector gradient descent: $\mathbf{x} \leftarrow \mathbf{x} - \alpha \nabla f$
-- Matrix gradient descent: $W \leftarrow W - \alpha \frac{\partial L}{\partial W}$
-- Neural network training: All parameters use the same $\alpha$
+- 1D gradient descent: $$x \leftarrow x - \alpha \frac{df}{dx}$$
+- Vector gradient descent: $$\mathbf{x} \leftarrow \mathbf{x} - \alpha \nabla f$$
+- Matrix gradient descent: $$W \leftarrow W - \alpha \frac{\partial L}{\partial W}$$
+- Neural network training: All parameters use the same $$\alpha$$
 
 Choosing α:
 
@@ -275,17 +275,17 @@ This is why understanding the simple case of line slopes gives us insight into t
 
 #### 2.1.2 Gradient Fields and Optimization
 
-Gradient Descent as Continuous Flow: Parameter updates $\theta_{t+1} = \theta_t - \eta \nabla_\theta \mathcal{L}$ approximate the ODE:
+Gradient Descent as Continuous Flow: Parameter updates $$\theta\_\{t+1} = \theta\_\1 - \eta \nabla_\theta \mathcal{L}$$ approximate the ODE:
 ```math
 \frac{d\theta}{dt} = -\nabla_\theta \mathcal{L}(\theta) \quad (3)
 ```
 
 Understanding the symbols:
 
-- $\theta$ (theta): The parameters we want to learn - think of these as the "knobs" we can adjust
-- $\eta$ (eta): Learning rate - how big steps we take. Like deciding whether to take baby steps or giant leaps when hiking downhill
-- $\nabla$ (nabla): The gradient symbol - points in the direction of steepest ascent (we go opposite direction to descend)
-- $\mathcal{L}$ (script L): The loss function - measures how "wrong" our current parameters are
+- $$\theta$$ (theta): The parameters we want to learn - think of these as the "knobs" we can adjust
+- $$\eta$$ (eta): Learning rate - how big steps we take. Like deciding whether to take baby steps or giant leaps when hiking downhill
+- $$\nabla$$ (nabla): The gradient symbol - points in the direction of steepest ascent (we go opposite direction to descend)
+- $$\mathcal{L}$$ (script L): The loss function - measures how "wrong" our current parameters are
 
 What the equation means: "Change the parameters in the opposite direction of the gradient, scaled by the learning rate."
 
@@ -295,7 +295,7 @@ Why This Matters: Understanding optimization as flow helps explain momentum meth
 
 #### 2.1.3 Residual Connections as Discretized Dynamics
 
-Residual Block: $\mathbf{h}_{l+1} = \mathbf{h}_l + F(\mathbf{h}_l)$ approximates:
+Residual Block: $$\mathbf{h}\_\{l+1} = \mathbf{h}\_\1 + F(\mathbf{h}\_\1)$$ approximates:
 ```math
 \frac{d\mathbf{h}}{dt} = F(\mathbf{h}) \quad (4)
 ```
@@ -308,7 +308,7 @@ Why this enables deep networks: In very deep networks (50+ layers), gradients te
 
 This enables training very deep networks by maintaining gradient flow.
 
-Stability Consideration: The transformation $F$ should be well-conditioned to avoid exploding/vanishing gradients.
+Stability Consideration: The transformation $$F$$ should be well-conditioned to avoid exploding/vanishing gradients.
 
 💻 Implementation Example: For a practical implementation of residual connections, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
 
@@ -328,9 +328,9 @@ Why this matters for attention: When transformers compute attention, they're ask
 
 Linear transformations in neural networks:
 
-- Weight matrices $W$ transform input meanings: $\mathbf{h}_{\text{new}} = \mathbf{h}_{\text{old}} W$
-- Multiple transformations compose: $\mathbf{h}_3 = \mathbf{h}_1 W_1 W_2$ applies two sequential meaning transformations
-- Transpose operations $W^T$ reverse transformations during backpropagation
+- Weight matrices $$W$$ transform input meanings: $$\mathbf{h}\_\{\text{new}} = \mathbf{h}\_\{\text{old}} W$$
+- Multiple transformations compose: $$\mathbf{h}\_\1 = \mathbf{h}\_\1 W\_\1 W\_\1$$ applies two sequential meaning transformations
+- Transpose operations $$W^T$$ reverse transformations during backpropagation
 
 Block matrix operations enable parallel processing:
 ```math
@@ -373,7 +373,7 @@ Why cross-entropy is perfect for language modeling:
 
 - Encourages confident correct predictions: Low loss when p_i ≈ 1 for correct answer
 - Harshly penalizes confident wrong predictions: High loss when p_i ≈ 0 for correct answer
-- Provides clean gradients: $\nabla \mathcal{L} = \mathbf{p} - \mathbf{y}$ (predicted - true)
+- Provides clean gradients: $$\nabla \mathcal{L} = \mathbf{p} - \mathbf{y}$$ (predicted - true)
 - Matches softmax naturally: Both work with probability distributions
 
 Example: If the model predicts 90% probability for the correct next word, loss is low. If it predicts 1% probability for the correct next word, loss is very high.
@@ -384,10 +384,10 @@ Example: If the model predicts 90% probability for the correct next word, loss i
 
 Two-layer MLP:
 
-Shape Analysis: If input $\mathbf{x} \in \mathbb{R}^{1 \times d_{\text{in}}}$:
+Shape Analysis: If input $$\mathbf{x} \in \mathbb{R}^{1 \times d\_\{\text{in}}}$$:
 
-- $W^{(1)} \in \mathbb{R}^{d_{\text{in}} \times d_{\text{hidden}}}$
-- $W^{(2)} \in \mathbb{R}^{d_{\text{hidden}} \times d_{\text{out}}}$
+- $$W^{(1)} \in \mathbb{R}^{d\_\{\text{in}} \times d\_\{\text{hidden}}}$$
+- $$W^{(2)} \in \mathbb{R}^{d\_\{\text{hidden}} \times d\_\{\text{out}}}$$
 
 ### 3.2 Backpropagation Derivation
 
@@ -399,17 +399,19 @@ Loss Gradient w.r.t. Output:
 Weight Gradients:
 
 ```math
+$$
 \begin{aligned}
 \frac{\partial \mathcal{L}}{\partial W^{(2)}} &= (\mathbf{h}^{(1)})^T \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} \\
 \frac{\partial \mathcal{L}}{\partial W^{(1)}} &= \mathbf{x}^T \left[ \left( \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} W^{(2)T} \right) \odot \sigma'(\mathbf{z}^{(1)}) \right]
 \end{aligned}
+$$
 ```
 
-- Where $\odot$ denotes element-wise multiplication.
-- $\sigma'(\mathbf{z}^{(1)})$ is the derivative of the activation function applied elementwise.
-- $\frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}}$ is the gradient of the loss with respect to the pre-activation output of the second layer.
+- Where $$\odot$$ denotes element-wise multiplication.
+- $$\sigma'(\mathbf{z}^{(1)})$$ is the derivative of the activation function applied elementwise.
+- $$\frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}}$$ is the gradient of the loss with respect to the pre-activation output of the second layer.
 
-where $\odot$ denotes element-wise multiplication.
+where $$\odot$$ denotes element-wise multiplication.
 
 ### 3.3 Advanced Normalization Techniques
 
@@ -418,19 +420,19 @@ LayerNorm: Normalizes across features within each sample:
 \text{LayerNorm}(\mathbf{x}) = \gamma \odot \frac{\mathbf{x} - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta \quad (19)
 ```
 
-Shape Analysis: For $\mathbf{x} \in \mathbb{R}^{n \times d}$: $\gamma, \beta \in \mathbb{R}^{d}$ (learnable per-feature parameters)
+Shape Analysis: For $$\mathbf{x} \in \mathbb{R}^{n \times d}$$: $$\gamma, \beta \in \mathbb{R}^{d}$$ (learnable per-feature parameters)
 
 Understanding the Greek letters:
 
-- $\mu$ (mu): The mean (average) of all the numbers
-- $\sigma$ (sigma): The standard deviation - how spread out the numbers are from the average
-- $\gamma$ (gamma): A learnable scale parameter - lets the model decide how much to amplify the result
-- $\beta$ (beta): A learnable shift parameter - lets the model decide how much to shift the result
-- $\epsilon$ (epsilon): A tiny number to prevent division by zero
+- $$\mu$$ (mu): The mean (average) of all the numbers
+- $$\sigma$$ (sigma): The standard deviation - how spread out the numbers are from the average
+- $$\gamma$$ (gamma): A learnable scale parameter - lets the model decide how much to amplify the result
+- $$\beta$$ (beta): A learnable shift parameter - lets the model decide how much to shift the result
+- $$\epsilon$$ (epsilon): A tiny number to prevent division by zero
 
 What LayerNorm does: "Make all the numbers have zero average and unit variance, then let the model scale and shift them as needed." It's like standardizing test scores so they're all on the same scale.
 
-where $\mu = \frac{1}{d}\sum_{i=1}^d x_i$ and $\sigma^2 = \frac{1}{d}\sum_{i=1}^d (x_i - \mu)^2$.
+where $$\mu = \frac{1}{d}\sum\_\{i=1}^d x\_\1$$ and $$\sigma^2 = \frac{1}{d}\sum\_\{i=1}^d (x\_\1 - \mu)^2$$.
 
 Why LayerNorm for Sequences: Unlike BatchNorm, it doesn't depend on batch statistics, making it suitable for variable-length sequences.
 
@@ -447,12 +449,12 @@ Scaled Residuals: In very deep networks, scale residual connections:
 ```math
 \mathbf{h}_{l+1} = \mathbf{h}_l + \alpha \cdot F(\mathbf{h}_l)
 ```
-where $\alpha < 1$ prevents residual explosion.
+where $$\alpha < 1$$ prevents residual explosion.
 
 Pre-LN vs Post-LN:
 
-- Pre-LN (modern): $\mathbf{h}_{l+1} = \mathbf{h}_l + F(\text{LN}(\mathbf{h}_l))$
-- Post-LN (original): $\mathbf{h}_{l+1} = \text{LN}(\mathbf{h}_l + F(\mathbf{h}_l))$
+- Pre-LN (modern): $$\mathbf{h}\_\{l+1} = \mathbf{h}\_\1 + F(\text{LN}(\mathbf{h}\_\1))$$
+- Post-LN (original): $$\mathbf{h}\_\{l+1} = \text{LN}(\mathbf{h}\_\1 + F(\mathbf{h}\_\1))$$
 
 Pre-LN advantages: Better gradient flow, more stable training, enables training deeper models.
 
@@ -492,7 +494,6 @@ Step-by-step calculation:
 2. Magnitudes:
    - ||A|| = √(0.8² + 0.2² + 0.1²) = √(0.64 + 0.04 + 0.01) = √0.69 ≈ 0.83
    - ||B|| = √(0.7² + 0.3² + 0.2²) = √(0.49 + 0.09 + 0.04) = √0.62 ≈ 0.79
-
 3. Cosine similarity: 0.64 / (0.83 × 0.79) ≈ 0.64 / 0.66 ≈ 0.97
 
 Interpretation: Values range from -1 (opposite) to 1 (identical). 0.97 indicates high similarity - "cat" and "dog" point in nearly the same direction in semantic space.
@@ -535,7 +536,7 @@ Connection to Attention: Query-key similarity in attention is inner product sear
 
 ### 5.1 Deriving Scaled Dot-Product Attention
 
-Step 1: Start with similarity search between query $\mathbf{q}$ and keys $\{\mathbf{k}_i\}$:
+Step 1: Start with similarity search between query $$\mathbf{q}$$ and keys $$\{\mathbf{k}\_\1\}$$:
 ```math
 s_i = \mathbf{q}^T \mathbf{k}_i \quad (20)
 ```
@@ -545,7 +546,7 @@ Step 2: Convert similarities to weights via softmax:
 \alpha_i = \frac{e^{s_i}}{\sum_{j=1}^n e^{s_j}} \quad (21)
 ```
 
-Understanding $\alpha$ (alpha): These are the attention weights - they tell us "how much should I pay attention to each word?" The $\alpha_i$ values all add up to 1, like percentages.
+Understanding $$\alpha$$ (alpha): These are the attention weights - they tell us "how much should I pay attention to each word?" The $$\alpha\_\1$$ values all add up to 1, like percentages.
 
 Why use softmax instead of just raw similarities?
 
@@ -569,14 +570,14 @@ Matrix Form: For sequences, this becomes:
 \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V \quad (23)
 ```
 
-Shape Analysis: $Q \in \mathbb{R}^{n \times d_k}, K \in \mathbb{R}^{n \times d_k}, V \in \mathbb{R}^{n \times d_v} \Rightarrow \text{Output} \in \mathbb{R}^{n \times d_v}$
+Shape Analysis: $$Q \in \mathbb{R}^{n \times d\_\1}, K \in \mathbb{R}^{n \times d\_\1}, V \in \mathbb{R}^{n \times d\_\1} \Rightarrow \text{Output} \in \mathbb{R}^{n \times d\_\1}$$
 
 What this equation accomplishes step-by-step:
 
-1. $QK^T$ creates a "compatibility matrix" - every query checks against every key
-2. $\frac{1}{\sqrt{d_k}}$ scales the scores to prevent them from getting too large
-3. $\text{softmax}$ converts raw compatibility scores into probability-like weights
-4. Multiply by $V$ to get a weighted sum of value vectors
+1. $$QK^T$$ creates a "compatibility matrix" - every query checks against every key
+2. $$\frac{1}{\sqrt{d\_\1}}$$ scales the scores to prevent them from getting too large
+3. $$\text{softmax}$$ converts raw compatibility scores into probability-like weights
+4. Multiply by $$V$$ to get a weighted sum of value vectors
 
 Library analogy: Think of attention like a smart librarian. Q is your question ("I need books about neural networks"), K represents the subject tags of all books, V contains the actual book contents. The librarian (attention mechanism) looks at your question, checks which books are most relevant (QK^T), decides how much attention to give each book (softmax), and gives you a summary that's mostly from the most relevant books but includes a little from others (weighted sum with V).
 
@@ -587,56 +588,58 @@ Causal Masking: For autoregressive models, prevent attention to future tokens:
 P = \text{softmax}\left(\frac{QK^T + M}{\sqrt{d_k}}\right) \quad (24)
 ```
 
-where mask $M_{ij} \in \{0, -\infty\}$ with $M_{ij} = -\infty$ if $i < j$ (future positions).
+where mask $$M\_\{ij} \in \{0, -\infty\}$$ with $$M\_\{ij} = -\infty$$ if $$i < j$$ (future positions).
 
-Numerical Stability: Instead of $-\infty$, use large negative values (e.g., $-10^9$) to prevent NaN gradients:
+Numerical Stability: Instead of $$-\infty$$, use large negative values (e.g., $$-10^9$$) to prevent NaN gradients:
 
 💻 Implementation Example: For causal mask implementation, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
 
-Padding Masks: Mask out padding tokens by setting their attention scores to $-\infty$ before softmax. This ensures padding tokens receive zero attention weight.
+Padding Masks: Mask out padding tokens by setting their attention scores to $$-\infty$$ before softmax. This ensures padding tokens receive zero attention weight.
 
-Key Insight: Additive masking (adding $-\infty$) is preferred over multiplicative masking because it works naturally with softmax normalization.
+Key Insight: Additive masking (adding $$-\infty$$) is preferred over multiplicative masking because it works naturally with softmax normalization.
 
-### 5.2 Why the $\sqrt{d_k}$ Scaling?
+### 5.2 Why the $$\sqrt{d\_\1}$$ Scaling?
 
-Variance Analysis: If $Q, K$ have i.i.d. entries with variance $\sigma^2$, then:
+Variance Analysis: If $$Q, K$$ have i.i.d. entries with variance $$\sigma^2$$, then:
 ```math
 \text{Var}(QK^T) = d_k \sigma^4 \quad (24)
 ```
 
-Understanding $\sigma$ (sigma): This represents the variance - how spread out the numbers are. Think of it as measuring "how noisy" or "how varied" the data is.
+Understanding $$\sigma$$ (sigma): This represents the variance - how spread out the numbers are. Think of it as measuring "how noisy" or "how varied" the data is.
 
 What "i.i.d." means: Independent and identically distributed - each number is random and doesn't depend on the others, like rolling dice multiple times.
 
-Without scaling, attention weights become too peaked (sharp) as $d_k$ increases, leading to poor gradients and attention collapse.
+Without scaling, attention weights become too peaked (sharp) as $$d\_\1$$ increases, leading to poor gradients and attention collapse.
 
 Pitfall: Forgetting this scaling leads to attention collapse - weights become too concentrated rather than appropriately distributed.
 
 ### 5.3 Backpropagation Through Attention
 
-Softmax Gradient: For $\mathbf{p} = \text{softmax}(\mathbf{z})$:
+Softmax Gradient: For $$\mathbf{p} = \text{softmax}(\mathbf{z})$$:
 ```math
 \frac{\partial p_i}{\partial z_j} = p_i(\delta_{ij} - p_j) \quad (25)
 ```
 
-where $\delta_{ij}$ is the Kronecker delta.
+where $$\delta\_\{ij}$$ is the Kronecker delta.
 
-What is $\delta_{ij}$ (delta)? It's a simple function that equals 1 when i=j (same position) and 0 otherwise. Think of it as asking "are these the same thing?" - if yes, return 1; if no, return 0.
+What is $$\delta\_\{ij}$$ (delta)? It's a simple function that equals 1 when i=j (same position) and 0 otherwise. Think of it as asking "are these the same thing?" - if yes, return 1; if no, return 0.
 
 Attention Gradients:
 
-Let $S = QK^T/\sqrt{d_k}$, $P=\mathrm{softmax}(S)$ (row-wise), $O = PV$. Given $G_O=\partial \mathcal{L}/\partial O$:
+Let $$S = QK^T/\sqrt{d\_\1}$$, $$P=\mathrm{softmax}(S)$$ (row-wise), $$O = PV$$. Given $$G\_\1=\partial \mathcal{L}/\partial O$$:
 
 ```math
+$$
 \begin{aligned}
-G_V &= P^T G_O,\quad &&\text{(V same shape as }V\text{)}\\
-G_P &= G_O V^T,\\
-G_{S,r} &= \big(\mathrm{diag}(P_r) - P_r P_r^T\big)\, G_{P,r}\quad &&\text{(row }r\text{; softmax Jacobian)}\\
-G_Q &= G_S K/\sqrt{d_k},\quad G_K = G_S^T Q/\sqrt{d_k}.
+G\_V &= P^T G\_O,\quad &&\text{(V same shape as }V\text{)}\\
+G\_P &= G\_O V^T,\\
+G\_{S,r} &= \big(\mathrm{diag}(P\_r) - P\_r P\_r^T\big)\, G\_{P,r}\quad &&\text{(row }r\text{; softmax Jacobian)}\\
+G\_Q &= G\_S K/\sqrt{d\_k},\quad G\_K = G\_S^T Q/\sqrt{d\_k}.
 \end{aligned}
+$$
 ```
 
-Parameters: $Q,K\in\mathbb{R}^{n\times d_k}$, $V\in\mathbb{R}^{n\times d_v}$.
+Parameters: $$Q,K\in\mathbb{R}^{n\times d\_\1}$$, $$V\in\mathbb{R}^{n\times d\_\1}$$.
 Intuition: Backprop splits into (i) linear parts, (ii) softmax Jacobian per row.
 
 ## 6. Multi-Head Attention & Positional Information
@@ -645,7 +648,7 @@ Intuition: Backprop splits into (i) linear parts, (ii) softmax Jacobian per row.
 
 ### 6.1 Multi-Head as Subspace Projections
 
-Single Head: Projects to subspace of dimension $d_k = d_{\text{model}}/h$:
+Single Head: Projects to subspace of dimension $$d\_\1 = d\_\{\text{model}}/h$$:
 ```math
 \text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V) \quad (26)
 ```
@@ -662,7 +665,7 @@ Why multiple heads instead of one big head? Different heads can specialize in di
 - Head 3 might focus on position: "What words are nearby?"
 - Head 4 might focus on long-range dependencies: "What words are related despite being far apart?"
 
-Meeting analogy: Like having different experts in a meeting. Instead of one generalist trying to understand everything, you have specialists: a grammar expert, a meaning expert, a structure expert, etc. Each contributes their perspective, then all insights are combined (concatenated and projected through $W^O$).
+Meeting analogy: Like having different experts in a meeting. Instead of one generalist trying to understand everything, you have specialists: a grammar expert, a meaning expert, a structure expert, etc. Each contributes their perspective, then all insights are combined (concatenated and projected through $$W^O$$).
 
 Why split the dimension? Rather than having 8 heads each looking at 512-dimensional vectors, we have 8 heads each looking at 64-dimensional projections (512/8=64). This forces each head to focus on a specific subset of features, encouraging specialization.
 
@@ -671,24 +674,24 @@ Implementation Details:
 Linear Projections (Not MLPs):
 Each head uses simple linear transformations:
 
-- $W_i^Q, W_i^K, W_i^V \in \mathbb{R}^{d_{\text{model}} \times d_k}$ where $d_k = d_{\text{model}}/h$
+- $$W\_\1^Q, W\_\1^K, W\_\1^V \in \mathbb{R}^{d\_\{\text{model}} \times d\_\1}$$ where $$d\_\1 = d\_\{\text{model}}/h$$
 - These are single linear layers, not multi-layer perceptrons
-- Total projection parameters per layer: $3 \times h \times d_{\text{model}} \times d_k = 3d_{\text{model}}^2$
+- Total projection parameters per layer: $$3 \times h \times d\_\{\text{model}} \times d\_\1 = 3d\_\{\text{model}}^2$$
 
 Efficient Implementation:
 Instead of computing each head separately, implementations often:
 
-1. Concatenate all head projections: $W^Q = [W_1^Q, W_2^Q, ..., W_h^Q] \in \mathbb{R}^{d_{\text{model}} \times d_{\text{model}}}$
-2. Compute $Q = XW^Q, K = XW^K, V = XW^V$ in parallel
-3. Reshape tensors to separate heads: $(n, d_{\text{model}}) \to (n, h, d_k)$
+1. Concatenate all head projections: $$W^Q = [W\_\1^Q, W\_\1^Q, ..., W\_\1^Q] \in \mathbb{R}^{d\_\{\text{model}} \times d\_\{\text{model}}}$$
+2. Compute $$Q = XW^Q, K = XW^K, V = XW^V$$ in parallel
+3. Reshape tensors to separate heads: $$(n, d\_\{\text{model}}) \to (n, h, d\_\1)$$
 4. Apply attention computation across all heads simultaneously
 
 Parameter Analysis:
 
-- Per-head projections: $3 \times d_{\text{model}} \times d_k = 3 \times d_{\text{model}} \times (d_{\text{model}}/h)$
-- Total projections: $3d_{\text{model}}^2$ (same as single-head with full dimension)
-- Output projection: $W^O \in \mathbb{R}^{d_{\text{model}} \times d_{\text{model}}}$ adds $d_{\text{model}}^2$ parameters
-- Total multi-head parameters: $4d_{\text{model}}^2$
+- Per-head projections: $$3 \times d\_\{\text{model}} \times d\_\1 = 3 \times d\_\{\text{model}} \times (d\_\{\text{model}}/h)$$
+- Total projections: $$3d\_\{\text{model}}^2$$ (same as single-head with full dimension)
+- Output projection: $$W^O \in \mathbb{R}^{d\_\{\text{model}} \times d\_\{\text{model}}}$$ adds $$d\_\{\text{model}}^2$$ parameters
+- Total multi-head parameters: $$4d\_\{\text{model}}^2$$
 
 ### 6.2 Advanced Positional Encodings
 
@@ -702,8 +705,8 @@ PE_{(pos,2i+1)} &= \cos(pos/10000^{2i/d_{\text{model}}}) \quad (29)
 
 Mathematical Properties of Sinusoidal Encoding:
 
-- Linearity: For any fixed offset $k$, $PE_{pos+k}$ can be expressed as a linear function of $PE_{pos}$
-- Relative position encoding: The dot product $PE_{pos_i} \cdot PE_{pos_j}$ depends only on $|pos_i - pos_j|$
+- Linearity: For any fixed offset $$k$$, $$PE\_\{pos+k}$$ can be expressed as a linear function of $$PE\_\{pos}$$
+- Relative position encoding: The dot product $$PE\_\{pos\_\1} \cdot PE\_\{pos\_\1}$$ depends only on $$|pos\_\1 - pos\_\1|$$
 - Extrapolation: Can handle sequences longer than seen during training
 
 RoPE (Rotary Position Embedding): Rotates query-key pairs by position-dependent angles:
@@ -722,11 +725,11 @@ R_{\Theta,m}^{(i)} = \begin{pmatrix}
 \end{pmatrix}
 ```
 
-where $\theta_i = 10000^{-2i/d_{\text{model}}}$ for dimension pairs.
+where $$\theta\_\1 = 10000^{-2i/d\_\{\text{model}}}$$ for dimension pairs.
 
 Key RoPE Properties:
 
-- Relative position dependency: $\mathbf{q}_m^T \mathbf{k}_n$ depends only on $(m-n)$, not absolute positions
+- Relative position dependency: $$\mathbf{q}\_\1^T \mathbf{k}\_\1$$ depends only on $$(m-n)$$, not absolute positions
 - Length preservation: Rotation matrices preserve vector norms
 - Computational efficiency: Can be implemented without explicit matrix multiplication
 - Long sequence generalization: Better extrapolation to longer sequences than learned embeddings
@@ -743,7 +746,7 @@ ALiBi (Attention with Linear Biases): Adds position-dependent bias to attention 
 \text{ALiBi-Attention} = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}} + \text{bias}_{ij}\right)V
 ```
 
-where $\text{bias}_{ij} = -m \cdot |i - j|$ and $m$ is a head-specific slope.
+where $$\text{bias}\_\{ij} = -m \cdot |i - j|$$ and $$m$$ is a head-specific slope.
 
 Benefits of ALiBi:
 
@@ -756,11 +759,11 @@ T5 Relative Position Bias: Learns relative position embeddings:
 A_{ij} = \frac{q_i^T k_j}{\sqrt{d_k}} + b_{\text{rel}(i,j)}
 ```
 
-where $b_{\text{rel}(i,j)}$ is a learned bias based on relative distance $\text{rel}(i,j)$.
+where $$b\_\{\text{rel}(i,j)}$$ is a learned bias based on relative distance $$\text{rel}(i,j)$$.
 
 RoPE Scaling Variants:
 
-- Base scaling: Increase base frequency: $\theta_i = \alpha^{-2i/d} \cdot 10000^{-2i/d}$
+- Base scaling: Increase base frequency: $$\theta\_\1 = \alpha^{-2i/d} \cdot 10000^{-2i/d}$$
 - NTK scaling: Interpolate frequencies for better long-context performance
 - When to use: Base scaling for modest extensions (2-4x), NTK for extreme length
 
@@ -783,16 +786,16 @@ Feed-Forward Network:
 \text{FFN}(\mathbf{x}) = \text{GELU}(\mathbf{x}W_1 + \mathbf{b}_1)W_2 + \mathbf{b}_2 \quad (36)
 ```
 
-Shape Analysis: $\mathbf{x} \in \mathbb{R}^{n \times d_{\text{model}}}, W_1 \in \mathbb{R}^{d_{\text{model}} \times d_{\text{ffn}}}, W_2 \in \mathbb{R}^{d_{\text{ffn}} \times d_{\text{model}}}$
+Shape Analysis: $$\mathbf{x} \in \mathbb{R}^{n \times d\_\{\text{model}}}, W\_\1 \in \mathbb{R}^{d\_\{\text{model}} \times d\_\{\text{ffn}}}, W\_\1 \in \mathbb{R}^{d\_\{\text{ffn}} \times d\_\{\text{model}}}$$
 
 What the FFN does intuitively: Think of it as a "thinking step" for each word individually. After attention has mixed information between words, the FFN lets each word "process" and transform its representation. It's like giving each word some individual processing time to digest the information it received from other words.
 
 Why expand then contract? The FFN first expands the representation to a higher dimension (usually 4× larger), applies a nonlinearity, then contracts back down. This is like having a "working space" where the model can perform more complex computations before producing the final result.
 
-Shape Tracking: For input $\mathbf{x} \in \mathbb{R}^{n \times d_{\text{model}}}$:
+Shape Tracking: For input $$\mathbf{x} \in \mathbb{R}^{n \times d\_\{\text{model}}}$$:
 
-- $W_1 \in \mathbb{R}^{d_{\text{model}} \times d_{\text{ffn}}}$ (typically $d_{\text{ffn}} = 4d_{\text{model}}$) - "expansion layer"
-- $W_2 \in \mathbb{R}^{d_{\text{ffn}} \times d_{\text{model}}}$ - "contraction layer"
+- $$W\_\1 \in \mathbb{R}^{d\_\{\text{model}} \times d\_\{\text{ffn}}}$$ (typically $$d\_\{\text{ffn}} = 4d\_\{\text{model}}$$) - "expansion layer"
+- $$W\_\1 \in \mathbb{R}^{d\_\{\text{ffn}} \times d\_\{\text{model}}}$$ - "contraction layer"
 
 ### 7.2 Why GELU over ReLU?
 
@@ -811,7 +814,7 @@ Why smoother is better:
 
 Real-world analogy: ReLU is like a light switch (on/off), while GELU is like a dimmer switch (gradual control).
 
-where $\Phi(x)$ is the standard normal CDF (cumulative distribution function - tells you the probability that a normal random variable is less than x). GELU provides smoother gradients than ReLU, improving optimization.
+where $$\Phi(x)$$ is the standard normal CDF (cumulative distribution function - tells you the probability that a normal random variable is less than x). GELU provides smoother gradients than ReLU, improving optimization.
 
 ## 8. Training Objective & Tokenization/Embeddings
 
@@ -822,7 +825,7 @@ Autoregressive Objective:
 \mathcal{L} = -\sum_{t=1}^T \log P(x_t | x_1, ..., x_{t-1}) \quad (38)
 ```
 
-Shape Analysis: For batch size $B$, sequence length $T$: loss computed per sequence, averaged over batch
+Shape Analysis: For batch size $$B$$, sequence length $$T$$: loss computed per sequence, averaged over batch
 
 Implementation: Use causal mask in attention to prevent information leakage from future tokens.
 
@@ -833,16 +836,16 @@ Token Embeddings: Map discrete tokens to continuous vectors:
 \mathbf{e}_i = E[i] \in \mathbb{R}^{d_{\text{model}}} \quad (39)
 ```
 
-where $E \in \mathbb{R}^{V \times d_{\text{model}}}$ is the embedding matrix.
+where $$E \in \mathbb{R}^{V \times d\_\{\text{model}}}$$ is the embedding matrix.
 
-Weight Tying: Share embedding matrix $E$ with output projection to reduce parameters:
+Weight Tying: Share embedding matrix $$E$$ with output projection to reduce parameters:
 ```math
 P(w_t | \text{context}) = \text{softmax}(\mathbf{h}_t E^T) \quad (40)
 ```
 
-Shape Analysis: For $\mathbf{h}_t \in \mathbb{R}^{1 \times d_{\text{model}}}$ and $E \in \mathbb{R}^{V \times d_{\text{model}}}$:
+Shape Analysis: For $$\mathbf{h}\_\1 \in \mathbb{R}^{1 \times d\_\{\text{model}}}$$ and $$E \in \mathbb{R}^{V \times d\_\{\text{model}}}$$:
 
-- $\mathbf{h}_t E^T \in \mathbb{R}^{1 \times V}$ (logits over vocabulary)
+- $$\mathbf{h}\_\1 E^T \in \mathbb{R}^{1 \times V}$$ (logits over vocabulary)
 - Consistent with row-vector convention
 
 Perplexity: Measures model uncertainty:
@@ -857,7 +860,7 @@ Perplexity: Measures model uncertainty:
 
 ### 9.1 Tiny Attention Forward Pass
 
-Setup: $n=2$ tokens, $d_k=d_v=3$, single head.
+Setup: $$n=2$$ tokens, $$d\_\1=d\_\1=3$$, single head.
 
 Input:
 ```
@@ -865,20 +868,20 @@ Q = [[1, 0, 1],    K = [[1, 1, 0],    V = [[2, 0, 1],
      [0, 1, 1]]         [1, 0, 1]]         [1, 1, 0]]
 ```
 
-Step 1: Compute raw scores $QK^T$:
+Step 1: Compute raw scores $$QK^T$$:
 ```math
 QK^T = \begin{bmatrix}1 & 0 & 1\\0 & 1 & 1\end{bmatrix} \begin{bmatrix}1 & 1\\1 & 0\\0 & 1\end{bmatrix} = \begin{bmatrix}1 & 2\\1 & 1\end{bmatrix}
 ```
 
-Step 2: Scale by $1/\sqrt{d_k} = 1/\sqrt{3} \approx 0.577$:
+Step 2: Scale by $$1/\sqrt{d\_\1} = 1/\sqrt{3} \approx 0.577$$:
 ```math
 S = \frac{QK^T}{\sqrt{3}} = \begin{bmatrix}0.577 & 1.155\\0.577 & 0.577\end{bmatrix}
 ```
 
 Step 3: Apply softmax (row-wise, rounded to 3 d.p.):
 
-- Row 1: $e^{0.577} = 1.781, e^{1.155} = 3.173$, sum $= 4.954$
-- Row 2: $e^{0.577} = 1.781, e^{0.577} = 1.781$, sum $= 3.562$
+- Row 1: $$e^{0.577} = 1.781, e^{1.155} = 3.173$$, sum $$= 4.954$$
+- Row 2: $$e^{0.577} = 1.781, e^{0.577} = 1.781$$, sum $$= 3.562$$
 
 ```math
 A = \begin{bmatrix}
@@ -887,7 +890,7 @@ A = \begin{bmatrix}
 \end{bmatrix}
 ```
 
-Step 4: Compute output $O = AV$:
+Step 4: Compute output $$O = AV$$:
 ```math
 O = \begin{bmatrix}0.359 & 0.641\\0.500 & 0.500\end{bmatrix} \begin{bmatrix}2 & 0 & 1\\1 & 1 & 0\end{bmatrix} = \begin{bmatrix}1.359 & 0.641 & 0.359\\1.500 & 0.500 & 0.500\end{bmatrix}
 ```

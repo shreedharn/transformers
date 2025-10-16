@@ -128,12 +128,38 @@ Let's break this down term by term:
 
 | Term | Size | Meaning |
 |------|------|---------|
-| $$x\_t$$ | $$[1, E]$$ | Current input - word embedding at time $$t$$ |
-| $$h\_{t-1}$$ | $$[1, H]$$ | Past memory - hidden state from previous step |
-| $$W\_{xh}$$ | $$[E, H]$$ | Input weights - transform current input |
-| $$W\_{hh}$$ | $$[H, H]$$ | Hidden weights - transform past memory |
-| $$b\_h$$ | $$(H,)$$ | Bias - learned offset |
-| $$h\_t$$ | $$(H,)$$ | New memory - updated hidden state |
+| $$
+x\_t
+$$ | $$
+[1, E]
+$$ | Current input - word embedding at time $$
+t
+$$ |
+| $$
+h\_{t-1}
+$$ | $$
+[1, H]
+$$ | Past memory - hidden state from previous step |
+| $$
+W\_{xh}
+$$ | $$
+[E, H]
+$$ | Input weights - transform current input |
+| $$
+W\_{hh}
+$$ | $$
+[H, H]
+$$ | Hidden weights - transform past memory |
+| $$
+b\_h
+$$ | $$
+(H,)
+$$ | Bias - learned offset |
+| $$
+h\_t
+$$ | $$
+(H,)
+$$ | New memory - updated hidden state |
 
 ### Visual Breakdown
 
@@ -196,7 +222,9 @@ Hidden Layer: The architectural component (collection of neurons) that produces 
 #### The Architecture (Hidden Layer)
 In our RNN equation, we can identify the architectural versus dynamic components:
 
-$$h\_t = \tanh(x\_t W\_{xh} + h\_{t-1} W\_{hh} + b\_h)$$
+$$
+h\_t = \tanh(x\_t W\_{xh} + h\_{t-1} W\_{hh} + b\_h)
+$$
 
 Hidden Layer (Architecture): The fixed computational structure
 
@@ -245,11 +273,13 @@ $$
 Think of it like a **notebook and note-taking process**:
 
 #### Hidden Layer = The Notebook Design
+
 - Fixed structure: Number of pages (neurons), ruling style (activation function)
 - Consistent tools: Same pen (weights) used throughout
 - Physical constraints: Page size determines how much can be written
 
 #### Hidden States = The Actual Notes
+
 - Content changes: Each page contains different information
 - Temporal evolution: Notes build up over time
 - Dynamic information: What's written depends on what you're processing
@@ -261,12 +291,16 @@ Think of it like a **notebook and note-taking process**:
 
 ✅ Correct: Hidden states carry information/memory from one time step to the next
 
-RNN Context: The hidden state $$h\_{t-1}$$ carries memory forward, not the layer itself.
+RNN Context: The hidden state $$
+h\_{t-1}
+$$ carries memory forward, not the layer itself.
 
 #### Confusion 2: "RNNs have one hidden state"  
 ❌ Wrong: RNNs have one type of recurrent layer architecture
 
-✅ Correct: RNNs produce a sequence of hidden states over time ($$h\_1, h\_2, h\_3, ..., h\_T$$)
+✅ Correct: RNNs produce a sequence of hidden states over time ($$
+h\_1, h\_2, h\_3, ..., h\_T
+$$)
 
 RNN Context: Each time step produces a new hidden state that encodes the sequence history.
 
@@ -306,6 +340,7 @@ $$
 $$
 
 #### For Training
+
 - Layer-level: Adjust hidden size, learning rates, regularization
 - State-level: Monitor gradient magnitudes, use gradient clipping, detect saturation
 
@@ -371,9 +406,21 @@ $$
 
 | **MLP** | **RNN** |
 |---------|---------|
-| Layer 1 has weights $$W\_1$$ | Time step 1 uses weights $$W\_{xh}, W\_{hh}$$ |
-| Layer 2 has weights $$W\_2$$ | Time step 2 uses **same** weights $$W\_{xh}, W\_{hh}$$ |
-| Layer 3 has weights $$W\_3$$ | Time step 3 uses **same** weights $$W\_{xh}, W\_{hh}$$ |
+| Layer 1 has weights $$
+W\_1
+$$ | Time step 1 uses weights $$
+W\_{xh}, W\_{hh}
+$$ |
+| Layer 2 has weights $$
+W\_2
+$$ | Time step 2 uses **same** weights $$
+W\_{xh}, W\_{hh}
+$$ |
+| Layer 3 has weights $$
+W\_3
+$$ | Time step 3 uses **same** weights $$
+W\_{xh}, W\_{hh}
+$$ |
 | Each layer learns different transformations | All time steps share the same transformation |
 
 ---
@@ -414,9 +461,21 @@ The dimensions determine the weight matrix shapes:
 
 | Weight | Shape | Purpose |
 |--------|-------|---------|
-| $$W\_{xh}$$ | $$(E \times H)$$ | Maps input dimension to hidden dimension |
-| $$W\_{hh}$$ | $$(H \times H)$$ | Maps hidden dimension to itself (recurrence) |
-| $$b\_h$$ | $$(H,)$$ | Bias for each hidden unit |
+| $$
+W\_{xh}
+$$ | $$
+(E \times H)
+$$ | Maps input dimension to hidden dimension |
+| $$
+W\_{hh}
+$$ | $$
+(H \times H)
+$$ | Maps hidden dimension to itself (recurrence) |
+| $$
+b\_h
+$$ | $$
+(H,)
+$$ | Bias for each hidden unit |
 
 **Example:** For word embeddings and hidden size dimensions:
 
@@ -471,7 +530,11 @@ $$
 
 ### Step 1: Process "cat"
 
-**Input:** $$x\_1 = [0.5, 0.2]$$ **Memory:** $$h\_0 = [0.0, 0.0]$$
+**Input:** $$
+x\_1 = [0.5, 0.2]
+$$ **Memory:** $$
+h\_0 = [0.0, 0.0]
+$$
 
 **Compute contributions:**
 
@@ -494,7 +557,11 @@ $$
 
 ### Step 2: Process "sat" 
 
-**Input:** $$x\_2 = [0.1, 0.9]$$ **Memory:** $$h\_1 = [0.32, 0.53]$$
+**Input:** $$
+x\_2 = [0.1, 0.9]
+$$ **Memory:** $$
+h\_1 = [0.32, 0.53]
+$$
 
 **Compute contributions:**
 
@@ -517,7 +584,11 @@ $$
 
 ### Step 3: Process "here"
 
-**Input:** $$x\_3 = [0.8, 0.3]$$ **Memory:** $$h\_2 = [0.69, 0.65]$$
+**Input:** $$
+x\_3 = [0.8, 0.3]
+$$ **Memory:** $$
+h\_2 = [0.69, 0.65]
+$$
 
 **Compute contributions:**
 
@@ -549,7 +620,11 @@ $$
 \end{aligned}
 $$
 
-**Key Insight:** Each hidden state $$h\_t$$ encodes information about the entire sequence up to time $$t$$. The RNN builds up contextual understanding step by step.
+**Key Insight:** Each hidden state $$
+h\_t
+$$ encodes information about the entire sequence up to time $$
+t
+$$. The RNN builds up contextual understanding step by step.
 
 ---
 
@@ -645,7 +720,10 @@ $$
 
 **Why This Causes Problems:**
 
-1. Tanh Derivative Range: $$\tanh'(x) \in (0, 1]$$, typically around 0.1-0.5
+1. Tanh Derivative Range: $$
+\tanh'(x) \in (0, 1]
+$$, typically around 0.1-0.5
+
 2. Repeated Multiplication: Product of many small numbers approaches zero exponentially
 3. Weight Matrix Effects: If eigenvalues are small, this compounds the decay
 
@@ -760,7 +838,9 @@ $$
 
 Smart Training Trick: During training, use ground truth previous tokens rather than model predictions:
 
-$$y\_{t-1} = y\_{t-1}^{truth} \quad \text{(not model prediction)}$$
+$$
+y\_{t-1} = y\_{t-1}^{truth} \quad \text{(not model prediction)}
+$$
 
 This speeds up training and improves stability.
 
@@ -775,11 +855,13 @@ Seq2Seq enabled entirely new AI capabilities:
 
 #### The Information Bottleneck Problem
 
-Critical Discovery: Despite its success, Seq2Seq had a fundamental limitation—all information about the input sequence must pass through a single fixed-size context vector $c$.
+Critical Discovery: Despite its success, Seq2Seq had a fundamental limitation—all information about the input sequence must pass through a single fixed-size context vector $$c$$.
 
 Mathematical Constraint: Regardless of input length, encoder must compress everything into:
 
-$$c \in \mathbb{R}^h \quad \text{(fixed hidden size)}$$
+$$
+c \in \mathbb{R}^h \quad \text{(fixed hidden size)}
+$$
 
 Problems This Created:
 

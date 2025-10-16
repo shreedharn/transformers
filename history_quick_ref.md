@@ -88,15 +88,10 @@ Societal Considerations:
 ### Key Lessons from the Evolution
 
 1. Incremental Innovation: Each breakthrough solved specific limitations of previous approaches
-
 2. Mathematical Elegance: Simpler mathematical formulations often lead to better practical results
-
 3. Computational Considerations: Algorithm design must consider available hardware and parallelization
-
 4. Data-Driven Learning: Reducing inductive biases allows models to learn patterns from data
-
 5. Scale Matters: Transformer architectures continue to improve with increased scale
-
 6. Transfer Learning: Pre-trained models can be adapted to many downstream tasks
 
 ### The Future of Sequence Modeling
@@ -125,43 +120,49 @@ Emerging Paradigms:
 1. MLP (Fixed Input):
 
 $$
-\begin{aligned} y &= \sigma(Wx + b) \end{aligned}
+\begin{aligned}
+y &= \sigma(Wx + b)
+\end{aligned}
 $$
 
 - Limitation: Fixed input size
 - Innovation: Learned nonlinear transformations
-
 2. Vanilla RNN (Sequential Processing):
 
 $$
-\begin{aligned} h_t &= \tanh(W_{hh}h_{t-1} + W_{xh}x_t + b) \end{aligned}
+\begin{aligned}
+h\_t &= \tanh(W\_{hh}h\_{t-1} + W\_{xh}x\_t + b)
+\end{aligned}
 $$
 
 - Innovation: Sequential state, variable length
 - Limitation: Vanishing gradients
-
 3. LSTM (Gated Memory):
 
 $$
-\begin{aligned} C_t &= f_t \odot C_{t-1} + i_t \odot \tilde{C}_t \end{aligned}
+\begin{aligned}
+C\_t &= f\_t \odot C\_{t-1} + i\_t \odot \tilde{C}\_t
+\end{aligned}
 $$
 
 - Innovation: Selective information flow
 - Limitation: Sequential processing
-
 4. Attention (Selective Access):
 
 $$
-\begin{aligned} c_t &= \sum_{i=1}^{T} \alpha_{t,i} h_i^{enc} \end{aligned}
+\begin{aligned}
+c\_t &= \sum\_{i=1}^{T} \alpha\_{t,i} h\_i^{enc}
+\end{aligned}
 $$
 
 - Innovation: Direct access to all encoder states
 - Limitation: Still sequential in encoder/decoder
-
 5. Self-Attention (Parallel Processing):
 
 $$
-\begin{aligned} \text{Attention}(Q, K, V) &= \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V \end{aligned}
+\begin{aligned}
+\text{Attention}(Q, K, V) &= \text{softmax}\left(\frac{QK^T}{\sqrt{d\_k}}\right)V
+\end{aligned}
 $$
 
 - Innovation: Parallel processing, direct all-to-all connections

@@ -64,19 +64,43 @@ Key Insight: MLPs solve the fundamental limitation of perceptrons by stacking mu
 The heart of every MLP layer is this transformation:
 
 $$
-\begin{aligned} h &= \sigma(x W + b) \end{aligned}
+\begin{aligned}
+h &= \sigma(x W + b)
+\end{aligned}
 $$
 
 Let's break this down term by term:
 
 | Term | Size | Meaning |
 |------|------|---------|
-| $$x$$ | $$[1, D_{in}]$$ | Input vector - features coming into this layer |
-| $$W$$ | $$[D_{in}, D_{out}]$$ | Weight matrix - learned transformation |
-| $$b$$ | $$[1, D_{out}]$$ | Bias vector - learned offset |
-| $$x W + b$$ | $$[1, D_{out}]$$ | Linear combination - weighted sum of inputs |
-| $$\sigma(\cdot)$$ | - | Activation function - introduces non-linearity |
-| $$h$$ | $$[1, D_{out}]$$ | Output vector - transformed features |
+| $$
+x
+$$ | $$
+[1, D\_{in}]
+$$ | Input vector - features coming into this layer |
+| $$
+W
+$$ | $$
+[D\_{in}, D\_{out}]
+$$ | Weight matrix - learned transformation |
+| $$
+b
+$$ | $$
+[1, D\_{out}]
+$$ | Bias vector - learned offset |
+| $$
+x W + b
+$$ | $$
+[1, D\_{out}]
+$$ | Linear combination - weighted sum of inputs |
+| $$
+\sigma(\cdot)
+$$ | - | Activation function - introduces non-linearity |
+| $$
+h
+$$ | $$
+[1, D\_{out}]
+$$ | Output vector - transformed features |
 
 ### Visual Breakdown
 
@@ -188,13 +212,15 @@ Rule of Thumb: Start shallow, go deeper only if needed.
 
 ### Parameter Counting
 
-For a layer with input size $$D_{in}$$ and output size $$D_{out}$$
-
+For a layer with input size $$
+D\_{in}
+$$ and output size $$
+D\_{out}
 $$
 \begin{aligned}
-\text{Weights:} \quad &D_{in} \times D_{out} \text{ parameters} \newline
-\text{Biases:} \quad &D_{out} \text{ parameters} \newline
-\text{Total:} \quad &D_{in} \times D_{out} + D_{out} = D_{out}(D_{in} + 1)
+\text{Weights:} \quad &D\_{in} \times D\_{out} \text{ parameters} \newline
+\text{Biases:} \quad &D\_{out} \text{ parameters} \newline
+\text{Total:} \quad &D\_{in} \times D\_{out} + D\_{out} = D\_{out}(D\_{in} + 1)
 \end{aligned}
 $$
 
@@ -217,7 +243,7 @@ $$
 Let's trace through a complex example that shows why MLPs are necessary. We'll use the problematic case from Section 1:
 
 The Challenge: Detect sophisticated spam that fools single perceptrons  
-Input features: [num_exclamations, has_word_free, num_capitals]  
+Input features: [num\_\1xclamations, has\_\1ord\_\1ree, num\_\1apitals]  
 Hidden layer size: 2 neurons (for pattern detection)  
 Output: spam probability
 
@@ -258,7 +284,9 @@ What each neuron learned to detect:
 
 ### Step 1: Forward Pass Through Hidden Layer
 
-Input: $$x = [3, 0, 15]$$ (our sophisticated spam example)
+Input: $$
+x = [3, 0, 15]
+$$ (our sophisticated spam example)
 
 Compute linear combination:
 The operation is `x @ W¹ + b¹` where `x` is a row vector.
@@ -295,7 +323,9 @@ Pattern Detection Results:
 
 ### Step 2: Forward Pass Through Output Layer
 
-Input: $$h^{(1)} = [3.7, 0]$$ (urgency detected, no legitimacy)
+Input: $$
+h^{(1)} = [3.7, 0]
+$$ (urgency detected, no legitimacy)
 
 Compute linear combination:
 ```
@@ -353,7 +383,7 @@ MLPs learn through supervised learning:
 3. Backward Pass: Compute gradients using backpropagation
 4. Weight Update: Adjust weights to reduce the loss
 
-> 📚 Mathematical Deep Dive: For a complete step-by-step mathematical explanation of how gradient descent works from line slopes to neural network training, see **[transformers_math1.md Section 2.1.1](./transformers_math1.md#211-from-line-slopes-to-neural-network-training)** - includes worked examples and the connection between simple derivatives and MLP backpropagation.
+> 📚 Mathematical Deep Dive: For a complete step-by-step mathematical explanation of how gradient descent works from line slopes to neural network training, see **[transformers\_\1ath1.md Section 2.1.1](./transformers\_\1ath1.md#211-from-line-slopes-to-neural-network-training)** - includes worked examples and the connection between simple derivatives and MLP backpropagation.
 
 ### Loss Functions
 
@@ -398,7 +428,7 @@ b² = b² - α × ∂L/∂b²
 b¹ = b¹ - α × ∂L/∂b¹
 ```
 
-> 🔗 Mathematical Connection: The backpropagation equations above are derived step-by-step in **[transformers_math1.md Section 2.1.1](./transformers_math1.md#211-from-line-slopes-to-neural-network-training)**. See the "Single Hidden Layer MLP" subsection for the complete mathematical derivation including the δ terms and chain rule applications.
+> 🔗 Mathematical Connection: The backpropagation equations above are derived step-by-step in **[transformers\_\1ath1.md Section 2.1.1](./transformers\_\1ath1.md#211-from-line-slopes-to-neural-network-training)**. See the "Single Hidden Layer MLP" subsection for the complete mathematical derivation including the δ terms and chain rule applications.
 
 ### Training Loop Example
 
@@ -420,7 +450,13 @@ For each batch of training examples:
 
 | Aspect | Linear Regression | MLP |
 |------------|---------------------|---------|
-| Equation | $$y = x W + b$$ | $$y = h^{(L-1)} W^L + b^L$$ where $$h = \sigma(x W + b)$$ |
+| Equation | $$
+y = x W + b
+$$ | $$
+y = h^{(L-1)} W^L + b^L
+$$ where $$
+h = \sigma(x W + b)
+$$ |
 | Decision Boundary | Straight line/plane | Curved, complex shapes |
 | Expressiveness | Limited to linear patterns | Can learn any continuous function |
 | Training | Closed-form solution | Iterative optimization |
@@ -525,7 +561,7 @@ Solutions:
 - Better weight initialization
 ```
 
-> 🎯 Gradient Flow Mathematics: To understand the mathematical foundations of why gradients vanish or explode, and how gradient descent fundamentally works, see **[transformers_math1.md Section 2.1.1](./transformers_math1.md#211-from-line-slopes-to-neural-network-training)**. The section builds intuition from simple 1D slopes to complex neural network training.
+> 🎯 Gradient Flow Mathematics: To understand the mathematical foundations of why gradients vanish or explode, and how gradient descent fundamentally works, see **[transformers\_\1ath1.md Section 2.1.1](./transformers\_\1ath1.md#211-from-line-slopes-to-neural-network-training)**. The section builds intuition from simple 1D slopes to complex neural network training.
 
 ---
 
@@ -534,7 +570,9 @@ Solutions:
 ### ReLU (Rectified Linear Unit)
 
 $$
-\begin{aligned} \text{ReLU}(x) &= \max(0, x) \end{aligned}
+\begin{aligned}
+\text{ReLU}(x) &= \max(0, x)
+\end{aligned}
 $$
 
 ```
@@ -555,7 +593,9 @@ Disadvantages:
 ### Sigmoid
 
 $$
-\begin{aligned} \text{Sigmoid}(x) &= \frac{1}{1 + e^{-x}} \end{aligned}
+\begin{aligned}
+\text{Sigmoid}(x) &= \frac{1}{1 + e^{-x}}
+\end{aligned}
 $$
 
 ```
@@ -576,7 +616,9 @@ Disadvantages:
 ### Tanh (Hyperbolic Tangent)
 
 $$
-\begin{aligned} \text{Tanh}(x) &= \frac{e^x - e^{-x}}{e^x + e^{-x}} \end{aligned}
+\begin{aligned}
+\text{Tanh}(x) &= \frac{e^x - e^{-x}}{e^x + e^{-x}}
+\end{aligned}
 $$
 
 ```
@@ -646,7 +688,7 @@ Too low:  Very slow convergence
 Sweet spot: Usually 0.001 - 0.01
 ```
 
-> 📊 Learning Rate Intuition: For a visual and mathematical explanation of why learning rate choice matters, see the worked example with f(x) = x² in **[transformers_math1.md Section 2.1.1](./transformers_math1.md#211-from-line-slopes-to-neural-network-training)** - shows exactly how different learning rates affect convergence behavior.
+> 📊 Learning Rate Intuition: For a visual and mathematical explanation of why learning rate choice matters, see the worked example with f(x) = x² in **[transformers\_\1ath1.md Section 2.1.1](./transformers\_\1ath1.md#211-from-line-slopes-to-neural-network-training)** - shows exactly how different learning rates affect convergence behavior.
 
 Batch Size:
 ```
@@ -696,9 +738,15 @@ Input Features → Layer 1 → Layer 2 → ... → Output
 Where each layer applies: Linear Transformation → Non-linear Activation
 ```
 
-Weight Matrices ($$W$$): "How should features be combined?"
-Bias Vectors ($$b$$): "What are the default activation thresholds?"  
-Activations ($$\sigma$$): "How should we introduce non-linearity?"
+Weight Matrices ($$
+W
+$$): "How should features be combined?"
+Bias Vectors ($$
+b
+$$): "What are the default activation thresholds?"  
+Activations ($$
+\sigma
+$$): "How should we introduce non-linearity?"
 
 ### Capacity Control
 
@@ -723,7 +771,7 @@ Key Insight: MLPs are the "universal building block" - understanding them deeply
 
 ```
 Email: "Congratulations winner!!!"
-Features: [3, 0, 15]  # [exclamations, no_free, capitals]
+Features: [3, 0, 15]  # [exclamations, no\_\1ree, capitals]
                 ↓
 Hidden Layer 1: xW¹ + b¹ = [3.7, -4.2]
                 ↓  
@@ -755,6 +803,6 @@ Now that you understand MLPs:
 3. Modern Context: MLPs are components in Transformers and other architectures
 4. Implementation: Try building an MLP in PyTorch or TensorFlow
 
-> Continue Learning: Ready for sequences? See **[rnn_intro.md](./rnn_intro.md)** to learn how RNNs add memory to the MLP foundation.
+> Continue Learning: Ready for sequences? See **[rnn\_\1ntro.md](./rnn\_\1ntro.md)** to learn how RNNs add memory to the MLP foundation.
 
 Remember: MLPs taught us that neural networks could learn complex, non-linear patterns through simple transformations. Every modern architecture builds on these core principles - making MLPs essential foundational knowledge.

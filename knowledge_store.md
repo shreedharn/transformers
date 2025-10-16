@@ -86,7 +86,6 @@ During Training Phase:
 
    - `cat=[0.8, 0.2, 0.1]` and `dog=[0.7, 0.3, 0.2]` are close (similar animals)
    - `cat=[0.8, 0.2, 0.1]` and `house=[0.1, 0.8, 0.3]` are distant (different concepts)
-
 2. **Attention Weight Computation: The Communication Protocol**
 
    **The Database Join Analogy: Understanding Query, Key, and Value**
@@ -375,7 +374,6 @@ How it's computed:
 
 2.  Compute attention weights: The model calculates attention weights (as shown previously) that determine how much "cat" should pay attention to every other token.
     *   Attention weights for "cat": `[the: 0.05, big: 0.35, cat: 0.40, runs: 0.20]`
-
 3.  Calculate the weighted sum of Value vectors: The new representation for "cat", `h_cat'`, is the sum of all Value vectors in the sequence, weighted by their respective attention scores.
     `h_cat' = 0.05·v_the + 0.35·v_big + 0.40·v_cat + 0.20·v_runs`
 

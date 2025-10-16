@@ -124,15 +124,10 @@ Decoder Block (Pre-LayerNorm):
 ### Why Transformers Work So Well
 
 1. Parallelization: All sequence positions processed simultaneously, enabling efficient GPU utilization
-
 2. Long-Range Dependencies: Direct connections between any two positions eliminate information bottlenecks
-
 3. Computational Efficiency: Can leverage modern parallel hardware effectively
-
 4. Modeling Flexibility: Minimal inductive biases allow learning patterns from data
-
 5. Transfer Learning: Pre-trained transformers transfer exceptionally well to new tasks
-
 6. Direct Information Flow: No information bottlenecks—every position can directly access information from every other position
 
 The sections that follow will dive deep into the technical implementation of these concepts, showing exactly how transformers process text from input to output generation.
@@ -822,8 +817,6 @@ $$
 \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d\_k}}\right)V
 \end{aligned}
 $$
-
-$$
 \begin{aligned}
 Q &\in \mathbb{R}^{n \times d\_k} : \text{Query matrix (what information to retrieve)} \newline
 K &\in \mathbb{R}^{n \times d\_k} : \text{Key matrix (what information is available)} \newline
@@ -858,7 +851,7 @@ Implementation Details:
 3. Concatenation: Head outputs concatenated along feature dimension
 4. Output projection: Single linear transformation of concatenated heads
 
-📖 Derivation and Analysis: See [Multi-Head Attention Theory](./transformers_math1.md#61-multi-head-as-subspace-projections) and [Scaling Analysis](./transformers_math1.md#52-why-the-sqrtd_k-scaling) for mathematical foundations.
+📖 Derivation and Analysis: See [Multi-Head Attention Theory](./transformers\_\1ath1.md#61-multi-head-as-subspace-projections) and [Scaling Analysis](./transformers\_\1ath1.md#52-why-the-sqrtd\_\1-scaling) for mathematical foundations.
 
 Causal Masking for Autoregressive Models:
 
@@ -886,19 +879,12 @@ $$
 Computational Complexity Analysis:
 
 Tensor Shapes with Standard Convention:
-A common convention is to use shapes like `[batch_size, num_heads, seq_len, head_dim]`. For simplicity, we omit the batch dimension.
+A common convention is to use shapes like `[batch\_\1ize, num\_\1eads, seq\_\1en, head\_\1im]`. For simplicity, we omit the batch dimension.
 
 $$
-{\textstyle
-\begin{aligned}
-\text{Input } X &: \text{[seq\_len, d\_model]} \text{ (e.g., [4, 768])} \newline
-\text{Reshaped Q, K, V for multi-head} &: \text{[num\_heads, seq\_len, head\_dim]} \text{ (e.g., [12, 4, 64])} \newline
-\text{Attention scores } S = QK^T &: \text{[num\_heads, seq\_len, seq\_len]} \text{ (e.g., [12, 4, 4])} \newline
-\text{Attention weights } A &: \text{[num\_heads, seq\_len, seq\_len]} \newline
-\text{Attention output } O = AV &: \text{[num\_heads, seq\_len, head\_dim]} \newline
-\text{Final output (concatenated and projected)} &: \text{[seq\_len, d\_model]}
-\end{aligned}
-}
+
+
+
 $$
 
 Time Complexity:
@@ -908,12 +894,12 @@ Time Complexity:
 - Total per layer: Combined complexity
 
   $$
-  \begin{aligned}
-  \text{Linear projections} &: O(n \cdot d\_{\text{model}}^2) \newline
+\begin{aligned}
+\text{Linear projections} &: O(n \cdot d\_{\text{model}}^2) \newline
   \text{Attention computation} &: O(H \cdot n^2 \cdot d\_k) = O(n^2 \cdot d\_{\text{model}}) \newline
   \text{Total per layer} &: O(n^2 \cdot d\_{\text{model}} + n \cdot d\_{\text{model}}^2)
-  \end{aligned}
-  $$
+\end{aligned}
+$$
 
 Space Complexity:
 
@@ -922,11 +908,11 @@ Space Complexity:
 - Quadratic scaling with sequence length motivates efficient attention variants
 
   $$
-  \begin{aligned}
-  \text{Attention matrices} &: O(H \cdot n^2) \newline
+\begin{aligned}
+\text{Attention matrices} &: O(H \cdot n^2) \newline
   \text{Activations} &: O(n \cdot d\_{\text{model}})
-  \end{aligned}
-  $$
+\end{aligned}
+$$
 
 ---
 
@@ -946,20 +932,22 @@ Performance Impact:
 - Trade-off: Memory consumption for computational efficiency
 
   $$
-  \begin{aligned}
-  \text{Without caching} &: O(t^2) \text{ computation per step} \newline
+\begin{aligned}
+\text{Without caching} &: O(t^2) \text{ computation per step} \newline
   \text{With caching} &: O(t) \text{ compute per step} \newline
   \text{Memory overhead} &: O(L \cdot H \cdot t \cdot d\_k) \text{ for model} \newline
   t &: \text{Context length} \newline
   L &: \text{Number of layers} \newline
   H &: \text{Number of heads}
-  \end{aligned}
-  $$
+\end{aligned}
+$$
 
 ### Computational Efficiency Analysis
 
 Problem Formulation:
-In standard autoregressive generation at step $$t$$, computing attention for the new token requires:
+In standard autoregressive generation at step $$
+t
+$$, computing attention for the new token requires:
 
 $$
 \begin{aligned}
@@ -1001,30 +989,30 @@ $$
 Cache Architecture:
 ```python
 class KVCache:
-    def __init__(self, num_layers, num_heads, d_head, max_seq_len):
+    def _\_\1nit__(self, num\_\1ayers, num\_\1eads, d\_\1ead, max\_\1eq\_\1en):
         # Per-layer cache storage
         self.cache = {
-            layer_idx: {
-                'keys': torch.zeros(1, num_heads, max_seq_len, d_head),
-                'values': torch.zeros(1, num_heads, max_seq_len, d_head),
-                'current_length': 0
+            layer\_\1dx: {
+                'keys': torch.zeros(1, num\_\1eads, max\_\1eq\_\1en, d\_\1ead),
+                'values': torch.zeros(1, num\_\1eads, max\_\1eq\_\1en, d\_\1ead),
+                'current\_\1ength': 0
             }
-            for layer_idx in range(num_layers)
+            for layer\_\1dx in range(num\_\1ayers)
         }
 
-    def update(self, layer_idx, new_keys, new_values):
+    def update(self, layer\_\1dx, new\_\1eys, new\_\1alues):
         """Append new key-value pairs to cache"""
-        cache_entry = self.cache[layer_idx]
-        curr_len = cache_entry['current_length']
+        cache\_\1ntry = self.cache[layer\_\1dx]
+        curr\_\1en = cache\_\1ntry['current\_\1ength']
 
         # Insert new keys and values
-        cache_entry['keys'][:, :, curr_len:curr_len+1] = new_keys
-        cache_entry['values'][:, :, curr_len:curr_len+1] = new_values
-        cache_entry['current_length'] += 1
+        cache\_\1ntry['keys'][:, :, curr\_\1en:curr\_\1en+1] = new\_\1eys
+        cache\_\1ntry['values'][:, :, curr\_\1en:curr\_\1en+1] = new\_\1alues
+        cache\_\1ntry['current\_\1ength'] += 1
 
         return (
-            cache_entry['keys'][:, :, :cache_entry['current_length']],
-            cache_entry['values'][:, :, :cache_entry['current_length']]
+            cache\_\1ntry['keys'][:, :, :cache\_\1ntry['current\_\1ength']],
+            cache\_\1ntry['values'][:, :, :cache\_\1ntry['current\_\1ength']]
         )
 ```
 
@@ -1153,8 +1141,6 @@ $$
 \text{FFN}(x) = W\_2 \cdot \sigma(W\_1 x + b\_1) + b\_2
 \end{aligned}
 $$
-
-$$
 \begin{aligned}
 W\_1 &\in \mathbb{R}^{d\_{\text{model}} \times d\_{\text{ffn}}} : \text{Expansion matrix} \newline
 W\_2 &\in \mathbb{R}^{d\_{\text{ffn}} \times d\_{\text{model}}} : \text{Contraction matrix} \newline
@@ -1192,8 +1178,6 @@ $$
 \begin{aligned}
 \text{SwiGLU}(x) = (W\_1 x + b\_1) \odot \text{SiLU}(W\_2 x + b\_2)
 \end{aligned}
-$$
-
 $$
 \begin{aligned}
 \odot &: \text{Element-wise (Hadamard) product} \newline
@@ -1304,8 +1288,6 @@ $$
 \text{logits} = h\_{\text{final}} W\_{\text{lm}} + b\_{\text{lm}}
 \end{aligned}
 $$
-
-$$
 \begin{aligned}
 h\_{\text{final}} &\in \mathbb{R}^{d\_{\text{model}}} : \text{Final position hidden state} \newline
 W\_{\text{lm}} &\in \mathbb{R}^{d\_{\text{model}} \times |V|} : \text{Language model projection matrix} \newline
@@ -1317,10 +1299,10 @@ $$
 Weight Tying: Commonly use transpose of token embedding matrix, reducing parameters and improving performance.
 
   $$
-  \begin{aligned}
-  W\_{\text{lm}} = E^T \text{ where } E \text{ is the token embedding matrix}
-  \end{aligned}
-  $$
+\begin{aligned}
+W\_{\text{lm}} = E^T \text{ where } E \text{ is the token embedding matrix}
+\end{aligned}
+$$
 
 Temperature-Scaled Softmax:
 
@@ -1361,8 +1343,6 @@ $$
 \text{next\_token} \sim \text{Categorical}(\text{top-k}(p, k))
 \end{aligned}
 $$
-
-$$
 \begin{aligned}
 \text{Process:} \quad &\text{Select tokens with highest probabilities, renormalize and sample} \newline
 \text{Effect:} \quad &\text{Limits sampling to most likely options, balancing diversity and quality} \newline
@@ -1377,8 +1357,6 @@ $$
 \text{next\_token} \sim \text{Categorical}(\{i : \sum\_{j \in \text{top}(p)} p\_j \leq p\})
 \end{aligned}
 $$
-
-$$
 \begin{aligned}
 \text{Dynamic selection:} \quad &\text{Includes smallest set of tokens with cumulative probability threshold} \newline
 \text{Adaptive:} \quad &\text{Adjusts vocabulary size based on confidence distribution} \newline
@@ -1387,7 +1365,7 @@ p &\in [0.9, 0.95] : \text{Typical range for balancing quality and diversity}
 \end{aligned}
 $$
 
-Beam Search: For deterministic high-quality generation, maintains top-$b$ hypotheses at each step
+Beam Search: For deterministic high-quality generation, maintains top-$$b$$ hypotheses at each step
 
 ---
 

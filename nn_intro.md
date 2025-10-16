@@ -203,13 +203,23 @@ Inputs → Weighted Sum → Activation Function → Output
 
 Neural networks perform three fundamental operations at each layer:
 
-\begin{aligned} h^{(l)} &= f(W^{(l)}x + b^{(l)}) \end{aligned}
+$$
+\begin{aligned}
+h^{(l)} &= f(W^{(l)}x + b^{(l)})
+\end{aligned}
+$$
 
 Where:
 
-- Weights (W): Control feature importance and geometric transformations
-- Bias (b): Provide flexible positioning of decision boundaries  
-- Activation (f): Introduce nonlinearity through space warping
+$$
+{\textstyle
+\begin{aligned}
+\text{Weights } (W) &: \text{Control feature importance and geometric transformations} \newline
+\text{Bias } (b) &: \text{Provide flexible positioning of decision boundaries} \newline
+\text{Activation } (f) &: \text{Introduce nonlinearity through space warping}
+\end{aligned}
+}
+$$
 
 Each component serves a distinct geometric purpose that becomes clear when we visualize how neural networks transform data through high-dimensional space.
 
@@ -222,19 +232,23 @@ Each component serves a distinct geometric purpose that becomes clear when we vi
 
 The perceptron's mathematical operation can be expressed as:
 
-\begin{aligned} y &= f\left(\sum_{i=1}^{n} w_i x_i + b\right) \end{aligned}
+$$
+\begin{aligned}
+y &= f\left(\sum\_{i=1}^{n} w\_i x\_i + b\right)
+\end{aligned}
+$$
 
 Where:
 
 $$
 {\textstyle
 \begin{aligned}
-y &= \text{output} \newline
-f &= \text{activation function} \newline
-w_i &= weight for input $$i$$ \newline
-x_i &= input $$i$$ \newline
-b &= \text{bias} \newline
-n &= \text{number of inputs}
+y &: \text{output} \newline
+f &: \text{activation function} \newline
+w\_i &: \text{weight for i-th input} \newline
+x\_i &: \text{i-th input value} \newline
+b &: \text{bias} \newline
+n &: \text{number of inputs}
 \end{aligned}
 }
 $$
@@ -248,7 +262,11 @@ To build true intuition about neural networks, we need to understand how each co
 Mathematical Foundation:
 Weights determine how input features are combined and transformed:
 
-\begin{aligned} z &= w_1x_1 + w_2x_2 + ... + w_nx_n \end{aligned}
+$$
+\begin{aligned}
+z &= w\_1x\_1 + w\_2x\_2 + ... + w\_nx\_n
+\end{aligned}
+$$
 
 Geometric Interpretation:
 
@@ -267,7 +285,11 @@ Think of weights as **feature importance multipliers**. If you're predicting hou
 Mathematical Foundation:
 The bias term shifts the decision boundary away from the origin:
 
-\begin{aligned} z &= Wx + b \end{aligned}
+$$
+\begin{aligned}
+z &= Wx + b
+\end{aligned}
+$$
 
 Understanding bias requires seeing how it transforms geometric boundaries. Without bias, decision boundaries are constrained to pass through the origin:
 
@@ -304,11 +326,19 @@ Bias is like the default activation level. Even with zero input, a neuron can st
 
 Activation functions solve a fundamental limitation: without them, stacking layers merely creates deeper linear transformations that collapse to a single function:
 
-\begin{aligned} h(x) &= W_3(W_2(W_1x)) = (W_3W_2W_1)x \end{aligned}
+$$
+\begin{aligned}
+h(x) &= W\_3(W\_2(W\_1x)) = (W\_3W\_2W\_1)x
+\end{aligned}
+$$
 
 Regardless of depth, this remains equivalent to linear regression! Activation functions break this limitation by introducing space bending after each linear transformation:
 
-\begin{aligned} h^{(l)} &= f(W^{(l)}x + b^{(l)}) \end{aligned}
+$$
+\begin{aligned}
+h^{(l)} &= f(W^{(l)}x + b^{(l)})
+\end{aligned}
+$$
 
 Let's see how these components work together in a concrete example. Consider detecting spam emails using a single perceptron with three key features:
 
@@ -317,9 +347,9 @@ Features:
 $$
 {\textstyle
 \begin{aligned}
-x_1 &= \text{Number of exclamation marks} \newline
-x_2 &= Contains word "free" (1 if yes, 0 if no) \newline
-x_3 &= \text{Number of capital letters}
+x\_1 &: \text{Number of exclamation marks} \newline
+x\_2 &: \text{Contains word "free" (1 if yes, 0 if no)} \newline
+x\_3 &: \text{Number of capital letters}
 \end{aligned}
 }
 $$
@@ -329,9 +359,9 @@ Example Email: "FREE VACATION!!! Click now!!!"
 $$
 {\textstyle
 \begin{aligned}
-x_1 &= 6  \text{ (six exclamation marks)} \newline
-x_2 &= 1  \text{ (contains "free")} \newline
-x_3 &= 13  \text{ (13 capital letters)}
+x\_1 &= 6 \quad \text{(6 exclamation marks)} \newline
+x\_2 &= 1 \quad \text{(contains "FREE")} \newline
+x\_3 &= 13 \quad \text{(13 capital letters)}
 \end{aligned}
 }
 $$
@@ -341,23 +371,30 @@ Learned Weights (after training):
 $$
 {\textstyle
 \begin{aligned}
-w_1 &= 0.3  \text{ (exclamation marks are somewhat important)} \newline
-w_2 &= 0.8  \text{ (word "free" is very important)} \newline
-w_3 &= 0.1  \text{ (capital letters are slightly important)} \newline
-b &= -2.0  \text{ (bias to prevent false positives)}
+w\_1 &= 0.3 \quad \text{(exclamation marks moderately important)} \newline
+w\_2 &= 0.8 \quad \text{("free" is highly indicative)} \newline
+w\_3 &= 0.1 \quad \text{(capitals less important)} \newline
+b &= -2.0 \quad \text{(bias term)}
 \end{aligned}
 }
 $$
 
 Calculation:
 
-\begin{aligned} \text{weighted sum} &= 0.3 \times 6 + 0.8 \times 1 + 0.1 \times 13 + (-2.0) \end{aligned}
-
-\begin{aligned}  &= 1.8 + 0.8 + 1.3 - 2.0 = 1.9 \end{aligned}
+$$
+\begin{aligned}
+\text{weighted sum} &= 0.3 \times 6 + 0.8 \times 1 + 0.1 \times 13 + (-2.0) \\
+&= 1.8 + 0.8 + 1.3 - 2.0 = 1.9
+\end{aligned}
+$$
 
 Activation Function (Sigmoid):
 
-\begin{aligned} f(1.9) &= \frac{1}{1 + e^{-1.9}} = 0.87 \end{aligned}
+$$
+\begin{aligned}
+f(1.9) &= \frac{1}{1 + e^{-1.9}} = 0.87
+\end{aligned}
+$$
 
 Result: 0.87 (87% probability it's spam)
 
@@ -365,7 +402,11 @@ Result: 0.87 (87% probability it's spam)
 
 ReLU (Rectified Linear Unit) is the most widely used activation function:
 
-\begin{aligned} f(x) &= \max(0, x) \end{aligned}
+$$
+\begin{aligned}
+f(x) &= \max(0, x)
+\end{aligned}
+$$
 
 ReLU folds the negative half-space to zero, creating piecewise linear regions:
 ```
@@ -379,7 +420,11 @@ This simple operation proves remarkably effective, preventing vanishing gradient
 
 Sigmoid compresses any real number into probability-like values:
 
-\begin{aligned} \sigma(x) &= \frac{1}{1+e^{-x}} \end{aligned}
+$$
+\begin{aligned}
+\sigma(x) &= \frac{1}{1+e^{-x}}
+\end{aligned}
+$$
 
 ```
 Input:  -∞ -------- 0 -------- +∞
@@ -390,7 +435,11 @@ While perfect for output probabilities, sigmoid can cause vanishing gradients in
 
 Tanh provides symmetric squashing around zero:
 
-\begin{aligned} \tanh(x) &= \frac{e^x - e^{-x}}{e^x + e^{-x}} \end{aligned}
+$$
+\begin{aligned}
+\tanh(x) &= \frac{e^x - e^{-x}}{e^x + e^{-x}}
+\end{aligned}
+$$
 
 ```
 Input:  -∞ -------- 0 -------- +∞
@@ -418,7 +467,7 @@ class Perceptron(nn.Module):
         super(Perceptron, self).__init__()
         self.linear = nn.Linear(input_size, 1)
         self.sigmoid = nn.Sigmoid()
-    
+
     def forward(self, x):
         # Weighted sum + bias
         weighted_sum = self.linear(x)
@@ -478,14 +527,29 @@ Network Architecture: Input(2) → Hidden(2, ReLU) → Output(1, sigmoid)
 
 Hidden neurons learn:
 
-- Neuron A: \begin{aligned} z_A &= x_1 - 0.5  \text{ (detects "x₁ > 0.5")}\end{aligned}
-- Neuron B: \begin{aligned} z_B &= x_2 - 0.5  \text{ (detects "x₂ > 0.5")}\end{aligned}  
+- Neuron A:
+  $$
+  \begin{aligned}
+  z_A &= x_1 - 0.5  \text{ (detects "x₁ > 0.5")}
+  \end{aligned}
+  $$
+
+- Neuron B:
+  $$
+  \begin{aligned}
+  z_B &= x_2 - 0.5  \text{ (detects "x₂ > 0.5")}
+  \end{aligned}
+  $$  
 
 Note: Bias (-0.5) shifts decision boundaries away from origin.
 
 #### Step 2: ReLU Activation Bends Space
 
-\begin{aligned} h_A &= \max(0, x_1 - 0.5), \quad h_B = \max(0, x_2 - 0.5) \end{aligned}
+$$
+\begin{aligned}
+h\_A &= \max(0, x\_1 - 0.5), \quad h\_B = \max(0, x\_2 - 0.5)
+\end{aligned}
+$$
 
 This folds the input space along the lines x₁=0.5 and x₂=0.5:
 
@@ -498,7 +562,9 @@ Original space:         After ReLU folding:
 
 #### Step 3: Output Layer Finds Linear Separation
 
-In the folded space, a simple line (e.g., $$h_A + h_B = 0.5$$) perfectly separates the classes.
+In the folded space, a simple line (e.g.,
+$$h\_1 + h\_1 = 0.5$$
+) perfectly separates the classes.
 
 This elegant solution showcases why every component matters: weights oriented the folding lines correctly, bias positioned the folds away from the origin at exactly x=0.5, and activation functions created the nonlinear folding that transformed an impossible linear problem into a simple one.
 
@@ -537,13 +603,21 @@ Understanding how neural networks operate geometrically helps build intuition fo
 
 Single neuron: 
 
-\begin{aligned} z &= wx + b \end{aligned}
+$$
+\begin{aligned}
+z &= wx + b
+\end{aligned}
+$$
 
 This is simply a line equation (y = mx + c from algebra).
 
 With activation:
 
-\begin{aligned} h(x) &= \max(0, wx + b) \end{aligned}
+$$
+\begin{aligned}
+h(x) &= \max(0, wx + b)
+\end{aligned}
+$$
 
 Creates a "bent line" - the foundation for approximating any 1D function through piecewise linear segments.
 
@@ -551,7 +625,11 @@ Creates a "bent line" - the foundation for approximating any 1D function through
 
 Linear layer:
 
-\begin{aligned} z &= w_1x_1 + w_2x_2 + b \end{aligned}
+$$
+\begin{aligned}
+z &= w\_1x\_1 + w\_2x\_2 + b
+\end{aligned}
+$$
 
 Defines a line that separates the 2D plane into two regions.
 
@@ -561,7 +639,11 @@ With activation: The line becomes a "fold" where space gets bent, enabling compl
 
 Linear layer:
 
-\begin{aligned} z &= w_1x_1 + w_2x_2 + ... + w_nx_n + b \end{aligned}
+$$
+\begin{aligned}
+z &= w\_1x\_1 + w\_2x\_2 + ... + w\_nx\_n + b
+\end{aligned}
+$$
 
 Defines a hyperplane in n-dimensional space.
 
@@ -574,7 +656,11 @@ Key Insight: Dimensions vs Layers
 
 Each layer can change the dimensionality:
 
-\begin{aligned} x \in \mathbb{R}^{784} \xrightarrow{\text{Layer 1}} h_1 \in \mathbb{R}^{512} \xrightarrow{\text{Layer 2}} h_2 \in \mathbb{R}^{256} \xrightarrow{\text{Output}} y \in \mathbb{R}^{10} \end{aligned}
+$$
+\begin{aligned}
+x \in \mathbb{R}^{784} \xrightarrow{\text{Layer 1}} h\_1 \in \mathbb{R}^{512} \xrightarrow{\text{Layer 2}} h\_2 \in \mathbb{R}^{256} \xrightarrow{\text{Output}} y \in \mathbb{R}^{10}
+\end{aligned}
+$$
 
 ### Deep Networks
 
@@ -588,11 +674,19 @@ In image recognition, this hierarchy progresses naturally from edges and simple 
 
 Each layer performs an **affine transformation** followed by **nonlinear warping**:
 
-\begin{aligned} \text{Layer}: \mathbb{R}^n \xrightarrow{\text{affine}} \mathbb{R}^m \xrightarrow{\text{warp}} \mathbb{R}^m \end{aligned}
+$$
+\begin{aligned}
+\text{Layer}: \mathbb{R}^n \xrightarrow{\text{affine}} \mathbb{R}^m \xrightarrow{\text{warp}} \mathbb{R}^m
+\end{aligned}
+$$
 
 Stacking layers composes these operations:
 
-\begin{aligned} \text{Network}: \mathbb{R}^{n_0} \rightarrow \mathbb{R}^{n_1} \rightarrow \mathbb{R}^{n_2} \rightarrow ... \rightarrow \mathbb{R}^{n_L} \end{aligned}
+$$
+\begin{aligned}
+\text{Network}: \mathbb{R}^{n\_0} \rightarrow \mathbb{R}^{n\_1} \rightarrow \mathbb{R}^{n\_2} \rightarrow ... \rightarrow \mathbb{R}^{n\_L}
+\end{aligned}
+$$
 
 Understanding network architecture reveals the potential, but the real magic unfolds during training, where networks learn to perform their tasks through experience.
 
@@ -617,7 +711,9 @@ Every learning system needs a way to measure progress, and neural networks are n
 Mathematical Foundation:
 
 $$
-\begin{aligned} \mathcal{L}(\mathbf{y}_{\text{true}}, \mathbf{y}_{\text{pred}}) \rightarrow \mathbb{R}^+ \end{aligned}
+\begin{aligned}
+\mathcal{L}(\mathbf{y}\_{\text{true}}, \mathbf{y}\_{\text{pred}}) \rightarrow \mathbb{R}^+
+\end{aligned}
 $$
 
 Where:
@@ -625,13 +721,13 @@ Where:
 $$
 {\textstyle
 \begin{aligned}
-\mathbf{y}_{\text{true}} \newline
-\mathbf{y}_{\text{pred}}
+\mathbf{y}\_{\text{true}} &: \text{true labels/target values} \newline
+\mathbf{y}\_{\text{pred}} &: \text{model's predictions} \newline
+\mathcal{L} &: \text{loss function} \newline
+\text{Output} &: \text{Single positive number (the "badness score")}
 \end{aligned}
 }
 $$
-
-- Output: Single positive number (the "badness score")
 
 Without this translation, neural networks would have no way to measure progress during training, compute the gradients essential for backpropagation, or objectively compare different models' performance.
 
@@ -639,20 +735,22 @@ Without this translation, neural networks would have no way to measure progress 
 
 When predicting categories like spam detection or sentiment analysis, cross-entropy loss provides the mathematical foundation:
 
+
+$$
 \begin{aligned} \mathcal{L} &= -\sum_{i=1}^{C} y_i \log(p_i) \end{aligned}
+$$
 
 Where:
 
 $$
 {\textstyle
 \begin{aligned}
-y_i &: \text{True label (1 for correct class, 0 for others)} \newline
-p_i &: Predicted probability for class $$i$$
+y\_i &: \text{True label (1 for correct class, 0 for others)} \newline
+p\_i &: \text{Predicted probability for class i} \newline
+C &: \text{Number of classes}
 \end{aligned}
 }
 $$
-
-- $$C$$: Number of classes
 
 Cross-entropy elegantly captures the concept of "surprise" - it heavily penalizes confident wrong predictions while rewarding confident correct ones. Being uncertain but right yields medium loss, while being uncertain and wrong still incurs high penalty.
 
@@ -678,7 +776,10 @@ The logarithmic scale creates this penalty structure naturally: predicting just 
 
 When predicting continuous values like house prices or temperatures, Mean Squared Error (MSE) becomes our guide:
 
-\begin{aligned} \mathcal{L} &= \frac{1}{N} \sum_{i=1}^N (y_i - \hat{y}_i)^2 \end{aligned}
+
+$$
+\begin{aligned} \mathcal{L} &= \frac{1}{N} \sum\_{i=1}^N (y\_i - \hat{y}\_i)^2 \end{aligned}
+$$
 
 MSE measures the squared distance between predictions and targets, creating a penalty structure where small errors receive proportional punishment, but large errors face disproportionately severe consequences. This symmetric approach treats overestimation and underestimation equally.
 
@@ -696,47 +797,87 @@ From Calculus to Machine Learning:
 
 Single Variable (1D case):
 
-\begin{aligned} x_{\text{new}} &= x_{\text{old}} - \alpha \frac{df}{dx} \end{aligned}
+$$
+\begin{aligned}
+x\_{\text{new}} &= x\_{\text{old}} - \alpha \frac{df}{dx}
+\end{aligned}
+$$
 
 Multiple Variables (Vector case):
 
-\begin{aligned} \mathbf{\theta}_{\text{new}} &= \mathbf{\theta}_{\text{old}} - \alpha \nabla_{\mathbf{\theta}} \mathcal{L} \end{aligned}
+$$
+\begin{aligned}
+\mathbf{\theta}\_{\text{new}} &= \mathbf{\theta}\_{\text{old}} - \alpha \nabla\_{\mathbf{\theta}} \mathcal{L}
+\end{aligned}
+$$
 
 Where:
 
 $$
 {\textstyle
 \begin{aligned}
-\mathbf{\theta} \newline
-\alpha \newline
-\nabla_{\mathbf{\theta}} \mathcal{L}
+\theta &: \text{Parameters (weights and biases)} \newline
+\alpha &: \text{Learning rate (step size)} \newline
+\nabla\_{\mathbf{\theta}} \mathcal{L} &: \text{Gradient (direction of steepest ascent)} \newline
+\text{Negative sign} &: \text{Move opposite to gradient (downhill)}
 \end{aligned}
 }
 $$
 
-- Negative sign: Move opposite to gradient (downhill)
-
 #### The Gradient: Direction of Steepest Ascent
 
 The gradient symbol $$\nabla$$ (nabla) might look mysterious, but it represents something intuitive:
-$$\nabla_{\mathbf{\theta}} \mathcal{L} = \begin{bmatrix}
-\frac{\partial \mathcal{L}}{\partial \theta_1} \\
-\frac{\partial \mathcal{L}}{\partial \theta_2} \\
-\vdots \\
-\frac{\partial \mathcal{L}}{\partial \theta_n}
-\end{bmatrix}$$
 
-Each element answers a simple question: "If I nudge parameter $$\theta_i$$ slightly upward, how much does my loss increase?"
+$$
+\begin{aligned}
+\nabla\_{\mathbf{\theta}} \mathcal{L} = \begin{bmatrix}
+\frac{\partial \mathcal{L}}{\partial \theta\_1} \\
+\frac{\partial \mathcal{L}}{\partial \theta\_2} \\
+\vdots \\
+\frac{\partial \mathcal{L}}{\partial \theta\_n}
+\end{bmatrix}
+\end{aligned}
+$$
+
+Each element answers a simple question: "If I nudge parameter $$
+\theta\_i
+$$ slightly upward, how much does my loss increase?"
 
 #### Step-by-Step Gradient Descent Process
 
-1. Compute Forward Pass: $$\text{Input} \xrightarrow{\text{Network}} \text{Predictions}$$
-2. Compute Loss: $$\mathcal{L} = \text{LossFunction}(\text{Predictions}, \text{Truth})$$
-3. Compute Gradients (Backpropagation): $$\frac{\partial \mathcal{L}}{\partial W^{(l)}} = \frac{\partial \mathcal{L}}{\partial h^{(l+1)}} \cdot \frac{\partial h^{(l+1)}}{\partial W^{(l)}}$$
+1. **Compute Forward Pass:** Pass input through network to get predictions
 
-> 📖 For detailed backpropagation mechanics: See [mlp_intro.md Section 6](./mlp_intro.md#6-training-how-mlps-learn) for step-by-step derivations and [pytorch_ref.md Section 3](./pytorch_ref.md#3-autograd-finding-gradients) for implementation details.
+   $$
+\begin{aligned}
+\text{Input} \xrightarrow{\text{Network}} \text{Predictions}
+\end{aligned}
+$$
 
-4. Update Parameters: $$W^{(l)} \leftarrow W^{(l)} - \alpha \frac{\partial \mathcal{L}}{\partial W^{(l)}}$$
+2. **Compute Loss:** Measure prediction error
+
+   $$
+\begin{aligned}
+\mathcal{L} = \text{LossFunction}(\text{Predictions}, \text{Truth})
+\end{aligned}
+$$
+
+3. **Compute Gradients (Backpropagation):** Calculate how to adjust weights
+
+   $$
+\begin{aligned}
+\frac{\partial \mathcal{L}}{\partial W^{(l)}} = \frac{\partial \mathcal{L}}{\partial h^{(l+1)}} \cdot \frac{\partial h^{(l+1)}}{\partial W^{(l)}}
+\end{aligned}
+$$
+
+   > 📖 For detailed backpropagation mechanics: See [mlp_intro.md Section 6](./mlp_intro.md#6-training-how-mlps-learn) for step-by-step derivations and [pytorch_ref.md Section 3](./pytorch_ref.md#3-autograd-finding-gradients) for implementation details.
+
+4. **Update Parameters:** Adjust weights in direction that reduces loss
+
+   $$
+\begin{aligned}
+W^{(l)} \leftarrow W^{(l)} - \alpha \frac{\partial \mathcal{L}}{\partial W^{(l)}}
+\end{aligned}
+$$
 
 #### The Learning Rate α: Speed vs. Accuracy Trade-off
 
@@ -776,24 +917,32 @@ Loss
 
 #### Plain Gradient Descent
 
-\begin{aligned} \theta_t &= \theta_{t-1} - \alpha \nabla \mathcal{L} \end{aligned}
+$$
+\begin{aligned}
+\theta\_t &= \theta\_{t-1} - \alpha \nabla \mathcal{L}
+\end{aligned}
+$$
 
 While elegant in its simplicity, plain gradient descent suffers from several limitations: it lacks momentum and stops abruptly when gradients vanish, treats all parameters with the same learning rate regardless of their needs, and tends to zigzag inefficiently through valleys in the loss landscape.
 
 #### SGD with Momentum
+
 $$\begin{align}
 v_t &= \beta v_{t-1} + (1-\beta) \nabla \mathcal{L} \\
 \theta_t &= \theta_{t-1} - \alpha v_t
 \end{align}$$
 
+
 Momentum transforms gradient descent into a "rolling ball" that builds velocity over time, smoothing updates and helping escape shallow local minima.
 
 #### Adam: Adaptive Moments
+
 $$\begin{align}
 m_t &= \beta_1 m_{t-1} + (1-\beta_1) \nabla \mathcal{L} \quad \text{(momentum)}\\
 v_t &= \beta_2 v_{t-1} + (1-\beta_2) (\nabla \mathcal{L})^2 \quad \text{(variance)}\\
 \theta_t &= \theta_{t-1} - \alpha \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}
 \end{align}$$
+
 
 Adam's breakthrough innovation lies in adaptive per-parameter learning rates: parameters with large gradients get smaller effective steps, while those with small gradients get larger ones. This automatic adjustment, combined with excellent handling of sparse gradients and minimal tuning requirements, explains Adam's widespread adoption.
 
@@ -894,21 +1043,24 @@ Before we explore how neural networks excel in language applications, we need to
 
 **Mathematical Foundation:**
 
-\begin{aligned} \mathbf{e}_i &= E[i] \in \mathbb{R}^{d_{\text{model}}} \end{aligned}
+$$
+\begin{aligned}
+\mathbf{e}\_i &= E[i] \in \mathbb{R}^{d\_{\text{model}}}
+\end{aligned}
+$$
 
 Where:
 
 $$
 {\textstyle
 \begin{aligned}
-E \in \mathbb{R}^{V \times d_{\text{model}}} \newline
-V &= vocabulary size (number of unique words/tokens) \newline
-d_{\text{model}}
+E \in \mathbb{R}^{V \times d\_{\text{model}}} &: \text{Embedding matrix} \newline
+V &: \text{vocabulary size (number of unique words/tokens)} \newline
+d\_{\text{model}} &: \text{embedding dimension} \newline
+E[i] &: \text{Each row represents one word's embedding vector}
 \end{aligned}
 }
 $$
-
-- Each row $$E[i]$$ represents one word's embedding vector
 
 > 📖 For embedding implementation: See [pytorch_ref.md Section 10](./pytorch_ref.md#10-transformers-in-pytorch) for practical embedding layer usage and [knowledge_store.md](./knowledge_store.md) for how embeddings store semantic knowledge.
 
@@ -974,7 +1126,11 @@ The network learns that words in similar positions (contexts) should have simila
 
 **Vector arithmetic captures relationships:**
 
-\begin{aligned} \mathbf{e}_{\text{king}} - \mathbf{e}_{\text{man}} + \mathbf{e}_{\text{woman}} \approx \mathbf{e}_{\text{queen}} \end{aligned}
+$$
+\begin{aligned}
+\mathbf{e}\_{\text{king}} - \mathbf{e}\_{\text{man}} + \mathbf{e}\_{\text{woman}} \approx \mathbf{e}\_{\text{queen}}
+\end{aligned}
+$$
 
 > 📖 For vector operations: See [math_quick_ref.md](./math_quick_ref.md) for linear algebra fundamentals and [pytorch_ref.md Section 2](./pytorch_ref.md#2-tensors-vectors--matrices-in-pytorch) for tensor operations.
 
@@ -994,7 +1150,11 @@ Neural networks are fundamentally **geometric transformation systems** operating
 
 **Core Principle:**
 
-\begin{aligned} \boxed{\text{Linear Transform} + \text{Nonlinear Warp} \rightarrow \text{Complex Decision Boundaries}} \end{aligned}
+$$
+\begin{aligned}
+\boxed{\text{Linear Transform} + \text{Nonlinear Warp} \rightarrow \text{Complex Decision Boundaries}}
+\end{aligned}
+$$
 
 **Component Roles:**
 

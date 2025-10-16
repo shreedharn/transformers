@@ -11,7 +11,7 @@ A comprehensive reference of core mathematical concepts used in neural networks 
 $$
 \begin{aligned}
 \mathbf{C} &= \mathbf{A}\mathbf{B} \newline
-C_{ij} &= \sum_k A_{ik}B_{kj}
+C\_{ij} &= \sum\_k A\_{ik}B\_{kj}
 \end{aligned}
 $$
 
@@ -23,7 +23,7 @@ How it affects output: Matrix multiplication transforms input vectors from one f
 
 $$
 \begin{aligned}
-(\mathbf{A})^T_{ij} = \mathbf{A}_{ji}
+(\mathbf{A})^T\_{ij} = \mathbf{A}\_{ji}
 \end{aligned}
 $$
 
@@ -77,7 +77,7 @@ How it affects output: SVD reveals the intrinsic dimensionality and structure of
 
 $$
 \begin{aligned}
-\mathbf{a} \cdot \mathbf{b} = \sum_i a_i b_i = \|\mathbf{a}\|\|\mathbf{b}\|\cos(\theta)
+\mathbf{a} \cdot \mathbf{b} = \sum\_i a\_i b\_i = \|\mathbf{a}\|\|\mathbf{b}\|\cos(\theta)
 \end{aligned}
 $$
 
@@ -101,7 +101,7 @@ How it affects output: Cosine similarity ranges from -1 to 1, making it scale-in
 
 $$
 \begin{aligned}
-d(\mathbf{a}, \mathbf{b}) = \|\mathbf{a} - \mathbf{b}\|_2 = \sqrt{\sum_i (a_i - b_i)^2}
+d(\mathbf{a}, \mathbf{b}) = \|\mathbf{a} - \mathbf{b}\|\_2 = \sqrt{\sum\_i (a\_i - b\_i)^2}
 \end{aligned}
 $$
 
@@ -113,7 +113,7 @@ How it affects output: Smaller distances indicate more similar points. MSE loss 
 
 $$
 \begin{aligned}
-\|\mathbf{x}\|_p = \left(\sum_i |x_i|^p\right)^{1/p}
+\|\mathbf{x}\|\_p = \left(\sum\_i |x\_i|^p\right)^{1/p}
 \end{aligned}
 $$
 
@@ -131,7 +131,7 @@ How it affects output: L1 norm creates sparse solutions (many zeros), L2 norm cr
 
 $$
 \begin{aligned}
-f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
+f'(x) = \lim\_{h \to 0} \frac{f(x+h) - f(x)}{h}
 \end{aligned}
 $$
 
@@ -143,7 +143,7 @@ How it affects output: Derivatives tell us sensitivity - how much output changes
 
 $$
 \begin{aligned}
-\frac{\partial f}{\partial x_i}
+\frac{\partial f}{\partial x\_i}
 \end{aligned}
 $$
 
@@ -167,7 +167,7 @@ How it affects output: Chain rule enables automatic differentiation through arbi
 
 $$
 \begin{aligned}
-\nabla f = \left[\frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, \ldots, \frac{\partial f}{\partial x_n}\right]
+\nabla f = \left[\frac{\partial f}{\partial x\_1}, \frac{\partial f}{\partial x\_2}, \ldots, \frac{\partial f}{\partial x\_n}\right]
 \end{aligned}
 $$
 
@@ -179,7 +179,7 @@ How it affects output: Gradient provides both direction (sign) and magnitude for
 
 $$
 \begin{aligned}
-\mathbf{H}_{ij} = \frac{\partial^2 f}{\partial x_i \partial x_j}
+\mathbf{H}\_{ij} = \frac{\partial^2 f}{\partial x\_i \partial x\_j}
 \end{aligned}
 $$
 
@@ -191,7 +191,7 @@ How it affects output: Hessian reveals optimization landscape curvature. High co
 
 $$
 \begin{aligned}
-\mathbf{J}_{ij} = \frac{\partial f_i}{\partial x_j}
+\mathbf{J}\_{ij} = \frac{\partial f\_i}{\partial x\_j}
 \end{aligned}
 $$
 
@@ -281,7 +281,7 @@ How it affects output: ReLU enables deep networks by preventing vanishing gradie
 
 $$
 \begin{aligned}
-\mathbb{E}[X] = \sum_x x \cdot P(X = x)
+\mathbb{E}[X] = \sum\_x x \cdot P(X = x)
 \end{aligned}
 $$
 
@@ -305,7 +305,7 @@ How it affects output: Proper variance control through initialization and normal
 
 $$
 \begin{aligned}
-\text{softmax}(x_i) = \frac{e^{x_i}}{\sum_j e^{x_j}}
+\text{softmax}(x\_i) = \frac{e^{x\_i}}{\sum\_j e^{x\_j}}
 \end{aligned}
 $$
 
@@ -317,7 +317,7 @@ How it affects output: Softmax creates valid probability distributions and enabl
 
 $$
 \begin{aligned}
-\mathcal{L} = -\sum_i y_i \log(\hat{y}_i)
+\mathcal{L} = -\sum\_i y\_i \log(\hat{y}\_i)
 \end{aligned}
 $$
 
@@ -335,7 +335,7 @@ How it affects output: Cross-entropy encourages confident correct predictions wh
 
 $$
 \begin{aligned}
-\theta_{t+1} = \theta_t - \alpha \nabla_\theta \mathcal{L}(\theta_t)
+\theta\_{t+1} = \theta\_t - \alpha \nabla\_\theta \mathcal{L}(\theta\_t)
 \end{aligned}
 $$
 
@@ -347,9 +347,9 @@ How it affects output: Gradient descent provides the fundamental mechanism for l
 
 $$
 \begin{aligned}
-m_t &= \beta_1 m_{t-1} + (1-\beta_1)g_t \newline
-v_t &= \beta_2 v_{t-1} + (1-\beta_2)g_t^2 \newline
-\theta_t &= \theta_{t-1} - \frac{\alpha}{\sqrt{v_t} + \epsilon}\hat{m}_t
+m\_t &= \beta\_1 m\_{t-1} + (1-\beta\_1)g\_t \newline
+v\_t &= \beta\_2 v\_{t-1} + (1-\beta\_2)g\_t^2 \newline
+\theta\_t &= \theta\_{t-1} - \frac{\alpha}{\sqrt{v\_t} + \epsilon}\hat{m}\_t
 \end{aligned}
 $$
 
@@ -367,7 +367,7 @@ How it affects output: Adam adapts learning rates per parameter, leading to fast
 
 $$
 \begin{aligned}
-\text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d\_k}}\right)V
 \end{aligned}
 $$
 
@@ -397,7 +397,7 @@ How it affects output: Layer normalization stabilizes training by normalizing la
 
 $$
 \begin{aligned}
-\mathbf{h}_{l+1} = \mathbf{h}_l + F(\mathbf{h}_l)
+\mathbf{h}\_{l+1} = \mathbf{h}\_l + F(\mathbf{h}\_l)
 \end{aligned}
 $$
 
