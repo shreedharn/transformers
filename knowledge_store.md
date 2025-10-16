@@ -8,7 +8,7 @@
 
 Consider how humans internalize knowledge: when you learn that "Paris is the capital of France," this fact doesn't get stored in a single brain cell. Instead, it becomes encoded across neural connections that activate together when you think about Paris, France, or capitals. LLM weights work similarly - they store knowledge as **learned patterns distributed across billions of parameters**.
 
-**Knowledge Internalization Process:**
+Knowledge Internalization Process:
 
 - Training Exposure: During training, the model encounters "Paris is the capital of France" in thousands of different contexts
 - Statistical Learning: Weights learn that "Paris" and "capital of France" frequently co-occur and have semantic relationships
@@ -19,19 +19,19 @@ Unlike databases where "Paris → capital → France" might be a clear lookup ta
 
 Core Intuition: Think of LLM weights like a distributed neural architecture where:
 
-- **Embedding weights** position tokens in high-dimensional semantic space using vector representations (analogous to principal component analysis projections)
-- **Attention weights** learn contextual dependencies between tokens using learned similarity functions
-- **Feed-forward weights** perform non-linear feature transformations through learned basis functions and activations
+- Embedding weights position tokens in high-dimensional semantic space using vector representations (analogous to principal component analysis projections)
+- Attention weights learn contextual dependencies between tokens using learned similarity functions
+- Feed-forward weights perform non-linear feature transformations through learned basis functions and activations
 
 The magic happens when these three types of weights work together to generate contextual understanding.
 
 #### Weight Computation Timeline and Lifecycle
 
-**The Journey of a Token Through Transformer Layers**
+The Journey of a Token Through Transformer Layers
 
 To understand how weights store knowledge, let's follow the word "cat" through a transformer model step-by-step.
 
-**Step 1: From Text to Numbers (Tokenization and Embedding)**
+Step 1: From Text to Numbers (Tokenization and Embedding)
 
 First, we need to understand how text becomes numbers that neural networks can process:
 
@@ -43,34 +43,34 @@ Token ID: 1247  (each word/subword gets a unique integer ID)
 Embedding vector: [0.8, 0.2, 0.1]  (learned position in semantic space)
 ```
 
-**Important Note on Vector Dimensions:**
+Important Note on Vector Dimensions:
 Throughout this document, we use **3-dimensional vectors** like [0.8, 0.2, 0.1] for educational clarity. This is a **simplified example** to make the mathematics tractable and intuitive.
 
-**Real-world embeddings are much larger:**
+Real-world embeddings are much larger:
 
 - BERT-base: 768 dimensions
 - GPT-3: 4,096 dimensions  
 - GPT-4: 8,192+ dimensions
 
-**Why we use 3D examples:**
+Why we use 3D examples:
 
 1. Mathematical clarity: Easy to follow dot products and matrix multiplications
 2. Visual intuition: Can conceptualize 3D space (length, width, height)
 3. Concrete calculations: All arithmetic is human-verifiable
 4. Pedagogical progression: Build understanding before introducing complexity
 
-**The principles remain identical at any scale** - whether 3D or 768D, the attention mechanisms, similarity calculations, and weight interactions work exactly the same way.
+The principles remain identical at any scale - whether 3D or 768D, the attention mechanisms, similarity calculations, and weight interactions work exactly the same way.
 
-**What is W_embed?**
+What is W_embed?
 
-- `W_embed` is the **embedding matrix** with shape `[vocab_size, embedding_dim]`
+- `W_embed` is the embedding matrix with shape `[vocab_size, embedding_dim]`
 - For a vocabulary of 50,000 words and 768-dimensional embeddings: `W_embed` is `[50000, 768]`
 - Each row represents one word's position in semantic space
 - `W_embed[1247]` gives us the embedding vector for token ID 1247 ("cat")
 
-**During Training Phase:**
+During Training Phase:
 
-1. **Embedding Weight Learning:**
+1. Embedding Weight Learning:
    ```
    Input: Token "cat" (ID: 1247)
    Lookup: embedding_vector = W_embed[1247] = [0.8, 0.2, 0.1]
@@ -82,7 +82,7 @@ Throughout this document, we use **3-dimensional vectors** like [0.8, 0.2, 0.1] 
    - Goal: Similar words (cat, dog, animal) get similar vectors
    ```
    
-   The exact values aren't meaningful individually. What matters is their **relationships**:
+   The exact values aren't meaningful individually. What matters is their relationships:
 
    - `cat=[0.8, 0.2, 0.1]` and `dog=[0.7, 0.3, 0.2]` are close (similar animals)
    - `cat=[0.8, 0.2, 0.1]` and `house=[0.1, 0.8, 0.3]` are distant (different concepts)
@@ -93,13 +93,13 @@ Throughout this document, we use **3-dimensional vectors** like [0.8, 0.2, 0.1] 
 
    Consider a distributed database system performing content-based joins. For each information request:
 
-   - **Query (Q):** The search criteria or predicate (the current token's information requirements)
-   - **Key (K):** The indexed attributes or metadata (how other tokens advertise their content)
-   - **Value (V):** The actual data payload (the semantic information other tokens provide)
+   - Query (Q): The search criteria or predicate (the current token's information requirements)
+   - Key (K): The indexed attributes or metadata (how other tokens advertise their content)
+   - Value (V): The actual data payload (the semantic information other tokens provide)
 
    The attention mechanism compares the Query to all Keys to decide which Values (information) are most relevant to the current word.
 
-   **Step-by-Step Attention Computation:**
+   Step-by-Step Attention Computation:
 
    Context: "The big cat runs"
    Current focus: "cat" wants to understand its context
@@ -123,18 +123,18 @@ Throughout this document, we use **3-dimensional vectors** like [0.8, 0.2, 0.1] 
    - Dimension 2 (0.29): Moderately looking for "location context"
 ```
 
-   **Matrix Multiplication Details:**
+   Matrix Multiplication Details:
    Each column of W_q creates one dimension of the query vector:
 
    - Q_cat[0] = 0.8×0.9 + 0.2×0.2 + 0.1×0.1 = 0.77 (column 1 → "animal properties")
    - Q_cat[1] = 0.8×0.1 + 0.2×0.8 + 0.1×0.3 = 0.27 (column 2 → "size attributes")  
    - Q_cat[2] = 0.8×0.2 + 0.2×0.3 + 0.1×0.7 = 0.29 (column 3 → "location context")
 
-   **Analogy:** Think of W_q columns as "question templates"—each column extracts a different aspect of the word's meaning to help the model decide what information to seek from other words.
+   Analogy: Think of W_q columns as "question templates"—each column extracts a different aspect of the word's meaning to help the model decide what information to seek from other words.
 
    In real models, both the input and output dimensions are much larger (e.g., 768 or 4096), but the principle is the same: the weight matrix transforms the input embedding into a query vector for attention.
 
-   **Why Question-Forming Matrix Matters:**
+   Why Question-Forming Matrix Matters:
    Different words need different types of questions:
 
    - Nouns ask: "What describes me?" "What category am I?"
@@ -199,10 +199,10 @@ Throughout this document, we use **3-dimensional vectors** like [0.8, 0.2, 0.1] 
 
 3. **Feed-Forward Weight Computation: Pattern Recognition and Refinement**
 
-   **What happens after attention?**
+   What happens after attention?
    After attention, "cat" now has a rich, context-aware representation that knows it's "big" and related to "animal". The feed-forward network (FFN) acts like a pattern recognition system that extracts and refines higher-level concepts.
 
-   **The Two-Stage Processing Pipeline:**
+   The Two-Stage Processing Pipeline:
 
    ```
    FFN(x) = W_2 · ReLU(W_1 · x + b_1) + b_2
@@ -295,16 +295,16 @@ Throughout this document, we use **3-dimensional vectors** like [0.8, 0.2, 0.1] 
    Linear combinations alone cannot capture these complex logical relationships
    ```
 
-   **Why ReLU Here (Not Softmax)?**
+   Why ReLU Here (Not Softmax)?
 
-   - ReLU: Used for **feature transformation** - binary decision (keep/discard features)
-   - Softmax: Used for **probability distributions** - when we need weights that sum to 1
+   - ReLU: Used for feature transformation - binary decision (keep/discard features)
+   - Softmax: Used for probability distributions - when we need weights that sum to 1
    - FFN goal: Refine and extract patterns, not create attention weights
    - Sparsity: ReLU creates sparse activations (many zeros), making computation efficient
 
-**During Inference Phase: Deterministic Knowledge Retrieval**
+During Inference Phase: Deterministic Knowledge Retrieval
 
-**What does "deterministic weight application" mean?**
+What does "deterministic weight application" mean?
 
 Think of inference like playing a recorded symphony - every note is predetermined, no improvisation:
 
@@ -322,7 +322,7 @@ Input: "Dogs play" → Forward pass → Output: "with balls"
 [Same weights, deterministic output for same input]
 ```
 
-**Step-by-Step Deterministic Process:**
+Step-by-Step Deterministic Process:
 
 1. Weight Loading: Pre-trained 175B parameters loaded into GPU memory as frozen matrices
 2. Forward Computation: Exact same mathematical operations every time
@@ -331,7 +331,7 @@ Input: "Dogs play" → Forward pass → Output: "with balls"
    - FFN(x) → same transformations applied
 3. Hidden State Flow: `token_id → embedding → layer_1 → ... → layer_96 → output`
 
-**Why "Deterministic" Matters:**
+Why "Deterministic" Matters:
 
 - Same input always produces same output (reproducible)
 - No learning during inference (weights don't update)  
@@ -340,11 +340,11 @@ Input: "Dogs play" → Forward pass → Output: "with balls"
 
 #### Hidden States and Weight Interaction
 
-**What Are Hidden States?**
+What Are Hidden States?
 
 Think of hidden states as "evolving understanding" of each word as it passes through transformer layers. Like how your understanding of "bank" changes when you read "river bank" vs "savings bank", hidden states capture context-dependent meaning.
 
-**The Complete Journey: From Static Embeddings to Rich Representations**
+The Complete Journey: From Static Embeddings to Rich Representations
 
 Let's trace how the word "cat" evolves through multiple transformer layers:
 
@@ -395,7 +395,7 @@ Through 6 layers of processing:
 - It has absorbed semantic relationships from training data
 ```
 
-**How Knowledge Emerges**
+How Knowledge Emerges
 
 The relationship "cats are animals" emerges through this multi-layer process:
 
@@ -412,7 +412,7 @@ The Distributed Knowledge Pattern:
 
 #### Multi-Head Attention: Why Multiple Perspectives Matter
 
-**The Problem with Single Attention**
+The Problem with Single Attention
 
 Imagine trying to understand "The big cat runs fast" with only one type of question. You might focus on:
 
@@ -422,7 +422,7 @@ Imagine trying to understand "The big cat runs fast" with only one type of quest
 
 But you need ALL these relationships simultaneously!
 
-**Multi-Head Solution: Parallel Attention Specialists**
+Multi-Head Solution: Parallel Attention Specialists
 
 Think of multi-head attention like having multiple specialists analyze the same sentence:
 
@@ -440,7 +440,7 @@ Head 3: cat ↔ animal_concepts (semantic specialist)
 Head 4: fast ↔ runs (adverb specialist)
 ```
 
-**Gentle Introduction: From 1 Head to 12 Heads**
+Gentle Introduction: From 1 Head to 12 Heads
 
 ```
 Step 1: Understanding the Architecture
@@ -457,7 +457,7 @@ W_v split into 12 pieces: [768×64] each
 Total parameters: same as single head, but organized differently
 ```
 
-**Intuitive Head Specialization Example:**
+Intuitive Head Specialization Example:
 
 ```
 Context: "The big brown cat runs quickly"
@@ -484,7 +484,7 @@ K_quickly = [0.5, 0.2, 0.9, ..., 0.7] (64-dim)
 High attention: runs ↔ quickly
 ```
 
-**How Heads Combine: The Integration Magic**
+How Heads Combine: The Integration Magic
 
 ```
 After parallel processing:
@@ -505,25 +505,25 @@ Final "cat" representation now contains:
 - Action context (runs quickly)
 ```
 
-**Why This Architecture Works So Well:**
+Why This Architecture Works So Well:
 
 1. Specialization: Each head learns different types of relationships
 2. Parallel Processing: All relationships computed simultaneously  
 3. Complementary Views: Different heads capture different aspects
 4. Rich Integration: Final representation combines all perspectives
 
-**Multi-Head Attention Summary:**
+Multi-Head Attention Summary:
 
 | Head Type | Specialization | Example Relationships | Why Important |
 |-----------|----------------|----------------------|---------------|
-| **Grammar Heads (1,5)** | Subject-verb-object patterns | cat ↔ runs, animal ↔ is | Syntactic understanding |
-| **Modifier Heads (2,4)** | Adjective-noun relationships | big ↔ cat, small ↔ pet | Descriptive attributes |
-| **Semantic Heads (3,7,11)** | Category hierarchies | cat ↔ animal, pet ↔ domestic | Conceptual relationships |
-| **Position Heads (6,8)** | Sequential dependencies | nearby words, sentence structure | Word order importance |
+| Grammar Heads (1,5) | Subject-verb-object patterns | cat ↔ runs, animal ↔ is | Syntactic understanding |
+| Modifier Heads (2,4) | Adjective-noun relationships | big ↔ cat, small ↔ pet | Descriptive attributes |
+| Semantic Heads (3,7,11) | Category hierarchies | cat ↔ animal, pet ↔ domestic | Conceptual relationships |
+| Position Heads (6,8) | Sequential dependencies | nearby words, sentence structure | Word order importance |
 
-**Why Concatenation Matters:** Each head contributes specialized knowledge (64 dimensions each), and concatenating all 12 heads (12×64=768) creates a rich representation that combines grammatical, semantic, and positional understanding.
+Why Concatenation Matters: Each head contributes specialized knowledge (64 dimensions each), and concatenating all 12 heads (12×64=768) creates a rich representation that combines grammatical, semantic, and positional understanding.
 
-**Knowledge Encoding Patterns:**
+Knowledge Encoding Patterns:
 The relationship "cats are animals" emerges through distributed processing:
 
 - Semantic heads: Learn hierarchical category relationships (cat→animal)
@@ -537,7 +537,7 @@ Now that we understand how individual weights work, let's examine the scale at w
 
 Think of parameters as the learned coefficients in a massive system of linear equations. Each parameter represents a weight in the network's computational graph that determines how information propagates through the model's layers during inference.
 
-**Concrete Example - GPT-3.5 (~175 billion parameters):**
+Concrete Example - GPT-3.5 (~175 billion parameters):
 *Note: Parameter counts are illustrative approximations based on publicly available specifications.*
 
 ```
@@ -569,7 +569,7 @@ Storage Requirements:
 - Why expensive GPU memory is crucial for inference
 ```
 
-**Scale Perspective:**
+Scale Perspective:
 
 - 1 million parameters: Small research model, basic pattern recognition
 - 100 million: BERT-base, practical applications, good language understanding  
@@ -583,7 +583,7 @@ Critical Insight: Each parameter stores a tiny piece of learned knowledge - no s
 
 #### Introduction: What Are Vector Stores?
 
-Consider a high-dimensional content-addressable memory system where instead of organizing documents by hierarchical taxonomies, each document is positioned based on its learned semantic representation - a dense numerical encoding capturing its conceptual relationships. Vector databases work exactly this way: they store knowledge as **discrete embeddings** (high-dimensional numerical vectors) that can be efficiently retrieved through approximate nearest neighbor search.
+Consider a high-dimensional content-addressable memory system where instead of organizing documents by hierarchical taxonomies, each document is positioned based on its learned semantic representation - a dense numerical encoding capturing its conceptual relationships. Vector databases work exactly this way: they store knowledge as discrete embeddings (high-dimensional numerical vectors) that can be efficiently retrieved through approximate nearest neighbor search.
 
 Core Intuition: Think of vector stores like:
 
@@ -595,7 +595,7 @@ Key Difference from LLMs: While LLMs encode knowledge implicitly in weight patte
 
 #### How Vector Search Works: From Simple to Sophisticated
 
-**The Fundamental Challenge**
+The Fundamental Challenge
 
 Given a query like "What animals make good pets?", how do we find relevant documents from millions of stored vectors? This is the core challenge vector databases solve.
 
@@ -603,7 +603,7 @@ Given a query like "What animals make good pets?", how do we find relevant docum
 
 Understanding how vector databases achieve fast similarity search at scale requires examining different indexing strategies. Each method represents a different trade-off between speed, accuracy, and memory usage.
 
-**Method 1: Brute Force Search (The Simple Approach)**
+Method 1: Brute Force Search (The Simple Approach)
 
 ```
 Problem: Find documents similar to query "What animals are pets?"
@@ -638,9 +638,9 @@ Mathematical Problem: For n documents with d-dimensional vectors:
 
 The solution: **Approximate Nearest Neighbor (ANN)** methods that trade a small amount of accuracy for massive speed improvements.
 
-**Method 2: HNSW - The Highway System for Vectors**
+Method 2: HNSW - The Highway System for Vectors
 
-**The Elevator Building Analogy:** Think of HNSW (Hierarchical Navigable Small World) like navigating a tall building with multiple elevator systems:
+The Elevator Building Analogy: Think of HNSW (Hierarchical Navigable Small World) like navigating a tall building with multiple elevator systems:
 
 ```
 Analogy: Finding someone in a large office building
@@ -654,13 +654,13 @@ Level 2: [doc1] ←→ [doc5] ←→ [doc12]  (sparse, long-distance connections
 Level 1: [doc1] ←→ [doc2] ←→ [doc5] ←→ [doc8] ←→ [doc12] (medium connections)
 Level 0: [doc1] ←→ [doc2] ←→ [doc3] ←→ [doc4] ←→ [doc5] ←→ ... (dense, local connections)
 ```
-**Mathematical Foundation:**
+Mathematical Foundation:
 
 - Time complexity: O(log n) on average
 - Space complexity: O(n·M) where M is average connections per node
 - Search algorithm: Greedy search through hierarchical graph layers
 
-**Search Process:**
+Search Process:
 
 1. Start at Level 2, find closest document to query
 2. Navigate to similar documents at this level
@@ -673,9 +673,9 @@ Performance Math:
 - HNSW: ~27 comparisons (log₂(100M) ≈ 27)
 - Speedup: 3.7 million times faster!
 
-**Hands-on Implementation:**
+Hands-on Implementation:
 
-> 📓 **Interactive Tutorial:** See HNSW in action with executable Python code in [pynb/vector_search/vector_search.ipynb](../pynb/vector_search/vector_search.ipynb)
+> 📓 Interactive Tutorial: See HNSW in action with executable Python code in [pynb/vector_search/vector_search.ipynb](../pynb/vector_search/vector_search.ipynb)
 > 
 > The notebook demonstrates:
 > - Building HNSW index with customizable parameters (M, ef_construction)
@@ -683,9 +683,9 @@ Performance Math:
 > - Recall vs speed trade-offs with real data
 > - Parameter tuning effects on search quality
 
-**Method 3: IVF - The Clustering Approach**
+Method 3: IVF - The Clustering Approach
 
-**The Filing Cabinet Analogy:** Think of IVF (Inverted File) like organizing documents in labeled filing cabinets:
+The Filing Cabinet Analogy: Think of IVF (Inverted File) like organizing documents in labeled filing cabinets:
 
 ```
 Office Filing System:
@@ -703,28 +703,28 @@ Cluster 2 (House docs): centroid = [0.1, 0.8, 0.3]
 ├── "Big house in park" → [0.12, 0.85, 0.43]
 └── "House needs cleaning" → [0.08, 0.78, 0.35]
 ```
-**Mathematical Foundation:**
+Mathematical Foundation:
 
 - Time complexity: O(n/k + k) where k = number of clusters
 - Space complexity: O(n + k·d) for storing documents and centroids
 - Optimal k: Usually √n clusters (e.g., 1000 clusters for 1M documents)
 
-**Search Process:**
+Search Process:
 
 1. Query: "What animals are pets?" → [0.72, 0.31, 0.18]
 2. Find closest cluster centroid → Cluster 1 (animals)
 3. Search only within Cluster 1 → much faster!
 4. Reduced search: 3 documents instead of 5 total
 
-**Performance Math:**
+Performance Math:
 
 - 1M documents, 1000 clusters: Search 1000 docs instead of 1M
 - Speedup: 1000× faster than brute force
 - Trade-off: Might miss documents in wrong clusters (~2-5% recall loss)
 
-**Hands-on Implementation:**
+Hands-on Implementation:
 
-> 📓 **Interactive Tutorial:** Experience IVF clustering with executable Python code in [pynb/vector_search/vector_search.ipynb](../pynb/vector_search/vector_search.ipynb)
+> 📓 Interactive Tutorial: Experience IVF clustering with executable Python code in [pynb/vector_search/vector_search.ipynb](../pynb/vector_search/vector_search.ipynb)
 > 
 > The notebook demonstrates:
 > - Building IVF index with k-means clustering
@@ -732,9 +732,9 @@ Cluster 2 (House docs): centroid = [0.1, 0.8, 0.3]
 > - Search probe tuning (nprobes) for accuracy vs speed
 > - Cluster distribution analysis and optimization
 
-**Method 4: Product Quantization - The Compression Master**
+Method 4: Product Quantization - The Compression Master
 
-**The Color Palette Analogy:** Think of quantization like converting a detailed photograph to use only a limited set of colors, like the 16-color palette on old video games. Instead of millions of possible colors, you pick the closest match from your small palette, making the image much smaller to store while keeping it recognizable.
+The Color Palette Analogy: Think of quantization like converting a detailed photograph to use only a limited set of colors, like the 16-color palette on old video games. Instead of millions of possible colors, you pick the closest match from your small palette, making the image much smaller to store while keeping it recognizable.
 
 PQ is like creating a "summary" of each vector to save memory:
 
@@ -770,28 +770,28 @@ Original: 768 dimensions × 32 bits/float = 24,576 bits per vector (3,072 bytes)
 Compressed: 8 chunks × 8 bits/chunk = 64 bits per vector (8 bytes)
 Compression ratio: 24,576 ÷ 64 = 384× smaller!
 ```
-**Mathematical Foundation:**
+Mathematical Foundation:
 
 - Compression ratio: d/(m·log₂(k)) where d=dimensions, m=subvectors, k=centroids per subvector
 - Typical setup: 768D → 8 subvectors of 96D each, 256 centroids per subvector
 - Memory per vector: m·log₂(k) = 8·log₂(256) = 8·8 = 64 bits = 8 bytes
 
-**Memory savings calculation:**
+Memory savings calculation:
 
 - Original: 1M vectors × (768 × 4 bytes) = 3.072 GB  
 - Compressed: 1M vectors × 8 bytes = 8 MB
 - Compression: 384× smaller memory usage!
 
-**Performance Trade-offs:**
+Performance Trade-offs:
 ✓ Massive memory reduction (100-400×)
 ✓ Faster similarity computation (lookup tables)
 ✓ Better cache performance (more vectors fit in memory)
 ✗ Small accuracy loss (~2-5% recall drop)
 ✗ Requires training phase to learn centroids
 
-**Hands-on Implementation:**
+Hands-on Implementation:
 
-> 📓 **Interactive Tutorial:** Explore Product Quantization compression with executable Python code in [pynb/vector_search/vector_search.ipynb](../pynb/vector_search/vector_search.ipynb)
+> 📓 Interactive Tutorial: Explore Product Quantization compression with executable Python code in [pynb/vector_search/vector_search.ipynb](../pynb/vector_search/vector_search.ipynb)
 > 
 > The notebook demonstrates:
 > - Vector splitting into subvectors and centroid learning
@@ -799,14 +799,14 @@ Compression ratio: 24,576 ÷ 64 = 384× smaller!
 > - Asymmetric distance computation for search
 > - Combined IVF+PQ implementation for best of both worlds
 
-**Performance Comparison with Real Numbers:**
+Performance Comparison with Real Numbers:
 
 | Method | Search Time (1M docs) | Memory Usage | Recall@10 | When to Use |
 |--------|----------------------|--------------|-----------|-------------|
-| **Brute Force** | 77 seconds | 3.0 GB | 100% | Small datasets (<10K vectors), exact results required |
-| **HNSW** | 0.02 seconds | 4.5 GB | 95-99% | Real-time applications, high-dimensional data |
-| **IVF (1000 clusters)** | 0.08 seconds | 3.2 GB | 90-95% | Medium datasets, balanced performance needs |
-| **IVF + PQ** | 0.05 seconds | 8 MB | 85-92% | Large-scale deployment, memory constraints |
+| Brute Force | 77 seconds | 3.0 GB | 100% | Small datasets (<10K vectors), exact results required |
+| HNSW | 0.02 seconds | 4.5 GB | 95-99% | Real-time applications, high-dimensional data |
+| IVF (1000 clusters) | 0.08 seconds | 3.2 GB | 90-95% | Medium datasets, balanced performance needs |
+| IVF + PQ | 0.05 seconds | 8 MB | 85-92% | Large-scale deployment, memory constraints |
 
 #### From Theory to Practice: Implementing Vector Search
 
@@ -817,29 +817,29 @@ Now that we understand the mathematical foundations and trade-offs of different 
 3. Mature ecosystem: Battle-tested with extensive documentation and community support
 4. Hybrid capabilities: Combines vector search with traditional text search seamlessly
 
-**What is OpenSearch?**
+What is OpenSearch?
 OpenSearch is an open-source search and analytics engine that started as a fork of Elasticsearch. It has built-in support for k-nearest neighbor (k-NN) search, making it an excellent platform for vector similarity search. Think of it as a database specifically designed for finding similar items quickly.
 
-**Why Vector Search in OpenSearch Matters:**
+Why Vector Search in OpenSearch Matters:
 
 - Real-world scale: Handles millions of documents in production environments
 - Production features: Includes monitoring, scaling, and reliability features you need
 - Learning bridge: Understanding OpenSearch patterns helps with other vector databases
 
-**Mathematical Summary:**
+Mathematical Summary:
 
 | Method | Time Complexity | Space Complexity | Key Parameters |
 |--------|----------------|------------------|----------------|
-| **Brute Force** | O(n·d) | O(n·d) | None |
-| **HNSW** | O(log n) | O(n·M) | M=connections, ef=search width |
-| **IVF** | O(n/k + k) | O(n·d + k·d) | k=clusters, probes=search clusters |
-| **Product Quantization** | O(n·d/m) | O(n·m + k^m) | m=subvectors, k=centroids |
+| Brute Force | O(n·d) | O(n·d) | None |
+| HNSW | O(log n) | O(n·M) | M=connections, ef=search width |
+| IVF | O(n/k + k) | O(n·d + k·d) | k=clusters, probes=search clusters |
+| Product Quantization | O(n·d/m) | O(n·m + k^m) | m=subvectors, k=centroids |
 
 #### Comprehensive Hands-on Tutorial
 
-> 📓 **Complete Implementation Guide:** [pynb/vector_search/vector_search.ipynb](../pynb/vector_search/vector_search.ipynb)
+> 📓 Complete Implementation Guide: [pynb/vector_search/vector_search.ipynb](../pynb/vector_search/vector_search.ipynb)
 > 
-> **What you'll build and compare:**
+> What you'll build and compare:
 > 
 > 1. **Brute Force Search** - Baseline implementation with O(n·d) complexity
 > 2. **HNSW Implementation** - Graph-based fast search with parameter tuning
@@ -847,14 +847,14 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 > 4. **Product Quantization** - Memory compression with 100-400× reduction
 > 5. **Combined Methods** - IVF+PQ for optimal speed and memory efficiency
 > 
-> **Interactive Features:**
+> Interactive Features:
 > - **Real benchmarks** with timing comparisons and speedup calculations
 > - **Performance visualization** showing speed vs accuracy trade-offs
 > - **Parameter exploration** to understand tuning effects
 > - **Memory analysis** with compression ratio calculations
 > - **Production considerations** for choosing the right method
 > 
-> **Educational Value:**
+> Educational Value:
 > - Execute all code step-by-step to understand how each algorithm works
 > - Modify parameters to see their impact on performance and accuracy
 > - Compare methods side-by-side with real datasets
@@ -866,16 +866,16 @@ Different indexes optimize for different priorities:
 
 #### Vector Database Terminology and Index Implementations
 
-**Index Performance Characteristics:**
+Index Performance Characteristics:
 
 | Index Type | Build Time | Query Time | Memory Usage | Recall |
 |------------|------------|------------|--------------|--------|
-| **IVF_FLAT** | O(n) | O(√n) | High (exact vectors) | High |
-| **IVF_PQ** | O(n) | O(√n) | Low (compressed) | Medium |
-| **HNSW** | O(n log n) | O(log n) | Medium (graph structure) | High |
-| **IVF_SQ8** | O(n) | O(√n) | Medium (8-bit quantized) | Medium-High |
+| IVF_FLAT | O(n) | O(√n) | High (exact vectors) | High |
+| IVF_PQ | O(n) | O(√n) | Low (compressed) | Medium |
+| HNSW | O(n log n) | O(log n) | Medium (graph structure) | High |
+| IVF_SQ8 | O(n) | O(√n) | Medium (8-bit quantized) | Medium-High |
 
-**Practical Example with Our Vocabulary:**
+Practical Example with Our Vocabulary:
 ```
 Document Collection:
 doc1: "The cat sleeps in house" → vector_1: [0.82, 0.31, 0.15, ...]
@@ -900,7 +900,7 @@ HNSW Index:
 
 #### Vector Database Operations and Production Considerations
 
-**Insertion Pipeline:**
+Insertion Pipeline:
 ```
 
 1. Document Processing:
@@ -917,7 +917,7 @@ HNSW Index:
    vector_id → {text: "Cats are small animals", category: "animals", timestamp: "2024-01-15"}
 ```
 
-**How Search Actually Works:**
+How Search Actually Works:
 ```
 You ask: "What do pets do?"
 
@@ -931,7 +931,7 @@ Step 4: Sort by how similar they are:
    - doc5: "Houses need cleaning" (85% similar, but about places) ✗
 ```
 
-**Handling Large Databases:**
+Handling Large Databases:
 ```
 When you have millions of documents, you split them across multiple servers:
 
@@ -949,7 +949,7 @@ When you search:
 This makes searches faster even with huge databases.
 ```
 
-**Adding New Documents:**
+Adding New Documents:
 ```
 When you add new documents to your database:
 
@@ -974,13 +974,13 @@ When you upgrade your embedding model (the thing that turns text into numbers):
 
 ### 3. Controlling Randomness: Temperature, Top-K, and Top-P in LLMs and Vector Stores
 
-**Why Control Randomness?**
+Why Control Randomness?
 
 Both LLMs and vector stores deal with probability distributions and ranking. Understanding how to control randomness and selection helps optimize both systems for different use cases.
 
 #### Temperature, Top-K, Top-P in LLM Text Generation
 
-**The Problem: Deterministic vs Creative Output**
+The Problem: Deterministic vs Creative Output
 
 ```
 LLM Next-Token Prediction for "The cat is ___":
@@ -994,7 +994,7 @@ Without controls:
 We need balanced control between coherence and creativity
 ```
 
-**Temperature: Controlling Confidence**
+Temperature: Controlling Confidence
 
 Temperature adjusts the "sharpness" of probability distributions:
 
@@ -1016,7 +1016,7 @@ Effect: More random, creative but potentially incoherent
 Formula: softmax(logits/temperature)
 ```
 
-**Top-K: Limiting Vocabulary**
+Top-K: Limiting Vocabulary
 
 Top-K keeps only the K most likely tokens:
 
@@ -1033,7 +1033,7 @@ Result: [animal: 1.0]
 Effect: Deterministic, always picks most likely token
 ```
 
-**Top-P (Nucleus Sampling): Dynamic Vocabulary**
+Top-P (Nucleus Sampling): Dynamic Vocabulary
 
 Top-P keeps tokens until cumulative probability reaches P:
 
@@ -1051,7 +1051,7 @@ Kept: [animal: 0.4, big: 0.25, sleeping: 0.15, running: 0.1]
 Effect: Adaptive vocabulary size based on probability distribution
 ```
 
-**Practical LLM Generation Settings:**
+Practical LLM Generation Settings:
 
 ```
 Creative Writing: Temperature=1.2, Top-P=0.9
@@ -1074,7 +1074,7 @@ Factual Q&A: Temperature=0.1, Top-K=5
 
 Just like LLMs use temperature and sampling to control text generation, vector stores have their own ways to control search results. The concepts are surprisingly similar!
 
-**Similarity Threshold (Like Temperature Control)**
+Similarity Threshold (Like Temperature Control)
 
 When you search a vector database, you get back documents with similarity scores. Just like temperature controls how "picky" an LLM is about word choices, similarity thresholds control how "picky" your search is about results.
 
@@ -1098,7 +1098,7 @@ Result: Less picky, more diverse results
 Good for: Exploring ideas, brainstorming, research
 ```
 
-**Top-K Results (Identical Concept)**
+Top-K Results (Identical Concept)
 
 ```
 Vector search Top-K = 3:
@@ -1110,7 +1110,7 @@ Return only the most similar document
 Useful for: Finding single best match
 ```
 
-**Similarity Cutoff (Like Top-P)**
+Similarity Cutoff (Like Top-P)
 
 ```
 Dynamic result size based on similarity quality:
@@ -1128,7 +1128,7 @@ Similarity gap approach:
 - If gap_threshold = 0.15, stop after doc1
 ```
 
-**Practical Vector Store Settings:**
+Practical Vector Store Settings:
 
 ```
 High-Precision Search: High threshold (0.8), Top-K=5
@@ -1156,22 +1156,22 @@ Real-time Chat: Medium threshold (0.7), Top-K=10
 This document focuses on conceptual understanding. For detailed mathematical derivations, formal proofs, and implementation details, please consult our dedicated mathematical resources:
 
 #### [Transformers Mathematics Guide Part 1](./transformers_math1.md)
-**Essential sections for this document:**
+Essential sections for this document:
 
-- **Sections 2.1-2.3:** Mathematical preliminaries (linear algebra, matrix calculus, probability theory)
-- **Section 4.2-4.3:** High-dimensional geometry and similarity metrics (cosine similarity, euclidean distance, concentration of measure)
-- **Section 5:** Attention mechanism derivations (scaled dot-product attention, softmax gradients, backpropagation)  
-- **Section 6:** Multi-head attention mathematics (subspace projections, positional encodings, RoPE)
+- Sections 2.1-2.3: Mathematical preliminaries (linear algebra, matrix calculus, probability theory)
+- Section 4.2-4.3: High-dimensional geometry and similarity metrics (cosine similarity, euclidean distance, concentration of measure)
+- Section 5: Attention mechanism derivations (scaled dot-product attention, softmax gradients, backpropagation)  
+- Section 6: Multi-head attention mathematics (subspace projections, positional encodings, RoPE)
 
 #### [Transformers Mathematics Guide Part 2](./transformers_math2.md)
-**Essential sections for this document:**
+Essential sections for this document:
 
-- **Section 9:** Optimization theory (gradient descent, Adam optimizer, learning rate schedules)
-- **Section 10:** Efficient attention implementations for scaling
-- **Section 11:** Regularization and calibration techniques
+- Section 9: Optimization theory (gradient descent, Adam optimizer, learning rate schedules)
+- Section 10: Efficient attention implementations for scaling
+- Section 11: Regularization and calibration techniques
 
 #### [Mathematical Quick Reference](./math_quick_ref.md) 
-**Quick lookup for:**
+Quick lookup for:
 
 - Linear algebra operations (matrix multiplication, transpose, eigenvalues)
 - Vector geometry (dot products, norms, similarity metrics)
@@ -1190,15 +1190,15 @@ The mathematical concepts underlying both LLM weights and vector stores share co
 
 ### 4. Critical Question: Are They the Same Concept?
 
-**NO** - These are fundamentally different approaches:
+NO - These are fundamentally different approaches:
 
 | Aspect | LLM Weights | Vector Stores |
 |--------|-------------|---------------|
-| **Storage** | Distributed patterns | Discrete vectors |
-| **Knowledge Access** | Generated through computation | Retrieved through search |
-| **Updates** | Requires retraining | Add/remove vectors |
-| **Capacity** | Limited by parameter count | Unlimited external storage |
-| **Latency** | Fixed computation cost | Variable search cost |
+| Storage | Distributed patterns | Discrete vectors |
+| Knowledge Access | Generated through computation | Retrieved through search |
+| Updates | Requires retraining | Add/remove vectors |
+| Capacity | Limited by parameter count | Unlimited external storage |
+| Latency | Fixed computation cost | Variable search cost |
 
 ### 5. Similarity Calculations Across Systems
 
@@ -1206,28 +1206,28 @@ Both LLM weights and vector stores fundamentally rely on similarity calculations
 
 #### How LLMs Use Similarity
 
-**During Training:**
+During Training:
 
-- **Attention Mechanism:** Uses dot products (related to cosine similarity)
+- Attention Mechanism: Uses dot products (related to cosine similarity)
   ```
   Attention(Q,K,V) = softmax(QK^T/√d)V
   ```
   The QK^T operation computes similarity between query and key vectors.
 
-- **Gradient Flow:** Backpropagation updates weights based on similarity between predicted and actual tokens.
-- **Example:** When processing "The big cat ___", attention weights learn that "cat" tokens should attend strongly to "animal" tokens.
+- Gradient Flow: Backpropagation updates weights based on similarity between predicted and actual tokens.
+- Example: When processing "The big cat ___", attention weights learn that "cat" tokens should attend strongly to "animal" tokens.
 
-**During Inference:**
+During Inference:
 
-- **No explicit similarity search** - knowledge emerges from distributed computation
-- **Next-token prediction:** Computes probability distributions over vocabulary
-- **Example:** For "The big cat ___", the model outputs P("runs") = 0.3, P("sleeps") = 0.25 through learned weight patterns
+- No explicit similarity search - knowledge emerges from distributed computation
+- Next-token prediction: Computes probability distributions over vocabulary
+- Example: For "The big cat ___", the model outputs P("runs") = 0.3, P("sleeps") = 0.25 through learned weight patterns
 
 #### How Vector Stores Use Similarity
 
-**Explicit similarity search for retrieval:**
+Explicit similarity search for retrieval:
 
-**Unified Example - Query: "What animals make good pets?"**
+Unified Example - Query: "What animals make good pets?"
 ```
 Step 1: Query → Embedding
 "What animals make good pets?" → [0.72, 0.31, 0.18]
@@ -1247,13 +1247,13 @@ threshold = 0.5 → docs 1&2 pass, doc3 filtered out
 Final ranking: doc2 (0.96), doc1 (0.94)
 ```
 
-**Key Distinction:**
+Key Distinction:
 
 - LLMs: Internal similarity for attention → generates new content
 - Vector Stores: External similarity for retrieval → finds existing content
-3. **RAG Pipeline (Retrieval-Augmented Generation):**
+3. RAG Pipeline (Retrieval-Augmented Generation):
 
-**Complete Workflow:**
+Complete Workflow:
 ```
 Step 1: User Query Processing
 User: "What do cats eat in the wild?"
@@ -1280,7 +1280,7 @@ LLM processes augmented prompt → Generates informed response
 "Based on the provided sources, wild cats primarily hunt small mammals..."
 ```
 
-**Key Benefits:**
+Key Benefits:
 
 - Current information: Vector store provides up-to-date facts
 - Source attribution: Clear traceability to retrieved documents  
@@ -1290,45 +1290,45 @@ LLM processes augmented prompt → Generates informed response
 
 #### Complementary Systems
 
-**How LLMs and vector stores work together:**
+How LLMs and vector stores work together:
 
-1. **LLM Weights Store:** General language patterns, reasoning capabilities, common knowledge
-2. **Vector Stores Handle:** Specific facts, recent information, large knowledge bases
+1. LLM Weights Store: General language patterns, reasoning capabilities, common knowledge
+2. Vector Stores Handle: Specific facts, recent information, large knowledge bases
 
-**Trade-offs:**
+Trade-offs:
 
 | Factor | LLM Weights | Vector Stores |
 |--------|-------------|---------------|
-| **Speed** | Fast (fixed computation) | Variable (depends on index size) |
-| **Updates** | Slow (retraining required) | Fast (add/remove vectors) |
-| **Accuracy** | High for trained knowledge | High for indexed content |
-| **Cost** | High inference cost | Storage + search cost |
+| Speed | Fast (fixed computation) | Variable (depends on index size) |
+| Updates | Slow (retraining required) | Fast (add/remove vectors) |
+| Accuracy | High for trained knowledge | High for indexed content |
+| Cost | High inference cost | Storage + search cost |
 
 #### Concrete Comparative Example
 
-**Sentence:** "Small pet loves park"
+Sentence: "Small pet loves park"
 
-**In LLM Weights:**
+In LLM Weights:
 
 - Training updates attention patterns between "small"→"pet", "pet"→"loves", "loves"→"park"
 - Knowledge encoded as probability: P("loves"|"small pet") = 0.15
 - Retrieved through forward pass computation
 
-**In Vector Store:**
+In Vector Store:
 
 - Document: "Small pets love spending time in parks" → Vector: [0.45, 0.67, 0.22]
 - Query: "pet activities" → Vector: [0.43, 0.65, 0.24]
 - Cosine similarity: 0.98 → Document retrieved
 - Knowledge accessed through explicit search
 
-**Key Difference:** LLM generates the relationship through learned patterns, while vector store retrieves pre-existing representations.
+Key Difference: LLM generates the relationship through learned patterns, while vector store retrieves pre-existing representations.
 
 #### System Limitations and Considerations
 
 | System | Key Limitations | Mitigation Strategies |
 |--------|----------------|----------------------|
-| **LLM Weights** | • Hallucinations and confabulation<br>• Outdated information (training cutoff)<br>• Expensive retraining for updates<br>• Fixed knowledge capacity | • Use confidence scoring<br>• Combine with retrieval systems<br>• Regular model updates<br>• Parameter-efficient fine-tuning |
-| **Vector Stores** | • Dependent on embedding quality<br>• Potential stale/outdated data<br>• Limited semantic understanding<br>• Retrieval relevance challenges | • High-quality embedding models<br>• Regular data refreshing<br>• Hybrid search (semantic + keyword)<br>• Query expansion techniques |
+| LLM Weights | • Hallucinations and confabulation<br>• Outdated information (training cutoff)<br>• Expensive retraining for updates<br>• Fixed knowledge capacity | • Use confidence scoring<br>• Combine with retrieval systems<br>• Regular model updates<br>• Parameter-efficient fine-tuning |
+| Vector Stores | • Dependent on embedding quality<br>• Potential stale/outdated data<br>• Limited semantic understanding<br>• Retrieval relevance challenges | • High-quality embedding models<br>• Regular data refreshing<br>• Hybrid search (semantic + keyword)<br>• Query expansion techniques |
 
 ---
 
@@ -1342,25 +1342,25 @@ This comprehensive exploration reveals that LLM weights and vector stores repres
 
 ### Key Distinctions
 
-**LLM weights** store knowledge as:
+LLM weights store knowledge as:
 
-- **Distributed patterns** across billions of parameters where knowledge is internalized during training
-- **Implicit relationships** learned through statistical associations in training data
-- **Generated responses** via computational processes that activate learned patterns
-- **Fixed representations** requiring retraining to update internalized knowledge
+- Distributed patterns across billions of parameters where knowledge is internalized during training
+- Implicit relationships learned through statistical associations in training data
+- Generated responses via computational processes that activate learned patterns
+- Fixed representations requiring retraining to update internalized knowledge
 
-**Vector stores** maintain knowledge as:
+Vector stores maintain knowledge as:
 
-- **Discrete vectors** in searchable databases
-- **Explicit documents** with clear provenance  
-- **Retrieved information** through similarity search
-- **Dynamic content** easily updated by adding/removing vectors
+- Discrete vectors in searchable databases
+- Explicit documents with clear provenance  
+- Retrieved information through similarity search
+- Dynamic content easily updated by adding/removing vectors
 
 ### Unified Understanding
 
 As explored in Section 5, both systems leverage similarity calculations but serve different purposes - LLMs use internal similarity for attention-based generation while vector stores use external similarity for document retrieval.
 
-Both benefit from **generation control parameters**:
+Both benefit from generation control parameters:
 
 - LLMs: Temperature, top-k, top-p for creativity vs. consistency
 - Vector stores: Similarity thresholds, result limits for precision vs. recall
@@ -1369,9 +1369,9 @@ Both benefit from **generation control parameters**:
 
 Modern AI systems achieve optimal performance by combining both approaches:
 
-- **Vector stores** provide specific, current, and attributable information
-- **LLM weights** contribute reasoning, synthesis, and natural language generation
-- **RAG architectures** demonstrate how retrieval augments generation effectively
+- Vector stores provide specific, current, and attributable information
+- LLM weights contribute reasoning, synthesis, and natural language generation
+- RAG architectures demonstrate how retrieval augments generation effectively
 
 ### Mathematical Foundation
 

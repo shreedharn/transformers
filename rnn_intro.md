@@ -1,10 +1,10 @@
 # Recurrent Neural Networks (RNNs): A Step-by-Step Tutorial
 
-**Building on your MLP foundation:** In the [MLP Tutorial](./mlp_intro.md), you learned how multiple layers enable learning complex, non-linear patterns. But MLPs have a crucial limitation—they can only process fixed-size inputs and have no memory between different examples. What happens when you need to understand sequences like "The cat sat on the mat" where word order matters and context builds up over time?
+Building on your MLP foundation: In the [MLP Tutorial](./mlp_intro.md), you learned how multiple layers enable learning complex, non-linear patterns. But MLPs have a crucial limitation—they can only process fixed-size inputs and have no memory between different examples. What happens when you need to understand sequences like "The cat sat on the mat" where word order matters and context builds up over time?
 
-**What you'll learn:** How RNNs solve the sequence modeling challenge by adding memory to neural networks, why this breakthrough enabled modern language AI, and how the evolution from early RNNs to advanced architectures paved the way for transformers. We'll work through detailed examples and trace the historical journey from RNN limitations to modern solutions.
+What you'll learn: How RNNs solve the sequence modeling challenge by adding memory to neural networks, why this breakthrough enabled modern language AI, and how the evolution from early RNNs to advanced architectures paved the way for transformers. We'll work through detailed examples and trace the historical journey from RNN limitations to modern solutions.
 
-**Prerequisites:** Completed [MLP Tutorial](./mlp_intro.md) and basic understanding of sequential data (text, time series).
+Prerequisites: Completed [MLP Tutorial](./mlp_intro.md) and basic understanding of sequential data (text, time series).
 
 ## 1. The Sequential Challenge: Why MLPs Aren't Enough
 
@@ -12,7 +12,7 @@
 
 Remember from the [MLP Tutorial](./mlp_intro.md) how MLPs excel at learning complex patterns by stacking multiple layers? But there's a fundamental limitation: MLPs require **fixed-size inputs**. Every example fed into the network must have exactly the same number of features.
 
-**This creates a major problem for sequential data:**
+This creates a major problem for sequential data:
 
 ```
 "Hello world" (2 words) vs "The quick brown fox jumps" (5 words)
@@ -22,7 +22,7 @@ How do you feed both into the same MLP when they have different lengths?
 
 ### Failed Approaches: Bags of Words and Padding
 
-**Before RNNs, researchers tried several workarounds:**
+Before RNNs, researchers tried several workarounds:
 
 #### 1. Bag-of-Words (Ignoring Order)
 ```
@@ -77,7 +77,7 @@ The Breakthrough Idea: What if we could process sequences **one element at a tim
 
 ### The RNN Innovation: Adding Memory
 
-**RNNs solved the sequential challenge** with a revolutionary concept: instead of processing the entire sequence at once, process it **one element at a time**, maintaining a **hidden state** that carries information forward.
+RNNs solved the sequential challenge with a revolutionary concept: instead of processing the entire sequence at once, process it **one element at a time**, maintaining a **hidden state** that carries information forward.
 
 Core Innovation: The network has a "memory" (hidden state) that:
 
@@ -89,7 +89,7 @@ Core Innovation: The network has a "memory" (hidden state) that:
 
 > 📚 Foundational Knowledge: For a complete step-by-step tutorial on MLPs, see **[mlp_intro.md](./mlp_intro.md)**.
 
-**Regular MLP (Multi-Layer Perceptron):**
+Regular MLP (Multi-Layer Perceptron):
 ```
 Input → Hidden Layer → Output
   x   →      h       →   y
@@ -99,7 +99,7 @@ Input → Hidden Layer → Output
 - No memory between different inputs
 - Each layer has different weights
 
-**RNN (Recurrent Neural Network):**
+RNN (Recurrent Neural Network):
 ```
 Time step 1: x₁ → RNN → h₁ → y₁
 Time step 2: x₂ → RNN → h₂ → y₂  (uses h₁ as memory)
@@ -110,7 +110,7 @@ Time step 3: x₃ → RNN → h₃ → y₃  (uses h₂ as memory)
 - Carries "hidden state" (memory) between time steps
 - Same weights reused at every time step
 
-**Key Insight:** An RNN is like having a single neural network that processes a sequence by applying itself repeatedly, each time using both the current input and its memory of the past.
+Key Insight: An RNN is like having a single neural network that processes a sequence by applying itself repeatedly, each time using both the current input and its memory of the past.
 
 ---
 
@@ -128,12 +128,12 @@ Let's break this down term by term:
 
 | Term | Size | Meaning |
 |------|------|---------|
-| $$x\_t$$ | $$[1, E]$$ | **Current input** - word embedding at time $$t$$ |
-| $$h\_{t-1}$$ | $$[1, H]$$ | **Past memory** - hidden state from previous step |
-| $$W\_{xh}$$ | $$[E, H]$$ | **Input weights** - transform current input |
-| $$W\_{hh}$$ | $$[H, H]$$ | **Hidden weights** - transform past memory |
-| $$b\_h$$ | $$(H,)$$ | **Bias** - learned offset |
-| $$h\_t$$ | $$(H,)$$ | **New memory** - updated hidden state |
+| $$x\_t$$ | $$[1, E]$$ | Current input - word embedding at time $$t$$ |
+| $$h\_{t-1}$$ | $$[1, H]$$ | Past memory - hidden state from previous step |
+| $$W\_{xh}$$ | $$[E, H]$$ | Input weights - transform current input |
+| $$W\_{hh}$$ | $$[H, H]$$ | Hidden weights - transform past memory |
+| $$b\_h$$ | $$(H,)$$ | Bias - learned offset |
+| $$h\_t$$ | $$(H,)$$ | New memory - updated hidden state |
 
 ### Visual Breakdown
 
@@ -148,13 +148,13 @@ Past Memory    Current Input
                 New Memory h_t
 ```
 
-**Why `tanh`?**
+Why `tanh`?
 
-- **Non-linearity:** Without it, the RNN would just be linear algebra (boring!)
-- **Bounded output:** `tanh` keeps values between -1 and +1, preventing explosion
-- **Zero-centered:** Helps with gradient flow during training
+- Non-linearity: Without it, the RNN would just be linear algebra (boring!)
+- Bounded output: `tanh` keeps values between -1 and +1, preventing explosion
+- Zero-centered: Helps with gradient flow during training
 
-**The Magic:** At each step, the RNN combines three components:
+The Magic: At each step, the RNN combines three components:
 
 $$
 \begin{aligned}

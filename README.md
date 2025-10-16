@@ -14,17 +14,17 @@ This repository provides a comprehensive exploration of transformer architecture
 
 | Document | Purpose | Key Focus |
 |----------|---------|-----------|
-| **[nn_intro.md](./nn_intro.md)** | Neural networks introduction | AI/ML/DL foundations, basic concepts |
-| **[mlp_intro.md](./mlp_intro.md)** | MLP step-by-step tutorial | Multi-layer network fundamentals |
-| **[rnn_intro.md](./rnn_intro.md)** | RNN step-by-step tutorial | Sequential modeling fundamentals |
-| **[transformers_fundamentals.md](./transformers_fundamentals.md)** | Transformer architecture & core concepts | Complete architecture, attention, layers |
-| **[transformers_advanced.md](./transformers_advanced.md)** | Training, optimization & deployment | Fine-tuning, quantization, production |
-| **[transformers_math1.md](./transformers_math1.md)** | Mathematical foundations (Part 1) | Building intuition and core concepts |
-| **[transformers_math2.md](./transformers_math2.md)** | Mathematical foundations (Part 2) | Advanced concepts and scaling |
-| **[math_quick_ref.md](./math_quick_ref.md)** | Mathematical reference table | Formulas, intuitions, neural network applications |
-| **[knowledge_store.md](./knowledge_store.md)** | LLM weights vs vector stores | Internalized vs external knowledge storage |
-| **[pytorch_ref.md](./pytorch_ref.md)** | PyTorch implementation guide | Code patterns, practical examples |
-| **[glossary.md](./glossary.md)** | Comprehensive glossary | Technical terms and definitions |
+| [nn_intro.md](./nn_intro.md) | Neural networks introduction | AI/ML/DL foundations, basic concepts |
+| [mlp_intro.md](./mlp_intro.md) | MLP step-by-step tutorial | Multi-layer network fundamentals |
+| [rnn_intro.md](./rnn_intro.md) | RNN step-by-step tutorial | Sequential modeling fundamentals |
+| [transformers_fundamentals.md](./transformers_fundamentals.md) | Transformer architecture & core concepts | Complete architecture, attention, layers |
+| [transformers_advanced.md](./transformers_advanced.md) | Training, optimization & deployment | Fine-tuning, quantization, production |
+| [transformers_math1.md](./transformers_math1.md) | Mathematical foundations (Part 1) | Building intuition and core concepts |
+| [transformers_math2.md](./transformers_math2.md) | Mathematical foundations (Part 2) | Advanced concepts and scaling |
+| [math_quick_ref.md](./math_quick_ref.md) | Mathematical reference table | Formulas, intuitions, neural network applications |
+| [knowledge_store.md](./knowledge_store.md) | LLM weights vs vector stores | Internalized vs external knowledge storage |
+| [pytorch_ref.md](./pytorch_ref.md) | PyTorch implementation guide | Code patterns, practical examples |
+| [glossary.md](./glossary.md) | Comprehensive glossary | Technical terms and definitions |
 
 ## 🚀 Getting Started
 
@@ -93,7 +93,7 @@ This repository serves as an educational resource for transformer architectures.
 
 ---
 
-**Navigation Tips:**
+Navigation Tips:
 
 - Use cross-references for deep dives into specific components or concepts
 - Start with fundamentals if new to transformers
@@ -106,6 +106,6 @@ This repository serves as an educational resource for transformer architectures.
 ## License
 This project is licensed under the [MIT License](./LICENSE.md).
 
-> ℹ️ **Note:** This Transformers study guide is created with the help of LLMs.
+> ℹ️ Note: This Transformers study guide is created with the help of LLMs.
 > Please refer to the license file for full terms of use.
 

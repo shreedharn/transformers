@@ -54,8 +54,8 @@ The notebook covers:
 - One-hot vs embedding vectors
 - Batch operations and shape handling
 
-**Math** Cross-Reference to `./math_quick_ref.md`:
-> Inner products and matrix shapes: When we compute `X @ W`, we're applying the matrix multiplication rule from **Mathematical Preliminaries**. The gradient `∂L/∂W = X^T ∂L/∂y` follows from the chain rule identities.
+Math Cross-Reference to `./math_quick_ref.md`:
+> Inner products and matrix shapes: When we compute `X @ W`, we're applying the matrix multiplication rule from Mathematical Preliminaries. The gradient `∂L/∂W = X^T ∂L/∂y` follows from the chain rule identities.
 
 ## 3. Autograd (Finding Gradients)
 
@@ -69,7 +69,7 @@ This notebook covers:
 - Gradient clipping demonstrations
 - Higher-order derivatives
 
-**Math** Cross-Reference to `./transformers_math1.md`:
+Math Cross-Reference to `./transformers_math1.md`:
 > The softmax gradient `∂p_i/∂z_j = p_i(δ_{ij} - p_j)` from **equation (25)** explains why PyTorch's `CrossEntropyLoss` yields the clean gradient `(p - y)` at the logits. The **log-sum-exp trick (12)** prevents overflow in softmax computation, which PyTorch handles automatically in `F.softmax()`.
 
 ## 4. Modules, Parameters, Initialization
@@ -150,7 +150,7 @@ for name, param in model.named_parameters():
     print(f"{name}: mean={param.data.mean():.4f}, std={param.data.std():.4f}")
 ```
 
-**Math** Cross-Reference to `./transformers_math1.md`:
+Math Cross-Reference to `./transformers_math1.md`:
 > MLP Forward Pass (13-15): `z^(1) = xW^(1) + b^(1)`, `h^(1) = σ(z^(1))`, `z^(2) = h^(1)W^(2) + b^(2)`
 > 
 > LayerNorm (19): `LayerNorm(x) = γ ⊙ (x - μ)/√(σ² + ε) + β` where `γ, β` are learnable parameters
@@ -167,7 +167,7 @@ This notebook covers:
 - Train vs eval modes with practical examples
 - Learning rate scheduling strategies
 
-**Math** Cross-Reference to `./math_quick_ref.md`:
+Math Cross-Reference to `./math_quick_ref.md`:
 > Adam Updates: Adaptive learning rates with momentum. **Learning Rate Warmup** prevents early training instability in large models.
 
 ## 6. Vanishing/Exploding Gradients
@@ -286,54 +286,54 @@ clipped_norm = sum(p.grad.norm().item() ** 2 for p in rnn.parameters()) ** 0.5
 print(f"Gradient norm with clipping: {clipped_norm:.2f}")
 ```
 
-**Math** Cross-Reference to `./transformers_math1.md`:
+Math Cross-Reference to `./transformers_math1.md`:
 > Residual as ODE (4): `h_{l+1} = h_l + F(h_l)` approximates the differential equation `dh/dt = F(h)`, enabling gradient highways through skip connections.
 >
 > Gradient Clipping (11): `g̃ = min(1, c/||g||₂) · g` scales gradients proportionally when norm exceeds threshold `c`.
 
 ## 7. Mapping Table: ML Concepts → PyTorch Objects
 
-| **Concept** | **Math/Idea** | **PyTorch Construct** | **Equation Reference** |
+| Concept | Math/Idea | PyTorch Construct | Equation Reference |
 |-------------|---------------|----------------------|----------------------|
-| **MLPs** |
+| MLPs |
 | Linear layer | `y = Wx + b` | `nn.Linear(in_features, out_features)` | (13-15) |
 | Activation | `σ(z)` | `nn.ReLU()`, `nn.GELU()`, `F.relu()`, `F.gelu()` | |
 | Layer normalization | `γ ⊙ (x-μ)/√(σ²+ε) + β` | `nn.LayerNorm(normalized_shape)` | (19) |
 | Dropout regularization | Random zeroing | `nn.Dropout(p=0.1)`, `F.dropout()` | |
-| **RNNs/LSTMs** |
+| RNNs/LSTMs |
 | RNN cell | `h_t = tanh(W_ih x_t + W_hh h_{t-1})` | `nn.RNN()`, `nn.RNNCell()` | |
 | LSTM cell | Gated updates | `nn.LSTM()`, `nn.LSTMCell()` | |
 | GRU cell | Simplified gating | `nn.GRU()`, `nn.GRUCell()` | |
 | Sequence packing | Variable lengths | `pack_padded_sequence()`, `pad_sequence()` | |
-| **Transformers** |
+| Transformers |
 | Scaled dot-product attention | `softmax(QK^T/√d_k)V` | `nn.MultiheadAttention()` | (23) |
 | Self-attention | Q,K,V from same input | `nn.TransformerEncoderLayer()` | |
 | Causal mask | Lower triangular | `torch.triu()`, `attn_mask` parameter | (24) |
 | Position embeddings | Learnable positions | `nn.Embedding(max_len, d_model)` | |
 | Sinusoidal positions | Fixed sin/cos | Custom implementation | (28-29) |
 | Feed-forward network | `GELU(xW₁)W₂` | `nn.TransformerEncoderLayer.linear1/2` | (36) |
-| **Embeddings & Tokens** |
+| Embeddings & Tokens |
 | Token embeddings | Lookup table | `nn.Embedding(vocab_size, embed_dim)` | (39) |
 | Positional encoding | Add position info | Manual or `nn.Embedding` | |
-| **Data Handling** |
+| Data Handling |
 | Dataset wrapper | Data access | `torch.utils.data.Dataset` | |
 | Batch loading | Mini-batches | `torch.utils.data.DataLoader` | |
 | Padding sequences | Same length | `pad_sequence()` | |
 | Collate function | Custom batching | `collate_fn` parameter | |
-| **Training & Optimization** |
+| Training & Optimization |
 | Loss functions | Various objectives | `nn.CrossEntropyLoss()`, `nn.MSELoss()` | (2) |
 | SGD optimizer | Gradient descent | `optim.SGD()` | (5-6) |
 | Adam optimizer | Adaptive learning | `optim.Adam()`, `optim.AdamW()` | (7-9) |
 | Learning rate scheduling | Dynamic LR | `lr_scheduler.StepLR()`, etc. | (10) |
 | Gradient clipping | Norm limiting | `clip_grad_norm_()` | (11) |
-| **Utilities** |
+| Utilities |
 | No gradients | Inference mode | `torch.no_grad()` | |
 | Detach from graph | Stop gradients | `tensor.detach()` | |
 | Random seeding | Reproducibility | `torch.manual_seed()` | |
 | Device placement | GPU/CPU | `tensor.to(device)`, `model.to(device)` | |
 | Model saving | Persistence | `torch.save(model.state_dict())` | |
 
-**Math** annotations reference equations from `./transformers_math1.md` and `./transformers_math2.md` where applicable.
+Math annotations reference equations from `./transformers_math1.md` and `./transformers_math2.md` where applicable.
 
 ## 8. MLPs in PyTorch
 
@@ -473,7 +473,7 @@ targets_wrong = torch.tensor([0.0, 1.0, 2.0])  # Float - will cause error
 targets_correct = torch.tensor([0, 1, 2])      # Long - correct
 ```
 
-**Math** Cross-Reference to `./transformers_math1.md`:
+Math Cross-Reference to `./transformers_math1.md`:
 > MLP Forward/Backprop (13-18): The code above implements `z^(1) = xW^(1) + b^(1)`, `h^(1) = σ(z^(1))`, `z^(2) = h^(1)W^(2) + b^(2)` with automatic gradient computation for the backward pass.
 
 ## 9. RNNs, LSTMs, GRUs
@@ -904,7 +904,7 @@ with torch.no_grad():
     print(f"Generated sequence: {generated[0].tolist()}")
 ```
 
-**Math** Cross-Reference to `./transformers_math1.md`:
+Math Cross-Reference to `./transformers_math1.md`:
 > Scaled Dot-Product Attention (23): `Attention(Q,K,V) = softmax(QK^T/√d_k)V`
 > 
 > Why 1/√d_k scaling: Prevents attention weights from becoming too peaked as dimensions increase, maintaining gradient flow.
@@ -1061,7 +1061,7 @@ model = model.to(device)
 tensor = tensor.to(device)
 ```
 
-**Math** Cross-Reference: `torch.einsum('bqd,bkd->bqk', Q, K)` directly implements the `QK^T` operation from attention equation (23) in `./transformers_math1.md`.
+Math Cross-Reference: `torch.einsum('bqd,bkd->bqk', Q, K)` directly implements the `QK^T` operation from attention equation (23) in `./transformers_math1.md`.
 
 ## 12. Common Gotchas & How to Avoid Them
 
@@ -1258,7 +1258,7 @@ optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
 epoch = checkpoint['epoch']
 ```
 
-**Math** Cross-Reference to `./transformers_math1.md`:
+Math Cross-Reference to `./transformers_math1.md`:
 > Numerical stability issues like log-sum-exp overflow (equation 12) are handled automatically by PyTorch functions like `F.softmax()` and `F.log_softmax()`, but be aware when implementing custom operations.
 
 ## 13. End-to-End Mini Example
@@ -1562,7 +1562,7 @@ def debug_shapes():
 debug_shapes()
 ```
 
-**Math** Cross-Reference to `./transformers_math1.md`:
+Math Cross-Reference to `./transformers_math1.md`:
 > This example implements:
 > - Attention (23): Self-attention within each transformer layer
 > - FFN (36): Feed-forward networks in transformer layers  
@@ -1573,12 +1573,12 @@ debug_shapes()
 
 ### Architecture → PyTorch Quick Reference
 
-| **Architecture** | **Key Layers** | **Input Shape** | **Output Shape** | **Parameters** |
+| Architecture | Key Layers | Input Shape | Output Shape | Parameters |
 |------------------|----------------|-----------------|------------------|----------------|
-| **MLP (2-layer)** | `nn.Linear` × 2 | `[B, D_in]` | `[B, D_out]` | `D_in×D_h + D_h + D_h×D_out + D_out` |
-| **RNN** | `nn.RNN` | `[B, T, D_in]` | `[B, T, D_h]` | `D_in×D_h + D_h×D_h + D_h` |
-| **LSTM** | `nn.LSTM` | `[B, T, D_in]` | `[B, T, D_h]` | `4×(D_in×D_h + D_h×D_h + D_h)` |
-| **Transformer** | `nn.TransformerEncoder` | `[B, T, D_model]` | `[B, T, D_model]` | See Multi-Head Attention below |
+| MLP (2-layer) | `nn.Linear` × 2 | `[B, D_in]` | `[B, D_out]` | `D_in×D_h + D_h + D_h×D_out + D_out` |
+| RNN | `nn.RNN` | `[B, T, D_in]` | `[B, T, D_h]` | `D_in×D_h + D_h×D_h + D_h` |
+| LSTM | `nn.LSTM` | `[B, T, D_in]` | `[B, T, D_h]` | `4×(D_in×D_h + D_h×D_h + D_h)` |
+| Transformer | `nn.TransformerEncoder` | `[B, T, D_model]` | `[B, T, D_model]` | See Multi-Head Attention below |
 
 ### Multi-Head Attention Parameter Breakdown
 
@@ -1657,7 +1657,7 @@ choose_architecture()
 
 ### Essential Code → Math Equation Mapping
 
-| **PyTorch Code** | **Math Equation** | **Reference** |
+| PyTorch Code | Math Equation | Reference |
 |------------------|-------------------|---------------|
 | `F.softmax(scores, dim=-1)` | `softmax(z)_i = e^{z_i}/∑e^{z_j}` | transformers_math1.md (1) |
 | `F.cross_entropy(logits, targets)` | `L = -∑ y_i log p_i` | transformers_math1.md (2) |
@@ -1721,6 +1721,6 @@ pytorch_checklist()
 
 ---
 
-**Congratulations!** 🎉 You now have a comprehensive guide to PyTorch for sequence modeling. This reference covers the essential patterns you'll use whether building MLPs, RNNs, or Transformers. Keep this handy as you build your own models!
+Congratulations! 🎉 You now have a comprehensive guide to PyTorch for sequence modeling. This reference covers the essential patterns you'll use whether building MLPs, RNNs, or Transformers. Keep this handy as you build your own models!
 
 > Remember: Start simple, debug with shapes, and always set your random seeds for reproducible results!

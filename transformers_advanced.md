@@ -1,12 +1,12 @@
 # Transformer Advanced Topics: Training, Optimization, and Deployment
 
-**Building on foundational knowledge:** This guide assumes you understand the core transformer architecture covered in [Transformer Fundamentals](./transformers_fundamentals.md). If you haven't read that guide, please start there to understand tokenization, embeddings, self-attention, transformer blocks, and output generation.
+Building on foundational knowledge: This guide assumes you understand the core transformer architecture covered in [Transformer Fundamentals](./transformers_fundamentals.md). If you haven't read that guide, please start there to understand tokenization, embeddings, self-attention, transformer blocks, and output generation.
 
-**What you'll learn in this advanced guide:** How transformer models are trained from scratch, optimized for efficiency, fine-tuned for specific tasks, and deployed in production. We'll cover the complete pipeline from training objectives to quantization, with mathematical rigor and practical implementation details.
+What you'll learn in this advanced guide: How transformer models are trained from scratch, optimized for efficiency, fine-tuned for specific tasks, and deployed in production. We'll cover the complete pipeline from training objectives to quantization, with mathematical rigor and practical implementation details.
 
-**Part of a two-part series:** This guide covers advanced transformer topics (sections 13-20) including training, optimization, fine-tuning, and deployment. For foundational architecture and core concepts, see [Transformer Fundamentals](./transformers_fundamentals.md).
+Part of a two-part series: This guide covers advanced transformer topics (sections 13-20) including training, optimization, fine-tuning, and deployment. For foundational architecture and core concepts, see [Transformer Fundamentals](./transformers_fundamentals.md).
 
-**Prerequisites:** Completed [Transformer Fundamentals](./transformers_fundamentals.md) and understanding of backpropagation, optimization theory, and machine learning best practices.
+Prerequisites: Completed [Transformer Fundamentals](./transformers_fundamentals.md) and understanding of backpropagation, optimization theory, and machine learning best practices.
 
 ## 13. Training Objectives and Data Curriculum
 
@@ -58,14 +58,14 @@ Span Corruption (T5-style):
 
 After pre-training, models learn to follow instructions through supervised fine-tuning on (instruction, response) pairs.
 
-**Instruction Tuning Process:**
+Instruction Tuning Process:
 
 1. Data collection: Curate high-quality (instruction, response) pairs
 2. Format standardization: Consistent prompt templates and response structures
 3. Fine-tuning: Continue training with supervised learning on instruction data
 4. Evaluation: Test on held-out instruction-following benchmarks
 
-**Mathematical Formulation:**
+Mathematical Formulation:
 
 $$
 \begin{aligned}
@@ -76,7 +76,7 @@ R &: \text{Response} \newline
 \end{aligned}
 $$
 
-**Key Considerations:**
+Key Considerations:
 
 - Data quality over quantity: Better curation dramatically improves performance
 - Format consistency: Standardized templates help generalization across tasks
@@ -121,21 +121,21 @@ Constitutional AI (CAI):
 
 ### Data Curriculum and Scaling Considerations
 
-**Data Quality Metrics:**
+Data Quality Metrics:
 
 - Perplexity filtering: Remove high-perplexity (incoherent) text
 - Deduplication: Exact and near-exact duplicate removal
 - Content filtering: Remove toxic, personal, or low-quality content
 - Language detection: Ensure consistent language distribution
 
-**Curriculum Learning Strategies:**
+Curriculum Learning Strategies:
 
 - Progressive difficulty: Start with simpler tasks, gradually increase complexity
 - Domain mixing: Balance different content types (web, books, code, academic)
 - Length scheduling: Gradually increase sequence length during training
 - Quality progression: Start with high-quality data, add noisier sources later
 
-**Critical Considerations:**
+Critical Considerations:
 
 - Data contamination: Evaluation data leaking into training sets
 - Distribution mismatch: Training vs. deployment context differences
@@ -144,19 +144,19 @@ Constitutional AI (CAI):
 
 ### Multi-Task Learning and Meta-Learning
 
-**Multi-Task Training Benefits:**
+Multi-Task Training Benefits:
 
 - Transfer learning: Skills learned on one task transfer to others
 - Regularization: Prevents overfitting to single task patterns
 - Efficiency: Single model handles multiple capabilities
 
-**Implementation Patterns:**
+Implementation Patterns:
 
 - Task tokens: Prepend special tokens indicating task type
 - Prompt formatting: Consistent instruction templates across tasks
 - Loss weighting: Balance different task contributions to total loss
 
-**Meta-Learning for Few-Shot Capabilities:**
+Meta-Learning for Few-Shot Capabilities:
 
 - In-context learning: Provide examples within the input context
 - Gradient-based meta-learning: Learn initialization for fast adaptation
@@ -168,22 +168,22 @@ Constitutional AI (CAI):
 
 ### 🎯 Intuition: How AI Models Learn from Mistakes
 
-**Think of training like teaching a student to complete sentences.** You show them "The cat sat on the ___" and the correct answer "mat". If they guess "tree", you help them understand why "mat" was better and adjust their thinking process.
+Think of training like teaching a student to complete sentences. You show them "The cat sat on the ___" and the correct answer "mat". If they guess "tree", you help them understand why "mat" was better and adjust their thinking process.
 
-**The Learning Process:**
+The Learning Process:
 
 1. Show examples: Give the model text with known answers
 2. Let it guess: Model predicts what comes next
 3. Grade the answer: Compare prediction with the correct word
 4. Learn from mistakes: Adjust internal "thought processes" to do better next time
 
-**Why is this called "backpropagation"?** The error information flows backward through all the layers, helping each layer learn what it should have done differently.
+Why is this called "backpropagation"? The error information flows backward through all the layers, helping each layer learn what it should have done differently.
 
-**Real-world analogy:** Like a teacher reviewing a student's essay, marking errors, and explaining how each paragraph could be improved - but the "student" is a mathematical network with millions of parameters.
+Real-world analogy: Like a teacher reviewing a student's essay, marking errors, and explaining how each paragraph could be improved - but the "student" is a mathematical network with millions of parameters.
 
 ### Loss Computation
 
-**Training Setup:**
+Training Setup:
 ```
 Input sequence:  [t_1, t_2, t_3, ..., t_n]
 Target sequence: [t_2, t_3, t_4, ..., t_{n+1}]  (shifted by 1)
@@ -192,7 +192,7 @@ Forward pass produces logits for each position:
 logits[i] = prediction for position i+1
 ```
 
-**Cross-Entropy Loss:**
+Cross-Entropy Loss:
 ```
 For each position i:
   L_i = -log(P(t_{i+1} | context))
@@ -201,7 +201,7 @@ Total loss:
   L = (1/n) × Σ L_i = -(1/n) × Σ log(softmax(logits[i])[t_{i+1}])
 ```
 
-**📖 Mathematical Details:** See [Cross-Entropy Loss](./transformers_math1.md#224-softmax-and-cross-entropy-from-scores-to-decisions) in transformers_math1.md for detailed intuitive explanation
+📖 Mathematical Details: See [Cross-Entropy Loss](./transformers_math1.md#224-softmax-and-cross-entropy-from-scores-to-decisions) in transformers_math1.md for detailed intuitive explanation
 
 ### Backward Pass Flow
 
@@ -240,7 +240,7 @@ Loss: L (scalar)
 
 ### Transformer Layer Backward Pass
 
-**FFN Backward:**
+FFN Backward:
 
 ```
 # Forward: y = W2 @ φ(W1 @ x + b1) + b2
@@ -255,7 +255,7 @@ dH1 = dH2 ⊙ φ'(W1 @ x + b1)
 ∂L/∂b1 = sum(dH1, dim=0)
 ```
 
-**Attention Backward:**
+Attention Backward:
 
 $$
 \begin{aligned}
@@ -270,7 +270,7 @@ $$
 
 The complete derivation is detailed in **[transformers_math1.md](./transformers_math1.md#53-backpropagation-through-attention)**.
 
-**LayerNorm Backward:**
+LayerNorm Backward:
 ```
 # Forward: y = γ ⊙ (x - μ)/σ + β
 # Backward:
@@ -279,7 +279,7 @@ The complete derivation is detailed in **[transformers_math1.md](./transformers_
 ∂L/∂β = sum(∂L/∂y, dim=0)
 ```
 
-**📖 Mathematical Details:** See [Layer Normalization](./transformers_math1.md#33-advanced-normalization-techniques) in transformers_math1.md for intuitive explanation of normalization
+📖 Mathematical Details: See [Layer Normalization](./transformers_math1.md#33-advanced-normalization-techniques) in transformers_math1.md for intuitive explanation of normalization
 
 ---
 
@@ -287,7 +287,7 @@ The complete derivation is detailed in **[transformers_math1.md](./transformers_
 
 ### Adam Optimizer Mathematics
 
-**Adam maintains moving averages of gradients and squared gradients:**
+Adam maintains moving averages of gradients and squared gradients:
 
 ```python
 # Hyperparameters
@@ -308,11 +308,11 @@ v̂_t = v_t / (1 - β₂^t)
 θ_{t+1} = θ_t - α × m̂_t / (√v̂_t + ε)
 ```
 
-**📖 Mathematical Details:** See [Adam Optimizer](./transformers_math2.md#91-from-sgd-to-adam) in transformers_math2.md for intuitive explanations
+📖 Mathematical Details: See [Adam Optimizer](./transformers_math2.md#91-from-sgd-to-adam) in transformers_math2.md for intuitive explanations
 
 ### Learning Rate Scheduling
 
-**Warmup + Cosine Decay:**
+Warmup + Cosine Decay:
 ```python
 def learning_rate_schedule(step, warmup_steps, max_steps, max_lr):
     if step < warmup_steps:
@@ -324,7 +324,7 @@ def learning_rate_schedule(step, warmup_steps, max_steps, max_lr):
         return max_lr * 0.5 * (1 + cos(π * progress))
 ```
 
-**📖 Mathematical Details:** See [Learning Rate Schedules](./transformers_math2.md#93-learning-rate-schedules) in transformers_math2.md for detailed explanations
+📖 Mathematical Details: See [Learning Rate Schedules](./transformers_math2.md#93-learning-rate-schedules) in transformers_math2.md for detailed explanations
 
 ### Gradient Clipping
 
@@ -336,7 +336,7 @@ for param in parameters:
     param.grad *= clip_coef
 ```
 
-**📖 Mathematical Details:** See [Gradient Clipping](./transformers_math2.md#94-gradient-clipping) in transformers_math2.md for intuitive explanations
+📖 Mathematical Details: See [Gradient Clipping](./transformers_math2.md#94-gradient-clipping) in transformers_math2.md for intuitive explanations
 
 ### Parameter Update Flow
 
@@ -369,15 +369,15 @@ Updated model ready for next forward pass
 
 ### The Challenge of Full Fine-Tuning
 
-**Full fine-tuning** updates all parameters during adaptation, providing maximum flexibility but requiring substantial computational resources and risking catastrophic forgetting of pre-trained knowledge. For large models with billions of parameters, this approach becomes prohibitively expensive.
+Full fine-tuning updates all parameters during adaptation, providing maximum flexibility but requiring substantial computational resources and risking catastrophic forgetting of pre-trained knowledge. For large models with billions of parameters, this approach becomes prohibitively expensive.
 
-**Parameter-efficient methods** address this by updating only small subsets of parameters while preserving pre-trained knowledge and achieving comparable performance with dramatically reduced computational requirements.
+Parameter-efficient methods address this by updating only small subsets of parameters while preserving pre-trained knowledge and achieving comparable performance with dramatically reduced computational requirements.
 
 ### Low-Rank Adaptation (LoRA)
 
 Core Insight: Fine-tuning weight updates have low intrinsic dimensionality. LoRA approximates these updates using low-rank matrix decomposition.
 
-**Mathematical Formulation:**
+Mathematical Formulation:
 
 $$
 \begin{aligned}
@@ -389,7 +389,7 @@ r &\ll d : \text{Adaptation rank (typically 16-128)} \newline
 \end{aligned}
 $$
 
-**Implementation Pattern:**
+Implementation Pattern:
 ```python
 class LoRALinear(nn.Module):
     def __init__(self, base_layer, r=16, alpha=32):
@@ -413,7 +413,7 @@ class LoRALinear(nn.Module):
         return base_output + lora_output
 ```
 
-**Key Parameters:**
+Key Parameters:
 
 - Rank: Controls adaptation capacity vs. efficiency trade-off
 - Alpha: Scaling factor for LoRA contributions
@@ -426,14 +426,14 @@ class LoRALinear(nn.Module):
   \end{aligned}
   $$
 
-**Benefits:**
+Benefits:
 
 - Parameter efficiency: Only ~0.1-1% of parameters require training
 - Memory efficiency: Reduced optimizer state and gradient computation
 - Modularity: Multiple task-specific LoRA modules can be swapped
 - Merge capability: LoRA weights can be merged back into base model
 
-**Limitations:**
+Limitations:
 
 - Expressiveness constraints: Low-rank assumption may limit adaptation for very different domains
 - Rank selection: Optimal rank varies by task and must be tuned
@@ -443,13 +443,13 @@ class LoRALinear(nn.Module):
 
 Innovation: Combines aggressive quantization of base model with full-precision LoRA adapters.
 
-**Architecture:**
+Architecture:
 
 - Base model: 4-bit quantized weights (frozen)
 - LoRA adapters: Full precision (trainable)
 - Quantization scheme: 4-bit NormalFloat (NF4) for better distribution matching
 
-**Mathematical Framework:**
+Mathematical Framework:
 
 $$
 \begin{aligned}
@@ -459,7 +459,7 @@ y &= W\_{4bit} x + \frac{\alpha}{r} B A x \newline
 \end{aligned}
 $$
 
-**Implementation Benefits:**
+Implementation Benefits:
 
 - Memory reduction: 65B parameter models trainable on single 48GB GPU
 - Quality preservation: Minimal degradation compared to full-precision fine-tuning
@@ -565,7 +565,7 @@ Evaluation Strategy:
 
 Modern transformer models contain billions of parameters stored in high-precision formats (FP32, FP16), creating massive memory and computational requirements. Quantization reduces numerical precision while attempting to preserve model quality, enabling deployment on resource-constrained hardware.
 
-**Core Trade-offs:**
+Core Trade-offs:
 
 - Memory: Lower precision → smaller model size → fits on smaller hardware
 - Compute: Integer operations faster than floating-point on many devices
@@ -597,7 +597,7 @@ Quantization-Aware Training (QAT):
 - Memory reduction: 2× smaller than FP16
 - Implementation: Well-supported across hardware platforms
 
-**Mathematical Formulation:**
+Mathematical Formulation:
 
 $$
 \begin{aligned}
@@ -634,13 +634,13 @@ AWQ (Activation-aware Weight Quantization):
 
 ### Where Quantization Helps Most
 
-**High-Impact Areas:**
+High-Impact Areas:
 
 1. Linear layer weights: Majority of model parameters (attention, FFN)
 2. Embedding tables: Large vocabulary models have massive embedding matrices
 3. KV cache: During generation, cached keys/values consume significant memory
 
-**Sensitive Components** (quantize carefully):
+Sensitive Components (quantize carefully):
 
 - Attention scores: Small perturbations can affect attention patterns significantly
 - Layer normalization: Statistics require higher precision for stability
@@ -874,12 +874,12 @@ def test_length_generalization(model, base_length, test_lengths):
 
 ### Forward Pass Equations
 
-**Input Processing:**
+Input Processing:
 ```
 X₀ = TokenEmbedding(tokens) + PositionalEmbedding(positions)
 ```
 
-**Transformer Layer (l = 1, ..., N):**
+Transformer Layer (l = 1, ..., N):
 ```
 # Attention sub-layer
 X̃ₗ = LayerNorm(Xₗ₋₁)
@@ -892,7 +892,7 @@ Fₗ = FFN(X̃'ₗ) = GELU(X̃'ₗ W₁ₗ + b₁ₗ) W₂ₗ + b₂ₗ
 Xₗ = X'ₗ + Fₗ
 ```
 
-**Output Generation:**
+Output Generation:
 ```
 logits = X_N[-1, :] @ W_lm
 probs = softmax(logits / temperature)
@@ -901,13 +901,13 @@ next_token = sample(probs)
 
 ### Training Equations
 
-**Loss Function:**
+Loss Function:
 ```
 L = -1/T × Σₜ log P(tₜ₊₁ | t₁, ..., tₜ)
 where P(tₜ₊₁ | context) = softmax(f(t₁, ..., tₜ))[tₜ₊₁]
 ```
 
-**Parameter Updates:**
+Parameter Updates:
 ```
 For each parameter θ with gradient g:
 
@@ -921,19 +921,19 @@ where m̂_t = m_t/(1-β₁ᵗ), v̂_t = v_t/(1-β₂ᵗ)
 
 ### Key Computational Complexities
 
-**Per Layer:**
+Per Layer:
 
 - Attention: O(seq_len² × d_model + seq_len × d_model²)
 - FFN: O(seq_len × d_model²)
 - Total per layer: O(seq_len² × d_model + seq_len × d_model²)
 
-**Full Model:**
+Full Model:
 
 - Forward pass: O(N × (seq_len² × d_model + seq_len × d_model²))
 - Backward pass: Same as forward (roughly)
 - Memory: O(N × seq_len × d_model) for activations + O(N × d_model²) for parameters
 
-**With KV Cache (generation):**
+With KV Cache (generation):
 
 - First token: O(N × d_model²)
 - Subsequent tokens: O(N × seq_len × d_model) per token

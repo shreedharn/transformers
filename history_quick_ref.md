@@ -186,11 +186,11 @@ Key Insight: Transformers trade space complexity (O(n²) attention matrix) for p
 
 The evolution from MLPs to Transformers represents one of the most significant progressions in machine learning history. Each innovation addressed specific limitations while introducing new capabilities:
 
-- **MLPs** established the foundation but couldn't handle sequences
-- **RNNs** introduced sequential processing but suffered from vanishing gradients
-- **LSTMs/GRUs** solved vanishing gradients but remained sequential
-- **Attention** eliminated information bottlenecks but still relied on recurrence
-- **Transformers** achieved parallel processing with direct connectivity
+- MLPs established the foundation but couldn't handle sequences
+- RNNs introduced sequential processing but suffered from vanishing gradients
+- LSTMs/GRUs solved vanishing gradients but remained sequential
+- Attention eliminated information bottlenecks but still relied on recurrence
+- Transformers achieved parallel processing with direct connectivity
 
 This progression demonstrates how incremental mathematical innovations, combined with computational insights, can lead to revolutionary breakthroughs. The transformer architecture continues to drive advances across AI applications, from language understanding to scientific discovery.
 

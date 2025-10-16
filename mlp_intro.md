@@ -1,8 +1,8 @@
 # Multi-Layer Perceptrons (MLPs): A Step-by-Step Tutorial
 
-**Building on your neural network foundation:** In the [Neural Networks Introduction](./nn_intro.md), you learned how a single perceptron can solve simple problems like basic spam detection. But what happens when the patterns get more complex? This tutorial shows you how stacking multiple layers of perceptrons creates networks capable of learning any pattern—no matter how intricate.
+Building on your neural network foundation: In the [Neural Networks Introduction](./nn_intro.md), you learned how a single perceptron can solve simple problems like basic spam detection. But what happens when the patterns get more complex? This tutorial shows you how stacking multiple layers of perceptrons creates networks capable of learning any pattern—no matter how intricate.
 
-**What you'll learn:** How MLPs combine multiple perceptrons into powerful networks, why depth enables learning complex patterns that single neurons cannot, and how these building blocks form the foundation of all modern neural architectures. We'll work through math and intuition together, with examples that demonstrate clear advantages over single perceptrons.
+What you'll learn: How MLPs combine multiple perceptrons into powerful networks, why depth enables learning complex patterns that single neurons cannot, and how these building blocks form the foundation of all modern neural architectures. We'll work through math and intuition together, with examples that demonstrate clear advantages over single perceptrons.
 
 ---
 
@@ -12,8 +12,8 @@
 
 In the previous tutorial, you saw a single perceptron successfully classify this spam email:
 
-**Email:** "FREE VACATION!!! Click now!!!"  
-**Features:** [6 exclamations, has "free", 13 capitals] → **87% spam probability**
+Email: "FREE VACATION!!! Click now!!!"  
+Features: [6 exclamations, has "free", 13 capitals] → 87% spam probability
 
 The perceptron worked great! But what if we encounter more sophisticated spam that exploits the perceptron's linear nature?
 
@@ -21,41 +21,41 @@ The perceptron worked great! But what if we encounter more sophisticated spam th
 
 Consider these two emails that a single perceptron struggles with:
 
-**Email A:** "You have 1 new message"  
-**Features:** [0 exclamations, no "free", 3 capitals] → **Should be: NOT spam**
+Email A: "You have 1 new message"  
+Features: [0 exclamations, no "free", 3 capitals] → Should be: NOT spam
 
-**Email B:** "Get free bitcoins with zero risk!!!"  
-**Features:** [3 exclamations, has "free", 8 capitals] → **Should be: SPAM**
+Email B: "Get free bitcoins with zero risk!!!"  
+Features: [3 exclamations, has "free", 8 capitals] → Should be: SPAM
 
-**Email C:** "FREE SHIPPING on your order"  
-**Features:** [0 exclamations, has "free", 13 capitals] → **Should be: NOT spam** (legitimate store)
+Email C: "FREE SHIPPING on your order"  
+Features: [0 exclamations, has "free", 13 capitals] → Should be: NOT spam (legitimate store)
 
-**Email D:** "Congratulations winner!!!"  
-**Features:** [3 exclamations, no "free", 15 capitals] → **Should be: SPAM**
+Email D: "Congratulations winner!!!"  
+Features: [3 exclamations, no "free", 15 capitals] → Should be: SPAM
 
-**The Problem:** A single perceptron creates a linear decision boundary. It cannot learn the pattern: "Spam when (many capitals AND no 'free') OR (has 'free' AND many exclamations), but not spam when only one condition is true."
+The Problem: A single perceptron creates a linear decision boundary. It cannot learn the pattern: "Spam when (many capitals AND no 'free') OR (has 'free' AND many exclamations), but not spam when only one condition is true."
 
 ### MLP vs Single Perceptron
 
-**Single Perceptron (Linear Decision):**
+Single Perceptron (Linear Decision):
 ```
 Input Features → Single Computation → Output
 [excl, free, caps] → w₁×excl + w₂×free + w₃×caps + b → spam probability
 ```
 
-- **Problem:** Can only draw straight lines to separate spam from non-spam
-- **Limitation:** Cannot handle complex patterns that require curved decision boundaries
+- Problem: Can only draw straight lines to separate spam from non-spam
+- Limitation: Cannot handle complex patterns that require curved decision boundaries
 
-**MLP (Non-Linear Decisions):**
+MLP (Non-Linear Decisions):
 ```
 Layer 1: [excl, free, caps] → [h₁, h₂] (detect patterns like "promotional tone", "urgency signals")
 Layer 2: [h₁, h₂] → [spam probability] (combine patterns intelligently)
 ```
 
-- **Solution:** Each layer can create new features, enabling complex curved decision boundaries
-- **Power:** Can learn: "IF (urgency signals without legitimacy) OR (promotional tone with pressure) THEN spam"
+- Solution: Each layer can create new features, enabling complex curved decision boundaries
+- Power: Can learn: "IF (urgency signals without legitimacy) OR (promotional tone with pressure) THEN spam"
 
-**Key Insight:** MLPs solve the fundamental limitation of perceptrons by stacking multiple layers, where each layer learns increasingly sophisticated feature combinations that enable non-linear pattern recognition.
+Key Insight: MLPs solve the fundamental limitation of perceptrons by stacking multiple layers, where each layer learns increasingly sophisticated feature combinations that enable non-linear pattern recognition.
 
 ---
 
@@ -71,12 +71,12 @@ Let's break this down term by term:
 
 | Term | Size | Meaning |
 |------|------|---------|
-| $$x$$ | $$[1, D_{in}]$$ | **Input vector** - features coming into this layer |
-| $$W$$ | $$[D_{in}, D_{out}]$$ | **Weight matrix** - learned transformation |
-| $$b$$ | $$[1, D_{out}]$$ | **Bias vector** - learned offset |
-| $$x W + b$$ | $$[1, D_{out}]$$ | **Linear combination** - weighted sum of inputs |
-| $$\sigma(\cdot)$$ | - | **Activation function** - introduces non-linearity |
-| $$h$$ | $$[1, D_{out}]$$ | **Output vector** - transformed features |
+| $$x$$ | $$[1, D_{in}]$$ | Input vector - features coming into this layer |
+| $$W$$ | $$[D_{in}, D_{out}]$$ | Weight matrix - learned transformation |
+| $$b$$ | $$[1, D_{out}]$$ | Bias vector - learned offset |
+| $$x W + b$$ | $$[1, D_{out}]$$ | Linear combination - weighted sum of inputs |
+| $$\sigma(\cdot)$$ | - | Activation function - introduces non-linearity |
+| $$h$$ | $$[1, D_{out}]$$ | Output vector - transformed features |
 
 ### Visual Breakdown
 
@@ -88,7 +88,7 @@ Input Features     Weight Matrix     Bias        Activation
                     [w₃₁ w₃₂]
 ```
 
-**Why this structure?**
+Why this structure?
 
 $$
 \begin{aligned}
@@ -98,7 +98,7 @@ $$
 \end{aligned}
 $$
 
-**Common Activation Functions:**
+Common Activation Functions:
 
 $$
 \begin{aligned}
@@ -125,7 +125,7 @@ y &= h^{(L-1)} W^{(L)} + b^{(L)}
 \end{aligned}
 $$
 
-**Layer Naming Convention:**
+Layer Naming Convention:
 
 $$
 \begin{aligned}
@@ -144,7 +144,7 @@ Input → Hidden 1 → Hidden 2 → ... → Output
 Each layer transforms its input into increasingly abstract representations
 ```
 
-**What Each Layer Learns:**
+What Each Layer Learns:
 
 $$
 \begin{aligned}
@@ -170,7 +170,7 @@ Large hidden size (100 neurons): h = [h₁, h₂, ..., h₁₀₀]
 - Larger hidden size: Can learn more complex patterns, but more parameters
 - Smaller hidden size: Simpler model, less prone to overfitting
 
-**Analogy:** Like having 2 vs 100 "detectors" in each layer to find patterns.
+Analogy: Like having 2 vs 100 "detectors" in each layer to find patterns.
 
 ### Layer Depth: How Many Layers
 
@@ -184,7 +184,7 @@ Deep (5 layers):    Input → H1 → H2 → H3 → H4 → Output
 - Deeper networks: Can learn more hierarchical, abstract representations
 - Shallow networks: Simpler, faster, easier to train
 
-**Rule of Thumb:** Start shallow, go deeper only if needed.
+Rule of Thumb: Start shallow, go deeper only if needed.
 
 ### Parameter Counting
 
@@ -198,7 +198,7 @@ $$
 \end{aligned}
 $$
 
-**Example Network:**
+Example Network:
 
 $$
 \begin{aligned}
@@ -216,26 +216,26 @@ $$
 
 Let's trace through a complex example that shows why MLPs are necessary. We'll use the problematic case from Section 1:
 
-**The Challenge:** Detect sophisticated spam that fools single perceptrons  
+The Challenge: Detect sophisticated spam that fools single perceptrons  
 Input features: [num_exclamations, has_word_free, num_capitals]  
 Hidden layer size: 2 neurons (for pattern detection)  
 Output: spam probability
 
 ### Step 0: Initialize
 
-**Test Email (sophisticated spam):**
+Test Email (sophisticated spam):
 ```
 Email: "Congratulations winner!!!"
 x = [3, 0, 15]  # [3 exclamations, no "free", 15 capitals]
 ```
 
-**Why this is hard for a single perceptron:**
+Why this is hard for a single perceptron:
 
 - Has exclamations (spam-like) but no "free" word
 - Has many capitals (spam-like) but winner congratulations can be legitimate
 - Requires learning: "High urgency (excl + caps) without legitimacy markers = spam"
 
-**Learned weights (after training on complex patterns):**
+Learned weights (after training on complex patterns):
 ```
 # Hidden Layer 1 (2 specialized pattern detectors)
 W¹ = [[0.4, 0.1],     # 3×2 matrix: input-to-hidden
@@ -251,16 +251,16 @@ W² = [[1.5],          # 2×1 matrix: hidden-to-output
 b² = [0.2]            # 1-element bias vector
 ```
 
-**What each neuron learned to detect:**
+What each neuron learned to detect:
 
 - Neuron 1: "Urgency signals" (high exclamations + capitals, low "free")
 - Neuron 2: "Legitimacy markers" (presence of "free" reduces suspicion)
 
 ### Step 1: Forward Pass Through Hidden Layer
 
-**Input:** $$x = [3, 0, 15]$$ (our sophisticated spam example)
+Input: $$x = [3, 0, 15]$$ (our sophisticated spam example)
 
-**Compute linear combination:**
+Compute linear combination:
 The operation is `x @ W¹ + b¹` where `x` is a row vector.
 ```
    x (1x3)      @      W¹ (3x2)        +    b¹ (1x2)     =   Result (1x2)
@@ -274,7 +274,7 @@ Step 1: x @ W¹
 Step 2: Add bias b¹
 [5.7, -2.7] + [-2.0, -1.5] = [3.7, -4.2]
 ```
-**Calculation Breakdown:**
+Calculation Breakdown:
 ```
 Neuron 1 (Urgency Detector): 0.4×3 + (-0.8)×0 + 0.3×15 + (-2.0) 
                            = 1.2 + 0 + 4.5 - 2.0 = 3.7
@@ -283,39 +283,39 @@ Neuron 2 (Legitimacy Detector): 0.1×3 + 0.9×0 + (-0.2)×15 + (-1.5)
                               = 0.3 + 0 - 3.0 - 1.5 = -4.2
 ```
 
-**Apply ReLU activation:**
+Apply ReLU activation:
 ```
 h¹ = ReLU([3.7, -4.2]) = [max(0, 3.7), max(0, -4.2)] = [3.7, 0]
 ```
 
-**Pattern Detection Results:**
+Pattern Detection Results:
 
 - Neuron 1 (Urgency): Strongly activated (3.7) - detected high urgency pattern
 - Neuron 2 (Legitimacy): Silent (0) - no legitimacy markers found
 
 ### Step 2: Forward Pass Through Output Layer
 
-**Input:** $$h^{(1)} = [3.7, 0]$$ (urgency detected, no legitimacy)
+Input: $$h^{(1)} = [3.7, 0]$$ (urgency detected, no legitimacy)
 
-**Compute linear combination:**
+Compute linear combination:
 ```
 W²h¹ + b² = [[1.5],    [3.7,    [0.2] = [1.5×3.7 + (-0.8)×0] + [0.2]
              [-0.8]] × [0]   +         = [5.55] + [0.2]
                                        = [5.75]
 ```
 
-**Apply sigmoid for probability:**
+Apply sigmoid for probability:
 ```
 y = sigmoid(5.75) = 1/(1 + e^(-5.75)) = 1/(1 + 0.003) = 0.997
 ```
 
-**Result:** 99.7% probability this email is spam!
+Result: 99.7% probability this email is spam!
 
-**Why the MLP succeeded:**
+Why the MLP succeeded:
 
-- **Hidden layer** learned to detect "urgency without legitimacy" pattern
-- **Output layer** learned that this combination strongly indicates spam
-- **Single perceptron** would have failed to capture this complex relationship
+- Hidden layer learned to detect "urgency without legitimacy" pattern
+- Output layer learned that this combination strongly indicates spam
+- Single perceptron would have failed to capture this complex relationship
 
 ### Step 3: Understanding What Happened
 
@@ -327,18 +327,18 @@ Hidden Layer:      [3.7, 0]  # Urgency detected, no legitimacy
 Output:           0.997      # 99.7% spam probability
 ```
 
-**Hidden Neuron Analysis:**
+Hidden Neuron Analysis:
 
 - Neuron 1 (Urgency Detector): Strongly activated by exclamations + capitals combination
 - Neuron 2 (Legitimacy Detector): Silent because no "free" word (legitimacy marker) present
 
-**The Power of Multiple Layers:**
+The Power of Multiple Layers:
 
 1. Layer 1: Learned specialized pattern detectors (urgency vs legitimacy)
 2. Layer 2: Learned to combine these patterns intelligently
 3. Result: Detected sophisticated spam that exploits urgency without legitimate context
 
-**Key Insight:** The MLP learned a complex decision rule: "High urgency signals without legitimacy markers = strong spam indicator." This non-linear pattern would be impossible for a single perceptron to capture.
+Key Insight: The MLP learned a complex decision rule: "High urgency signals without legitimacy markers = strong spam indicator." This non-linear pattern would be impossible for a single perceptron to capture.
 
 ---
 
@@ -346,7 +346,7 @@ Output:           0.997      # 99.7% spam probability
 
 ### The Learning Process
 
-MLPs learn through **supervised learning**:
+MLPs learn through supervised learning:
 
 1. Forward Pass: Compute predictions using current weights
 2. Loss Calculation: Measure how wrong the predictions are
@@ -357,7 +357,7 @@ MLPs learn through **supervised learning**:
 
 ### Loss Functions
 
-**For Binary Classification (like spam detection):**
+For Binary Classification (like spam detection):
 ```
 Binary Cross-Entropy: L = -[y*log(ŷ) + (1-y)*log(1-ŷ)]
 
@@ -367,7 +367,7 @@ Where:
 - ŷ = predicted probability
 ```
 
-**For Regression (predicting numbers):**
+For Regression (predicting numbers):
 ```
 Mean Squared Error: L = (y - ŷ)²
 
@@ -379,18 +379,18 @@ Where:
 
 ### Backpropagation: The Learning Algorithm
 
-**Forward Pass** (what we just did):
+Forward Pass (what we just did):
 ```
 x → h¹ → y → Loss
 ```
 
-**Backward Pass** (compute gradients):
+Backward Pass (compute gradients):
 ```
 ∂L/∂W² ← computed from output
 ∂L/∂W¹ ← flows back through hidden layer
 ```
 
-**Weight Updates:**
+Weight Updates:
 ```
 W² = W² - α × ∂L/∂W²  # α is learning rate
 W¹ = W¹ - α × ∂L/∂W¹
@@ -418,12 +418,12 @@ For each batch of training examples:
 
 ### MLP vs Linear Regression
 
-| **Aspect** | **Linear Regression** | **MLP** |
+| Aspect | Linear Regression | MLP |
 |------------|---------------------|---------|
-| **Equation** | $$y = x W + b$$ | $$y = h^{(L-1)} W^L + b^L$$ where $$h = \sigma(x W + b)$$ |
-| **Decision Boundary** | Straight line/plane | Curved, complex shapes |
-| **Expressiveness** | Limited to linear patterns | Can learn any continuous function |
-| **Training** | Closed-form solution | Iterative optimization |
+| Equation | $$y = x W + b$$ | $$y = h^{(L-1)} W^L + b^L$$ where $$h = \sigma(x W + b)$$ |
+| Decision Boundary | Straight line/plane | Curved, complex shapes |
+| Expressiveness | Limited to linear patterns | Can learn any continuous function |
+| Training | Closed-form solution | Iterative optimization |
 
 ### MLP Advantages
 
@@ -447,14 +447,14 @@ For each batch of training examples:
 
 ### When to Use MLPs
 
-**Good for:**
+Good for:
 
 - Tabular data (rows and columns)
 - Classification and regression tasks
 - Fixed-size feature vectors
 - When you need a simple, interpretable baseline
 
-**Not ideal for:**
+Not ideal for:
 
 - Sequential data (text, time series) → Use RNNs/Transformers
 - Images → Use CNNs  
@@ -469,13 +469,13 @@ For each batch of training examples:
 
 Problem: Network performs well on training data but poorly on new data.
 
-**Signs:**
+Signs:
 
 - Training accuracy: 99%
 - Test accuracy: 60%
 - Large gap indicates overfitting
 
-**Solutions:**
+Solutions:
 ```
 
 1. Reduce model size (fewer layers/neurons)
@@ -490,12 +490,12 @@ Problem: Network performs well on training data but poorly on new data.
 
 Problem: Network can't learn the underlying patterns.
 
-**Signs:**
+Signs:
 
 - Both training and test accuracy are low
 - Loss plateaus at a high value
 
-**Solutions:**
+Solutions:
 ```
 
 1. Increase model size (more layers/neurons)
@@ -542,13 +542,13 @@ Input:  [-2, -1, 0, 1, 2]
 Output: [ 0,  0, 0, 1, 2]
 ```
 
-**Advantages:**
+Advantages:
 
 - Simple and fast to compute
 - Doesn't saturate for positive values
 - Sparse activation (many neurons output 0)
 
-**Disadvantages:**
+Disadvantages:
 
 - "Dead neurons" - can output 0 forever if weights become negative
 
@@ -563,12 +563,12 @@ Input:  [-2, -1, 0, 1, 2]
 Output: [0.12, 0.27, 0.5, 0.73, 0.88]
 ```
 
-**Advantages:**
+Advantages:
 
 - Smooth, differentiable everywhere
 - Outputs between 0 and 1 (good for probabilities)
 
-**Disadvantages:**
+Disadvantages:
 
 - Saturates for large |x| (gradients → 0)
 - Not zero-centered (can slow learning)
@@ -584,12 +584,12 @@ Input:  [-2, -1, 0, 1, 2]
 Output: [-0.96, -0.76, 0, 0.76, 0.96]
 ```
 
-**Advantages:**
+Advantages:
 
 - Zero-centered (better than sigmoid)
 - Smooth and differentiable
 
-**Disadvantages:**
+Disadvantages:
 
 - Still suffers from saturation
 - More expensive to compute than ReLU
@@ -615,7 +615,7 @@ Output Layer:
 
 ### Network Architecture Design
 
-**Start Simple:**
+Start Simple:
 ```
 
 1. Begin with 1-2 hidden layers
@@ -623,7 +623,7 @@ Output Layer:
 3. Add layers only if underfitting
 ```
 
-**Common Patterns:**
+Common Patterns:
 ```
 
 Small dataset (< 10K samples):
@@ -638,7 +638,7 @@ Input → Hidden(256) → Hidden(128) → Hidden(64) → Output
 
 ### Hyperparameter Tuning
 
-**Learning Rate:**
+Learning Rate:
 ```
 
 Too high: Loss oscillates or explodes
@@ -648,14 +648,14 @@ Sweet spot: Usually 0.001 - 0.01
 
 > 📊 Learning Rate Intuition: For a visual and mathematical explanation of why learning rate choice matters, see the worked example with f(x) = x² in **[transformers_math1.md Section 2.1.1](./transformers_math1.md#211-from-line-slopes-to-neural-network-training)** - shows exactly how different learning rates affect convergence behavior.
 
-**Batch Size:**
+Batch Size:
 ```
 Small (32): Noisy gradients, more exploration
 Large (512): Stable gradients, faster per epoch
 Common choice: 64-128
 ```
 
-**Training Tips:**
+Training Tips:
 ```
 
 1. Normalize input features: zero mean, unit variance
@@ -666,7 +666,7 @@ Common choice: 64-128
 
 ### Debugging Checklist
 
-**If training isn't working:**
+If training isn't working:
 ```
 
 1. Check data: Are labels correct? Proper preprocessing?
@@ -696,9 +696,9 @@ Input Features → Layer 1 → Layer 2 → ... → Output
 Where each layer applies: Linear Transformation → Non-linear Activation
 ```
 
-**Weight Matrices ($$W$$):** "How should features be combined?"
-**Bias Vectors ($$b$$):** "What are the default activation thresholds?"  
-**Activations ($$\sigma$$):** "How should we introduce non-linearity?"
+Weight Matrices ($$W$$): "How should features be combined?"
+Bias Vectors ($$b$$): "What are the default activation thresholds?"  
+Activations ($$\sigma$$): "How should we introduce non-linearity?"
 
 ### Capacity Control
 
@@ -708,14 +708,14 @@ Where each layer applies: Linear Transformation → Non-linear Activation
 
 ### MLP's Role in Modern AI
 
-**Foundation for Everything:**
+Foundation for Everything:
 
 - CNNs: MLPs + spatial structure for images
 - RNNs: MLPs + memory for sequences  
 - Transformers: MLPs + attention mechanisms
 - Modern architectures: All use MLP components
 
-**Key Insight:** MLPs are the "universal building block" - understanding them deeply helps with all neural network architectures.
+Key Insight: MLPs are the "universal building block" - understanding them deeply helps with all neural network architectures.
 
 ---
 
@@ -734,15 +734,15 @@ Output Layer:   h¹W² + b² = [5.75]
 After Sigmoid:  y = 0.997  # 99.7% spam probability
 ```
 
-**The Journey:** From raw email features to sophisticated spam detection through specialized pattern recognition. The MLP learned to detect complex spam patterns that single perceptrons cannot handle.
+The Journey: From raw email features to sophisticated spam detection through specialized pattern recognition. The MLP learned to detect complex spam patterns that single perceptrons cannot handle.
 
-**What It Learned:**
+What It Learned:
 
 - Hidden neuron 1 (Urgency Detector): Detects high-pressure tactics (exclamations + capitals)
 - Hidden neuron 2 (Legitimacy Detector): Detects legitimate context markers (silent here)
 - Output combination: Learned "urgency without legitimacy = strong spam signal"
 
-**Why This Matters:** This example shows MLPs solving problems beyond single perceptron capabilities—the foundation for all complex neural network architectures.
+Why This Matters: This example shows MLPs solving problems beyond single perceptron capabilities—the foundation for all complex neural network architectures.
 
 ---
 
@@ -757,4 +757,4 @@ Now that you understand MLPs:
 
 > Continue Learning: Ready for sequences? See **[rnn_intro.md](./rnn_intro.md)** to learn how RNNs add memory to the MLP foundation.
 
-**Remember:** MLPs taught us that neural networks could learn complex, non-linear patterns through simple transformations. Every modern architecture builds on these core principles - making MLPs essential foundational knowledge.
+Remember: MLPs taught us that neural networks could learn complex, non-linear patterns through simple transformations. Every modern architecture builds on these core principles - making MLPs essential foundational knowledge.

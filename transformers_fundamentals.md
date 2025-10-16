@@ -1,16 +1,16 @@
 # Transformer Fundamentals: Architecture and Core Concepts
 
-**Building on the RNN journey:** In the [RNN Tutorial](./rnn_intro.md), you learned how neural networks gained memory and why this revolutionized sequence processing. You also discovered RNN's fundamental limitations—vanishing gradients, sequential bottlenecks, and the inability to process long sequences efficiently. The Transformer architecture solved all these problems while preserving RNN's core insights about sequential understanding.
+Building on the RNN journey: In the [RNN Tutorial](./rnn_intro.md), you learned how neural networks gained memory and why this revolutionized sequence processing. You also discovered RNN's fundamental limitations—vanishing gradients, sequential bottlenecks, and the inability to process long sequences efficiently. The Transformer architecture solved all these problems while preserving RNN's core insights about sequential understanding.
 
-**What you'll learn in this foundational guide:** How the "Attention Is All You Need" breakthrough created the architecture powering ChatGPT, GPT-4, and modern AI. We'll cover the complete technical flow from input text to output generation, with mathematical rigor and implementation details for each component.
+What you'll learn in this foundational guide: How the "Attention Is All You Need" breakthrough created the architecture powering ChatGPT, GPT-4, and modern AI. We'll cover the complete technical flow from input text to output generation, with mathematical rigor and implementation details for each component.
 
-**Part of a two-part series:** This guide covers the foundational transformer architecture and core concepts (sections 1-12). For advanced topics including training, optimization, fine-tuning, and deployment, see [Transformer Advanced Topics](./transformers_advanced.md).
+Part of a two-part series: This guide covers the foundational transformer architecture and core concepts (sections 1-12). For advanced topics including training, optimization, fine-tuning, and deployment, see [Transformer Advanced Topics](./transformers_advanced.md).
 
-**Prerequisites:** Completed [RNN Tutorial](./rnn_intro.md) and the mathematical foundations listed below.
+Prerequisites: Completed [RNN Tutorial](./rnn_intro.md) and the mathematical foundations listed below.
 
 ## 1. Prerequisites
 
-**Mathematical Foundations:**
+Mathematical Foundations:
 
 - Linear Algebra: Matrix operations, eigenvalues, vector spaces (📚 See [Linear Algebra Essentials](./transformers_math1.md#221-vectors-as-word-meanings))
 - Probability Theory: Distributions, information theory, maximum likelihood estimation (📚 See [Probability & Information Theory](./transformers_math1.md#224-softmax-and-cross-entropy-from-scores-to-decisions))
@@ -21,13 +21,13 @@
 
 Transformer architectures represent a fundamental paradigm shift in sequence modeling, replacing recurrent and convolutional approaches with attention-based mechanisms for parallel processing of sequential data. The architecture's core innovation lies in the self-attention mechanism, which enables direct modeling of dependencies between any two positions in a sequence, regardless of their distance.
 
-**Architectural Significance:** Transformers solve the fundamental bottleneck of sequential processing inherent in RNNs while capturing long-range dependencies more effectively than CNNs. The attention mechanism provides explicit, learnable routing of information between sequence positions, enabling the model to dynamically focus on relevant context.
+Architectural Significance: Transformers solve the fundamental bottleneck of sequential processing inherent in RNNs while capturing long-range dependencies more effectively than CNNs. The attention mechanism provides explicit, learnable routing of information between sequence positions, enabling the model to dynamically focus on relevant context.
 
-**Key Innovations:**
+Key Innovations:
 
-- **Parallelizable attention computation:** Unlike RNNs, all positions can be processed simultaneously
-- **Direct dependency modeling:** Attention weights explicitly model relationships between any pair of sequence positions
-- **Position-invariant processing:** The base attention mechanism is permutation-equivariant, requiring explicit positional encoding
+- Parallelizable attention computation: Unlike RNNs, all positions can be processed simultaneously
+- Direct dependency modeling: Attention weights explicitly model relationships between any pair of sequence positions
+- Position-invariant processing: The base attention mechanism is permutation-equivariant, requiring explicit positional encoding
 
 ## 3. Historical Context: The Transformer Breakthrough
 
@@ -37,9 +37,9 @@ The transformer architecture represents the culmination of decades of research i
 
 The Revolutionary Question: Vaswani et al. (2017) asked a simple but profound question: *What if we remove recurrence entirely and rely purely on attention?*
 
-Key Insight: If attention can help RNNs access any part of the input, why not use attention as the **primary mechanism** for processing sequences, rather than just an auxiliary tool?
+Key Insight: If attention can help RNNs access any part of the input, why not use attention as the primary mechanism for processing sequences, rather than just an auxiliary tool?
 
-**Previous Evolution:**
+Previous Evolution:
 
 - MLPs: Established neural foundations but couldn't handle variable-length sequences
 - RNNs: Introduced sequential processing but suffered from vanishing gradient problems
@@ -62,7 +62,7 @@ All positions computed in parallel using attention
 
 Self-Attention Concept: Instead of attending from decoder to encoder, have each position in a sequence attend to all positions in the same sequence (including itself).
 
-**Mathematical Foundation:**
+Mathematical Foundation:
 Given input sequence:
 
 $$
@@ -75,7 +75,7 @@ X &= [x\_1, x\_2, \ldots, x\_n] \newline
 \end{aligned}
 $$
 
-**Key Properties:**
+Key Properties:
 
 - Parallel Computation: All positions processed simultaneously
 - Full Connectivity: Every position can attend to every other position
@@ -139,20 +139,20 @@ The sections that follow will dive deep into the technical implementation of the
 
 ## 4. Pipeline
 
-**Let's trace through what happens when you type "The cat sat on" and the AI predicts the next word.**
+Let's trace through what happens when you type "The cat sat on" and the AI predicts the next word.
 
 Think of this process like a sophisticated translation system - but instead of translating between languages, we're translating from "human text" to "AI understanding" and back to "human text".
 
 ### Computational Pipeline Overview
 
-**Core Processing Stages:**
+Core Processing Stages:
 
-1. **Tokenization:** Subword segmentation and vocabulary mapping
-2. **Embedding:** Dense vector representation learning
-3. **Position Encoding:** Sequence order information injection
-4. **Transformer Layers:** Attention-based representation refinement
-5. **Output Projection:** Vocabulary distribution computation
-6. **Decoding:** Next-token selection strategies
+1. Tokenization: Subword segmentation and vocabulary mapping
+2. Embedding: Dense vector representation learning
+3. Position Encoding: Sequence order information injection
+4. Transformer Layers: Attention-based representation refinement
+5. Output Projection: Vocabulary distribution computation
+6. Decoding: Next-token selection strategies
 
 ### Detailed Process Flow
 
@@ -185,10 +185,10 @@ User Input: "The cat sat on"
 Output: "the" (most likely next word)
 ```
 
-**Tensor Dimensions and Semantic Interpretation:**
+Tensor Dimensions and Semantic Interpretation:
 
 - [464, 2415, 3332, 319]: Discrete token indices mapping to vocabulary entries
-**Tensor Dimensions:**
+Tensor Dimensions:
 
 $$
 \begin{aligned}
@@ -219,7 +219,7 @@ $$
 
 ### Model Hyperparameters and Complexity
 
-**Architectural Dimensions:**
+Architectural Dimensions:
 
 - Vocabulary size (V): Discrete token space cardinality, typically 32K-100K
 - Model dimension (d_model): Hidden state dimensionality determining representational capacity
@@ -227,7 +227,7 @@ $$
 - Layer count (N): Depth of hierarchical representation learning
 - Attention heads (H): Parallel attention subspaces for diverse relationship modeling
 
-**GPT-2 Specification:**
+GPT-2 Specification:
 
 - Vocabulary: 50,257 BPE tokens
 - Hidden dimension: 768
@@ -241,13 +241,13 @@ $$
 
 ### 🎯 Intuition: Breaking Text into Computer-Friendly Pieces
 
-**Think of tokenization like chopping vegetables for a recipe.** You can't feed raw text directly to a computer - you need to break it into standardized pieces (tokens) that the computer can work with, just like chopping vegetables into uniform sizes for cooking.
+Think of tokenization like chopping vegetables for a recipe. You can't feed raw text directly to a computer - you need to break it into standardized pieces (tokens) that the computer can work with, just like chopping vegetables into uniform sizes for cooking.
 
-**Why not just use individual letters or whole words?**
+Why not just use individual letters or whole words?
 
 - Letters: Too many combinations, loses meaning ("c-a-t" tells us less than "cat")
 - Whole words: Millions of possible words, can't handle new/misspelled words
-- **Subwords** (what we use): Perfect balance - captures meaning while handling new words
+- Subwords (what we use): Perfect balance - captures meaning while handling new words
 
 ### Process Flow
 ```
@@ -266,13 +266,13 @@ $$
 
 Let's trace through tokenizing "The cat sat on":
 
-**Step 1: Smart Splitting**
+Step 1: Smart Splitting
 ```
 "The cat sat on" → ["The", " cat", " sat", " on"]
 ```
 Notice: Spaces are included with words (except the first)
 
-**Step 2: Look Up Numbers**
+Step 2: Look Up Numbers
 ```
 "The"   → 464   (most common word, low number)
 " cat"  → 2415  (common word)
@@ -280,7 +280,7 @@ Notice: Spaces are included with words (except the first)
 " on"   → 319   (very common, low number)
 ```
 
-**Final Result:**
+Final Result:
 ```
 Input: "The cat sat on"      (18 characters)
 Output: [464, 2415, 3332, 319]  (4 tokens)
@@ -312,17 +312,17 @@ M &: \text{Learned merge operations} \newline
 \end{aligned}
 $$
 
-**📖 Detailed Algorithm:** See [Tokenization Mathematics](./transformers_math1.md#82-embedding-mathematics) for BPE training and inference procedures.
+📖 Detailed Algorithm: See [Tokenization Mathematics](./transformers_math1.md#82-embedding-mathematics) for BPE training and inference procedures.
 
 ### Tokenization Challenges and Considerations
 
-**Out-of-Vocabulary Handling:**
+Out-of-Vocabulary Handling:
 
 - Unknown words: Long or rare words decompose into character-level tokens, increasing sequence length
 - Domain mismatch: Models trained on general text may poorly tokenize specialized domains (code, scientific notation)
 - Multilingual complexity: Subword boundaries vary across languages, affecting cross-lingual transfer
 
-**Performance Implications:**
+Performance Implications:
 
 - Vocabulary size vs. sequence length trade-off: Larger vocabularies reduce sequence length but increase computational cost
 - Compression efficiency: Good tokenization minimizes information loss while maximizing compression
@@ -342,17 +342,17 @@ $$
 
 Embedding layers transform discrete token indices into continuous vector representations within a learned semantic space. This mapping enables the model to capture distributional semantics and enables gradient-based optimization over the discrete vocabulary.
 
-**Representational Advantages:**
+Representational Advantages:
 
 - Continuous optimization: Dense vectors enable gradient-based learning over discrete token spaces
 - Semantic similarity: Geometrically related vectors capture semantic relationships through distance metrics
 - Compositional structure: Linear operations in embedding space can capture meaningful transformations
 
-**Position encoding** addresses the permutation-invariance of attention mechanisms by injecting sequential order information into the representation space.
+Position encoding addresses the permutation-invariance of attention mechanisms by injecting sequential order information into the representation space.
 
 ### Embedding Computation Pipeline
 
-**Token Embedding Lookup:**
+Token Embedding Lookup:
 
 $$
 \begin{aligned}
@@ -375,7 +375,7 @@ $$
 
 ### Mathematical Formulation
 
-**Token Embedding Transformation:**
+Token Embedding Transformation:
 
 $$
 \begin{aligned}
@@ -384,9 +384,9 @@ X\_{\text{tok}}[i] &= E[t\_i] \in \mathbb{R}^{d\_{\text{model}}} \text{ for toke
 \end{aligned}
 $$
 
-**Position Encoding Variants:**
+Position Encoding Variants:
 
-**Learned Positional Embeddings:**
+Learned Positional Embeddings:
 
 $$
 \begin{aligned}
@@ -394,7 +394,7 @@ X\_{\text{pos}}[i] = PE[i] \text{ where } PE \in \mathbb{R}^{n\_{\max} \times d\
 \end{aligned}
 $$
 
-**Sinusoidal Position Encoding:**
+Sinusoidal Position Encoding:
 
 $$
 \begin{aligned}
@@ -403,7 +403,7 @@ PE[\text{pos}, 2i+1] &= \cos\left(\frac{\text{pos}}{10000^{2i/d\_{\text{model}}}
 \end{aligned}
 $$
 
-**Combined Representation:**
+Combined Representation:
 
 $$
 \begin{aligned}
@@ -413,13 +413,13 @@ d\_{\text{model}} &: \text{Model dimension}
 \end{aligned}
 $$
 
-**📖 Theoretical Foundation:** See [Embedding Mathematics](./transformers_math1.md#82-embedding-mathematics) and [Positional Encodings](./transformers_math1.md#62-advanced-positional-encodings) for detailed analysis of learned vs. fixed position encodings.
+📖 Theoretical Foundation: See [Embedding Mathematics](./transformers_math1.md#82-embedding-mathematics) and [Positional Encodings](./transformers_math1.md#62-advanced-positional-encodings) for detailed analysis of learned vs. fixed position encodings.
 
 ### Concrete Example with Actual Numbers
 
 Let's see what happens with our tokens [464, 2415, 3332, 319] ("The cat sat on"):
 
-**Step 1: Token Embedding Lookup**
+Step 1: Token Embedding Lookup
 ```
 Token 464 ("The") → [0.1, -0.3, 0.7, 0.2, ...] (768 numbers total)
 Token 2415 ("cat") → [-0.2, 0.8, -0.1, 0.5, ...]
@@ -428,7 +428,7 @@ Token 319 ("on") → [0.2, -0.4, 0.3, -0.1, ...]
 Result: [4, 768] array (4 words × 768 features each)
 ```
 
-**Step 2: Position Embeddings**
+Step 2: Position Embeddings
 ```
 Position 0 → [0.01, 0.02, -0.01, 0.03, ...] (for "The")
 Position 1 → [0.02, -0.01, 0.02, -0.01, ...] (for "cat")
@@ -437,7 +437,7 @@ Position 3 → [0.03, 0.01, -0.02, 0.01, ...] (for "on")
 Result: [4, 768] array (position info for each word)
 ```
 
-**Step 3: Add Together**
+Step 3: Add Together
 ```
 Final embedding for "The" = [0.1, -0.3, 0.7, 0.2, ...] + [0.01, 0.02, -0.01, 0.03, ...]
                            = [0.11, -0.28, 0.69, 0.23, ...]
@@ -453,15 +453,15 @@ Pos Embed:     [4, 768]    (slice from [2048, 768] - position info for each toke
 Final X:       [4, 768]    (combine token + position info)
 ```
 
-**🎯 Shape Intuition:** Think of shapes like `[4, 768]` as a table with 4 rows (tokens) and 768 columns (features). Each row represents one word, each column represents one aspect of meaning.
+🎯 Shape Intuition: Think of shapes like `[4, 768]` as a table with 4 rows (tokens) and 768 columns (features). Each row represents one word, each column represents one aspect of meaning.
 
 ### 🛠️ What Could Go Wrong?
 
-**Common Misconceptions:**
+Common Misconceptions:
 
-- **"Why 768 dimensions?"** It's like having 768 different personality traits - enough to capture complex meaning relationships
-- **"Why add position info?"** Without it, "cat sat on mat" and "mat on sat cat" would look identical to the model
-- **"What if we run out of positions?"** Models have maximum sequence lengths (like 2048) - longer texts get truncated
+- "Why 768 dimensions?" It's like having 768 different personality traits - enough to capture complex meaning relationships
+- "Why add position info?" Without it, "cat sat on mat" and "mat on sat cat" would look identical to the model
+- "What if we run out of positions?" Models have maximum sequence lengths (like 2048) - longer texts get truncated
 
 ---
 
@@ -471,14 +471,14 @@ Final X:       [4, 768]    (combine token + position info)
 
 The transformer stack implements hierarchical feature extraction through stacked self-attention and feed-forward blocks. Each layer refines the input representations by modeling increasingly complex relationships and patterns within the sequence.
 
-**Layer-wise Functionality:**
+Layer-wise Functionality:
 
 1. Self-attention sublayer: Models pairwise interactions between sequence positions
 2. Feed-forward sublayer: Applies position-wise transformations to individual token representations
 3. Residual connections: Preserve gradient flow and enable identity mappings
 4. Layer normalization: Stabilizes training dynamics and accelerates convergence
 
-**Representational Hierarchy:** Empirical analysis suggests progressive abstraction:
+Representational Hierarchy: Empirical analysis suggests progressive abstraction:
 
 - Early layers: Syntactic patterns, local dependencies, surface-level features
 - Middle layers: Semantic relationships, discourse structure, compositional meaning
@@ -515,7 +515,7 @@ Final Hidden States [4, 768] ← Deeply processed word meanings
 
 ### Single Layer Mathematical Flow
 
-**Transformer Block Architecture (Pre-LayerNorm):**
+Transformer Block Architecture (Pre-LayerNorm):
 
 Given layer input:
 
@@ -525,7 +525,7 @@ X^{(l-1)} \in \mathbb{R}^{n \times d\_{\text{model}}}
 \end{aligned}
 $$
 
-**Self-Attention Sublayer:**
+Self-Attention Sublayer:
 
 $$
 \begin{aligned}
@@ -535,7 +535,7 @@ X'^{(l)} &= X^{(l-1)} + A^{(l)} \quad \text{(residual connection)}
 \end{aligned}
 $$
 
-**Feed-Forward Sublayer:**
+Feed-Forward Sublayer:
 
 $$
 \begin{aligned}
@@ -545,13 +545,13 @@ X^{(l)} &= X'^{(l)} + F^{(l)} \quad \text{(residual connection)}
 \end{aligned}
 $$
 
-**Design Rationale:**
+Design Rationale:
 
 - Pre-normalization: Stabilizes gradients and enables deeper networks compared to post-norm
 - Residual connections: Address vanishing gradient problem via identity shortcuts
 - Two-sublayer structure: Separates relationship modeling (attention) from feature transformation (FFN)
 
-**📖 Theoretical Analysis:** See [Transformer Block Mathematics](./transformers_math1.md#71-complete-block-equations) and [Residual Connections as Discretized Dynamics](./transformers_math1.md#213-residual-connections-as-discretized-dynamics) for detailed mathematical foundations.
+📖 Theoretical Analysis: See [Transformer Block Mathematics](./transformers_math1.md#71-complete-block-equations) and [Residual Connections as Discretized Dynamics](./transformers_math1.md#213-residual-connections-as-discretized-dynamics) for detailed mathematical foundations.
 
 ---
 
@@ -567,7 +567,7 @@ Structure: Bidirectional self-attention across all positions
 Training: Masked Language Modeling (MLM) - predict randomly masked tokens
 Use cases: Classification, entity recognition, semantic similarity
 
-**Mathematical Formulation:**
+Mathematical Formulation:
 
 $$
 \begin{aligned}
@@ -580,7 +580,7 @@ $$
 Key advantage: Full bidirectional context enables deep understanding
 Limitation: Cannot generate sequences autoregressively
 
-**Example Implementation Pattern:**
+Example Implementation Pattern:
 ```python
 # BERT-style encoder block
 def encoder_attention(x, mask=None):
@@ -599,7 +599,7 @@ Structure: Causal self-attention - each position only attends to previous positi
 Training: Causal Language Modeling (CLM) - predict next token
 Use cases: Text generation, completion, few-shot learning
 
-**Mathematical Formulation:**
+Mathematical Formulation:
 
 $$
 \begin{aligned}
@@ -612,7 +612,7 @@ $$
 Key advantage: Natural autoregressive generation capability
 Trade-off: No future context during training
 
-**Causal Masking Implementation:**
+Causal Masking Implementation:
 ```python
 def causal_mask(seq_len):
     # Create lower triangular mask
@@ -628,13 +628,13 @@ Training: Various objectives (span corruption, translation, etc.)
 
 Use cases: Translation, summarization, structured tasks
 
-**Mathematical Components:**
+Mathematical Components:
 
 1. Encoder self-attention: Bidirectional processing of input sequence
 2. Decoder self-attention: Causal attention over generated tokens
 3. Cross-attention: Decoder attends to encoder outputs
 
-**Cross-Attention Formulation:**
+Cross-Attention Formulation:
 
 $$
 \begin{aligned}
@@ -660,7 +660,7 @@ Grouped-Query Attention (GQA): Compromise between MHA and MQA, where groups of q
 
 Mixture of Experts (MoE): Replace some FFNs with expert networks using sparse activation based on learned routing, increasing capacity without proportional compute increase.
 
-**Position Encoding Variants:**
+Position Encoding Variants:
 
 - RoPE (Rotary Position Embedding): Rotates query/key vectors by position-dependent angles
 - ALiBi (Attention with Linear Biases): Adds position-based linear bias to attention scores
@@ -683,7 +683,7 @@ For Sequence-to-Sequence Tasks: Use encoder-decoder (T5-style)
 - Translation, summarization, question answering
 - Clear input/output distinction with different processing needs
 
-**Performance Considerations:**
+Performance Considerations:
 
 - Parameter efficiency: Decoder-only reuses weights for both understanding and generation
 - Training efficiency: Encoder-only can process full sequences in parallel
@@ -697,7 +697,7 @@ For Sequence-to-Sequence Tasks: Use encoder-decoder (T5-style)
 
 Self-attention implements a differentiable associative memory mechanism where each sequence position (query) retrieves information from all positions (keys) based on learned compatibility functions. This enables modeling arbitrary dependencies without the sequential constraints of RNNs or the locality constraints of CNNs.
 
-**Attention Mechanism Properties:**
+Attention Mechanism Properties:
 
 - Permutation equivariance: Output permutes consistently with input permutation (before positional encoding)
 - Dynamic routing: Information flow adapts based on input content rather than fixed connectivity
@@ -708,7 +708,7 @@ Self-attention vs. Cross-attention: In self-attention, queries, keys, and values
 
 ### Attention Weight Interpretation
 
-**Attention Weights as Soft Alignment:**
+Attention Weights as Soft Alignment:
 
 Given query position and key positions, attention weights represent the proportion of information flow between sequence positions:
 
@@ -720,7 +720,7 @@ $$
 \end{aligned}
 $$
 
-**Example: Coreference Resolution**
+Example: Coreference Resolution
 For sequence "The cat sat on it" processing token "it":
 
 $$
@@ -743,7 +743,7 @@ $$
 
 ### Attention Computation Steps
 
-**Step 1: Linear Projections**
+Step 1: Linear Projections
 
 $$
 \begin{aligned}
@@ -754,7 +754,7 @@ $$
 \end{aligned}
 $$
 
-**Step 2: Multi-Head Reshaping**
+Step 2: Multi-Head Reshaping
 
 $$
 \begin{aligned}
@@ -764,7 +764,7 @@ $$
 \end{aligned}
 $$
 
-**Step 3: Scaled Dot-Product Attention**
+Step 3: Scaled Dot-Product Attention
 
 $$
 \begin{aligned}
@@ -774,7 +774,7 @@ $$
 \end{aligned}
 $$
 
-**Step 4: Causal Masking (for autoregressive models)**
+Step 4: Causal Masking (for autoregressive models)
 
 $$
 \begin{aligned}
@@ -784,7 +784,7 @@ $$
 \end{aligned}
 $$
 
-**Step 5: Attention Weight Computation**
+Step 5: Attention Weight Computation
 
 $$
 \begin{aligned}
@@ -794,7 +794,7 @@ $$
 \end{aligned}
 $$
 
-**Step 6: Value Aggregation**
+Step 6: Value Aggregation
 
 $$
 \begin{aligned}
@@ -803,7 +803,7 @@ $$
 \end{aligned}
 $$
 
-**Step 7: Head Concatenation and Output Projection**
+Step 7: Head Concatenation and Output Projection
 
 $$
 \begin{aligned}
@@ -815,7 +815,7 @@ $$
 
 ### Multi-Head Attention Mathematical Formulation
 
-**Core Attention Mechanism (Scaled Dot-Product):**
+Core Attention Mechanism (Scaled Dot-Product):
 
 $$
 \begin{aligned}
@@ -833,7 +833,7 @@ d\_k &= d\_v = d\_{\text{model}}/H : \text{Head dimension} \newline
 \end{aligned}
 $$
 
-**Multi-Head Attention Implementation:**
+Multi-Head Attention Implementation:
 
 $$
 \begin{aligned}
@@ -842,7 +842,7 @@ $$
 \end{aligned}
 $$
 
-**Linear Projection Matrices** (not MLPs):
+Linear Projection Matrices (not MLPs):
 
 $$
 \begin{aligned}
@@ -851,16 +851,16 @@ W^O &\in \mathbb{R}^{d\_{\text{model}} \times d\_{\text{model}}} : \text{Output 
 \end{aligned}
 $$
 
-**Implementation Details:**
+Implementation Details:
 
 1. Parallel computation: All heads computed simultaneously via reshaped tensor operations
 2. Linear projections: Simple matrix multiplications, not multi-layer perceptrons
 3. Concatenation: Head outputs concatenated along feature dimension
 4. Output projection: Single linear transformation of concatenated heads
 
-**📖 Derivation and Analysis:** See [Multi-Head Attention Theory](./transformers_math1.md#61-multi-head-as-subspace-projections) and [Scaling Analysis](./transformers_math1.md#52-why-the-sqrtd_k-scaling) for mathematical foundations.
+📖 Derivation and Analysis: See [Multi-Head Attention Theory](./transformers_math1.md#61-multi-head-as-subspace-projections) and [Scaling Analysis](./transformers_math1.md#52-why-the-sqrtd_k-scaling) for mathematical foundations.
 
-**Causal Masking for Autoregressive Models:**
+Causal Masking for Autoregressive Models:
 
 $$
 \begin{aligned}
@@ -883,9 +883,9 @@ j &: \text{Attended position}
 \end{aligned}
 $$
 
-**Computational Complexity Analysis:**
+Computational Complexity Analysis:
 
-**Tensor Shapes with Standard Convention:**
+Tensor Shapes with Standard Convention:
 A common convention is to use shapes like `[batch_size, num_heads, seq_len, head_dim]`. For simplicity, we omit the batch dimension.
 
 $$
@@ -901,7 +901,7 @@ $$
 }
 $$
 
-**Time Complexity:**
+Time Complexity:
 
 - Linear projections: Quadratic in model dimension
 - Attention computation: Quadratic in sequence length
@@ -915,7 +915,7 @@ $$
   \end{aligned}
   $$
 
-**Space Complexity:**
+Space Complexity:
 
 - Attention matrices: Quadratic in sequence length per head
 - Activations: Linear in sequence length and model dimension
@@ -936,10 +936,10 @@ $$
 
 KV caching addresses the computational inefficiency of autoregressive generation by storing and reusing previously computed key-value pairs. This optimization reduces the time complexity of each generation step from quadratic to linear in the context length.
 
-**Computational Motivation:**
+Computational Motivation:
 During autoregressive generation, attention computations for previous tokens remain unchanged when processing new tokens. Caching eliminates redundant recomputation of these static attention components.
 
-**Performance Impact:**
+Performance Impact:
 
 - Without caching: Quadratic computation per step
 - With caching: Linear compute per step with memory overhead
@@ -958,7 +958,7 @@ During autoregressive generation, attention computations for previous tokens rem
 
 ### Computational Efficiency Analysis
 
-**Problem Formulation:**
+Problem Formulation:
 In standard autoregressive generation at step $$t$$, computing attention for the new token requires:
 
 $$
@@ -970,9 +970,9 @@ t &: \text{Current step}
 \end{aligned}
 $$
 
-**KV Cache Solution:**
+KV Cache Solution:
 
-**Without Cache (Step t):**
+Without Cache (Step t):
 
 $$
 \begin{aligned}
@@ -983,9 +983,9 @@ t &: \text{Current step}
 \end{aligned}
 $$
 
-**Note:** This assumes a full re-forward over the context per new token; frameworks differ, but the asymptotic bottleneck is the score matrix computation.
+Note: This assumes a full re-forward over the context per new token; frameworks differ, but the asymptotic bottleneck is the score matrix computation.
 
-**With Cache (Step t):**
+With Cache (Step t):
 
 $$
 \begin{aligned}
@@ -998,7 +998,7 @@ $$
 
 ### KV Cache Implementation
 
-**Cache Architecture:**
+Cache Architecture:
 ```python
 class KVCache:
     def __init__(self, num_layers, num_heads, d_head, max_seq_len):
@@ -1028,9 +1028,9 @@ class KVCache:
         )
 ```
 
-**Mathematical Formulation:**
+Mathematical Formulation:
 
-**Cache Update (Step):**
+Cache Update (Step):
 
 $$
 \begin{aligned}
@@ -1040,7 +1040,7 @@ v\_{\text{new}} &= x\_{\text{new}} W^V \in \mathbb{R}^{1 \times d\_v}
 \end{aligned}
 $$
 
-**Cache Concatenation:**
+Cache Concatenation:
 
 $$
 \begin{aligned}
@@ -1049,7 +1049,7 @@ V\_{\text{full}} &= [V\_{\text{cache}}; v\_{\text{new}}] \in \mathbb{R}^{t \time
 \end{aligned}
 $$
 
-**Cached Attention Computation:**
+Cached Attention Computation:
 
 $$
 \begin{aligned}
@@ -1059,9 +1059,9 @@ $$
 \end{aligned}
 $$
 
-**Complexity Summary:**
+Complexity Summary:
 
-**Time Complexity per Generation Step:**
+Time Complexity per Generation Step:
 
 $$
 \begin{aligned}
@@ -1070,7 +1070,7 @@ $$
 \end{aligned}
 $$
 
-**Space Complexity:**
+Space Complexity:
 
 $$
 \begin{aligned}
@@ -1081,7 +1081,7 @@ H &: \text{Number of heads}
 \end{aligned}
 $$
 
-**Practical Considerations:**
+Practical Considerations:
 
 - Memory bandwidth becomes bottleneck for large models
 - Cache pre-allocation avoids dynamic memory allocation overhead
@@ -1095,19 +1095,19 @@ $$
 
 Feed-forward networks in transformers implement position-wise MLP layers that process each token representation independently. This component provides the model's primary source of nonlinear transformation capacity and parametric memory.
 
-**Architectural Role:**
+Architectural Role:
 
 - Nonlinearity injection: Introduces essential nonlinear transformations between attention layers
 - Representation expansion: Temporarily expands representation space for complex computations
 - Parameter concentration: Contains majority of model parameters (~2/3 in standard architectures)
 - Position independence: Applies identical transformations to each sequence position
 
-**Design Philosophy:**
+Design Philosophy:
 FFNs serve as "computational bottlenecks" that force the model to compress and process information efficiently, similar to autoencoder architectures.
 
 ### FFN Architecture and Computation
 
-**Standard Two-Layer MLP:**
+Standard Two-Layer MLP:
 
 Expansion layer:
 
@@ -1127,7 +1127,7 @@ $$
 \end{aligned}
 $$
 
-**Computational Flow:**
+Computational Flow:
 
 $$
 \begin{aligned}
@@ -1138,7 +1138,7 @@ $$
 \end{aligned}
 $$
 
-**Design Rationale:**
+Design Rationale:
 
 - 4× expansion: Provides sufficient representational capacity for complex transformations
 - Position-wise: Each token processed independently, enabling parallelization
@@ -1146,7 +1146,7 @@ $$
 
 ### Mathematical Formulation
 
-**Standard FFN Transformation:**
+Standard FFN Transformation:
 
 $$
 \begin{aligned}
@@ -1164,7 +1164,7 @@ d\_{\text{ffn}} &= 4 \cdot d\_{\text{model}} : \text{Standard expansion ratio}
 \end{aligned}
 $$
 
-**GELU Activation Function:**
+GELU Activation Function:
 
 $$
 \begin{aligned}
@@ -1184,9 +1184,9 @@ $$
 \end{aligned}
 $$
 
-**📖 Activation Function Analysis:** See [GELU vs ReLU](./transformers_math1.md#72-why-gelu-over-relu) and [SwiGLU Variants](./transformers_math1.md#71-complete-block-equations) for detailed comparisons.
+📖 Activation Function Analysis: See [GELU vs ReLU](./transformers_math1.md#72-why-gelu-over-relu) and [SwiGLU Variants](./transformers_math1.md#71-complete-block-equations) for detailed comparisons.
 
-**SwiGLU Variant (Gated FFN):**
+SwiGLU Variant (Gated FFN):
 
 $$
 \begin{aligned}
@@ -1203,9 +1203,9 @@ d\_{\text{ffn}} &= \frac{8}{3} d\_{\text{model}} \text{ (parameter count matchin
 \end{aligned}
 $$
 
-**Parameter Analysis:**
+Parameter Analysis:
 
-**Standard FFN:**
+Standard FFN:
 
 $$
 \begin{aligned}
@@ -1223,7 +1223,7 @@ d\_{\text{model}} = 768 \Rightarrow \text{~4.7M parameters per FFN layer}
 \end{aligned}
 $$
 
-**Computational Complexity:**
+Computational Complexity:
 
 $$
 \begin{aligned}
@@ -1238,20 +1238,20 @@ $$
 
 ### 🎯 Intuition: Making the Final Decision
 
-**Think of output generation like a multiple-choice test with 50,000 possible answers.** After all the deep processing, the model has to decide: "What's the most likely next word?"
+Think of output generation like a multiple-choice test with 50,000 possible answers. After all the deep processing, the model has to decide: "What's the most likely next word?"
 
-**The process:**
+The process:
 
 1. Focus on the last word: Only the final word's understanding matters for prediction
 2. Consider all possibilities: Calculate how likely each of the 50,000 vocabulary words is to come next
 3. Make a choice: Use various strategies to pick the final word
 
-**Real-world analogy:** Like a game show where you've analyzed all the clues, and now you must choose your final answer from all possible options.
+Real-world analogy: Like a game show where you've analyzed all the clues, and now you must choose your final answer from all possible options.
 
-**Why only the last word?** In "The cat sat on ___", only the understanding after "on" matters for predicting the next word. Previous words have already influenced this final representation through attention.
+Why only the last word? In "The cat sat on ___", only the understanding after "on" matters for predicting the next word. Previous words have already influenced this final representation through attention.
 
 ### Output Generation Pipeline
-**Step 1: Hidden State Extraction**
+Step 1: Hidden State Extraction
 
 $$
 \begin{aligned}
@@ -1261,7 +1261,7 @@ $$
 \end{aligned}
 $$
 
-**Step 2: Language Model Head**
+Step 2: Language Model Head
 
 $$
 \begin{aligned}
@@ -1271,7 +1271,7 @@ $$
 \end{aligned}
 $$
 
-**Step 3: Temperature Scaling**
+Step 3: Temperature Scaling
 
 $$
 \begin{aligned}
@@ -1281,7 +1281,7 @@ $$
 \end{aligned}
 $$
 
-**Step 4: Probability Computation**
+Step 4: Probability Computation
 
 $$
 \begin{aligned}
@@ -1290,14 +1290,14 @@ $$
 \end{aligned}
 $$
 
-**Step 5: Token Sampling**
+Step 5: Token Sampling
 
 - Sampling strategy: Select next token according to chosen decoding algorithm
 - Options: Greedy, top-k, nucleus (top-p), beam search
 
 ### Mathematical Formulation
 
-**Language Model Head:**
+Language Model Head:
 
 $$
 \begin{aligned}
@@ -1322,7 +1322,7 @@ Weight Tying: Commonly use transpose of token embedding matrix, reducing paramet
   \end{aligned}
   $$
 
-**Temperature-Scaled Softmax:**
+Temperature-Scaled Softmax:
 
 $$
 \begin{aligned}
@@ -1330,7 +1330,7 @@ p\_i = \frac{\exp(\text{logits}\_i / \tau)}{\sum\_{j=1}^{|V|} \exp(\text{logits}
 \end{aligned}
 $$
 
-**Temperature Parameter:**
+Temperature Parameter:
 
 $$
 \begin{aligned}
@@ -1341,9 +1341,9 @@ $$
 \end{aligned}
 $$
 
-**Decoding Strategies:**
+Decoding Strategies:
 
-**Greedy Decoding**
+Greedy Decoding
 
 $$
 \begin{aligned}
@@ -1351,10 +1351,10 @@ $$
 \end{aligned}
 $$
 
-- **Advantages:** Deterministic, fast, and simple to implement
-- **Disadvantages:** Often produces repetitive or generic text; lacks diversity
+- Advantages: Deterministic, fast, and simple to implement
+- Disadvantages: Often produces repetitive or generic text; lacks diversity
 
-**Top-k Sampling**
+Top-k Sampling
 
 $$
 \begin{aligned}
@@ -1370,7 +1370,7 @@ k &: \text{Number of top tokens to consider}
 \end{aligned}
 $$
 
-**Nucleus (Top-p) Sampling:**
+Nucleus (Top-p) Sampling:
 
 $$
 \begin{aligned}
@@ -1401,7 +1401,7 @@ This completes our journey through the foundational transformer architecture. Yo
 - Architectural variants: Encoder-only, decoder-only, and encoder-decoder designs
 - Output generation: How models produce final predictions
 
-**Continue your learning with advanced topics:** For deeper understanding of how these models are trained, optimized, and deployed in practice, see [Transformer Advanced Topics](./transformers_advanced.md), which covers:
+Continue your learning with advanced topics: For deeper understanding of how these models are trained, optimized, and deployed in practice, see [Transformer Advanced Topics](./transformers_advanced.md), which covers:
 
 - Training objectives and data curriculum
 - Backpropagation and optimization

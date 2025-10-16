@@ -17,7 +17,7 @@ Activation Function: A mathematical function applied to the output of a neuron t
   $$
 - Deep dive: [nn_intro.md Section 3](./nn_intro.md#the-role-of-activation-functions-space-warping) for geometric intuition, [mlp_intro.md Section 9](./mlp_intro.md#9-activation-functions-deep-dive) for detailed comparison
 
-**Attention Collapse:** Phenomenon where attention weights become too peaked (concentrated on few tokens) rather than uniform, leading to poor gradient flow and reduced model expressiveness.
+Attention Collapse: Phenomenon where attention weights become too peaked (concentrated on few tokens) rather than uniform, leading to poor gradient flow and reduced model expressiveness.
 
 - Mathematical foundation: [transformers_math1.md Section 5.2](./transformers_math1.md#52-why-the-sqrtd_k-scaling) for scaling analysis
 
@@ -100,7 +100,7 @@ Bias: An additional parameter in a neuron that allows the activation function to
 
 ## C
 
-**Causal Mask:** Lower-triangular mask preventing attention to future tokens in autoregressive models.
+Causal Mask: Lower-triangular mask preventing attention to future tokens in autoregressive models.
 
 - Mathematical implementation: [transformers_math1.md Section 5.4](./transformers_math1.md#54-masked-attention) for masking details
 
@@ -242,7 +242,7 @@ IVF (Inverted File): A clustering-based indexing method that groups similar vect
 
 ## K
 
-**KV Cache:** Stored key-value pairs from previous tokens to accelerate autoregressive generation.
+KV Cache: Stored key-value pairs from previous tokens to accelerate autoregressive generation.
 
 - Mathematical foundation: [transformers_math2.md Section 10.4](./transformers_math2.md#104-kv-caching-for-autoregressive-generation) for efficiency details
 
@@ -348,7 +348,7 @@ Perceptron: The basic building block of neural networks, consisting of inputs, w
 - Complete explanation: [nn_intro.md Section 3](./nn_intro.md#3-the-neuron-and-the-perceptron) for biological inspiration and mathematics
 - Limitations: [nn_intro.md Section 4](./nn_intro.md#limitations-of-single-perceptrons) for XOR problem
 
-**Position Encoding:** Method to inject sequential order information into permutation-equivariant attention.
+Position Encoding: Method to inject sequential order information into permutation-equivariant attention.
 
 - Mathematical foundation: [transformers_fundamentals.md Section 6](./transformers_fundamentals.md#6-stage-2-tokens-to-embeddings) for sinusoidal encoding
 - Advanced techniques: [transformers_math1.md Section 6.2](./transformers_math1.md#62-advanced-positional-encodings) for RoPE and ALiBi
@@ -407,7 +407,7 @@ Regularization: Techniques to prevent overfitting by constraining model complexi
 
 ## S
 
-**Scaled Dot-Product Attention:** Core attention mechanism with the following formula:
+Scaled Dot-Product Attention: Core attention mechanism with the following formula:
 
 $$
 \begin{aligned}
@@ -476,7 +476,7 @@ Tanh (Hyperbolic Tangent): An activation function that maps inputs to values bet
 - Advantages: [nn_intro.md Section 3](./nn_intro.md#common-activation-functions) for zero-centered output
 - Comparison: [mlp_intro.md Section 9](./mlp_intro.md#tanh-hyperbolic-tangent) for detailed analysis
 
-**Teacher Forcing:** Training technique using ground truth tokens as inputs instead of model predictions.
+Teacher Forcing: Training technique using ground truth tokens as inputs instead of model predictions.
 
 - Autoregressive training: [transformers_math1.md Section 8.1](./transformers_math1.md#81-next-token-prediction) for implementation details
 

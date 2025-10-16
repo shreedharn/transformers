@@ -3,6 +3,17 @@
   --md-typeset-line-height: 1.50;
 }
 
+/* ===== Text Justification ===== */
+.md-typeset p,
+.md-typeset li{
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+}
+
 /* ===== Headings: calmer sizes ===== */
 /* ===== Headings scaled down ===== */
 .md-content__title,
@@ -31,3 +42,7 @@
 /* Keep code/math a touch smaller to match */
 .md-typeset pre, .md-typeset code{ font-size: .85em; }
 .md-typeset mjx-container[display="true"]{ font-size: 85%; }
+
+mjx-container[jax="CHTML"][display="true"] {
+  text-align: left !important;
+}
