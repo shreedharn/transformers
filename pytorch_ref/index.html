@@ -1764,7 +1764,7 @@
 <li>Understand when to use different optimizers and losses</li>
 </ul>
 <h2 id="2-tensors-vectors--matrices-in-pytorch">2. Tensors: Vectors &amp; Matrices in PyTorch<a class="headerlink" href="#2-tensors-vectors--matrices-in-pytorch" title="Permanent link">&para;</a></h2>
-<p>📓 <strong>Interactive Examples</strong>: <a href="./pynb/basic/tensors_basics.ipynb">Tensor Basics Notebook</a></p>
+<p>📓 Interactive Examples: <a href="./pynb/basic/tensors_basics.ipynb">Tensor Basics Notebook</a></p>
 <h3 id="core-mental-model">Core Mental Model<a class="headerlink" href="#core-mental-model" title="Permanent link">&para;</a></h3>
 <p>Tensors are n-dimensional arrays that carry data and gradients through neural networks. Think of them as generalized matrices that know how to compute derivatives.</p>
 <p>The notebook covers:</p>
@@ -1774,24 +1774,26 @@
 <li>One-hot vs embedding vectors</li>
 <li>Batch operations and shape handling</li>
 </ul>
-<p><strong>Math</strong> Cross-Reference to <code>./math_quick_ref.md</code>:</p>
+<p>Math Cross-Reference to <code>./math_quick_ref.md</code>:</p>
 <blockquote>
-<p>Inner products and matrix shapes: When we compute <code>X @ W</code>, we're applying the matrix multiplication rule from <strong>Mathematical Preliminaries</strong>. The gradient <code>∂L/∂W = X^T ∂L/∂y</code> follows from the chain rule identities.</p>
+<p>Inner products and matrix shapes: When we compute <code>X @ W</code>, we're applying the matrix multiplication rule from Mathematical Preliminaries. The gradient <code>∂L/∂W = X^T ∂L/∂y</code> follows from the chain rule identities.</p>
 </blockquote>
 <h2 id="3-autograd-finding-gradients">3. Autograd (Finding Gradients)<a class="headerlink" href="#3-autograd-finding-gradients" title="Permanent link">&para;</a></h2>
-<p>📓 <strong>Interactive Examples</strong>: <a href="./pynb/basic/autograd.ipynb">Autograd Notebook</a></p>
-<p>This notebook covers:
-- Basic gradient computation and the chain rule
-- Optimizer integration patterns
-- No-grad context and detach operations<br />
-- Gradient clipping demonstrations
-- Higher-order derivatives</p>
-<p><strong>Math</strong> Cross-Reference to <code>./transformers_math1.md</code>:</p>
+<p>📓 Interactive Examples: <a href="./pynb/basic/autograd.ipynb">Autograd Notebook</a></p>
+<p>This notebook covers:</p>
+<ul>
+<li>Basic gradient computation and the chain rule</li>
+<li>Optimizer integration patterns</li>
+<li>No-grad context and detach operations  </li>
+<li>Gradient clipping demonstrations</li>
+<li>Higher-order derivatives</li>
+</ul>
+<p>Math Cross-Reference to <code>./transformers_math1.md</code>:</p>
 <blockquote>
 <p>The softmax gradient <code>∂p_i/∂z_j = p_i(δ_{ij} - p_j)</code> from <strong>equation (25)</strong> explains why PyTorch's <code>CrossEntropyLoss</code> yields the clean gradient <code>(p - y)</code> at the logits. The <strong>log-sum-exp trick (12)</strong> prevents overflow in softmax computation, which PyTorch handles automatically in <code>F.softmax()</code>.</p>
 </blockquote>
 <h2 id="4-modules-parameters-initialization">4. Modules, Parameters, Initialization<a class="headerlink" href="#4-modules-parameters-initialization" title="Permanent link">&para;</a></h2>
-<p>📓 <strong>Interactive Examples</strong>: <a href="./pynb/basic/modules_parameters.ipynb">Modules &amp; Parameters Notebook</a></p>
+<p>📓 Interactive Examples: <a href="./pynb/basic/modules_parameters.ipynb">Modules &amp; Parameters Notebook</a></p>
 <p>This notebook covers:</p>
 <ul>
 <li>Basic module structure and inheritance from nn.Module</li>
@@ -1860,13 +1862,13 @@
 <a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>
 <a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: mean=</span><span class="si">{</span><span class="n">param</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, std=</span><span class="si">{</span><span class="n">param</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>Math</strong> Cross-Reference to <code>./transformers_math1.md</code>:</p>
+<p>Math Cross-Reference to <code>./transformers_math1.md</code>:</p>
 <blockquote>
-<p><strong>MLP Forward Pass (13-15)</strong>: <code>z^(1) = xW^(1) + b^(1)</code>, <code>h^(1) = σ(z^(1))</code>, <code>z^(2) = h^(1)W^(2) + b^(2)</code></p>
-<p><strong>LayerNorm (19)</strong>: <code>LayerNorm(x) = γ ⊙ (x - μ)/√(σ² + ε) + β</code> where <code>γ, β</code> are learnable parameters</p>
+<p>MLP Forward Pass (13-15): <code>z^(1) = xW^(1) + b^(1)</code>, <code>h^(1) = σ(z^(1))</code>, <code>z^(2) = h^(1)W^(2) + b^(2)</code></p>
+<p>LayerNorm (19): <code>LayerNorm(x) = γ ⊙ (x - μ)/√(σ² + ε) + β</code> where <code>γ, β</code> are learnable parameters</p>
 </blockquote>
 <h2 id="5-optimization-loop--losses">5. Optimization Loop &amp; Losses<a class="headerlink" href="#5-optimization-loop--losses" title="Permanent link">&para;</a></h2>
-<p>📓 <strong>Interactive Examples</strong>: <a href="./pynb/basic/optimization_training.ipynb">Optimization &amp; Training Notebook</a></p>
+<p>📓 Interactive Examples: <a href="./pynb/basic/optimization_training.ipynb">Optimization &amp; Training Notebook</a></p>
 <p>This notebook covers:</p>
 <ul>
 <li>Canonical training loop patterns</li>
@@ -1875,15 +1877,15 @@
 <li>Train vs eval modes with practical examples</li>
 <li>Learning rate scheduling strategies</li>
 </ul>
-<p><strong>Math</strong> Cross-Reference to <code>./math_quick_ref.md</code>:</p>
+<p>Math Cross-Reference to <code>./math_quick_ref.md</code>:</p>
 <blockquote>
-<p><strong>Adam Updates</strong>: Adaptive learning rates with momentum. <strong>Learning Rate Warmup</strong> prevents early training instability in large models.</p>
+<p>Adam Updates: Adaptive learning rates with momentum. <strong>Learning Rate Warmup</strong> prevents early training instability in large models.</p>
 </blockquote>
 <h2 id="6-vanishingexploding-gradients">6. Vanishing/Exploding Gradients<a class="headerlink" href="#6-vanishingexploding-gradients" title="Permanent link">&para;</a></h2>
 <h3 id="the-problem">The Problem<a class="headerlink" href="#the-problem" title="Permanent link">&para;</a></h3>
 <p>In deep networks, gradients can vanish (become too small) or explode (become too large) as they backpropagate through layers. This is especially problematic for RNNs processing long sequences.</p>
 <blockquote>
-<p><strong>See also</strong>: <code>./rnn_intro.md</code> discusses how vanishing gradients motivated the development of LSTM/GRU architectures with gating mechanisms.</p>
+<p>See also: <code>./rnn_intro.md</code> discusses how vanishing gradients motivated the development of LSTM/GRU architectures with gating mechanisms.</p>
 </blockquote>
 <h3 id="practical-fixes-in-pytorch">Practical Fixes in PyTorch<a class="headerlink" href="#practical-fixes-in-pytorch" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># 1. Better Activations: ReLU/GELU instead of tanh/sigmoid</span>
@@ -1987,24 +1989,24 @@
 <a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a><span class="n">clipped_norm</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">rnn</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span> <span class="o">**</span> <span class="mf">0.5</span>
 <a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Gradient norm with clipping: </span><span class="si">{</span><span class="n">clipped_norm</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>Math</strong> Cross-Reference to <code>./transformers_math1.md</code>:</p>
+<p>Math Cross-Reference to <code>./transformers_math1.md</code>:</p>
 <blockquote>
-<p><strong>Residual as ODE (4)</strong>: <code>h_{l+1} = h_l + F(h_l)</code> approximates the differential equation <code>dh/dt = F(h)</code>, enabling gradient highways through skip connections.</p>
-<p><strong>Gradient Clipping (11)</strong>: <code>g̃ = min(1, c/||g||₂) · g</code> scales gradients proportionally when norm exceeds threshold <code>c</code>.</p>
+<p>Residual as ODE (4): <code>h_{l+1} = h_l + F(h_l)</code> approximates the differential equation <code>dh/dt = F(h)</code>, enabling gradient highways through skip connections.</p>
+<p>Gradient Clipping (11): <code>g̃ = min(1, c/||g||₂) · g</code> scales gradients proportionally when norm exceeds threshold <code>c</code>.</p>
 </blockquote>
 <h2 id="7-mapping-table-ml-concepts--pytorch-objects">7. Mapping Table: ML Concepts → PyTorch Objects<a class="headerlink" href="#7-mapping-table-ml-concepts--pytorch-objects" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th><strong>Concept</strong></th>
-<th><strong>Math/Idea</strong></th>
-<th><strong>PyTorch Construct</strong></th>
-<th><strong>Equation Reference</strong></th>
+<th>Concept</th>
+<th>Math/Idea</th>
+<th>PyTorch Construct</th>
+<th>Equation Reference</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>MLPs</strong></td>
+<td>MLPs</td>
 <td></td>
 <td></td>
 <td></td>
@@ -2034,7 +2036,7 @@
 <td></td>
 </tr>
 <tr>
-<td><strong>RNNs/LSTMs</strong></td>
+<td>RNNs/LSTMs</td>
 <td></td>
 <td></td>
 <td></td>
@@ -2064,7 +2066,7 @@
 <td></td>
 </tr>
 <tr>
-<td><strong>Transformers</strong></td>
+<td>Transformers</td>
 <td></td>
 <td></td>
 <td></td>
@@ -2106,7 +2108,7 @@
 <td>(36)</td>
 </tr>
 <tr>
-<td><strong>Embeddings &amp; Tokens</strong></td>
+<td>Embeddings &amp; Tokens</td>
 <td></td>
 <td></td>
 <td></td>
@@ -2124,7 +2126,7 @@
 <td></td>
 </tr>
 <tr>
-<td><strong>Data Handling</strong></td>
+<td>Data Handling</td>
 <td></td>
 <td></td>
 <td></td>
@@ -2154,7 +2156,7 @@
 <td></td>
 </tr>
 <tr>
-<td><strong>Training &amp; Optimization</strong></td>
+<td>Training &amp; Optimization</td>
 <td></td>
 <td></td>
 <td></td>
@@ -2190,7 +2192,7 @@
 <td>(11)</td>
 </tr>
 <tr>
-<td><strong>Utilities</strong></td>
+<td>Utilities</td>
 <td></td>
 <td></td>
 <td></td>
@@ -2227,9 +2229,9 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Math</strong> annotations reference equations from <code>./transformers_math1.md</code> and <code>./transformers_math2.md</code> where applicable.</p>
+<p>Math annotations reference equations from <code>./transformers_math1.md</code> and <code>./transformers_math2.md</code> where applicable.</p>
 <h2 id="8-mlps-in-pytorch">8. MLPs in PyTorch<a class="headerlink" href="#8-mlps-in-pytorch" title="Permanent link">&para;</a></h2>
-<p>📓 <strong>Interactive Examples</strong>: <a href="./pynb/dl/mlps.ipynb">MLPs Notebook</a></p>
+<p>📓 Interactive Examples: <a href="./pynb/dl/mlps.ipynb">MLPs Notebook</a></p>
 <p>This notebook demonstrates:</p>
 <ul>
 <li>From equations to PyTorch code</li>
@@ -2356,12 +2358,12 @@
 <a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="n">targets_wrong</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">])</span>  <span class="c1"># Float - will cause error</span>
 <a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="n">targets_correct</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>      <span class="c1"># Long - correct</span>
 </code></pre></div>
-<p><strong>Math</strong> Cross-Reference to <code>./transformers_math1.md</code>:</p>
+<p>Math Cross-Reference to <code>./transformers_math1.md</code>:</p>
 <blockquote>
-<p><strong>MLP Forward/Backprop (13-18)</strong>: The code above implements <code>z^(1) = xW^(1) + b^(1)</code>, <code>h^(1) = σ(z^(1))</code>, <code>z^(2) = h^(1)W^(2) + b^(2)</code> with automatic gradient computation for the backward pass.</p>
+<p>MLP Forward/Backprop (13-18): The code above implements <code>z^(1) = xW^(1) + b^(1)</code>, <code>h^(1) = σ(z^(1))</code>, <code>z^(2) = h^(1)W^(2) + b^(2)</code> with automatic gradient computation for the backward pass.</p>
 </blockquote>
 <h2 id="9-rnns-lstms-grus">9. RNNs, LSTMs, GRUs<a class="headerlink" href="#9-rnns-lstms-grus" title="Permanent link">&para;</a></h2>
-<p>📓 <strong>Interactive Examples</strong>: <a href="./pynb/dl/rnns.ipynb">RNNs, LSTMs, GRUs Notebook</a></p>
+<p>📓 Interactive Examples: <a href="./pynb/dl/rnns.ipynb">RNNs, LSTMs, GRUs Notebook</a></p>
 <p>This notebook covers:</p>
 <ul>
 <li>Why gating mechanisms are needed</li>
@@ -2371,7 +2373,7 @@
 </ul>
 <h3 id="why-gating-mechanisms">Why Gating Mechanisms?<a class="headerlink" href="#why-gating-mechanisms" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p><strong>See also</strong>: <code>./rnn_intro.md</code> explains how vanilla RNNs suffer from vanishing gradients over long sequences, motivating LSTM/GRU architectures with gates that control information flow.</p>
+<p>See also: <code>./rnn_intro.md</code> explains how vanilla RNNs suffer from vanishing gradients over long sequences, motivating LSTM/GRU architectures with gates that control information flow.</p>
 </blockquote>
 <h3 id="minimal-sequence-classifier-with-lstm">Minimal Sequence Classifier with LSTM<a class="headerlink" href="#minimal-sequence-classifier-with-lstm" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Many-to-one sequence classification</span>
@@ -2515,9 +2517,9 @@
 <a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a>
 <a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a><span class="n">compare_rnn_architectures</span><span class="p">()</span>
 </code></pre></div>
-<p><strong>Gotcha</strong>: Always use gradient clipping with RNNs to prevent exploding gradients, especially for long sequences.</p>
+<p>Gotcha: Always use gradient clipping with RNNs to prevent exploding gradients, especially for long sequences.</p>
 <h2 id="10-transformers-in-pytorch">10. Transformers in PyTorch<a class="headerlink" href="#10-transformers-in-pytorch" title="Permanent link">&para;</a></h2>
-<p>📓 <strong>Interactive Examples</strong>: <a href="./pynb/dl/transformers.ipynb">Transformers Notebook</a></p>
+<p>📓 Interactive Examples: <a href="./pynb/dl/transformers.ipynb">Transformers Notebook</a></p>
 <p>This notebook demonstrates:</p>
 <ul>
 <li>Self-attention mechanisms from scratch</li>
@@ -2526,7 +2528,7 @@
 <li>Next-token prediction with character-level models</li>
 </ul>
 <blockquote>
-<p><strong>See also</strong>: <code>./transformers_fundamentals.md</code> explains the complete Transformer block flow: multi-head self-attention → residual connection → layer norm → feed-forward network → residual connection → layer norm.</p>
+<p>See also: <code>./transformers_fundamentals.md</code> explains the complete Transformer block flow: multi-head self-attention → residual connection → layer norm → feed-forward network → residual connection → layer norm.</p>
 </blockquote>
 <h3 id="self-attention-from-scratch">Self-Attention from Scratch<a class="headerlink" href="#self-attention-from-scratch" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">SingleHeadSelfAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -2763,11 +2765,11 @@
 <a id="__codelineno-14-81" name="__codelineno-14-81" href="#__codelineno-14-81"></a>
 <a id="__codelineno-14-82" name="__codelineno-14-82" href="#__codelineno-14-82"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated sequence: </span><span class="si">{</span><span class="n">generated</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>Math</strong> Cross-Reference to <code>./transformers_math1.md</code>:</p>
+<p>Math Cross-Reference to <code>./transformers_math1.md</code>:</p>
 <blockquote>
-<p><strong>Scaled Dot-Product Attention (23)</strong>: <code>Attention(Q,K,V) = softmax(QK^T/√d_k)V</code></p>
-<p><strong>Why 1/√d_k scaling</strong>: Prevents attention weights from becoming too peaked as dimensions increase, maintaining gradient flow.</p>
-<p><strong>Complete Transformer Block (32-35)</strong>: Pre-LayerNorm architecture with residual connections around attention and FFN.</p>
+<p>Scaled Dot-Product Attention (23): <code>Attention(Q,K,V) = softmax(QK^T/√d_k)V</code></p>
+<p>Why 1/√d_k scaling: Prevents attention weights from becoming too peaked as dimensions increase, maintaining gradient flow.</p>
+<p>Complete Transformer Block (32-35): Pre-LayerNorm architecture with residual connections around attention and FFN.</p>
 </blockquote>
 <h2 id="11-most-used-pytorch-apis">11. Most-Used PyTorch APIs<a class="headerlink" href="#11-most-used-pytorch-apis" title="Permanent link">&para;</a></h2>
 <h3 id="tensor-operations-cheat-sheet">Tensor Operations Cheat Sheet<a class="headerlink" href="#tensor-operations-cheat-sheet" title="Permanent link">&para;</a></h3>
@@ -2903,9 +2905,9 @@
 <a id="__codelineno-19-22" name="__codelineno-19-22" href="#__codelineno-19-22"></a><span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 <a id="__codelineno-19-23" name="__codelineno-19-23" href="#__codelineno-19-23"></a><span class="n">tensor</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>Math</strong> Cross-Reference: <code>torch.einsum('bqd,bkd-&gt;bqk', Q, K)</code> directly implements the <code>QK^T</code> operation from attention equation (23) in <code>./transformers_math1.md</code>.</p>
+<p>Math Cross-Reference: <code>torch.einsum('bqd,bkd-&gt;bqk', Q, K)</code> directly implements the <code>QK^T</code> operation from attention equation (23) in <code>./transformers_math1.md</code>.</p>
 <h2 id="12-common-gotchas--how-to-avoid-them">12. Common Gotchas &amp; How to Avoid Them<a class="headerlink" href="#12-common-gotchas--how-to-avoid-them" title="Permanent link">&para;</a></h2>
-<p>📓 <strong>Interactive Examples</strong>: <a href="./pynb/basic/debugging_gotchas.ipynb">Debugging &amp; Gotchas Notebook</a></p>
+<p>📓 Interactive Examples: <a href="./pynb/basic/debugging_gotchas.ipynb">Debugging &amp; Gotchas Notebook</a></p>
 <p>This notebook covers:</p>
 <ul>
 <li>Training mode vs eval mode issues</li>
@@ -3073,7 +3075,7 @@
 <a id="__codelineno-27-17" name="__codelineno-27-17" href="#__codelineno-27-17"></a><span class="n">optimizer</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;optimizer_state_dict&#39;</span><span class="p">])</span>
 <a id="__codelineno-27-18" name="__codelineno-27-18" href="#__codelineno-27-18"></a><span class="n">epoch</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;epoch&#39;</span><span class="p">]</span>
 </code></pre></div>
-<p><strong>Math</strong> Cross-Reference to <code>./transformers_math1.md</code>:</p>
+<p>Math Cross-Reference to <code>./transformers_math1.md</code>:</p>
 <blockquote>
 <p>Numerical stability issues like log-sum-exp overflow (equation 12) are handled automatically by PyTorch functions like <code>F.softmax()</code> and <code>F.log_softmax()</code>, but be aware when implementing custom operations.</p>
 </blockquote>
@@ -3370,50 +3372,50 @@
 <a id="__codelineno-29-32" name="__codelineno-29-32" href="#__codelineno-29-32"></a>
 <a id="__codelineno-29-33" name="__codelineno-29-33" href="#__codelineno-29-33"></a><span class="n">debug_shapes</span><span class="p">()</span>
 </code></pre></div>
-<p><strong>Math</strong> Cross-Reference to <code>./transformers_math1.md</code>:</p>
+<p>Math Cross-Reference to <code>./transformers_math1.md</code>:</p>
 <blockquote>
 <p>This example implements:
-- <strong>Attention (23)</strong>: Self-attention within each transformer layer
-- <strong>FFN (36)</strong>: Feed-forward networks in transformer layers<br />
-- <strong>Causal masking</strong>: Ensures autoregressive property for language modeling
-- <strong>Cross-entropy loss (2)</strong>: Standard objective for next-token prediction</p>
+- Attention (23): Self-attention within each transformer layer
+- FFN (36): Feed-forward networks in transformer layers<br />
+- Causal masking: Ensures autoregressive property for language modeling
+- Cross-entropy loss (2): Standard objective for next-token prediction</p>
 </blockquote>
 <h2 id="14-appendix-quick-mapping--formula-cards">14. Appendix: Quick Mapping &amp; Formula Cards<a class="headerlink" href="#14-appendix-quick-mapping--formula-cards" title="Permanent link">&para;</a></h2>
 <h3 id="architecture--pytorch-quick-reference">Architecture → PyTorch Quick Reference<a class="headerlink" href="#architecture--pytorch-quick-reference" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
-<th><strong>Architecture</strong></th>
-<th><strong>Key Layers</strong></th>
-<th><strong>Input Shape</strong></th>
-<th><strong>Output Shape</strong></th>
-<th><strong>Parameters</strong></th>
+<th>Architecture</th>
+<th>Key Layers</th>
+<th>Input Shape</th>
+<th>Output Shape</th>
+<th>Parameters</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>MLP (2-layer)</strong></td>
+<td>MLP (2-layer)</td>
 <td><code>nn.Linear</code> × 2</td>
 <td><code>[B, D_in]</code></td>
 <td><code>[B, D_out]</code></td>
 <td><code>D_in×D_h + D_h + D_h×D_out + D_out</code></td>
 </tr>
 <tr>
-<td><strong>RNN</strong></td>
+<td>RNN</td>
 <td><code>nn.RNN</code></td>
 <td><code>[B, T, D_in]</code></td>
 <td><code>[B, T, D_h]</code></td>
 <td><code>D_in×D_h + D_h×D_h + D_h</code></td>
 </tr>
 <tr>
-<td><strong>LSTM</strong></td>
+<td>LSTM</td>
 <td><code>nn.LSTM</code></td>
 <td><code>[B, T, D_in]</code></td>
 <td><code>[B, T, D_h]</code></td>
 <td><code>4×(D_in×D_h + D_h×D_h + D_h)</code></td>
 </tr>
 <tr>
-<td><strong>Transformer</strong></td>
+<td>Transformer</td>
 <td><code>nn.TransformerEncoder</code></td>
 <td><code>[B, T, D_model]</code></td>
 <td><code>[B, T, D_model]</code></td>
@@ -3494,9 +3496,9 @@
 <table>
 <thead>
 <tr>
-<th><strong>PyTorch Code</strong></th>
-<th><strong>Math Equation</strong></th>
-<th><strong>Reference</strong></th>
+<th>PyTorch Code</th>
+<th>Math Equation</th>
+<th>Reference</th>
 </tr>
 </thead>
 <tbody>
@@ -3543,52 +3545,53 @@
 <a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="sd">    Essential checklist for PyTorch development</span>
 <a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="sd">    &quot;&quot;&quot;</span>
 <a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a>    <span class="n">checklist</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="s2">    ✅ PyTorch Development Checklist:</span>
-<a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a>
-<a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a><span class="s2">    🔧 Setup:</span>
-<a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a><span class="s2">    [ ] Set random seeds (torch.manual_seed, random.seed, np.random.seed)</span>
-<a id="__codelineno-32-10" name="__codelineno-32-10" href="#__codelineno-32-10"></a><span class="s2">    [ ] Choose device (CPU/GPU) and move model + data consistently</span>
-<a id="__codelineno-32-11" name="__codelineno-32-11" href="#__codelineno-32-11"></a><span class="s2">    [ ] Check PyTorch version compatibility</span>
-<a id="__codelineno-32-12" name="__codelineno-32-12" href="#__codelineno-32-12"></a>
-<a id="__codelineno-32-13" name="__codelineno-32-13" href="#__codelineno-32-13"></a><span class="s2">    📊 Data:</span>
-<a id="__codelineno-32-14" name="__codelineno-32-14" href="#__codelineno-32-14"></a><span class="s2">    [ ] Verify data shapes [batch, ...] throughout pipeline</span>
-<a id="__codelineno-32-15" name="__codelineno-32-15" href="#__codelineno-32-15"></a><span class="s2">    [ ] Handle variable-length sequences with padding/packing</span>
-<a id="__codelineno-32-16" name="__codelineno-32-16" href="#__codelineno-32-16"></a><span class="s2">    [ ] Check data types (Long for class indices, Float for inputs)</span>
-<a id="__codelineno-32-17" name="__codelineno-32-17" href="#__codelineno-32-17"></a><span class="s2">    [ ] Implement proper train/val/test splits</span>
-<a id="__codelineno-32-18" name="__codelineno-32-18" href="#__codelineno-32-18"></a>
-<a id="__codelineno-32-19" name="__codelineno-32-19" href="#__codelineno-32-19"></a><span class="s2">    🧠 Model:</span>
-<a id="__codelineno-32-20" name="__codelineno-32-20" href="#__codelineno-32-20"></a><span class="s2">    [ ] Inherit from nn.Module, implement forward()</span>
-<a id="__codelineno-32-21" name="__codelineno-32-21" href="#__codelineno-32-21"></a><span class="s2">    [ ] Initialize parameters appropriately (Xavier/Kaiming)</span>
-<a id="__codelineno-32-22" name="__codelineno-32-22" href="#__codelineno-32-22"></a><span class="s2">    [ ] Count parameters to verify model size</span>
-<a id="__codelineno-32-23" name="__codelineno-32-23" href="#__codelineno-32-23"></a><span class="s2">    [ ] Add dropout/regularization where appropriate</span>
-<a id="__codelineno-32-24" name="__codelineno-32-24" href="#__codelineno-32-24"></a>
-<a id="__codelineno-32-25" name="__codelineno-32-25" href="#__codelineno-32-25"></a><span class="s2">    🏋️ Training:</span>
-<a id="__codelineno-32-26" name="__codelineno-32-26" href="#__codelineno-32-26"></a><span class="s2">    [ ] Set model.train() before training, model.eval() before inference</span>
-<a id="__codelineno-32-27" name="__codelineno-32-27" href="#__codelineno-32-27"></a><span class="s2">    [ ] Clear gradients with optimizer.zero_grad()</span>
-<a id="__codelineno-32-28" name="__codelineno-32-28" href="#__codelineno-32-28"></a><span class="s2">    [ ] Use appropriate loss function (CrossEntropy for classification)</span>
-<a id="__codelineno-32-29" name="__codelineno-32-29" href="#__codelineno-32-29"></a><span class="s2">    [ ] Add gradient clipping for RNNs/deep networks</span>
-<a id="__codelineno-32-30" name="__codelineno-32-30" href="#__codelineno-32-30"></a><span class="s2">    [ ] Monitor loss convergence, not just final value</span>
-<a id="__codelineno-32-31" name="__codelineno-32-31" href="#__codelineno-32-31"></a>
-<a id="__codelineno-32-32" name="__codelineno-32-32" href="#__codelineno-32-32"></a><span class="s2">    🐛 Debugging:</span>
-<a id="__codelineno-32-33" name="__codelineno-32-33" href="#__codelineno-32-33"></a><span class="s2">    [ ] Print shapes at each step when debugging</span>
-<a id="__codelineno-32-34" name="__codelineno-32-34" href="#__codelineno-32-34"></a><span class="s2">    [ ] Check for NaN/inf in loss and gradients</span>
-<a id="__codelineno-32-35" name="__codelineno-32-35" href="#__codelineno-32-35"></a><span class="s2">    [ ] Verify data loading with small batches first</span>
-<a id="__codelineno-32-36" name="__codelineno-32-36" href="#__codelineno-32-36"></a><span class="s2">    [ ] Test model with dummy data before real training</span>
-<a id="__codelineno-32-37" name="__codelineno-32-37" href="#__codelineno-32-37"></a>
-<a id="__codelineno-32-38" name="__codelineno-32-38" href="#__codelineno-32-38"></a><span class="s2">    💾 Deployment:</span>
-<a id="__codelineno-32-39" name="__codelineno-32-39" href="#__codelineno-32-39"></a><span class="s2">    [ ] Save/load state_dict, not full model</span>
-<a id="__codelineno-32-40" name="__codelineno-32-40" href="#__codelineno-32-40"></a><span class="s2">    [ ] Store hyperparameters separately from model weights</span>
-<a id="__codelineno-32-41" name="__codelineno-32-41" href="#__codelineno-32-41"></a><span class="s2">    [ ] Use torch.no_grad() for inference</span>
-<a id="__codelineno-32-42" name="__codelineno-32-42" href="#__codelineno-32-42"></a><span class="s2">    [ ] Consider torch.jit.script for production</span>
-<a id="__codelineno-32-43" name="__codelineno-32-43" href="#__codelineno-32-43"></a><span class="s2">    &quot;&quot;&quot;</span>
-<a id="__codelineno-32-44" name="__codelineno-32-44" href="#__codelineno-32-44"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">checklist</span><span class="p">)</span>
-<a id="__codelineno-32-45" name="__codelineno-32-45" href="#__codelineno-32-45"></a>
-<a id="__codelineno-32-46" name="__codelineno-32-46" href="#__codelineno-32-46"></a><span class="n">pytorch_checklist</span><span class="p">()</span>
+<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a>
+<a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="s2">    ✅ PyTorch Development Checklist:</span>
+<a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a>
+<a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a><span class="s2">    🔧 Setup:</span>
+<a id="__codelineno-32-10" name="__codelineno-32-10" href="#__codelineno-32-10"></a><span class="s2">    [ ] Set random seeds (torch.manual_seed, random.seed, np.random.seed)</span>
+<a id="__codelineno-32-11" name="__codelineno-32-11" href="#__codelineno-32-11"></a><span class="s2">    [ ] Choose device (CPU/GPU) and move model + data consistently</span>
+<a id="__codelineno-32-12" name="__codelineno-32-12" href="#__codelineno-32-12"></a><span class="s2">    [ ] Check PyTorch version compatibility</span>
+<a id="__codelineno-32-13" name="__codelineno-32-13" href="#__codelineno-32-13"></a>
+<a id="__codelineno-32-14" name="__codelineno-32-14" href="#__codelineno-32-14"></a><span class="s2">    📊 Data:</span>
+<a id="__codelineno-32-15" name="__codelineno-32-15" href="#__codelineno-32-15"></a><span class="s2">    [ ] Verify data shapes [batch, ...] throughout pipeline</span>
+<a id="__codelineno-32-16" name="__codelineno-32-16" href="#__codelineno-32-16"></a><span class="s2">    [ ] Handle variable-length sequences with padding/packing</span>
+<a id="__codelineno-32-17" name="__codelineno-32-17" href="#__codelineno-32-17"></a><span class="s2">    [ ] Check data types (Long for class indices, Float for inputs)</span>
+<a id="__codelineno-32-18" name="__codelineno-32-18" href="#__codelineno-32-18"></a><span class="s2">    [ ] Implement proper train/val/test splits</span>
+<a id="__codelineno-32-19" name="__codelineno-32-19" href="#__codelineno-32-19"></a>
+<a id="__codelineno-32-20" name="__codelineno-32-20" href="#__codelineno-32-20"></a><span class="s2">    🧠 Model:</span>
+<a id="__codelineno-32-21" name="__codelineno-32-21" href="#__codelineno-32-21"></a><span class="s2">    [ ] Inherit from nn.Module, implement forward()</span>
+<a id="__codelineno-32-22" name="__codelineno-32-22" href="#__codelineno-32-22"></a><span class="s2">    [ ] Initialize parameters appropriately (Xavier/Kaiming)</span>
+<a id="__codelineno-32-23" name="__codelineno-32-23" href="#__codelineno-32-23"></a><span class="s2">    [ ] Count parameters to verify model size</span>
+<a id="__codelineno-32-24" name="__codelineno-32-24" href="#__codelineno-32-24"></a><span class="s2">    [ ] Add dropout/regularization where appropriate</span>
+<a id="__codelineno-32-25" name="__codelineno-32-25" href="#__codelineno-32-25"></a>
+<a id="__codelineno-32-26" name="__codelineno-32-26" href="#__codelineno-32-26"></a><span class="s2">    🏋️ Training:</span>
+<a id="__codelineno-32-27" name="__codelineno-32-27" href="#__codelineno-32-27"></a><span class="s2">    [ ] Set model.train() before training, model.eval() before inference</span>
+<a id="__codelineno-32-28" name="__codelineno-32-28" href="#__codelineno-32-28"></a><span class="s2">    [ ] Clear gradients with optimizer.zero_grad()</span>
+<a id="__codelineno-32-29" name="__codelineno-32-29" href="#__codelineno-32-29"></a><span class="s2">    [ ] Use appropriate loss function (CrossEntropy for classification)</span>
+<a id="__codelineno-32-30" name="__codelineno-32-30" href="#__codelineno-32-30"></a><span class="s2">    [ ] Add gradient clipping for RNNs/deep networks</span>
+<a id="__codelineno-32-31" name="__codelineno-32-31" href="#__codelineno-32-31"></a><span class="s2">    [ ] Monitor loss convergence, not just final value</span>
+<a id="__codelineno-32-32" name="__codelineno-32-32" href="#__codelineno-32-32"></a>
+<a id="__codelineno-32-33" name="__codelineno-32-33" href="#__codelineno-32-33"></a><span class="s2">    🐛 Debugging:</span>
+<a id="__codelineno-32-34" name="__codelineno-32-34" href="#__codelineno-32-34"></a><span class="s2">    [ ] Print shapes at each step when debugging</span>
+<a id="__codelineno-32-35" name="__codelineno-32-35" href="#__codelineno-32-35"></a><span class="s2">    [ ] Check for NaN/inf in loss and gradients</span>
+<a id="__codelineno-32-36" name="__codelineno-32-36" href="#__codelineno-32-36"></a><span class="s2">    [ ] Verify data loading with small batches first</span>
+<a id="__codelineno-32-37" name="__codelineno-32-37" href="#__codelineno-32-37"></a><span class="s2">    [ ] Test model with dummy data before real training</span>
+<a id="__codelineno-32-38" name="__codelineno-32-38" href="#__codelineno-32-38"></a>
+<a id="__codelineno-32-39" name="__codelineno-32-39" href="#__codelineno-32-39"></a><span class="s2">    💾 Deployment:</span>
+<a id="__codelineno-32-40" name="__codelineno-32-40" href="#__codelineno-32-40"></a><span class="s2">    [ ] Save/load state_dict, not full model</span>
+<a id="__codelineno-32-41" name="__codelineno-32-41" href="#__codelineno-32-41"></a><span class="s2">    [ ] Store hyperparameters separately from model weights</span>
+<a id="__codelineno-32-42" name="__codelineno-32-42" href="#__codelineno-32-42"></a><span class="s2">    [ ] Use torch.no_grad() for inference</span>
+<a id="__codelineno-32-43" name="__codelineno-32-43" href="#__codelineno-32-43"></a><span class="s2">    [ ] Consider torch.jit.script for production</span>
+<a id="__codelineno-32-44" name="__codelineno-32-44" href="#__codelineno-32-44"></a><span class="s2">    &quot;&quot;&quot;</span>
+<a id="__codelineno-32-45" name="__codelineno-32-45" href="#__codelineno-32-45"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">checklist</span><span class="p">)</span>
+<a id="__codelineno-32-46" name="__codelineno-32-46" href="#__codelineno-32-46"></a>
+<a id="__codelineno-32-47" name="__codelineno-32-47" href="#__codelineno-32-47"></a><span class="n">pytorch_checklist</span><span class="p">()</span>
 </code></pre></div>
 <hr />
-<p><strong>Congratulations!</strong> 🎉 You now have a comprehensive guide to PyTorch for sequence modeling. This reference covers the essential patterns you'll use whether building MLPs, RNNs, or Transformers. Keep this handy as you build your own models!</p>
+<p>Congratulations! 🎉 You now have a comprehensive guide to PyTorch for sequence modeling. This reference covers the essential patterns you'll use whether building MLPs, RNNs, or Transformers. Keep this handy as you build your own models!</p>
 <blockquote>
-<p><strong>Remember</strong>: Start simple, debug with shapes, and always set your random seeds for reproducible results!</p>
+<p>Remember: Start simple, debug with shapes, and always set your random seeds for reproducible results!</p>
 </blockquote>
 
 
@@ -3651,9 +3654,11 @@
     
       <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
+        <script src="../javascripts/mathjax-init.js"></script>
+      
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
-        <script src="../javascripts/mathjax.js"></script>
+        <script src="../javascripts/mathjax-refresh.js"></script>
       
     
   </body>

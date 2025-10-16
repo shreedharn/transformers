@@ -1075,9 +1075,9 @@
 <h1 id="glossary-neural-networks-and-transformers">Glossary: Neural Networks and Transformers<a class="headerlink" href="#glossary-neural-networks-and-transformers" title="Permanent link">&para;</a></h1>
 <p>A comprehensive dictionary of key terms, concepts, and technical vocabulary used throughout the neural networks and transformers learning materials. Each term includes cross-references to detailed explanations in the repository documents.</p>
 <h2 id="a">A<a class="headerlink" href="#a" title="Permanent link">&para;</a></h2>
-<p><strong>Activation Function</strong>: A mathematical function applied to the output of a neuron to introduce non-linearity. Without activation functions, neural networks would only be able to learn linear relationships.</p>
+<p>Activation Function: A mathematical function applied to the output of a neuron to introduce non-linearity. Without activation functions, neural networks would only be able to learn linear relationships.</p>
 <ul>
-<li><strong>Common types</strong>:</li>
+<li>Common types:</li>
 </ul>
 <p>$$
   \begin{aligned}
@@ -1086,131 +1086,141 @@
   \text{Tanh:} \quad &amp;\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
   \end{aligned}
   $$
-- <strong>Deep dive</strong>: <a href="../nn_intro/#the-role-of-activation-functions-space-warping">nn_intro.md Section 3</a> for geometric intuition, <a href="../mlp_intro/#9-activation-functions-deep-dive">mlp_intro.md Section 9</a> for detailed comparison</p>
-<p><strong>Attention Collapse:</strong> Phenomenon where attention weights become too peaked (concentrated on few tokens) rather than uniform, leading to poor gradient flow and reduced model expressiveness.
-- <strong>Mathematical foundation</strong>: <a href="../transformers_math1/#52-why-the-sqrtd_k-scaling">transformers_math1.md Section 5.2</a> for scaling analysis</p>
-<p><strong>Adam Optimizer</strong>: An adaptive optimization algorithm that combines momentum with per-parameter learning rate adaptation.
-- <strong>Formula</strong>:</p>
+- Deep dive: <a href="../nn_intro/#the-role-of-activation-functions-space-warping">nn_intro.md Section 3</a> for geometric intuition, <a href="../mlp_intro/#9-activation-functions-deep-dive">mlp_intro.md Section 9</a> for detailed comparison</p>
+<p>Attention Collapse: Phenomenon where attention weights become too peaked (concentrated on few tokens) rather than uniform, leading to poor gradient flow and reduced model expressiveness.</p>
+<ul>
+<li>Mathematical foundation: <a href="../transformers_math1/#52-why-the-sqrtd_k-scaling">transformers_math1.md Section 5.2</a> for scaling analysis</li>
+</ul>
+<p>Adam Optimizer: An adaptive optimization algorithm that combines momentum with per-parameter learning rate adaptation.</p>
+<ul>
+<li>Formula:</li>
+</ul>
 <p>$$
   \begin{aligned}
   \theta_t = \theta_{t-1} - \alpha \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon} \quad \text{where } \hat{m}_t, \hat{v}_t \text{ are bias-corrected moment estimates}
   \end{aligned}
   $$
-- <strong>Details</strong>: <a href="../nn_intro/#adam-adaptive-moments">nn_intro.md Section 5</a> for intuition, <a href="../pytorch_ref/#5-optimization-loop--losses">pytorch_ref.md Section 5</a> for implementation</p>
-<p><strong>Artificial Intelligence (AI)</strong>: Computer systems that can perform tasks typically requiring human intelligence, such as visual perception, speech recognition, decision-making, and natural language understanding.</p>
+- Details: <a href="../nn_intro/#adam-adaptive-moments">nn_intro.md Section 5</a> for intuition, <a href="../pytorch_ref/#5-optimization-loop--losses">pytorch_ref.md Section 5</a> for implementation</p>
+<p>Artificial Intelligence (AI): Computer systems that can perform tasks typically requiring human intelligence, such as visual perception, speech recognition, decision-making, and natural language understanding.</p>
 <ul>
-<li><strong>Context</strong>: <a href="../nn_intro/#1-what-is-ai-ml-and-deep-learning">nn_intro.md Section 1</a> for AI/ML/DL hierarchy</li>
+<li>Context: <a href="../nn_intro/#1-what-is-ai-ml-and-deep-learning">nn_intro.md Section 1</a> for AI/ML/DL hierarchy</li>
 </ul>
-<p><strong>Attention Head</strong>: A specialized component of multi-head attention that focuses on specific types of relationships (e.g., grammar, semantics, position).
-- <strong>Implementation</strong>: <a href="../transformers_fundamentals/#9-stage-4-self-attention-deep-dive">transformers_fundamentals.md Section 9</a> for complete technical details
-- <strong>Code</strong>: <a href="../pytorch_ref/#self-attention-from-scratch">pytorch_ref.md Section 10</a> for from-scratch implementation</p>
-<p><strong>Attention Mechanism</strong>: A technique that allows models to focus on relevant parts of the input sequence when making predictions.
-- <strong>Formula</strong>:</p>
+<p>Attention Head: A specialized component of multi-head attention that focuses on specific types of relationships (e.g., grammar, semantics, position).</p>
+<ul>
+<li>Implementation: <a href="../transformers_fundamentals/#9-stage-4-self-attention-deep-dive">transformers_fundamentals.md Section 9</a> for complete technical details</li>
+<li>Code: <a href="../pytorch_ref/#self-attention-from-scratch">pytorch_ref.md Section 10</a> for from-scratch implementation</li>
+</ul>
+<p>Attention Mechanism: A technique that allows models to focus on relevant parts of the input sequence when making predictions.</p>
+<ul>
+<li>Formula:</li>
+</ul>
 <p>$$
   \begin{aligned}
   \text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
   \end{aligned}
   $$
-- <strong>Explanation</strong>: <a href="../transformers_fundamentals/#9-stage-4-self-attention-deep-dive">transformers_fundamentals.md Section 9</a> for detailed mechanics</p>
+- Explanation: <a href="../transformers_fundamentals/#9-stage-4-self-attention-deep-dive">transformers_fundamentals.md Section 9</a> for detailed mechanics</p>
 <hr />
 <h2 id="b">B<a class="headerlink" href="#b" title="Permanent link">&para;</a></h2>
-<p><strong>Backpropagation</strong>: The algorithm used to train neural networks by calculating gradients and propagating errors backward through the network layers.</p>
+<p>Backpropagation: The algorithm used to train neural networks by calculating gradients and propagating errors backward through the network layers.</p>
 <ul>
-<li><strong>Mathematical foundation</strong>: Uses chain rule to compute gradients:</li>
+<li>Mathematical foundation: Uses chain rule to compute gradients:</li>
 </ul>
 <p>$$
   \begin{aligned}
   \frac{\partial \mathcal{L}}{\partial W^{(l)}} = \frac{\partial \mathcal{L}}{\partial h^{(l+1)}} \cdot \frac{\partial h^{(l+1)}}{\partial W^{(l)}}
   \end{aligned}
   $$
-- <strong>Step-by-step</strong>: <a href="../mlp_intro/#backpropagation-the-learning-algorithm">mlp_intro.md Section 6</a> for detailed derivation
-- <strong>Implementation</strong>: <a href="../pytorch_ref/#3-autograd-finding-gradients">pytorch_ref.md Section 3</a> for automatic differentiation</p>
-<p><strong>Batch Normalization</strong>: A technique that normalizes layer inputs to stabilize training and accelerate convergence.</p>
+- Step-by-step: <a href="../mlp_intro/#backpropagation-the-learning-algorithm">mlp_intro.md Section 6</a> for detailed derivation
+- Implementation: <a href="../pytorch_ref/#3-autograd-finding-gradients">pytorch_ref.md Section 3</a> for automatic differentiation</p>
+<p>Batch Normalization: A technique that normalizes layer inputs to stabilize training and accelerate convergence.</p>
 <ul>
-<li><strong>Formula</strong>:</li>
+<li>Formula:</li>
 </ul>
 <p>$$
   \begin{aligned}
   \hat{x} = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} \quad \text{followed by learned scaling and shifting}
   \end{aligned}
   $$
-- <strong>Details</strong>: <a href="../pytorch_ref/#6-vanishingexploding-gradients">pytorch_ref.md Section 6</a> for gradient stabilization context</p>
-<p><strong>BERT (Bidirectional Encoder Representations from Transformers)</strong>: A transformer-based model that reads text bidirectionally for better context understanding.</p>
+- Details: <a href="../pytorch_ref/#6-vanishingexploding-gradients">pytorch_ref.md Section 6</a> for gradient stabilization context</p>
+<p>BERT (Bidirectional Encoder Representations from Transformers): A transformer-based model that reads text bidirectionally for better context understanding.</p>
 <ul>
-<li><strong>Architecture</strong>: <a href="../transformers_fundamentals/#encoder-only-bert-family">transformers_fundamentals.md Section 8</a> for encoder-only design</li>
-<li><strong>Training</strong>: Masked Language Modeling (MLM) and Next Sentence Prediction (NSP)</li>
+<li>Architecture: <a href="../transformers_fundamentals/#encoder-only-bert-family">transformers_fundamentals.md Section 8</a> for encoder-only design</li>
+<li>Training: Masked Language Modeling (MLM) and Next Sentence Prediction (NSP)</li>
 </ul>
-<p><strong>Bias</strong>: An additional parameter in a neuron that allows the activation function to shift, providing flexibility in the decision boundary.</p>
+<p>Bias: An additional parameter in a neuron that allows the activation function to shift, providing flexibility in the decision boundary.</p>
 <ul>
-<li><strong>Mathematical role</strong>: Shifts hyperplane:</li>
+<li>Mathematical role: Shifts hyperplane:</li>
 </ul>
 <p>$$
   \begin{aligned}
   z = Wx + b
   \end{aligned}
   $$
-- <strong>Geometric intuition</strong>: <a href="../nn_intro/#the-role-of-bias-flexible-positioning">nn_intro.md Section 3</a> for spatial understanding
-- <strong>Examples</strong>: <a href="../mlp_intro/#5-worked-example-advanced-spam-detection">mlp_intro.md Section 5</a> for worked calculations</p>
+- Geometric intuition: <a href="../nn_intro/#the-role-of-bias-flexible-positioning">nn_intro.md Section 3</a> for spatial understanding
+- Examples: <a href="../mlp_intro/#5-worked-example-advanced-spam-detection">mlp_intro.md Section 5</a> for worked calculations</p>
 <hr />
 <h2 id="c">C<a class="headerlink" href="#c" title="Permanent link">&para;</a></h2>
-<p><strong>Causal Mask:</strong> Lower-triangular mask preventing attention to future tokens in autoregressive models.</p>
+<p>Causal Mask: Lower-triangular mask preventing attention to future tokens in autoregressive models.</p>
 <ul>
-<li><strong>Mathematical implementation</strong>: <a href="../transformers_math1/#54-masked-attention">transformers_math1.md Section 5.4</a> for masking details</li>
+<li>Mathematical implementation: <a href="../transformers_math1/#54-masked-attention">transformers_math1.md Section 5.4</a> for masking details</li>
 </ul>
-<p><strong>Centroid</strong>: The center point of a cluster in vector space, representing the average position of all vectors in that cluster.</p>
+<p>Centroid: The center point of a cluster in vector space, representing the average position of all vectors in that cluster.</p>
 <ul>
-<li><strong>Context</strong>: <a href="../knowledge_store/">knowledge_store.md</a> for vector search applications</li>
+<li>Context: <a href="../knowledge_store/">knowledge_store.md</a> for vector search applications</li>
 </ul>
-<p><strong>Cross-Entropy Loss</strong>: The standard loss function for classification tasks that measures the difference between predicted and true probability distributions.
-- <strong>Formula</strong>:</p>
+<p>Cross-Entropy Loss: The standard loss function for classification tasks that measures the difference between predicted and true probability distributions.</p>
+<ul>
+<li>Formula:</li>
+</ul>
 <p>$$
   \begin{aligned}
   \mathcal{L} = -\sum_{i=1}^{C} y_i \log(p_i) \quad \text{where } y_i \text{ is true label and } p_i \text{ is predicted probability}
   \end{aligned}
   $$
-- <strong>Intuition</strong>: <a href="../nn_intro/#for-classification-problems">nn_intro.md Section 5</a> for geometric interpretation
-- <strong>Implementation</strong>: <a href="../pytorch_ref/#5-optimization-loop--losses">pytorch_ref.md Section 5</a> for PyTorch usage</p>
+- Intuition: <a href="../nn_intro/#for-classification-problems">nn_intro.md Section 5</a> for geometric interpretation
+- Implementation: <a href="../pytorch_ref/#5-optimization-loop--losses">pytorch_ref.md Section 5</a> for PyTorch usage</p>
 <hr />
 <h2 id="d">D<a class="headerlink" href="#d" title="Permanent link">&para;</a></h2>
-<p><strong>Deep Learning</strong>: A subset of machine learning using neural networks with multiple hidden layers (typically 3 or more) to learn complex patterns in data.</p>
+<p>Deep Learning: A subset of machine learning using neural networks with multiple hidden layers (typically 3 or more) to learn complex patterns in data.</p>
 <ul>
-<li><strong>Foundations</strong>: <a href="../nn_intro/#deep-learning-dl">nn_intro.md Section 1</a> for definition and examples</li>
-<li><strong>Why it works</strong>: <a href="../nn_intro/#2-why-deep-learning-for-nlp">nn_intro.md Section 2</a> for NLP advantages</li>
+<li>Foundations: <a href="../nn_intro/#deep-learning-dl">nn_intro.md Section 1</a> for definition and examples</li>
+<li>Why it works: <a href="../nn_intro/#2-why-deep-learning-for-nlp">nn_intro.md Section 2</a> for NLP advantages</li>
 </ul>
-<p><strong>Dropout</strong>: A regularization technique that randomly sets some neurons to zero during training to prevent overfitting.</p>
+<p>Dropout: A regularization technique that randomly sets some neurons to zero during training to prevent overfitting.</p>
 <ul>
-<li><strong>Implementation</strong>: <a href="../mlp_intro/#overfitting-when-mlps-memorize">mlp_intro.md Section 8</a> for overfitting solutions</li>
-<li><strong>Code</strong>: <a href="../pytorch_ref/#8-mlps-in-pytorch">pytorch_ref.md Section 8</a> for practical usage</li>
+<li>Implementation: <a href="../mlp_intro/#overfitting-when-mlps-memorize">mlp_intro.md Section 8</a> for overfitting solutions</li>
+<li>Code: <a href="../pytorch_ref/#8-mlps-in-pytorch">pytorch_ref.md Section 8</a> for practical usage</li>
 </ul>
 <hr />
 <h2 id="e">E<a class="headerlink" href="#e" title="Permanent link">&para;</a></h2>
-<p><strong>Embedding</strong>: A dense numerical vector representation of text, images, or other data that captures semantic meaning in high-dimensional space.</p>
+<p>Embedding: A dense numerical vector representation of text, images, or other data that captures semantic meaning in high-dimensional space.</p>
 <ul>
-<li><strong>Mathematical foundation</strong>:</li>
+<li>Mathematical foundation:</li>
 </ul>
 <p>$$
   \begin{aligned}
   \mathbf{e}<em _text_model="\text{model">i = E[i] \in \mathbb{R}^{d</em>
   \end{aligned}
   $$
-- }}} \quad \text{where } E \text{ is the embedding matrix<strong>Geometric intuition</strong>: <a href="../nn_intro/#text-embeddings-bridging-language-and-mathematics">nn_intro.md Section 5</a> for complete explanation
-- <strong>Applications</strong>: <a href="../knowledge_store/">knowledge_store.md</a> for semantic search and knowledge storage</p>
-<p><strong>Encoder</strong>: In transformer architecture, the component that processes input sequences to create contextualized representations.</p>
+- Geometric intuition: }}} \quad \text{where } E \text{ is the embedding matrix<a href="../nn_intro/#text-embeddings-bridging-language-and-mathematics">nn_intro.md Section 5</a> for complete explanation
+- Applications: <a href="../knowledge_store/">knowledge_store.md</a> for semantic search and knowledge storage</p>
+<p>Encoder: In transformer architecture, the component that processes input sequences to create contextualized representations.</p>
 <ul>
-<li><strong>Architecture</strong>: <a href="../transformers_fundamentals/#encoder-only-bert-family">transformers_fundamentals.md Section 8</a> for encoder-only models</li>
-<li><strong>vs Decoder</strong>: <a href="../transformers_fundamentals/#8-architectural-variants-encoder-decoder-and-encoder-decoder">transformers_fundamentals.md Section 8</a> for comparison</li>
+<li>Architecture: <a href="../transformers_fundamentals/#encoder-only-bert-family">transformers_fundamentals.md Section 8</a> for encoder-only models</li>
+<li>vs Decoder: <a href="../transformers_fundamentals/#8-architectural-variants-encoder-decoder-and-encoder-decoder">transformers_fundamentals.md Section 8</a> for comparison</li>
 </ul>
-<p><strong>Epoch</strong>: One complete pass through the entire training dataset during neural network training.</p>
+<p>Epoch: One complete pass through the entire training dataset during neural network training.</p>
 <ul>
-<li><strong>Training context</strong>: <a href="../nn_intro/#1-epochs">nn_intro.md Section 5</a> for training concepts</li>
-<li><strong>Implementation</strong>: <a href="../pytorch_ref/#5-optimization-loop--losses">pytorch_ref.md Section 5</a> for training loops</li>
+<li>Training context: <a href="../nn_intro/#1-epochs">nn_intro.md Section 5</a> for training concepts</li>
+<li>Implementation: <a href="../pytorch_ref/#5-optimization-loop--losses">pytorch_ref.md Section 5</a> for training loops</li>
 </ul>
 <hr />
 <h2 id="f">F<a class="headerlink" href="#f" title="Permanent link">&para;</a></h2>
-<p><strong>Feed-Forward Network</strong>: A neural network component where information flows in one direction, typically used within transformer blocks.</p>
+<p>Feed-Forward Network: A neural network component where information flows in one direction, typically used within transformer blocks.</p>
 <ul>
-<li><strong>In transformers</strong>: <a href="../transformers_fundamentals/#11-stage-6-feed-forward-networks">transformers_fundamentals.md Section 11</a> for detailed explanation</li>
-<li><strong>Implementation</strong>: Two linear transformations with activation:</li>
+<li>In transformers: <a href="../transformers_fundamentals/#11-stage-6-feed-forward-networks">transformers_fundamentals.md Section 11</a> for detailed explanation</li>
+<li>Implementation: Two linear transformations with activation:</li>
 </ul>
 <p>$$
   \begin{aligned}
@@ -1219,275 +1229,359 @@
   $$</p>
 <hr />
 <h2 id="g">G<a class="headerlink" href="#g" title="Permanent link">&para;</a></h2>
-<p><strong>GPT (Generative Pre-trained Transformer)</strong>: A family of decoder-only transformer models designed for text generation.</p>
+<p>GPT (Generative Pre-trained Transformer): A family of decoder-only transformer models designed for text generation.</p>
 <ul>
-<li><strong>Architecture</strong>: <a href="../transformers_fundamentals/#decoder-only-gpt-family">transformers_fundamentals.md Section 8</a> for decoder-only design</li>
-<li><strong>Training</strong>: Causal Language Modeling (CLM) for next-token prediction</li>
+<li>Architecture: <a href="../transformers_fundamentals/#decoder-only-gpt-family">transformers_fundamentals.md Section 8</a> for decoder-only design</li>
+<li>Training: Causal Language Modeling (CLM) for next-token prediction</li>
 </ul>
-<p><strong>Gradient Descent</strong>: An optimization algorithm that finds the minimum of a function by iteratively moving in the direction of steepest descent.</p>
+<p>Gradient Descent: An optimization algorithm that finds the minimum of a function by iteratively moving in the direction of steepest descent.</p>
 <ul>
-<li><strong>Mathematical foundation</strong>:</li>
+<li>Mathematical foundation:</li>
 </ul>
 <p>$$
   \begin{aligned}
   \theta_{\text{new}} = \theta_{\text{old}} - \alpha \nabla_{\theta} \mathcal{L}
   \end{aligned}
   $$
-- <strong>Intuition</strong>: <a href="../nn_intro/#gradient-descent-the-universal-learning-algorithm">nn_intro.md Section 5</a> for complete explanation
-- <strong>Variants</strong>: <a href="../nn_intro/#from-simple-to-sophisticated-the-evolution-of-optimizers">nn_intro.md Section 5</a> for SGD, momentum, Adam</p>
-<p><strong>GRU (Gated Recurrent Unit)</strong>: A type of RNN with gating mechanisms that help handle long-term dependencies, simpler than LSTM.</p>
+- Intuition: <a href="../nn_intro/#gradient-descent-the-universal-learning-algorithm">nn_intro.md Section 5</a> for complete explanation
+- Variants: <a href="../nn_intro/#from-simple-to-sophisticated-the-evolution-of-optimizers">nn_intro.md Section 5</a> for SGD, momentum, Adam</p>
+<p>GRU (Gated Recurrent Unit): A type of RNN with gating mechanisms that help handle long-term dependencies, simpler than LSTM.</p>
 <ul>
-<li><strong>Implementation</strong>: <a href="../pytorch_ref/#rnn-vs-lstm-vs-gru-comparison">pytorch_ref.md Section 9</a> for comparison with RNN/LSTM</li>
-<li><strong>Evolution</strong>: <a href="../rnn_intro/#10-evolution-beyond-vanilla-rnns">rnn_intro.md Section 10</a> for historical context</li>
+<li>Implementation: <a href="../pytorch_ref/#rnn-vs-lstm-vs-gru-comparison">pytorch_ref.md Section 9</a> for comparison with RNN/LSTM</li>
+<li>Evolution: <a href="../rnn_intro/#10-evolution-beyond-vanilla-rnns">rnn_intro.md Section 10</a> for historical context</li>
 </ul>
 <hr />
 <h2 id="h">H<a class="headerlink" href="#h" title="Permanent link">&para;</a></h2>
-<p><strong>Hidden Layer</strong>: Layers in a neural network between the input and output layers that process and transform the data.</p>
+<p>Hidden Layer: Layers in a neural network between the input and output layers that process and transform the data.</p>
 <ul>
-<li><strong>vs Hidden State</strong>: <a href="../rnn_intro/#4-understanding-hidden-states-vs-hidden-layers">rnn_intro.md Section 4</a> for crucial distinction</li>
-<li><strong>In RNNs</strong>: <a href="../rnn_intro/#4-understanding-hidden-states-vs-hidden-layers">rnn_intro.md Section 4</a> for memory vs architecture</li>
+<li>vs Hidden State: <a href="../rnn_intro/#4-understanding-hidden-states-vs-hidden-layers">rnn_intro.md Section 4</a> for crucial distinction</li>
+<li>In RNNs: <a href="../rnn_intro/#4-understanding-hidden-states-vs-hidden-layers">rnn_intro.md Section 4</a> for memory vs architecture</li>
 </ul>
-<p><strong>Hidden State</strong>: The internal representation vector that flows through a neural network at a specific processing step.
-- <strong>Mathematical definition</strong>:</p>
+<p>Hidden State: The internal representation vector that flows through a neural network at a specific processing step.</p>
+<ul>
+<li>Mathematical definition:</li>
+</ul>
 <p>$$
   \begin{aligned}
   h^{(l)} = f(W^{(l)}h^{(l-1)} + b^{(l)}) \quad \text{for layer } l
   \end{aligned}
   $$
-- <strong>In RNNs</strong>: <a href="../rnn_intro/#3-the-core-rnn-equation">rnn_intro.md Section 3</a> for memory across time steps
-- <strong>Worked example</strong>: <a href="../rnn_intro/#7-worked-example-cat-sat-here">rnn_intro.md Section 7</a> for "cat sat here" processing</p>
-<p><strong>HNSW (Hierarchical Navigable Small World)</strong>: A graph-based indexing method that creates multiple navigation layers for fast approximate nearest neighbor search.</p>
+- In RNNs: <a href="../rnn_intro/#3-the-core-rnn-equation">rnn_intro.md Section 3</a> for memory across time steps
+- Worked example: <a href="../rnn_intro/#7-worked-example-cat-sat-here">rnn_intro.md Section 7</a> for "cat sat here" processing</p>
+<p>HNSW (Hierarchical Navigable Small World): A graph-based indexing method that creates multiple navigation layers for fast approximate nearest neighbor search.</p>
 <ul>
-<li><strong>Context</strong>: <a href="../knowledge_store/">knowledge_store.md</a> for vector database indexing</li>
+<li>Context: <a href="../knowledge_store/">knowledge_store.md</a> for vector database indexing</li>
 </ul>
-<p><strong>Hyperparameter</strong>: Configuration settings for machine learning models that are set before training begins (learning rate, batch size, etc.).</p>
+<p>Hyperparameter: Configuration settings for machine learning models that are set before training begins (learning rate, batch size, etc.).</p>
 <ul>
-<li><strong>Tuning guide</strong>: <a href="../mlp_intro/#hyperparameter-tuning">mlp_intro.md Section 10</a> for practical advice</li>
+<li>Tuning guide: <a href="../mlp_intro/#hyperparameter-tuning">mlp_intro.md Section 10</a> for practical advice</li>
 </ul>
 <hr />
 <h2 id="i">I<a class="headerlink" href="#i" title="Permanent link">&para;</a></h2>
-<p><strong>IVF (Inverted File)</strong>: A clustering-based indexing method that groups similar vectors together and searches only within relevant clusters.
-- <strong>Vector search</strong>: <a href="../knowledge_store/">knowledge_store.md</a> for database optimization techniques</p>
+<p>IVF (Inverted File): A clustering-based indexing method that groups similar vectors together and searches only within relevant clusters.</p>
+<ul>
+<li>Vector search: <a href="../knowledge_store/">knowledge_store.md</a> for database optimization techniques</li>
+</ul>
 <hr />
 <h2 id="k">K<a class="headerlink" href="#k" title="Permanent link">&para;</a></h2>
-<p><strong>KV Cache:</strong> Stored key-value pairs from previous tokens to accelerate autoregressive generation.
-- <strong>Mathematical foundation</strong>: <a href="../transformers_math2/#104-kv-caching-for-autoregressive-generation">transformers_math2.md Section 10.4</a> for efficiency details</p>
+<p>KV Cache: Stored key-value pairs from previous tokens to accelerate autoregressive generation.</p>
+<ul>
+<li>Mathematical foundation: <a href="../transformers_math2/#104-kv-caching-for-autoregressive-generation">transformers_math2.md Section 10.4</a> for efficiency details</li>
+</ul>
 <hr />
 <h2 id="l">L<a class="headerlink" href="#l" title="Permanent link">&para;</a></h2>
-<p><strong>Layer Normalization</strong>: A normalization technique applied within transformer layers to stabilize training.
-- <strong>Formula</strong>: Applied to each position independently across the feature dimension
-- <strong>In transformers</strong>: <a href="../transformers_fundamentals/#7-stage-3-through-the-transformer-stack">transformers_fundamentals.md Section 7</a> for detailed explanation</p>
-<p><strong>Learning Rate</strong>: A hyperparameter that controls the step size in gradient descent optimization.
-- <strong>Importance</strong>: <a href="../nn_intro/#the-learning-rate-α-speed-vs-accuracy-trade-off">nn_intro.md Section 5</a> for intuitive explanation
-- <strong>Schedules</strong>: <a href="../pytorch_ref/#5-optimization-loop--losses">pytorch_ref.md Section 5</a> for dynamic adjustment</p>
-<p><strong>Loss Function</strong>: A function that measures how well the neural network's predictions match the actual target values.
-- <strong>Types</strong>: Cross-entropy for classification, MSE for regression
-- <strong>Deep dive</strong>: <a href="../nn_intro/#loss-functions-the-networks-report-card">nn_intro.md Section 5</a> for complete explanation
-- <strong>Implementation</strong>: <a href="../pytorch_ref/#5-optimization-loop--losses">pytorch_ref.md Section 5</a> for PyTorch examples</p>
-<p><strong>LSTM (Long Short-Term Memory)</strong>: A type of RNN with gating mechanisms designed to handle long-term dependencies and mitigate vanishing gradients.
-- <strong>Architecture</strong>: <a href="../pytorch_ref/#why-gating-mechanisms">pytorch_ref.md Section 9</a> for gating explanation
-- <strong>vs RNN</strong>: <a href="../rnn_intro/#10-evolution-beyond-vanilla-rnns">rnn_intro.md Section 10</a> for improvements over vanilla RNNs</p>
+<p>Layer Normalization: A normalization technique applied within transformer layers to stabilize training.</p>
+<ul>
+<li>Formula: Applied to each position independently across the feature dimension</li>
+<li>In transformers: <a href="../transformers_fundamentals/#7-stage-3-through-the-transformer-stack">transformers_fundamentals.md Section 7</a> for detailed explanation</li>
+</ul>
+<p>Learning Rate: A hyperparameter that controls the step size in gradient descent optimization.</p>
+<ul>
+<li>Importance: <a href="../nn_intro/#the-learning-rate-α-speed-vs-accuracy-trade-off">nn_intro.md Section 5</a> for intuitive explanation</li>
+<li>Schedules: <a href="../pytorch_ref/#5-optimization-loop--losses">pytorch_ref.md Section 5</a> for dynamic adjustment</li>
+</ul>
+<p>Loss Function: A function that measures how well the neural network's predictions match the actual target values.</p>
+<ul>
+<li>Types: Cross-entropy for classification, MSE for regression</li>
+<li>Deep dive: <a href="../nn_intro/#loss-functions-the-networks-report-card">nn_intro.md Section 5</a> for complete explanation</li>
+<li>Implementation: <a href="../pytorch_ref/#5-optimization-loop--losses">pytorch_ref.md Section 5</a> for PyTorch examples</li>
+</ul>
+<p>LSTM (Long Short-Term Memory): A type of RNN with gating mechanisms designed to handle long-term dependencies and mitigate vanishing gradients.</p>
+<ul>
+<li>Architecture: <a href="../pytorch_ref/#why-gating-mechanisms">pytorch_ref.md Section 9</a> for gating explanation</li>
+<li>vs RNN: <a href="../rnn_intro/#10-evolution-beyond-vanilla-rnns">rnn_intro.md Section 10</a> for improvements over vanilla RNNs</li>
+</ul>
 <hr />
 <h2 id="m">M<a class="headerlink" href="#m" title="Permanent link">&para;</a></h2>
-<p><strong>Machine Learning (ML)</strong>: A subset of AI where systems learn patterns from data without being explicitly programmed for every scenario.
-- <strong>vs AI vs DL</strong>: <a href="../nn_intro/#1-what-is-ai-ml-and-deep-learning">nn_intro.md Section 1</a> for clear hierarchy
-- <strong>Traditional methods</strong>: <a href="../nn_intro/#challenges-with-traditional-ml-for-text">nn_intro.md Section 2</a> for comparison with deep learning</p>
-<p><strong>Masked Language Modeling (MLM)</strong>: A training objective where some tokens are masked and the model learns to predict them.
-- <strong>In BERT</strong>: <a href="../transformers_advanced/">transformers_advanced.md</a> for bidirectional training context</p>
-<p><strong>Multi-Head Attention</strong>: An extension of attention that runs multiple attention mechanisms in parallel to capture different types of relationships.
-- <strong>Formula</strong>:</p>
+<p>Machine Learning (ML): A subset of AI where systems learn patterns from data without being explicitly programmed for every scenario.</p>
+<ul>
+<li>vs AI vs DL: <a href="../nn_intro/#1-what-is-ai-ml-and-deep-learning">nn_intro.md Section 1</a> for clear hierarchy</li>
+<li>Traditional methods: <a href="../nn_intro/#challenges-with-traditional-ml-for-text">nn_intro.md Section 2</a> for comparison with deep learning</li>
+</ul>
+<p>Masked Language Modeling (MLM): A training objective where some tokens are masked and the model learns to predict them.</p>
+<ul>
+<li>In BERT: <a href="../transformers_advanced/">transformers_advanced.md</a> for bidirectional training context</li>
+</ul>
+<p>Multi-Head Attention: An extension of attention that runs multiple attention mechanisms in parallel to capture different types of relationships.</p>
+<ul>
+<li>Formula:</li>
+</ul>
 <p>$$
   \begin{aligned}
   \text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^O
   \end{aligned}
   $$
-- <strong>Complete explanation</strong>: <a href="../transformers_fundamentals/#9-stage-4-self-attention-deep-dive">transformers_fundamentals.md Section 9</a> for mathematical details
-- <strong>Mathematical foundation</strong>: <a href="../transformers_math1/#61-multi-head-as-subspace-projections">transformers_math1.md Section 6.1</a> for subspace projections
-- <strong>Implementation</strong>: <a href="../pytorch_ref/#10-transformers-in-pytorch">pytorch_ref.md Section 10</a> for code examples</p>
-<p><strong>Multi-Layer Perceptron (MLP)</strong>: A neural network with one or more hidden layers between input and output layers.
-- <strong>Complete tutorial</strong>: <a href="../mlp_intro/">mlp_intro.md</a> for step-by-step explanation
-- <strong>vs single perceptron</strong>: <a href="../mlp_intro/#mlp-vs-single-perceptron">mlp_intro.md Section 1</a> for capability comparison
-- <strong>Worked example</strong>: <a href="../mlp_intro/#5-worked-example-advanced-spam-detection">mlp_intro.md Section 5</a> for detailed calculations</p>
+- Complete explanation: <a href="../transformers_fundamentals/#9-stage-4-self-attention-deep-dive">transformers_fundamentals.md Section 9</a> for mathematical details
+- Mathematical foundation: <a href="../transformers_math1/#61-multi-head-as-subspace-projections">transformers_math1.md Section 6.1</a> for subspace projections
+- Implementation: <a href="../pytorch_ref/#10-transformers-in-pytorch">pytorch_ref.md Section 10</a> for code examples</p>
+<p>Multi-Layer Perceptron (MLP): A neural network with one or more hidden layers between input and output layers.</p>
+<ul>
+<li>Complete tutorial: <a href="../mlp_intro/">mlp_intro.md</a> for step-by-step explanation</li>
+<li>vs single perceptron: <a href="../mlp_intro/#mlp-vs-single-perceptron">mlp_intro.md Section 1</a> for capability comparison</li>
+<li>Worked example: <a href="../mlp_intro/#5-worked-example-advanced-spam-detection">mlp_intro.md Section 5</a> for detailed calculations</li>
+</ul>
 <hr />
 <h2 id="n">N<a class="headerlink" href="#n" title="Permanent link">&para;</a></h2>
-<p><strong>Natural Language Processing (NLP)</strong>: A field of AI focused on enabling computers to understand, interpret, and generate human language.
-- <strong>Why deep learning</strong>: <a href="../nn_intro/#2-why-deep-learning-for-nlp">nn_intro.md Section 2</a> for advantages over traditional methods
-- <strong>Applications</strong>: <a href="../nn_intro/#6-where-neural-networks-shine-in-nlp">nn_intro.md Section 6</a> for practical uses</p>
-<p><strong>Neural Network</strong>: A computing system inspired by biological neural networks, consisting of interconnected nodes (neurons) that process information.
-- <strong>Foundation</strong>: <a href="../nn_intro/#3-the-neuron-and-the-perceptron">nn_intro.md Section 3</a> for basic building blocks
-- <strong>Geometric view</strong>: <a href="../nn_intro/#geometric-intuition-from-1d-to-n-d">nn_intro.md Section 4</a> for spatial understanding</p>
+<p>Natural Language Processing (NLP): A field of AI focused on enabling computers to understand, interpret, and generate human language.</p>
+<ul>
+<li>Why deep learning: <a href="../nn_intro/#2-why-deep-learning-for-nlp">nn_intro.md Section 2</a> for advantages over traditional methods</li>
+<li>Applications: <a href="../nn_intro/#6-where-neural-networks-shine-in-nlp">nn_intro.md Section 6</a> for practical uses</li>
+</ul>
+<p>Neural Network: A computing system inspired by biological neural networks, consisting of interconnected nodes (neurons) that process information.</p>
+<ul>
+<li>Foundation: <a href="../nn_intro/#3-the-neuron-and-the-perceptron">nn_intro.md Section 3</a> for basic building blocks</li>
+<li>Geometric view: <a href="../nn_intro/#geometric-intuition-from-1d-to-n-d">nn_intro.md Section 4</a> for spatial understanding</li>
+</ul>
 <hr />
 <h2 id="o">O<a class="headerlink" href="#o" title="Permanent link">&para;</a></h2>
-<p><strong>Optimizer</strong>: An algorithm that updates neural network parameters to minimize the loss function.
-- <strong>Types</strong>: SGD, Adam, RMSprop
-- <strong>Comparison</strong>: <a href="../nn_intro/#from-simple-to-sophisticated-the-evolution-of-optimizers">nn_intro.md Section 5</a> for evolution
-- <strong>PyTorch</strong>: <a href="../pytorch_ref/#5-optimization-loop--losses">pytorch_ref.md Section 5</a> for practical implementation</p>
-<p><strong>Overfitting</strong>: When a model performs well on training data but poorly on new, unseen data because it has memorized rather than learned generalizable patterns.
-- <strong>Solutions</strong>: <a href="../mlp_intro/#overfitting-when-mlps-memorize">mlp_intro.md Section 8</a> for regularization techniques
-- <strong>vs Underfitting</strong>: <a href="../nn_intro/#4-overfitting-vs-underfitting">nn_intro.md Section 5</a> for comparison</p>
+<p>Optimizer: An algorithm that updates neural network parameters to minimize the loss function.</p>
+<ul>
+<li>Types: SGD, Adam, RMSprop</li>
+<li>Comparison: <a href="../nn_intro/#from-simple-to-sophisticated-the-evolution-of-optimizers">nn_intro.md Section 5</a> for evolution</li>
+<li>PyTorch: <a href="../pytorch_ref/#5-optimization-loop--losses">pytorch_ref.md Section 5</a> for practical implementation</li>
+</ul>
+<p>Overfitting: When a model performs well on training data but poorly on new, unseen data because it has memorized rather than learned generalizable patterns.</p>
+<ul>
+<li>Solutions: <a href="../mlp_intro/#overfitting-when-mlps-memorize">mlp_intro.md Section 8</a> for regularization techniques</li>
+<li>vs Underfitting: <a href="../nn_intro/#4-overfitting-vs-underfitting">nn_intro.md Section 5</a> for comparison</li>
+</ul>
 <hr />
 <h2 id="p">P<a class="headerlink" href="#p" title="Permanent link">&para;</a></h2>
-<p><strong>Perceptron</strong>: The basic building block of neural networks, consisting of inputs, weights, a bias, and an activation function.
-- <strong>Formula</strong>:</p>
+<p>Perceptron: The basic building block of neural networks, consisting of inputs, weights, a bias, and an activation function.</p>
+<ul>
+<li>Formula:</li>
+</ul>
 <p>$$
   \begin{aligned}
   y = f\left(\sum_{i=1}^{n} w_i x_i + b\right)
   \end{aligned}
   $$
-- <strong>Complete explanation</strong>: <a href="../nn_intro/#3-the-neuron-and-the-perceptron">nn_intro.md Section 3</a> for biological inspiration and mathematics
-- <strong>Limitations</strong>: <a href="../nn_intro/#limitations-of-single-perceptrons">nn_intro.md Section 4</a> for XOR problem</p>
-<p><strong>Position Encoding:</strong> Method to inject sequential order information into permutation-equivariant attention.
-- <strong>Mathematical foundation</strong>: <a href="../transformers_fundamentals/#6-stage-2-tokens-to-embeddings">transformers_fundamentals.md Section 6</a> for sinusoidal encoding
-- <strong>Advanced techniques</strong>: <a href="../transformers_math1/#62-advanced-positional-encodings">transformers_math1.md Section 6.2</a> for RoPE and ALiBi
-- <strong>Implementation</strong>: <a href="../pytorch_ref/#10-transformers-in-pytorch">pytorch_ref.md Section 10</a> for code examples</p>
-<p><strong>Product Quantization (PQ)</strong>: A compression technique that splits vectors into chunks and replaces each chunk with a representative centroid ID.
-- <strong>Vector databases</strong>: <a href="../knowledge_store/">knowledge_store.md</a> for storage optimization</p>
+- Complete explanation: <a href="../nn_intro/#3-the-neuron-and-the-perceptron">nn_intro.md Section 3</a> for biological inspiration and mathematics
+- Limitations: <a href="../nn_intro/#limitations-of-single-perceptrons">nn_intro.md Section 4</a> for XOR problem</p>
+<p>Position Encoding: Method to inject sequential order information into permutation-equivariant attention.</p>
+<ul>
+<li>Mathematical foundation: <a href="../transformers_fundamentals/#6-stage-2-tokens-to-embeddings">transformers_fundamentals.md Section 6</a> for sinusoidal encoding</li>
+<li>Advanced techniques: <a href="../transformers_math1/#62-advanced-positional-encodings">transformers_math1.md Section 6.2</a> for RoPE and ALiBi</li>
+<li>Implementation: <a href="../pytorch_ref/#10-transformers-in-pytorch">pytorch_ref.md Section 10</a> for code examples</li>
+</ul>
+<p>Product Quantization (PQ): A compression technique that splits vectors into chunks and replaces each chunk with a representative centroid ID.</p>
+<ul>
+<li>Vector databases: <a href="../knowledge_store/">knowledge_store.md</a> for storage optimization</li>
+</ul>
 <hr />
 <h2 id="q">Q<a class="headerlink" href="#q" title="Permanent link">&para;</a></h2>
-<p><strong>Query Vector</strong>: In attention mechanisms, the vector representing "what information is being sought" from other positions.
-- <strong>Q, K, V mechanism</strong>: <a href="../transformers_fundamentals/#9-stage-4-self-attention-deep-dive">transformers_fundamentals.md Section 9</a> for complete attention explanation</p>
+<p>Query Vector: In attention mechanisms, the vector representing "what information is being sought" from other positions.</p>
+<ul>
+<li>Q, K, V mechanism: <a href="../transformers_fundamentals/#9-stage-4-self-attention-deep-dive">transformers_fundamentals.md Section 9</a> for complete attention explanation</li>
+</ul>
 <hr />
 <h2 id="r">R<a class="headerlink" href="#r" title="Permanent link">&para;</a></h2>
-<p><strong>RAG (Retrieval-Augmented Generation)</strong>: A system that combines vector store retrieval with LLM generation to provide informed, grounded responses.
-- <strong>Architecture</strong>: <a href="../knowledge_store/">knowledge_store.md</a> for implementation patterns</p>
-<p><strong>ReLU (Rectified Linear Unit)</strong>: An activation function that outputs the input if positive, zero otherwise.
-- <strong>Formula</strong>:</p>
+<p>RAG (Retrieval-Augmented Generation): A system that combines vector store retrieval with LLM generation to provide informed, grounded responses.</p>
+<ul>
+<li>Architecture: <a href="../knowledge_store/">knowledge_store.md</a> for implementation patterns</li>
+</ul>
+<p>ReLU (Rectified Linear Unit): An activation function that outputs the input if positive, zero otherwise.</p>
+<ul>
+<li>Formula:</li>
+</ul>
 <p>$$
   \begin{aligned}
   f(x) = \max(0, x)
   \end{aligned}
   $$
-- <strong>Advantages</strong>: <a href="../nn_intro/#common-activation-functions">nn_intro.md Section 3</a> for vanishing gradient prevention
-- <strong>Geometric effect</strong>: <a href="../nn_intro/#step-2-relu-activation-bends-space">nn_intro.md Section 4</a> for space folding in XOR example</p>
-<p><strong>RNN (Recurrent Neural Network)</strong>: A neural network designed for sequential data that maintains hidden states across time steps.
-- <strong>Core equation</strong>:</p>
+- Advantages: <a href="../nn_intro/#common-activation-functions">nn_intro.md Section 3</a> for vanishing gradient prevention
+- Geometric effect: <a href="../nn_intro/#step-2-relu-activation-bends-space">nn_intro.md Section 4</a> for space folding in XOR example</p>
+<p>RNN (Recurrent Neural Network): A neural network designed for sequential data that maintains hidden states across time steps.</p>
+<ul>
+<li>Core equation:</li>
+</ul>
 <p>$$
   \begin{aligned}
   h_t = f(W_x x_t + W_h h_{t-1} + b)
   \end{aligned}
   $$
-- <strong>Complete tutorial</strong>: <a href="../rnn_intro/">rnn_intro.md</a> for step-by-step explanation
-- <strong>Limitations</strong>: <a href="../rnn_intro/#9-the-vanishing-gradient-problem-rnns-fatal-flaw">rnn_intro.md Section 9</a> for vanishing gradients</p>
-<p><strong>Regularization</strong>: Techniques to prevent overfitting by constraining model complexity.
-- <strong>Methods</strong>: Dropout, L1/L2 regularization, early stopping
-- <strong>Practical guide</strong>: <a href="../mlp_intro/#8-common-challenges-and-solutions">mlp_intro.md Section 8</a> for implementation</p>
+- Complete tutorial: <a href="../rnn_intro/">rnn_intro.md</a> for step-by-step explanation
+- Limitations: <a href="../rnn_intro/#9-the-vanishing-gradient-problem-rnns-fatal-flaw">rnn_intro.md Section 9</a> for vanishing gradients</p>
+<p>Regularization: Techniques to prevent overfitting by constraining model complexity.</p>
+<ul>
+<li>Methods: Dropout, L1/L2 regularization, early stopping</li>
+<li>Practical guide: <a href="../mlp_intro/#8-common-challenges-and-solutions">mlp_intro.md Section 8</a> for implementation</li>
+</ul>
 <hr />
 <h2 id="s">S<a class="headerlink" href="#s" title="Permanent link">&para;</a></h2>
-<p><strong>Scaled Dot-Product Attention:</strong> Core attention mechanism with the following formula:</p>
+<p>Scaled Dot-Product Attention: Core attention mechanism with the following formula:</p>
 <p>$$
 \begin{aligned}
 \text{softmax}(QK^T/\sqrt{d_k})V
 \end{aligned}
 $$
-- <strong>Mathematical derivation</strong>: <a href="../transformers_math1/#51-deriving-scaled-dot-product-attention">transformers_math1.md Section 5.1</a> for complete derivation
-- <strong>Implementation</strong>: <a href="../pytorch_ref/#self-attention-from-scratch">pytorch_ref.md Section 10</a> for from-scratch code</p>
-<p><strong>Self-Attention</strong>: An attention mechanism where queries, keys, and values all come from the same sequence, allowing positions to attend to each other.
-- <strong>Formula</strong>:</p>
+- Mathematical derivation: <a href="../transformers_math1/#51-deriving-scaled-dot-product-attention">transformers_math1.md Section 5.1</a> for complete derivation
+- Implementation: <a href="../pytorch_ref/#self-attention-from-scratch">pytorch_ref.md Section 10</a> for from-scratch code</p>
+<p>Self-Attention: An attention mechanism where queries, keys, and values all come from the same sequence, allowing positions to attend to each other.</p>
+<ul>
+<li>Formula:</li>
+</ul>
 <p>$$
   \begin{aligned}
   \text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
   \end{aligned}
   $$
-- <strong>Implementation</strong>: <a href="../pytorch_ref/#self-attention-from-scratch">pytorch_ref.md Section 10</a> for from-scratch code
-- <strong>Intuition</strong>: <a href="../transformers_fundamentals/#9-stage-4-self-attention-deep-dive">transformers_fundamentals.md Section 9</a> for detailed mechanics</p>
-<p><strong>Sigmoid</strong>: An activation function that maps any input to a value between 0 and 1.
-- <strong>Formula</strong>:</p>
+- Implementation: <a href="../pytorch_ref/#self-attention-from-scratch">pytorch_ref.md Section 10</a> for from-scratch code
+- Intuition: <a href="../transformers_fundamentals/#9-stage-4-self-attention-deep-dive">transformers_fundamentals.md Section 9</a> for detailed mechanics</p>
+<p>Sigmoid: An activation function that maps any input to a value between 0 and 1.</p>
+<ul>
+<li>Formula:</li>
+</ul>
 <p>$$
   \begin{aligned}
   \sigma(x) = \frac{1}{1 + e^{-x}}
   \end{aligned}
   $$
-- <strong>Properties</strong>: <a href="../nn_intro/#common-activation-functions">nn_intro.md Section 3</a> for squashing behavior
-- <strong>Uses</strong>: Binary classification, historical neural networks</p>
-<p><strong>Similarity Threshold</strong>: A minimum similarity score required for a document to be considered relevant in vector search.
-- <strong>Vector search</strong>: <a href="../knowledge_store/">knowledge_store.md</a> for retrieval systems</p>
-<p><strong>Softmax</strong>: A function that converts a vector of real numbers into a probability distribution.
-- <strong>Formula</strong>:</p>
+- Properties: <a href="../nn_intro/#common-activation-functions">nn_intro.md Section 3</a> for squashing behavior
+- Uses: Binary classification, historical neural networks</p>
+<p>Similarity Threshold: A minimum similarity score required for a document to be considered relevant in vector search.</p>
+<ul>
+<li>Vector search: <a href="../knowledge_store/">knowledge_store.md</a> for retrieval systems</li>
+</ul>
+<p>Softmax: A function that converts a vector of real numbers into a probability distribution.</p>
+<ul>
+<li>Formula:</li>
+</ul>
 <p>$$
   \begin{aligned}
   \text{softmax}(x_i) = \frac{e^{x_i}}{\sum_{j=1}^{K} e^{x_j}}
   \end{aligned}
   $$
-- <strong>Usage</strong>: Output layer for multi-class classification, attention weights</p>
-<p><strong>Stochastic Gradient Descent (SGD)</strong>: A variant of gradient descent that uses random mini-batches instead of the full dataset.
-- <strong>Benefits</strong>: <a href="../nn_intro/#from-simple-to-sophisticated-the-evolution-of-optimizers">nn_intro.md Section 5</a> for comparison with other optimizers</p>
+- Usage: Output layer for multi-class classification, attention weights</p>
+<p>Stochastic Gradient Descent (SGD): A variant of gradient descent that uses random mini-batches instead of the full dataset.</p>
+<ul>
+<li>Benefits: <a href="../nn_intro/#from-simple-to-sophisticated-the-evolution-of-optimizers">nn_intro.md Section 5</a> for comparison with other optimizers</li>
+</ul>
 <hr />
 <h2 id="t">T<a class="headerlink" href="#t" title="Permanent link">&para;</a></h2>
-<p><strong>Tanh (Hyperbolic Tangent)</strong>: An activation function that maps inputs to values between -1 and 1.
-- <strong>Formula</strong>:</p>
+<p>Tanh (Hyperbolic Tangent): An activation function that maps inputs to values between -1 and 1.</p>
+<ul>
+<li>Formula:</li>
+</ul>
 <p>$$
   \begin{aligned}
   \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
   \end{aligned}
   $$
-- <strong>Advantages</strong>: <a href="../nn_intro/#common-activation-functions">nn_intro.md Section 3</a> for zero-centered output
-- <strong>Comparison</strong>: <a href="../mlp_intro/#tanh-hyperbolic-tangent">mlp_intro.md Section 9</a> for detailed analysis</p>
-<p><strong>Teacher Forcing:</strong> Training technique using ground truth tokens as inputs instead of model predictions.
-- <strong>Autoregressive training</strong>: <a href="../transformers_math1/#81-next-token-prediction">transformers_math1.md Section 8.1</a> for implementation details</p>
-<p><strong>Temperature</strong>: A parameter controlling randomness in text generation; lower values make outputs more focused, higher values more creative.
-- <strong>Text generation</strong>: Used in softmax:</p>
+- Advantages: <a href="../nn_intro/#common-activation-functions">nn_intro.md Section 3</a> for zero-centered output
+- Comparison: <a href="../mlp_intro/#tanh-hyperbolic-tangent">mlp_intro.md Section 9</a> for detailed analysis</p>
+<p>Teacher Forcing: Training technique using ground truth tokens as inputs instead of model predictions.</p>
+<ul>
+<li>Autoregressive training: <a href="../transformers_math1/#81-next-token-prediction">transformers_math1.md Section 8.1</a> for implementation details</li>
+</ul>
+<p>Temperature: A parameter controlling randomness in text generation; lower values make outputs more focused, higher values more creative.</p>
+<ul>
+<li>Text generation: Used in softmax:</li>
+</ul>
 <p>$$
   \begin{aligned}
   p_i = \frac{e^{x_i/T}}{\sum_j e^{x_j/T}}
   \end{aligned}
   $$</p>
-<p><strong>Token</strong>: The basic unit of text processing in NLP models (words, subwords, or characters).
-- <strong>Tokenization</strong>: <a href="../transformers_fundamentals/#5-stage-1-text-to-tokens">transformers_fundamentals.md Section 5</a> for detailed explanation
-- <strong>Embeddings</strong>: <a href="../nn_intro/#text-embeddings-bridging-language-and-mathematics">nn_intro.md Section 5</a> for vector representation</p>
-<p><strong>Top-K</strong>: A parameter limiting selection to the K most likely tokens (in LLMs) or K most similar documents (in vector stores).
-- <strong>Sampling</strong>: Controls generation diversity in language models</p>
-<p><strong>Top-P (Nucleus Sampling)</strong>: A parameter that dynamically selects tokens based on cumulative probability until reaching threshold P.
-- <strong>vs Top-K</strong>: More adaptive selection for text generation</p>
-<p><strong>Transformer</strong>: A neural network architecture that uses self-attention mechanisms to process sequential data efficiently.
-- <strong>Complete reference</strong>: <a href="../transformers_fundamentals/">transformers_fundamentals.md</a> for comprehensive technical details
-- <strong>Key innovation</strong>: <a href="../transformers_fundamentals/#9-stage-4-self-attention-deep-dive">transformers_fundamentals.md Section 9</a> for attention mechanism explanation
-- <strong>Implementation</strong>: <a href="../pytorch_ref/#10-transformers-in-pytorch">pytorch_ref.md Section 10</a> for code examples</p>
+<p>Token: The basic unit of text processing in NLP models (words, subwords, or characters).</p>
+<ul>
+<li>Tokenization: <a href="../transformers_fundamentals/#5-stage-1-text-to-tokens">transformers_fundamentals.md Section 5</a> for detailed explanation</li>
+<li>Embeddings: <a href="../nn_intro/#text-embeddings-bridging-language-and-mathematics">nn_intro.md Section 5</a> for vector representation</li>
+</ul>
+<p>Top-K: A parameter limiting selection to the K most likely tokens (in LLMs) or K most similar documents (in vector stores).</p>
+<ul>
+<li>Sampling: Controls generation diversity in language models</li>
+</ul>
+<p>Top-P (Nucleus Sampling): A parameter that dynamically selects tokens based on cumulative probability until reaching threshold P.</p>
+<ul>
+<li>vs Top-K: More adaptive selection for text generation</li>
+</ul>
+<p>Transformer: A neural network architecture that uses self-attention mechanisms to process sequential data efficiently.</p>
+<ul>
+<li>Complete reference: <a href="../transformers_fundamentals/">transformers_fundamentals.md</a> for comprehensive technical details</li>
+<li>Key innovation: <a href="../transformers_fundamentals/#9-stage-4-self-attention-deep-dive">transformers_fundamentals.md Section 9</a> for attention mechanism explanation</li>
+<li>Implementation: <a href="../pytorch_ref/#10-transformers-in-pytorch">pytorch_ref.md Section 10</a> for code examples</li>
+</ul>
 <hr />
 <h2 id="u">U<a class="headerlink" href="#u" title="Permanent link">&para;</a></h2>
-<p><strong>Universal Approximation Theorem</strong>: A mathematical theorem stating that neural networks with sufficient neurons can approximate any continuous function.
-- <strong>Implication</strong>: <a href="../nn_intro/#multi-layer-perceptrons-mlps-high-dimensional-sculptors">nn_intro.md Section 4</a> for theoretical foundation
-- <strong>Practical meaning</strong>: Justifies why neural networks are so powerful for complex pattern learning</p>
-<p><strong>Underfitting</strong>: When a model is too simple to capture the underlying patterns in the data.
-- <strong>vs Overfitting</strong>: <a href="../nn_intro/#4-overfitting-vs-underfitting">nn_intro.md Section 5</a> for comparison
-- <strong>Solutions</strong>: <a href="../mlp_intro/#underfitting-when-mlps-are-too-simple">mlp_intro.md Section 8</a> for model complexity increase</p>
+<p>Universal Approximation Theorem: A mathematical theorem stating that neural networks with sufficient neurons can approximate any continuous function.</p>
+<ul>
+<li>Implication: <a href="../nn_intro/#multi-layer-perceptrons-mlps-high-dimensional-sculptors">nn_intro.md Section 4</a> for theoretical foundation</li>
+<li>Practical meaning: Justifies why neural networks are so powerful for complex pattern learning</li>
+</ul>
+<p>Underfitting: When a model is too simple to capture the underlying patterns in the data.</p>
+<ul>
+<li>vs Overfitting: <a href="../nn_intro/#4-overfitting-vs-underfitting">nn_intro.md Section 5</a> for comparison</li>
+<li>Solutions: <a href="../mlp_intro/#underfitting-when-mlps-are-too-simple">mlp_intro.md Section 8</a> for model complexity increase</li>
+</ul>
 <hr />
 <h2 id="v">V<a class="headerlink" href="#v" title="Permanent link">&para;</a></h2>
-<p><strong>Vanishing Gradient Problem</strong>: A fundamental issue in deep networks where gradients become exponentially small in earlier layers, preventing effective learning.
-- <strong>Mathematical analysis</strong>: <a href="../rnn_intro/#9-the-vanishing-gradient-problem-rnns-fatal-flaw">rnn_intro.md Section 9</a> for RNN-specific issues
-- <strong>Solutions</strong>: <a href="../pytorch_ref/#6-vanishingexploding-gradients">pytorch_ref.md Section 6</a> for practical fixes
-- <strong>Why ReLU helps</strong>: <a href="../nn_intro/#common-activation-functions">nn_intro.md Section 3</a> for gradient preservation</p>
-<p><strong>Vector Store</strong>: A database optimized for storing and searching high-dimensional numerical vectors representing semantic content.
-- <strong>Complete guide</strong>: <a href="../knowledge_store/">knowledge_store.md</a> for implementation, indexing, and comparison with LLM weights
-- <strong>Applications</strong>: Semantic search, RAG systems, recommendation engines</p>
-<p><strong>Vocabulary</strong>: The complete set of unique tokens (words, subwords, characters) that a model can process.
-- <strong>Size considerations</strong>: <a href="../transformers_fundamentals/#5-stage-1-text-to-tokens">transformers_fundamentals.md Section 5</a> for tokenization trade-offs</p>
+<p>Vanishing Gradient Problem: A fundamental issue in deep networks where gradients become exponentially small in earlier layers, preventing effective learning.</p>
+<ul>
+<li>Mathematical analysis: <a href="../rnn_intro/#9-the-vanishing-gradient-problem-rnns-fatal-flaw">rnn_intro.md Section 9</a> for RNN-specific issues</li>
+<li>Solutions: <a href="../pytorch_ref/#6-vanishingexploding-gradients">pytorch_ref.md Section 6</a> for practical fixes</li>
+<li>Why ReLU helps: <a href="../nn_intro/#common-activation-functions">nn_intro.md Section 3</a> for gradient preservation</li>
+</ul>
+<p>Vector Store: A database optimized for storing and searching high-dimensional numerical vectors representing semantic content.</p>
+<ul>
+<li>Complete guide: <a href="../knowledge_store/">knowledge_store.md</a> for implementation, indexing, and comparison with LLM weights</li>
+<li>Applications: Semantic search, RAG systems, recommendation engines</li>
+</ul>
+<p>Vocabulary: The complete set of unique tokens (words, subwords, characters) that a model can process.</p>
+<ul>
+<li>Size considerations: <a href="../transformers_fundamentals/#5-stage-1-text-to-tokens">transformers_fundamentals.md Section 5</a> for tokenization trade-offs</li>
+</ul>
 <hr />
 <h2 id="w">W<a class="headerlink" href="#w" title="Permanent link">&para;</a></h2>
-<p><strong>Weight</strong>: Parameters in a neural network that determine the strength of connections between neurons and are learned during training.
-- <strong>Mathematical role</strong>:</p>
+<p>Weight: Parameters in a neural network that determine the strength of connections between neurons and are learned during training.</p>
+<ul>
+<li>Mathematical role:</li>
+</ul>
 <p>$$
   \begin{aligned}
   z = w_1x_1 + w_2x_2 + ... + w_nx_n + b
   \end{aligned}
   $$
-- <strong>Geometric interpretation</strong>: <a href="../nn_intro/#the-role-of-weights-feature-importance-and-direction">nn_intro.md Section 3</a> for spatial understanding
-- <strong>Training</strong>: <a href="../nn_intro/#gradient-descent-the-universal-learning-algorithm">nn_intro.md Section 5</a> for optimization process</p>
-<p><strong>Word Embedding</strong>: A dense vector representation of words that captures semantic relationships.
-- <strong>Mathematical foundation</strong>: Words mapped to high-dimensional space:</p>
+- Geometric interpretation: <a href="../nn_intro/#the-role-of-weights-feature-importance-and-direction">nn_intro.md Section 3</a> for spatial understanding
+- Training: <a href="../nn_intro/#gradient-descent-the-universal-learning-algorithm">nn_intro.md Section 5</a> for optimization process</p>
+<p>Word Embedding: A dense vector representation of words that captures semantic relationships.</p>
+<ul>
+<li>Mathematical foundation: Words mapped to high-dimensional space:</li>
+</ul>
 <p>$$
   \begin{aligned}
   \text{Words} \rightarrow \mathbb{R}^{d} \quad \text{where similar words have similar vectors}
   \end{aligned}
   $$
-- <strong>Properties</strong>: <a href="../nn_intro/#why-embeddings-work">nn_intro.md Section 5</a> for distributional hypothesis
-- <strong>Applications</strong>: <a href="../knowledge_store/">knowledge_store.md</a> for semantic search and knowledge storage</p>
+- Properties: <a href="../nn_intro/#why-embeddings-work">nn_intro.md Section 5</a> for distributional hypothesis
+- Applications: <a href="../knowledge_store/">knowledge_store.md</a> for semantic search and knowledge storage</p>
 <hr />
 <h2 id="-additional-resources">📚 Additional Resources<a class="headerlink" href="#-additional-resources" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Mathematical Foundations</strong>: <a href="../math_quick_ref/">math_quick_ref.md</a> for formulas and derivations</li>
-<li><strong>Implementation Patterns</strong>: <a href="../pytorch_ref/">pytorch_ref.md</a> for practical coding examples  </li>
-<li><strong>Historical Context</strong>: <a href="../history_quick_ref/">history_quick_ref.md</a> for evolution timeline</li>
-<li><strong>Hands-on Examples</strong>: <a href="../mlp_intro/">mlp_intro.md</a> and <a href="../rnn_intro/">rnn_intro.md</a> for worked calculations</li>
+<li>Mathematical Foundations: <a href="../math_quick_ref/">math_quick_ref.md</a> for formulas and derivations</li>
+<li>Implementation Patterns: <a href="../pytorch_ref/">pytorch_ref.md</a> for practical coding examples  </li>
+<li>Historical Context: <a href="../history_quick_ref/">history_quick_ref.md</a> for evolution timeline</li>
+<li>Hands-on Examples: <a href="../mlp_intro/">mlp_intro.md</a> and <a href="../rnn_intro/">rnn_intro.md</a> for worked calculations</li>
 </ul>
 <hr />
 <p><em>This glossary covers fundamental terms from neural networks through transformer architectures. Each term includes cross-references to detailed explanations in the repository documents for deeper understanding.</em></p>
@@ -1552,9 +1646,11 @@ $$
     
       <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
+        <script src="../javascripts/mathjax-init.js"></script>
+      
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
-        <script src="../javascripts/mathjax.js"></script>
+        <script src="../javascripts/mathjax-refresh.js"></script>
       
     
   </body>

@@ -1480,51 +1480,61 @@
 <h2 id="part-2-advanced-concepts-and-scaling">Part 2: Advanced Concepts and Scaling<a class="headerlink" href="#part-2-advanced-concepts-and-scaling" title="Permanent link">&para;</a></h2>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>This second part builds upon the foundational concepts from <a href="../transformers_math1/">Part 1: Building Intuition and Core Concepts</a> to cover advanced topics essential for implementing and scaling Transformer models in practice. Here we focus on optimization techniques, training stability, efficient attention implementations, and the mathematical considerations needed for real-world large models.</p>
-<p><strong>Prerequisites:</strong> We assume you've completed Part 1, which covers mathematical preliminaries, basic neural networks, attention mechanisms, multi-head attention, and Transformer blocks. If you haven't read Part 1 yet, please start there for the foundational understanding.</p>
-<p><strong>What You'll Learn:</strong>
-- Advanced optimization algorithms (SGD momentum, Adam, AdamW) and their mathematical foundations
-- Learning rate schedules and gradient clipping techniques
-- Efficient attention implementations for scaling to long sequences
-- Regularization and calibration techniques for better generalization
-- Common pitfalls and how to avoid them
-- Implementation best practices for numerical stability</p>
-<p><strong>Appendices:</strong>
-- <a href="#appendix-a-symbolshape-reference">A. Symbol/Shape Reference</a>
-- <a href="#appendix-b-key-derivations">B. Key Derivations</a></p>
-<p><strong>Additional Resources:</strong>
-- <a href="../transformers_math1/">Part 1: Building Intuition and Core Concepts</a>
-- <a href="../glossary/">Glossary</a> - Comprehensive terms and definitions</p>
+<p>Prerequisites: We assume you've completed Part 1, which covers mathematical preliminaries, basic neural networks, attention mechanisms, multi-head attention, and Transformer blocks. If you haven't read Part 1 yet, please start there for the foundational understanding.</p>
+<p>What You'll Learn:</p>
+<ul>
+<li>Advanced optimization algorithms (SGD momentum, Adam, AdamW) and their mathematical foundations</li>
+<li>Learning rate schedules and gradient clipping techniques</li>
+<li>Efficient attention implementations for scaling to long sequences</li>
+<li>Regularization and calibration techniques for better generalization</li>
+<li>Common pitfalls and how to avoid them</li>
+<li>Implementation best practices for numerical stability</li>
+</ul>
+<p>Appendices:</p>
+<ul>
+<li><a href="#appendix-a-symbolshape-reference">A. Symbol/Shape Reference</a></li>
+<li><a href="#appendix-b-key-derivations">B. Key Derivations</a></li>
+</ul>
+<p>Additional Resources:</p>
+<ul>
+<li><a href="../transformers_math1/">Part 1: Building Intuition and Core Concepts</a></li>
+<li><a href="../glossary/">Glossary</a> - Comprehensive terms and definitions</li>
+</ul>
 <h2 id="8-practical-numerics--implementation-notes">8. Practical Numerics &amp; Implementation Notes<a class="headerlink" href="#8-practical-numerics--implementation-notes" title="Permanent link">&para;</a></h2>
 <h3 id="81-initialization-strategies">8.1 Initialization Strategies<a class="headerlink" href="#81-initialization-strategies" title="Permanent link">&para;</a></h3>
-<p><strong>Xavier/Glorot for Linear Layers:</strong>
+<p>Xavier/Glorot for Linear Layers:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>W \sim \mathcal{N}\left(0, \frac{2}{n_{\text{in}} + n_{\text{out}}}\right) \quad (49)
 </code></pre></div></p>
-<p><strong>Attention-Specific:</strong> Initialize query/key projections with smaller variance to prevent attention collapse (overly peaked attention distributions).</p>
+<p>Attention-Specific: Initialize query/key projections with smaller variance to prevent attention collapse (overly peaked attention distributions).</p>
 <h3 id="82-mixed-precision-training">8.2 Mixed Precision Training<a class="headerlink" href="#82-mixed-precision-training" title="Permanent link">&para;</a></h3>
-<p><strong>FP16 Forward, FP32 Gradients:</strong> Use half precision for speed, full precision for numerical stability:
-💻 <strong>Implementation Example</strong>: For Automatic Mixed Precision implementation, see <a href="./pynb/math_ref/optimization.ipynb">Optimization Notebook</a></p>
+<p>FP16 Forward, FP32 Gradients: Use half precision for speed, full precision for numerical stability:
+💻 Implementation Example: For Automatic Mixed Precision implementation, see <a href="./pynb/math_ref/optimization.ipynb">Optimization Notebook</a></p>
 <h3 id="83-gradient-clipping">8.3 Gradient Clipping<a class="headerlink" href="#83-gradient-clipping" title="Permanent link">&para;</a></h3>
-<p><strong>Global Norm Clipping:</strong> As detailed in equation (11), we clip gradients to prevent explosive updates.</p>
+<p>Global Norm Clipping: As detailed in equation (11), we clip gradients to prevent explosive updates.</p>
 <h2 id="9-optimization-for-deep-networks">9. Optimization for Deep Networks<a class="headerlink" href="#9-optimization-for-deep-networks" title="Permanent link">&para;</a></h2>
 <h3 id="91-from-sgd-to-adam">9.1 From SGD to Adam<a class="headerlink" href="#91-from-sgd-to-adam" title="Permanent link">&para;</a></h3>
-<p>📚 <strong>Quick Reference</strong>: See <a href="../math_quick_ref/#mathematical-quick-reference-for-neural-networks">Adam Optimizer</a> and <a href="../math_quick_ref/#mathematical-quick-reference-for-neural-networks">Gradient Descent</a> in the mathematical reference table.</p>
-<p><strong>SGD with Momentum:</strong>
+<p>📚 Quick Reference: See <a href="../math_quick_ref/#mathematical-quick-reference-for-neural-networks">Adam Optimizer</a> and <a href="../math_quick_ref/#mathematical-quick-reference-for-neural-networks">Gradient Descent</a> in the mathematical reference table.</p>
+<p>SGD with Momentum:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>\begin{align}
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>\mathbf{v}_t &amp;= \beta \mathbf{v}_{t-1} + (1-\beta) \nabla_\theta \mathcal{L} \quad (5)\\
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>\theta_t &amp;= \theta_{t-1} - \eta \mathbf{v}_t \quad (6)
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>\end{align}
 </code></pre></div></p>
-<p><strong>What momentum does:</strong> Like a ball rolling down a hill. Instead of just following the current slope (gradient), momentum keeps some memory of where you were going before. This helps you:
-- <strong>Roll through small bumps</strong> (escape local minima)
-- <strong>Speed up in consistent directions</strong> (valleys)<br />
-- <strong>Slow down when direction changes</strong> (near the bottom)</p>
-<p><strong>Bowling ball analogy:</strong> A heavy bowling ball doesn't stop immediately when it hits a small bump - it uses its momentum to keep rolling toward the pins (optimal solution).</p>
-<p><strong>Understanding the formula:</strong>
-- $\mathbf{v}_t$: Current \"velocity\" (combination of current gradient + previous velocity)
-- $\beta \approx 0.9$: How much previous velocity to keep (90%)<br />
-- $(1-\beta) = 0.1$: How much current gradient to use (10%)
-- $\eta$: Learning rate (step size)</p>
-<p><strong>Adam Optimizer:</strong> Combines momentum with adaptive learning rates:
+<p>What momentum does: Like a ball rolling down a hill. Instead of just following the current slope (gradient), momentum keeps some memory of where you were going before. This helps you:</p>
+<ul>
+<li>Roll through small bumps (escape local minima)</li>
+<li>Speed up in consistent directions (valleys)  </li>
+<li>Slow down when direction changes (near the bottom)</li>
+</ul>
+<p>Bowling ball analogy: A heavy bowling ball doesn't stop immediately when it hits a small bump - it uses its momentum to keep rolling toward the pins (optimal solution).</p>
+<p>Understanding the formula:</p>
+<ul>
+<li>$\mathbf{v}_t$: Current \"velocity\" (combination of current gradient + previous velocity)</li>
+<li>$\beta \approx 0.9$: How much previous velocity to keep (90%)  </li>
+<li>$(1-\beta) = 0.1$: How much current gradient to use (10%)</li>
+<li>$\eta$: Learning rate (step size)</li>
+</ul>
+<p>Adam Optimizer: Combines momentum with adaptive learning rates:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>\begin{align}
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>\mathbf{m}_t &amp;= \beta_1 \mathbf{m}_{t-1} + (1-\beta_1) \nabla_\theta \mathcal{L} \quad (7)\\
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>\mathbf{v}_t &amp;= \beta_2 \mathbf{v}_{t-1} + (1-\beta_2) (\nabla_\theta \mathcal{L})^2 \quad (8)\\
@@ -1532,230 +1542,266 @@
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>\end{align}
 </code></pre></div></p>
 <p>where $\hat{\mathbf{m}}_t$, $\hat{\mathbf{v}}_t$ are bias-corrected estimates.</p>
-<p><strong>What Adam does - explained simply:</strong></p>
+<p>What Adam does - explained simply:</p>
 <p>Adam is like having a smart GPS that adjusts your driving based on two things:</p>
 <ol>
-<li><strong>$\mathbf{m}_t$ (momentum):</strong> "Which direction have we been going lately?" - Like momentum, but with exponential averaging</li>
-<li><strong>$\mathbf{v}_t$ (second moment):</strong> "How bumpy has the road been?" - Tracks how much the gradients have been changing</li>
+<li>$\mathbf{m}_t$ (momentum): "Which direction have we been going lately?" - Like momentum, but with exponential averaging</li>
+<li>$\mathbf{v}_t$ (second moment): "How bumpy has the road been?" - Tracks how much the gradients have been changing</li>
 </ol>
-<p><strong>The key insight:</strong> If the road has been very bumpy (high variance in gradients), take smaller steps. If it's been smooth and consistent, you can take bigger steps.</p>
-<p><strong>Breaking down the symbols:</strong>
-- $\beta_1 \approx 0.9$: How much to remember from previous direction (90%)
-- $\beta_2 \approx 0.999$: How much to remember from previous bumpiness (99.9%) 
-- $\epsilon \approx 10^{-8}$: Tiny number to prevent division by zero
-- $\hat{\mathbf{m}}_t$, $\hat{\mathbf{v}}_t$: Bias-corrected estimates (explained below)</p>
-<p><strong>Bias correction intuition:</strong> At the beginning, $\mathbf{m}_0 = \mathbf{v}_0 = 0$, so the averages are biased toward zero. We correct for this by dividing by $(1-\beta^t)$, which starts small and approaches 1.</p>
-<p><strong>Car analogy:</strong> Adam is like cruise control that:
-- Remembers which direction you've been driving (momentum)
-- Adjusts speed based on road conditions (adaptive learning rate)
-- Starts cautiously but gets more confident over time (bias correction)</p>
+<p>The key insight: If the road has been very bumpy (high variance in gradients), take smaller steps. If it's been smooth and consistent, you can take bigger steps.</p>
+<p>Breaking down the symbols:</p>
+<ul>
+<li>$\beta_1 \approx 0.9$: How much to remember from previous direction (90%)</li>
+<li>$\beta_2 \approx 0.999$: How much to remember from previous bumpiness (99.9%) </li>
+<li>$\epsilon \approx 10^{-8}$: Tiny number to prevent division by zero</li>
+<li>$\hat{\mathbf{m}}_t$, $\hat{\mathbf{v}}_t$: Bias-corrected estimates (explained below)</li>
+</ul>
+<p>Bias correction intuition: At the beginning, $\mathbf{m}_0 = \mathbf{v}_0 = 0$, so the averages are biased toward zero. We correct for this by dividing by $(1-\beta^t)$, which starts small and approaches 1.</p>
+<p>Car analogy: Adam is like cruise control that:</p>
+<ul>
+<li>Remembers which direction you've been driving (momentum)</li>
+<li>Adjusts speed based on road conditions (adaptive learning rate)</li>
+<li>Starts cautiously but gets more confident over time (bias correction)</li>
+</ul>
 <h3 id="92-advanced-optimizers">9.2 Advanced Optimizers<a class="headerlink" href="#92-advanced-optimizers" title="Permanent link">&para;</a></h3>
-<p><strong>AdamW vs Adam:</strong> AdamW decouples weight decay from gradient-based updates:</p>
-<p><strong>Adam with L2 regularization:</strong>
+<p>AdamW vs Adam: AdamW decouples weight decay from gradient-based updates:</p>
+<p>Adam with L2 regularization:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>\theta_t = \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon} - \eta \lambda \theta_{t-1}
 </code></pre></div></p>
-<p><strong>AdamW (decoupled weight decay):</strong>
+<p>AdamW (decoupled weight decay):
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>\theta_t = (1 - \eta \lambda) \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}
 </code></pre></div></p>
-<p><strong>Why AdamW is better:</strong> Weight decay is applied regardless of gradient magnitude, leading to better generalization.</p>
-<p><strong>$\beta_2$ Warmup:</strong> Start with high $\beta_2$ (e.g., 0.99) and gradually decrease to final value (e.g., 0.999) over first few thousand steps. Helps with training stability.</p>
-<p><strong>Gradient Accumulation:</strong> Simulate larger batch sizes:
-💻 <strong>Implementation Example</strong>: For gradient accumulation implementation, see <a href="./pynb/math_ref/optimization.ipynb">Optimization Notebook</a></p>
+<p>Why AdamW is better: Weight decay is applied regardless of gradient magnitude, leading to better generalization.</p>
+<p>$\beta_2$ Warmup: Start with high $\beta_2$ (e.g., 0.99) and gradually decrease to final value (e.g., 0.999) over first few thousand steps. Helps with training stability.</p>
+<p>Gradient Accumulation: Simulate larger batch sizes:
+💻 Implementation Example: For gradient accumulation implementation, see <a href="./pynb/math_ref/optimization.ipynb">Optimization Notebook</a></p>
 <h3 id="93-learning-rate-schedules">9.3 Learning Rate Schedules<a class="headerlink" href="#93-learning-rate-schedules" title="Permanent link">&para;</a></h3>
-<p><strong>Why do we need schedules?</strong> Think of learning to drive: you start slow in the parking lot (warmup), drive at normal speed on the highway (main training), then slow down carefully when approaching your destination (decay).</p>
-<p><strong>Warmup:</strong> Gradually increase learning rate to avoid early instability:
+<p>Why do we need schedules? Think of learning to drive: you start slow in the parking lot (warmup), drive at normal speed on the highway (main training), then slow down carefully when approaching your destination (decay).</p>
+<p>Warmup: Gradually increase learning rate to avoid early instability:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>\eta_t = \eta_{\text{max}} \cdot \min\left(\frac{t}{T_{\text{warmup}}}, 1\right) \quad (10)
 </code></pre></div></p>
-<p><strong>Why warmup works:</strong>
-- <strong>Early training is chaotic:</strong> Random initial weights create wild gradients
-- <strong>Start gentle:</strong> Small learning rate prevents the model from making terrible early decisions
-- <strong>Build confidence gradually:</strong> As the model learns basic patterns, we can be more aggressive</p>
-<p><strong>Driving analogy:</strong> You don't floor the gas pedal the moment you start your car in winter - you let it warm up first.</p>
-<p><strong>Cosine Decay:</strong> Smooth reduction following cosine curve prevents abrupt changes.</p>
-<p><strong>Why cosine decay?</strong> 
-- <strong>Smooth slowdown:</strong> Like gradually applying brakes instead of slamming them
-- <strong>Fine-tuning phase:</strong> Later in training, we want to make small adjustments, not big jumps
-- <strong>Mathematical smoothness:</strong> Cosine provides a natural, smooth curve from 1 to 0</p>
-<p><strong>Formula:</strong>
+<p>Why warmup works:</p>
+<ul>
+<li>Early training is chaotic: Random initial weights create wild gradients</li>
+<li>Start gentle: Small learning rate prevents the model from making terrible early decisions</li>
+<li>Build confidence gradually: As the model learns basic patterns, we can be more aggressive</li>
+</ul>
+<p>Driving analogy: You don't floor the gas pedal the moment you start your car in winter - you let it warm up first.</p>
+<p>Cosine Decay: Smooth reduction following cosine curve prevents abrupt changes.</p>
+<p>Why cosine decay? </p>
+<ul>
+<li>Smooth slowdown: Like gradually applying brakes instead of slamming them</li>
+<li>Fine-tuning phase: Later in training, we want to make small adjustments, not big jumps</li>
+<li>Mathematical smoothness: Cosine provides a natural, smooth curve from 1 to 0</li>
+</ul>
+<p>Formula:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>\eta_t = \eta_{\text{max}} \cdot 0.5 \left(1 + \cos\left(\pi \cdot \frac{t - T_{\text{warmup}}}{T_{\text{total}} - T_{\text{warmup}}}\right)\right)
 </code></pre></div></p>
-<p><strong>Real-world analogy:</strong> Like landing an airplane - you approach fast, then gradually slow down for a smooth landing, not a crash.</p>
-<p><strong>Original Transformer Schedule:</strong> Combines warmup with inverse square root decay:
+<p>Real-world analogy: Like landing an airplane - you approach fast, then gradually slow down for a smooth landing, not a crash.</p>
+<p>Original Transformer Schedule: Combines warmup with inverse square root decay:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>\eta_t = d_{\text{model}}^{-0.5} \cdot \min(t^{-0.5}, t \cdot T_{\text{warmup}}^{-1.5})
 </code></pre></div></p>
-<p><strong>When to use cosine vs original:</strong> Cosine for fine-tuning and shorter training; original schedule for training from scratch with very large models.</p>
+<p>When to use cosine vs original: Cosine for fine-tuning and shorter training; original schedule for training from scratch with very large models.</p>
 <h3 id="94-gradient-clipping">9.4 Gradient Clipping<a class="headerlink" href="#94-gradient-clipping" title="Permanent link">&para;</a></h3>
-<p><strong>The Problem:</strong> Sometimes gradients become extremely large (exploding gradients), causing the model to make huge, destructive updates.</p>
-<p><strong>The Solution:</strong> Clip (limit) the gradients to a maximum norm.</p>
-<p><strong>Global Norm Clipping:</strong>
+<p>The Problem: Sometimes gradients become extremely large (exploding gradients), causing the model to make huge, destructive updates.</p>
+<p>The Solution: Clip (limit) the gradients to a maximum norm.</p>
+<p>Global Norm Clipping:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>\tilde{g} = \min\left(1, \frac{c}{\|\mathbf{g}\|_2}\right) \mathbf{g} \quad (11)
 </code></pre></div></p>
-<p><strong>What this does intuitively:</strong>
-- Calculate the total "size" of all gradients combined: $|\mathbf{g}|_2$
-- If this size exceeds our limit $c$, scale all gradients down proportionally
-- If it's within the limit, leave gradients unchanged</p>
-<p><strong>Speedometer analogy:</strong> Like a speed limiter in a car. If you try to go 120 mph but the limit is 65 mph, it scales your speed down to 65 mph while keeping you in the same direction.</p>
-<p><strong>Why proportional scaling?</strong> We want to keep the relative direction of updates the same, just make them smaller. It's like turning down the volume on music - all frequencies get reduced equally.</p>
-<p><strong>Example:</strong>
-- Your gradients total to norm 50, but your clip value is 5
-- Scaling factor: $\min(1, 5/50) = 0.1$<br />
-- All gradients get multiplied by 0.1 (reduced to 10% of original size)</p>
+<p>What this does intuitively:</p>
+<ul>
+<li>Calculate the total "size" of all gradients combined: $|\mathbf{g}|_2$</li>
+<li>If this size exceeds our limit $c$, scale all gradients down proportionally</li>
+<li>If it's within the limit, leave gradients unchanged</li>
+</ul>
+<p>Speedometer analogy: Like a speed limiter in a car. If you try to go 120 mph but the limit is 65 mph, it scales your speed down to 65 mph while keeping you in the same direction.</p>
+<p>Why proportional scaling? We want to keep the relative direction of updates the same, just make them smaller. It's like turning down the volume on music - all frequencies get reduced equally.</p>
+<p>Example:</p>
+<ul>
+<li>Your gradients total to norm 50, but your clip value is 5</li>
+<li>Scaling factor: $\min(1, 5/50) = 0.1$  </li>
+<li>All gradients get multiplied by 0.1 (reduced to 10% of original size)</li>
+</ul>
 <h3 id="95-numerical-stability">9.5 Numerical Stability<a class="headerlink" href="#95-numerical-stability" title="Permanent link">&para;</a></h3>
-<p><strong>Log-Sum-Exp Trick:</strong> For numerical stability in softmax:
+<p>Log-Sum-Exp Trick: For numerical stability in softmax:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>\log\left(\sum_{i=1}^n e^{x_i}\right) = c + \log\left(\sum_{i=1}^n e^{x_i - c}\right) \quad (12)
 </code></pre></div></p>
 <p>where $c = \max_i x_i$ prevents overflow.</p>
 <h2 id="10-efficient-attention--scaling">10. Efficient Attention &amp; Scaling<a class="headerlink" href="#10-efficient-attention--scaling" title="Permanent link">&para;</a></h2>
 <h3 id="101-complexity-analysis">10.1 Complexity Analysis<a class="headerlink" href="#101-complexity-analysis" title="Permanent link">&para;</a></h3>
-<p><strong>Standard Attention Complexity:</strong>
-- Time: $O(n^2 d)$ for sequence length $n$, model dimension $d$
-- Space: $O(n^2 + nd)$ for attention matrix and activations</p>
-<p><strong>Memory Bottleneck:</strong> Attention matrix $A \in \mathbb{R}^{n \times n}$ dominates memory usage for long sequences.</p>
-<p><strong>Detailed Complexity Breakdown:</strong>
-1. <strong>QK^T computation</strong>: $O(n^2 d)$ time, $O(n^2)$ space
-2. <strong>Softmax normalization</strong>: $O(n^2)$ time and space
-3. <strong>Attention-Value multiplication</strong>: $O(n^2 d)$ time, $O(nd)$ space
-4. <strong>Total</strong>: $O(n^2 d)$ time, $O(n^2 + nd)$ space</p>
-<p><strong>Scaling Challenges:</strong>
-- Quadratic scaling limits practical sequence lengths
-- Memory requirements grow quadratically with sequence length
-- Computational cost increases quadratically even with parallelization</p>
+<p>Standard Attention Complexity:</p>
+<ul>
+<li>Time: $O(n^2 d)$ for sequence length $n$, model dimension $d$</li>
+<li>Space: $O(n^2 + nd)$ for attention matrix and activations</li>
+</ul>
+<p>Memory Bottleneck: Attention matrix $A \in \mathbb{R}^{n \times n}$ dominates memory usage for long sequences.</p>
+<p>Detailed Complexity Breakdown:</p>
+<ol>
+<li>QK^T computation: $O(n^2 d)$ time, $O(n^2)$ space</li>
+<li>Softmax normalization: $O(n^2)$ time and space</li>
+<li>Attention-Value multiplication: $O(n^2 d)$ time, $O(nd)$ space</li>
+<li>Total: $O(n^2 d)$ time, $O(n^2 + nd)$ space</li>
+</ol>
+<p>Scaling Challenges:</p>
+<ul>
+<li>Quadratic scaling limits practical sequence lengths</li>
+<li>Memory requirements grow quadratically with sequence length</li>
+<li>Computational cost increases quadratically even with parallelization</li>
+</ul>
 <h3 id="102-flashattention-memory-efficient-attention">10.2 FlashAttention: Memory-Efficient Attention<a class="headerlink" href="#102-flashattention-memory-efficient-attention" title="Permanent link">&para;</a></h3>
-<p><strong>Core Idea:</strong> Compute attention without materializing the full $n \times n$ attention matrix.</p>
-<p><strong>Tiling Strategy:</strong>
-1. Divide $Q$, $K$, $V$ into blocks
-2. Compute attention scores block by block
-3. Use online softmax to maintain numerical stability
-4. Accumulate results without storing intermediate attention weights</p>
-<p><strong>Memory Reduction:</strong> From $O(n^2)$ to $O(n)$ memory complexity for the attention computation.</p>
-<p><strong>Speed Improvement:</strong> Better GPU utilization through reduced memory bandwidth requirements.</p>
-<p><strong>Key Insight:</strong> Trade computational redundancy for memory efficiency - recompute rather than store.</p>
+<p>Core Idea: Compute attention without materializing the full $n \times n$ attention matrix.</p>
+<p>Tiling Strategy:</p>
+<ol>
+<li>Divide $Q$, $K$, $V$ into blocks</li>
+<li>Compute attention scores block by block</li>
+<li>Use online softmax to maintain numerical stability</li>
+<li>Accumulate results without storing intermediate attention weights</li>
+</ol>
+<p>Memory Reduction: From $O(n^2)$ to $O(n)$ memory complexity for the attention computation.</p>
+<p>Speed Improvement: Better GPU utilization through reduced memory bandwidth requirements.</p>
+<p>Key Insight: Trade computational redundancy for memory efficiency - recompute rather than store.</p>
 <h3 id="103-multi-query-and-grouped-query-attention">10.3 Multi-Query and Grouped-Query Attention<a class="headerlink" href="#103-multi-query-and-grouped-query-attention" title="Permanent link">&para;</a></h3>
-<p><strong>Multi-Query Attention (MQA):</strong> Share key and value projections across heads:
-- Queries: $Q \in \mathbb{R}^{B \times H \times n \times d_k}$ (per-head)
-- Keys/Values: $K, V \in \mathbb{R}^{B \times 1 \times n \times d_k}$ (shared)</p>
-<p><strong>Grouped-Query Attention (GQA):</strong> Intermediate approach - group heads:
-- Divide $H$ heads into $G$ groups
-- Each group shares K, V projections
-- Reduces KV cache size by factor $H/G$</p>
-<p><strong>KV Cache Memory Analysis:</strong>
-- <strong>Standard MHA:</strong> $2 \cdot B \cdot H \cdot n \cdot d_k$ parameters
-- <strong>MQA:</strong> $2 \cdot B \cdot 1 \cdot n \cdot d_k$ parameters (H× reduction)
-- <strong>GQA:</strong> $2 \cdot B \cdot G \cdot n \cdot d_k$ parameters</p>
-<p><strong>Quantization:</strong> Reduce memory further with int8/fp16 KV cache storage.</p>
+<p>Multi-Query Attention (MQA): Share key and value projections across heads:</p>
+<ul>
+<li>Queries: $Q \in \mathbb{R}^{B \times H \times n \times d_k}$ (per-head)</li>
+<li>Keys/Values: $K, V \in \mathbb{R}^{B \times 1 \times n \times d_k}$ (shared)</li>
+</ul>
+<p>Grouped-Query Attention (GQA): Intermediate approach - group heads:</p>
+<ul>
+<li>Divide $H$ heads into $G$ groups</li>
+<li>Each group shares K, V projections</li>
+<li>Reduces KV cache size by factor $H/G$</li>
+</ul>
+<p>KV Cache Memory Analysis:</p>
+<ul>
+<li>Standard MHA: $2 \cdot B \cdot H \cdot n \cdot d_k$ parameters</li>
+<li>MQA: $2 \cdot B \cdot 1 \cdot n \cdot d_k$ parameters (H× reduction)</li>
+<li>GQA: $2 \cdot B \cdot G \cdot n \cdot d_k$ parameters</li>
+</ul>
+<p>Quantization: Reduce memory further with int8/fp16 KV cache storage.</p>
 <h3 id="104-kv-caching-for-autoregressive-generation">10.4 KV Caching for Autoregressive Generation<a class="headerlink" href="#104-kv-caching-for-autoregressive-generation" title="Permanent link">&para;</a></h3>
-<p><strong>Key Insight:</strong> During generation, keys and values for previous tokens don't change.</p>
-<p><strong>Cache Update:</strong></p>
+<p>Key Insight: During generation, keys and values for previous tokens don't change.</p>
+<p>Cache Update:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>K_{\text{cache}} \gets \mathrm{concat}(K_{\text{cache}},\ k_{\text{new}}) \tag{42}
 </code></pre></div>
 <ul>
-<li><strong>$K_{\text{cache}}$</strong>: Cached keys from previous tokens.</li>
-<li><strong>$V_{\text{cache}}$</strong>: Cached values from previous tokens.</li>
-<li><strong>$k_{\text{new}}, v_{\text{new}}$</strong>: Key and value for the new token.</li>
-<li><strong>$q_{\text{new}}$</strong>: Query for the new token.</li>
+<li>$K_{\text{cache}}$: Cached keys from previous tokens.</li>
+<li>$V_{\text{cache}}$: Cached values from previous tokens.</li>
+<li>$k_{\text{new}}, v_{\text{new}}$: Key and value for the new token.</li>
+<li>$q_{\text{new}}$: Query for the new token.</li>
 </ul>
 <p>At each generation step, append the new key and value to the cache, then compute attention using the full cache.</p>
-<p><strong>Memory Trade-off:</strong> Cache size grows as $O(nd)$ but eliminates $O(n^2)$ recomputation.</p>
-<p>💻 <strong>Implementation Example</strong>: For KV Cache implementation, see <a href="./pynb/math_ref/advanced_concepts.ipynb">Advanced Concepts Notebook</a></p>
+<p>Memory Trade-off: Cache size grows as $O(nd)$ but eliminates $O(n^2)$ recomputation.</p>
+<p>💻 Implementation Example: For KV Cache implementation, see <a href="./pynb/math_ref/advanced_concepts.ipynb">Advanced Concepts Notebook</a></p>
 <h3 id="105-linear-attention-approximations">10.5 Linear Attention Approximations<a class="headerlink" href="#105-linear-attention-approximations" title="Permanent link">&para;</a></h3>
-<p><strong>Kernel Method View:</strong> Approximate $\text{softmax}(\mathbf{q}^T\mathbf{k})$ with $\phi(\mathbf{q})^T \phi(\mathbf{k})$ for feature map $\phi$.</p>
-<p><strong>Linear Attention:</strong>
+<p>Kernel Method View: Approximate $\text{softmax}(\mathbf{q}^T\mathbf{k})$ with $\phi(\mathbf{q})^T \phi(\mathbf{k})$ for feature map $\phi$.</p>
+<p>Linear Attention:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>\text{LinAttn}(Q,K,V) = \frac{\phi(Q)(\phi(K)^T V)}{\phi(Q)(\phi(K)^T \mathbf{1})} \quad (45)
 </code></pre></div></p>
-<p><strong>Complexity Reduction:</strong> Reduces from $O(n^2 d)$ to $O(nd^2)$ when $d &lt; n$.</p>
+<p>Complexity Reduction: Reduces from $O(n^2 d)$ to $O(nd^2)$ when $d &lt; n$.</p>
 <h2 id="11-regularization-generalization-and-calibration">11. Regularization, Generalization, and Calibration<a class="headerlink" href="#11-regularization-generalization-and-calibration" title="Permanent link">&para;</a></h2>
 <h3 id="111-dropout-in-transformers">11.1 Dropout in Transformers<a class="headerlink" href="#111-dropout-in-transformers" title="Permanent link">&para;</a></h3>
-<p><strong>Attention Dropout:</strong> Applied to attention weights:
+<p>Attention Dropout: Applied to attention weights:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>A_{\text{dropped}} = \text{Dropout}(\text{softmax}(QK^T/\sqrt{d_k})) \quad (46)
 </code></pre></div></p>
-<p><strong>FFN Dropout:</strong> Applied after first linear transformation:
+<p>FFN Dropout: Applied after first linear transformation:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>\text{FFN}(\mathbf{x}) = W_2 \cdot \text{Dropout}(\text{GELU}(W_1 \mathbf{x})) \quad (47)
 </code></pre></div></p>
 <h3 id="112-evaluation-and-calibration">11.2 Evaluation and Calibration<a class="headerlink" href="#112-evaluation-and-calibration" title="Permanent link">&para;</a></h3>
-<p><strong>Expected Calibration Error (ECE):</strong> Measures how well predicted probabilities match actual outcomes:
+<p>Expected Calibration Error (ECE): Measures how well predicted probabilities match actual outcomes:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>\text{ECE} = \sum_{m=1}^M \frac{|B_m|}{n} |\text{acc}(B_m) - \text{conf}(B_m)|
 </code></pre></div>
 where $B_m$ are probability bins, $\text{acc}$ is accuracy, $\text{conf}$ is confidence.</p>
-<p><strong>Temperature Scaling:</strong> Post-training calibration method:
+<p>Temperature Scaling: Post-training calibration method:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>P_{\text{cal}}(y|x) = \text{softmax}(\mathbf{z}/T)
 </code></pre></div>
 where $T &gt; 1$ makes predictions less confident, $T &lt; 1$ more confident.</p>
-<p><strong>Perplexity Dependence on Tokenizer:</strong> PPL comparisons only valid with same tokenizer. Different tokenizers create different sequence lengths and vocabulary sizes.</p>
-<p><strong>Example:</strong> "hello world" might be:
-- GPT tokenizer: ["hel", "lo", " wor", "ld"] (4 tokens)
-- Character-level: ["h", "e", "l", "l", "o", " ", "w", "o", "r", "l", "d"] (11 tokens)</p>
+<p>Perplexity Dependence on Tokenizer: PPL comparisons only valid with same tokenizer. Different tokenizers create different sequence lengths and vocabulary sizes.</p>
+<p>Example: "hello world" might be:</p>
+<ul>
+<li>GPT tokenizer: ["hel", "lo", " wor", "ld"] (4 tokens)</li>
+<li>Character-level: ["h", "e", "l", "l", "o", " ", "w", "o", "r", "l", "d"] (11 tokens)</li>
+</ul>
 <h3 id="113-advanced-tokenization">11.3 Advanced Tokenization<a class="headerlink" href="#113-advanced-tokenization" title="Permanent link">&para;</a></h3>
-<p><strong>Byte-Level BPE vs Unigram:</strong>
-- <strong>BPE:</strong> Greedily merges frequent character pairs, handles any Unicode
-- <strong>Unigram:</strong> Probabilistic model, often better for morphologically rich languages</p>
-<p><strong>Special Token Handling:</strong>
-- <strong>BOS (Beginning of Sequence):</strong> Often used for unconditional generation
-- <strong>EOS (End of Sequence):</strong> Signals completion, crucial for proper training
-- <strong>PAD:</strong> For batching variable-length sequences</p>
-<p><strong>Embedding/LM-Head Tying Caveats:</strong>
-When sharing weights, ensure shape compatibility:
-- Embedding: $E \in \mathbb{R}^{V \times d_{\text{model}}}$
-- LM head: needs $\mathbb{R}^{d_{\text{model}} \times V}$
-- Solution: Use $E^T$ for output projection (as shown in equation 40)</p>
+<p>Byte-Level BPE vs Unigram:</p>
+<ul>
+<li>BPE: Greedily merges frequent character pairs, handles any Unicode</li>
+<li>Unigram: Probabilistic model, often better for morphologically rich languages</li>
+</ul>
+<p>Special Token Handling:</p>
+<ul>
+<li>BOS (Beginning of Sequence): Often used for unconditional generation</li>
+<li>EOS (End of Sequence): Signals completion, crucial for proper training</li>
+<li>PAD: For batching variable-length sequences</li>
+</ul>
+<p>Embedding/LM-Head Tying Caveats:
+When sharing weights, ensure shape compatibility:</p>
+<ul>
+<li>Embedding: $E \in \mathbb{R}^{V \times d_{\text{model}}}$</li>
+<li>LM head: needs $\mathbb{R}^{d_{\text{model}} \times V}$</li>
+<li>Solution: Use $E^T$ for output projection (as shown in equation 40)</li>
+</ul>
 <h3 id="114-label-smoothing">11.4 Label Smoothing<a class="headerlink" href="#114-label-smoothing" title="Permanent link">&para;</a></h3>
-<p><strong>Smooth Labels:</strong> Replace one-hot targets with:
+<p>Smooth Labels: Replace one-hot targets with:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>y_{\text{smooth}} = (1-\alpha) y_{\text{true}} + \frac{\alpha}{V} \mathbf{1} \quad (48)
 </code></pre></div></p>
-<p><strong>Effect on Gradients:</strong> Prevents overconfident predictions and improves calibration.</p>
+<p>Effect on Gradients: Prevents overconfident predictions and improves calibration.</p>
 <h2 id="14-common-pitfalls--misconceptions">14. Common Pitfalls &amp; Misconceptions<a class="headerlink" href="#14-common-pitfalls--misconceptions" title="Permanent link">&para;</a></h2>
 <h3 id="141-high-dimensional-distance-misconceptions">14.1 High-Dimensional Distance Misconceptions<a class="headerlink" href="#141-high-dimensional-distance-misconceptions" title="Permanent link">&para;</a></h3>
-<p><strong>Pitfall:</strong> Using Euclidean distance instead of cosine similarity in high dimensions.
-<strong>Fix:</strong> In $d &gt; 100$, most vectors are approximately orthogonal, making cosine similarity more discriminative.</p>
+<p>Pitfall: Using Euclidean distance instead of cosine similarity in high dimensions.
+Fix: In $d &gt; 100$, most vectors are approximately orthogonal, making cosine similarity more discriminative.</p>
 <h3 id="142-attention-scaling-mistakes">14.2 Attention Scaling Mistakes<a class="headerlink" href="#142-attention-scaling-mistakes" title="Permanent link">&para;</a></h3>
-<p><strong>Pitfall:</strong> Forgetting $1/\sqrt{d_k}$ scaling or using wrong dimension.
-<strong>Symptom:</strong> Attention weights become too peaked, leading to poor gradients.
-<strong>Fix:</strong> Always scale by $\sqrt{d_k}$ where $d_k$ is the key dimension. Note that $d_k=d_{\text{model}}/h$ under common implementations.</p>
+<p>Pitfall: Forgetting $1/\sqrt{d_k}$ scaling or using wrong dimension.
+Symptom: Attention weights become too peaked, leading to poor gradients.
+Fix: Always scale by $\sqrt{d_k}$ where $d_k$ is the key dimension. Note that $d_k=d_{\text{model}}/h$ under common implementations.</p>
 <h3 id="143-layernorm-placement">14.3 LayerNorm Placement<a class="headerlink" href="#143-layernorm-placement" title="Permanent link">&para;</a></h3>
-<p><strong>Pitfall:</strong> Using post-LayerNorm (original) instead of pre-LayerNorm (modern).
-<strong>Issue:</strong> Post-LN can lead to training instability in deep models.
-<strong>Modern Practice:</strong> Apply LayerNorm before attention and FFN blocks.</p>
+<p>Pitfall: Using post-LayerNorm (original) instead of pre-LayerNorm (modern).
+Issue: Post-LN can lead to training instability in deep models.
+Modern Practice: Apply LayerNorm before attention and FFN blocks.</p>
 <h3 id="144-softmax-temperature-misuse">14.4 Softmax Temperature Misuse<a class="headerlink" href="#144-softmax-temperature-misuse" title="Permanent link">&para;</a></h3>
-<p><strong>Pitfall:</strong> Applying temperature scaling inconsistently.
-<strong>Correct Usage:</strong> Temperature $\tau$ in $\text{softmax}(\mathbf{z}/\tau)$ controls sharpness:
-- $\tau &gt; 1$: Smoother distribution
-- $\tau &lt; 1$: Sharper distribution</p>
+<p>Pitfall: Applying temperature scaling inconsistently.
+Correct Usage: Temperature $\tau$ in $\text{softmax}(\mathbf{z}/\tau)$ controls sharpness:</p>
+<ul>
+<li>$\tau &gt; 1$: Smoother distribution</li>
+<li>$\tau &lt; 1$: Sharper distribution</li>
+</ul>
 <h2 id="15-summary--what-to-learn-next">15. Summary &amp; What to Learn Next<a class="headerlink" href="#15-summary--what-to-learn-next" title="Permanent link">&para;</a></h2>
 <h3 id="151-key-mathematical-insights">15.1 Key Mathematical Insights<a class="headerlink" href="#151-key-mathematical-insights" title="Permanent link">&para;</a></h3>
 <ol>
-<li><strong>Attention as Similarity Search:</strong> Q/K/V framework emerges naturally from maximum inner product search</li>
-<li><strong>Scaling Laws:</strong> $1/\sqrt{d_k}$ scaling prevents attention collapse (overly peaked distributions) in high dimensions  </li>
-<li><strong>Residual Connections:</strong> Enable gradient flow through deep networks via skip connections</li>
-<li><strong>Multi-Head Architecture:</strong> Parallel subspace projections enable diverse attention patterns</li>
+<li>Attention as Similarity Search: Q/K/V framework emerges naturally from maximum inner product search</li>
+<li>Scaling Laws: $1/\sqrt{d_k}$ scaling prevents attention collapse (overly peaked distributions) in high dimensions  </li>
+<li>Residual Connections: Enable gradient flow through deep networks via skip connections</li>
+<li>Multi-Head Architecture: Parallel subspace projections enable diverse attention patterns</li>
 </ol>
 <h3 id="152-advanced-techniques-covered">15.2 Advanced Techniques Covered<a class="headerlink" href="#152-advanced-techniques-covered" title="Permanent link">&para;</a></h3>
 <ol>
-<li><strong>Optimization:</strong> SGD momentum, Adam, AdamW with proper learning rate schedules</li>
-<li><strong>Efficiency:</strong> FlashAttention, Multi-Query/Grouped-Query Attention, KV caching</li>
-<li><strong>Regularization:</strong> Dropout, label smoothing, calibration techniques</li>
-<li><strong>Numerical Stability:</strong> Gradient clipping, mixed precision, proper initialization</li>
+<li>Optimization: SGD momentum, Adam, AdamW with proper learning rate schedules</li>
+<li>Efficiency: FlashAttention, Multi-Query/Grouped-Query Attention, KV caching</li>
+<li>Regularization: Dropout, label smoothing, calibration techniques</li>
+<li>Numerical Stability: Gradient clipping, mixed precision, proper initialization</li>
 </ol>
 <h3 id="153-next-steps">15.3 Next Steps<a class="headerlink" href="#153-next-steps" title="Permanent link">&para;</a></h3>
-<p><strong>Scaling Laws:</strong> Study how performance scales with model size, data, and compute (Kaplan et al., 2020)</p>
-<p><strong>Parameter-Efficient Fine-Tuning:</strong> LoRA, adapters, and other methods for efficient adaptation</p>
-<p><strong>Retrieval-Augmented Models:</strong> Combining parametric knowledge with external memory</p>
-<p><strong>Advanced Architectures:</strong> Mixture of Experts, sparse attention patterns, and alternative architectures</p>
+<p>Scaling Laws: Study how performance scales with model size, data, and compute (Kaplan et al., 2020)</p>
+<p>Parameter-Efficient Fine-Tuning: LoRA, adapters, and other methods for efficient adaptation</p>
+<p>Retrieval-Augmented Models: Combining parametric knowledge with external memory</p>
+<p>Advanced Architectures: Mixture of Experts, sparse attention patterns, and alternative architectures</p>
 <hr />
 <h2 id="connection-to-part-1">Connection to Part 1<a class="headerlink" href="#connection-to-part-1" title="Permanent link">&para;</a></h2>
 <p>This tutorial builds directly on the foundations established in <a href="../transformers_math1/">Part 1: Building Intuition and Core Concepts</a>. Together, these two parts provide a complete mathematical understanding of Transformer architectures, from basic principles through advanced implementation considerations.</p>
 <p>If you haven't already, we highly recommend reading Part 1 first to build the necessary intuition before diving into these advanced topics.</p>
 <hr />
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
-<p><strong>Core Papers:</strong>
+<p>Core Papers:
 [1] Vaswani, A., et al. "Attention is all you need." <em>Advances in Neural Information Processing Systems</em>, 2017.
 [2] Devlin, J., et al. "BERT: Pre-training of deep bidirectional transformers for language understanding." <em>NAACL-HLT</em>, 2019.
 [3] Brown, T., et al. "Language models are few-shot learners." <em>Advances in Neural Information Processing Systems</em>, 2020.</p>
-<p><strong>Mathematical Foundations:</strong>
+<p>Mathematical Foundations:
 [4] Kaplan, J., et al. "Scaling laws for neural language models." <em>arXiv preprint arXiv:2001.08361</em>, 2020.
 [5] Su, J., et al. "RoFormer: Enhanced transformer with rotary position embedding." <em>arXiv preprint arXiv:2104.09864</em>, 2021.</p>
-<p><strong>Efficiency &amp; Scaling:</strong>
+<p>Efficiency &amp; Scaling:
 [6] Dao, T., et al. "FlashAttention: Fast and memory-efficient exact attention with IO-awareness." <em>Advances in Neural Information Processing Systems</em>, 2022.
 [7] Shazeer, N. "Fast transformer decoding: One write-head is all you need." <em>arXiv preprint arXiv:1911.02150</em>, 2019.</p>
-<p><strong>Training &amp; Optimization:</strong>
+<p>Training &amp; Optimization:
 [8] Loshchilov, I., &amp; Hutter, F. "Decoupled weight decay regularization." <em>ICLR</em>, 2019.
 [9] Xiong, R., et al. "On layer normalization in the transformer architecture." <em>ICML</em>, 2020.
 [10] Press, O., &amp; Wolf, L. "Using the output embedding to improve language models." <em>EACL</em>, 2017.</p>
@@ -1840,7 +1886,7 @@ When sharing weights, ensure shape compatibility:
 </tr>
 </tbody>
 </table>
-<p><strong>Convention:</strong> $B$ = batch size, $H$ = number of heads, $n$ = sequence length, $d_k = d_v = d_{\text{model}}/H$</p>
+<p>Convention: $B$ = batch size, $H$ = number of heads, $n$ = sequence length, $d_k = d_v = d_{\text{model}}/H$</p>
 <h2 id="appendix-b-key-derivations">Appendix B: Key Derivations<a class="headerlink" href="#appendix-b-key-derivations" title="Permanent link">&para;</a></h2>
 <h3 id="b1-softmax-gradient">B.1 Softmax Gradient<a class="headerlink" href="#b1-softmax-gradient" title="Permanent link">&para;</a></h3>
 <p>For $p_i = \frac{e^{z_i}}{\sum_j e^{z_j}}$:</p>
@@ -1850,9 +1896,9 @@ When sharing weights, ensure shape compatibility:
 <a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>\end{cases} = p_i(\delta_{ij} - p_j)
 </code></pre></div>
 <h3 id="b2-matrix-calculus-identities">B.2 Matrix Calculus Identities<a class="headerlink" href="#b2-matrix-calculus-identities" title="Permanent link">&para;</a></h3>
-<p><strong>Trace-Vec Identity:</strong> $\text{tr}(AB) = \text{vec}(A^T)^T \text{vec}(B)$</p>
-<p><strong>Kronecker Product:</strong> $\text{vec}(AXB) = (B^T \otimes A)\text{vec}(X)$</p>
-<p><strong>Chain Rule for Matrices:</strong> $\frac{\partial f}{\partial X} = \sum_Y \frac{\partial f}{\partial Y} \frac{\partial Y}{\partial X}$</p>
+<p>Trace-Vec Identity: $\text{tr}(AB) = \text{vec}(A^T)^T \text{vec}(B)$</p>
+<p>Kronecker Product: $\text{vec}(AXB) = (B^T \otimes A)\text{vec}(X)$</p>
+<p>Chain Rule for Matrices: $\frac{\partial f}{\partial X} = \sum_Y \frac{\partial f}{\partial Y} \frac{\partial Y}{\partial X}$</p>
 
 
 
@@ -1914,9 +1960,11 @@ When sharing weights, ensure shape compatibility:
     
       <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
+        <script src="../javascripts/mathjax-init.js"></script>
+      
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
-        <script src="../javascripts/mathjax.js"></script>
+        <script src="../javascripts/mathjax-refresh.js"></script>
       
     
   </body>

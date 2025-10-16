@@ -850,152 +850,184 @@
 <p>A concise historical reference covering the evolution of neural sequence modeling from MLPs to Transformers. For detailed tutorials, start from <a href="../nn_intro/">nn_intro.md</a>.</p>
 <h2 id="1-timeline-and-impact">1. Timeline and Impact<a class="headerlink" href="#1-timeline-and-impact" title="Permanent link">&para;</a></h2>
 <h3 id="historical-timeline">Historical Timeline<a class="headerlink" href="#historical-timeline" title="Permanent link">&para;</a></h3>
-<p><strong>1986</strong>: <strong>Backpropagation</strong> (Rumelhart et al.)</p>
+<p>1986: <strong>Backpropagation</strong> (Rumelhart et al.)</p>
 <ul>
 <li>Enables training of multi-layer neural networks</li>
 <li>Foundation for all subsequent work</li>
 </ul>
-<p><strong>1990</strong>: <strong>Recurrent Neural Networks</strong> (Elman)</p>
+<p>1990: <strong>Recurrent Neural Networks</strong> (Elman)</p>
 <ul>
 <li>First successful sequence modeling with neural networks</li>
 <li>Introduction of hidden state concept</li>
 </ul>
-<p><strong>1997</strong>: <strong>LSTM</strong> (Hochreiter &amp; Schmidhuber)</p>
+<p>1997: <strong>LSTM</strong> (Hochreiter &amp; Schmidhuber)</p>
 <ul>
 <li>Solves vanishing gradient problem with gating mechanisms</li>
 <li>Enables learning of long-range dependencies</li>
 </ul>
-<p><strong>2014</strong>: <strong>GRU</strong> (Cho et al.)</p>
+<p>2014: <strong>GRU</strong> (Cho et al.)</p>
 <ul>
 <li>Simplified gating mechanism</li>
 <li>Often matches LSTM performance with fewer parameters</li>
 </ul>
-<p><strong>2014</strong>: <strong>Seq2Seq</strong> (Sutskever et al.)</p>
+<p>2014: <strong>Seq2Seq</strong> (Sutskever et al.)</p>
 <ul>
 <li>Encoder-decoder framework for sequence transformation</li>
 <li>Foundation for neural machine translation</li>
 </ul>
-<p><strong>2014</strong>: <strong>Attention Mechanism</strong> (Bahdanau et al.)</p>
+<p>2014: <strong>Attention Mechanism</strong> (Bahdanau et al.)</p>
 <ul>
 <li>Solves information bottleneck in seq2seq</li>
 <li>Allows selective focus on input parts</li>
 </ul>
-<p><strong>2015</strong>: <strong>Luong Attention</strong> (Luong et al.)</p>
+<p>2015: <strong>Luong Attention</strong> (Luong et al.)</p>
 <ul>
 <li>Alternative attention formulations</li>
 <li>Simpler computational mechanisms</li>
 </ul>
-<p><strong>2017</strong>: <strong>Transformer</strong> (Vaswani et al.)</p>
+<p>2017: <strong>Transformer</strong> (Vaswani et al.)</p>
 <ul>
 <li>"Attention Is All You Need"</li>
 <li>Eliminates recurrence, relies purely on attention</li>
 <li>Foundation for modern large language models</li>
 </ul>
-<p><strong>2018</strong>: <strong>BERT</strong> (Devlin et al.)</p>
+<p>2018: <strong>BERT</strong> (Devlin et al.)</p>
 <ul>
 <li>Bidirectional encoder representations from transformers</li>
 <li>Demonstrates power of pre-training + fine-tuning</li>
 </ul>
-<p><strong>2019</strong>: <strong>GPT-2</strong> (Radford et al.)</p>
+<p>2019: <strong>GPT-2</strong> (Radford et al.)</p>
 <ul>
 <li>Demonstrates scaling laws in language modeling</li>
 <li>Shows emergence of capabilities with scale</li>
 </ul>
-<p><strong>2020</strong>: <strong>GPT-3</strong> (Brown et al.)</p>
+<p>2020: <strong>GPT-3</strong> (Brown et al.)</p>
 <ul>
 <li>175B parameters, few-shot learning capabilities</li>
 <li>Demonstrates transformer scaling potential</li>
 </ul>
 <h3 id="impact-on-ai-and-society">Impact on AI and Society<a class="headerlink" href="#impact-on-ai-and-society" title="Permanent link">&para;</a></h3>
-<p><strong>Scientific Impact</strong>:</p>
+<p>Scientific Impact:</p>
 <ul>
-<li><strong>Natural Language Processing</strong>: Revolutionized translation, summarization, generation</li>
-<li><strong>Computer Vision</strong>: Vision Transformers (ViTs) competitive with CNNs</li>
-<li><strong>Multi-modal AI</strong>: Enables cross-modal understanding (text + images)</li>
-<li><strong>Scientific Computing</strong>: Applied to protein folding, drug discovery</li>
+<li>Natural Language Processing: Revolutionized translation, summarization, generation</li>
+<li>Computer Vision: Vision Transformers (ViTs) competitive with CNNs</li>
+<li>Multi-modal AI: Enables cross-modal understanding (text + images)</li>
+<li>Scientific Computing: Applied to protein folding, drug discovery</li>
 </ul>
-<p><strong>Industrial Impact</strong>:</p>
+<p>Industrial Impact:</p>
 <ul>
-<li><strong>Search Engines</strong>: Better understanding of search queries</li>
-<li><strong>Digital Assistants</strong>: More natural language interaction</li>
-<li><strong>Content Creation</strong>: Automated writing, coding assistance</li>
-<li><strong>Education</strong>: Personalized tutoring and content generation</li>
+<li>Search Engines: Better understanding of search queries</li>
+<li>Digital Assistants: More natural language interaction</li>
+<li>Content Creation: Automated writing, coding assistance</li>
+<li>Education: Personalized tutoring and content generation</li>
 </ul>
-<p><strong>Societal Considerations</strong>:</p>
+<p>Societal Considerations:</p>
 <ul>
-<li><strong>Democratization</strong>: Pre-trained models accessible to broader community</li>
-<li><strong>Computational Resources</strong>: Large models require significant energy and hardware</li>
-<li><strong>Bias and Fairness</strong>: Importance of training data quality and representation</li>
-<li><strong>Capabilities and Safety</strong>: Need for responsible development and deployment</li>
+<li>Democratization: Pre-trained models accessible to broader community</li>
+<li>Computational Resources: Large models require significant energy and hardware</li>
+<li>Bias and Fairness: Importance of training data quality and representation</li>
+<li>Capabilities and Safety: Need for responsible development and deployment</li>
 </ul>
 <h3 id="key-lessons-from-the-evolution">Key Lessons from the Evolution<a class="headerlink" href="#key-lessons-from-the-evolution" title="Permanent link">&para;</a></h3>
-<p><strong>1. Incremental Innovation</strong>: Each breakthrough solved specific limitations of previous approaches</p>
-<p><strong>2. Mathematical Elegance</strong>: Simpler mathematical formulations often lead to better practical results</p>
-<p><strong>3. Computational Considerations</strong>: Algorithm design must consider available hardware and parallelization</p>
-<p><strong>4. Data-Driven Learning</strong>: Reducing inductive biases allows models to learn patterns from data</p>
-<p><strong>5. Scale Matters</strong>: Transformer architectures continue to improve with increased scale</p>
-<p><strong>6. Transfer Learning</strong>: Pre-trained models can be adapted to many downstream tasks</p>
+<ol>
+<li>
+<p>Incremental Innovation: Each breakthrough solved specific limitations of previous approaches</p>
+</li>
+<li>
+<p>Mathematical Elegance: Simpler mathematical formulations often lead to better practical results</p>
+</li>
+<li>
+<p>Computational Considerations: Algorithm design must consider available hardware and parallelization</p>
+</li>
+<li>
+<p>Data-Driven Learning: Reducing inductive biases allows models to learn patterns from data</p>
+</li>
+<li>
+<p>Scale Matters: Transformer architectures continue to improve with increased scale</p>
+</li>
+<li>
+<p>Transfer Learning: Pre-trained models can be adapted to many downstream tasks</p>
+</li>
+</ol>
 <h3 id="the-future-of-sequence-modeling">The Future of Sequence Modeling<a class="headerlink" href="#the-future-of-sequence-modeling" title="Permanent link">&para;</a></h3>
-<p><strong>Current Research Directions</strong>:</p>
+<p>Current Research Directions:</p>
 <ul>
-<li><strong>Efficiency</strong>: Reducing computational and memory requirements</li>
-<li><strong>Long Context</strong>: Handling even longer sequences efficiently  </li>
-<li><strong>Multimodal</strong>: Integrating different data types seamlessly</li>
-<li><strong>Interpretability</strong>: Understanding what large models learn</li>
-<li><strong>Specialized Architectures</strong>: Task-specific optimizations</li>
+<li>Efficiency: Reducing computational and memory requirements</li>
+<li>Long Context: Handling even longer sequences efficiently  </li>
+<li>Multimodal: Integrating different data types seamlessly</li>
+<li>Interpretability: Understanding what large models learn</li>
+<li>Specialized Architectures: Task-specific optimizations</li>
 </ul>
-<p><strong>Emerging Paradigms</strong>:</p>
+<p>Emerging Paradigms:</p>
 <ul>
-<li><strong>State Space Models</strong>: Alternative to attention for long sequences</li>
-<li><strong>Mixture of Experts</strong>: Sparse models with large capacity</li>
-<li><strong>Neural Architecture Search</strong>: Automated architecture design</li>
-<li><strong>Few-Shot Learning</strong>: Models that adapt quickly to new tasks</li>
+<li>State Space Models: Alternative to attention for long sequences</li>
+<li>Mixture of Experts: Sparse models with large capacity</li>
+<li>Neural Architecture Search: Automated architecture design</li>
+<li>Few-Shot Learning: Models that adapt quickly to new tasks</li>
 </ul>
 <hr />
 <h2 id="2-key-mathematical-progression">2. Key Mathematical Progression<a class="headerlink" href="#2-key-mathematical-progression" title="Permanent link">&para;</a></h2>
 <h3 id="evolution-of-core-equations">Evolution of Core Equations<a class="headerlink" href="#evolution-of-core-equations" title="Permanent link">&para;</a></h3>
-<p><strong>1. MLP (Fixed Input)</strong>:</p>
+<ol>
+<li>MLP (Fixed Input):</li>
+</ol>
 <p>$$
 \begin{aligned} y &amp;= \sigma(Wx + b) \end{aligned}
 $$</p>
 <ul>
-<li><strong>Limitation</strong>: Fixed input size</li>
-<li><strong>Innovation</strong>: Learned nonlinear transformations</li>
+<li>Limitation: Fixed input size</li>
+<li>
+<p>Innovation: Learned nonlinear transformations</p>
+</li>
+<li>
+<p>Vanilla RNN (Sequential Processing):</p>
+</li>
 </ul>
-<p><strong>2. Vanilla RNN (Sequential Processing)</strong>:</p>
 <p>$$
 \begin{aligned} h_t &amp;= \tanh(W_{hh}h_{t-1} + W_{xh}x_t + b) \end{aligned}
 $$</p>
 <ul>
-<li><strong>Innovation</strong>: Sequential state, variable length</li>
-<li><strong>Limitation</strong>: Vanishing gradients</li>
+<li>Innovation: Sequential state, variable length</li>
+<li>
+<p>Limitation: Vanishing gradients</p>
+</li>
+<li>
+<p>LSTM (Gated Memory):</p>
+</li>
 </ul>
-<p><strong>3. LSTM (Gated Memory)</strong>:</p>
 <p>$$
 \begin{aligned} C_t &amp;= f_t \odot C_{t-1} + i_t \odot \tilde{C}_t \end{aligned}
 $$</p>
 <ul>
-<li><strong>Innovation</strong>: Selective information flow</li>
-<li><strong>Limitation</strong>: Sequential processing</li>
+<li>Innovation: Selective information flow</li>
+<li>
+<p>Limitation: Sequential processing</p>
+</li>
+<li>
+<p>Attention (Selective Access):</p>
+</li>
 </ul>
-<p><strong>4. Attention (Selective Access)</strong>:</p>
 <p>$$
 \begin{aligned} c_t &amp;= \sum_{i=1}^{T} \alpha_{t,i} h_i^{enc} \end{aligned}
 $$</p>
 <ul>
-<li><strong>Innovation</strong>: Direct access to all encoder states</li>
-<li><strong>Limitation</strong>: Still sequential in encoder/decoder</li>
+<li>Innovation: Direct access to all encoder states</li>
+<li>
+<p>Limitation: Still sequential in encoder/decoder</p>
+</li>
+<li>
+<p>Self-Attention (Parallel Processing):</p>
+</li>
 </ul>
-<p><strong>5. Self-Attention (Parallel Processing)</strong>:</p>
 <p>$$
 \begin{aligned} \text{Attention}(Q, K, V) &amp;= \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V \end{aligned}
 $$</p>
 <ul>
-<li><strong>Innovation</strong>: Parallel processing, direct all-to-all connections</li>
-<li><strong>Achievement</strong>: Scalable, efficient, powerful</li>
+<li>Innovation: Parallel processing, direct all-to-all connections</li>
+<li>Achievement: Scalable, efficient, powerful</li>
 </ul>
 <h3 id="complexity-evolution">Complexity Evolution<a class="headerlink" href="#complexity-evolution" title="Permanent link">&para;</a></h3>
-<p><strong>Computational Complexity per Sequence</strong>:</p>
+<p>Computational Complexity per Sequence:</p>
 <table>
 <thead>
 <tr>
@@ -1032,16 +1064,16 @@ $$</p>
 </tr>
 </tbody>
 </table>
-<p><strong>Key Insight</strong>: Transformers trade space complexity (O(n²) attention matrix) for parallelization and modeling power.</p>
+<p>Key Insight: Transformers trade space complexity (O(n²) attention matrix) for parallelization and modeling power.</p>
 <hr />
 <h2 id="3-conclusion">3. Conclusion<a class="headerlink" href="#3-conclusion" title="Permanent link">&para;</a></h2>
 <p>The evolution from MLPs to Transformers represents one of the most significant progressions in machine learning history. Each innovation addressed specific limitations while introducing new capabilities:</p>
 <ul>
-<li><strong>MLPs</strong> established the foundation but couldn't handle sequences</li>
-<li><strong>RNNs</strong> introduced sequential processing but suffered from vanishing gradients</li>
-<li><strong>LSTMs/GRUs</strong> solved vanishing gradients but remained sequential</li>
-<li><strong>Attention</strong> eliminated information bottlenecks but still relied on recurrence</li>
-<li><strong>Transformers</strong> achieved parallel processing with direct connectivity</li>
+<li>MLPs established the foundation but couldn't handle sequences</li>
+<li>RNNs introduced sequential processing but suffered from vanishing gradients</li>
+<li>LSTMs/GRUs solved vanishing gradients but remained sequential</li>
+<li>Attention eliminated information bottlenecks but still relied on recurrence</li>
+<li>Transformers achieved parallel processing with direct connectivity</li>
 </ul>
 <p>This progression demonstrates how incremental mathematical innovations, combined with computational insights, can lead to revolutionary breakthroughs. The transformer architecture continues to drive advances across AI applications, from language understanding to scientific discovery.</p>
 <p>Understanding this historical progression provides crucial context for appreciating why transformers work so well and hints at future directions for sequence modeling research.</p>
@@ -1106,9 +1138,11 @@ $$</p>
     
       <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
+        <script src="../javascripts/mathjax-init.js"></script>
+      
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
-        <script src="../javascripts/mathjax.js"></script>
+        <script src="../javascripts/mathjax-refresh.js"></script>
       
     
   </body>

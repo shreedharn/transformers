@@ -1655,44 +1655,44 @@
 
 
 <h1 id="multi-layer-perceptrons-mlps-a-step-by-step-tutorial">Multi-Layer Perceptrons (MLPs): A Step-by-Step Tutorial<a class="headerlink" href="#multi-layer-perceptrons-mlps-a-step-by-step-tutorial" title="Permanent link">&para;</a></h1>
-<p><strong>Building on your neural network foundation:</strong> In the <a href="../nn_intro/">Neural Networks Introduction</a>, you learned how a single perceptron can solve simple problems like basic spam detection. But what happens when the patterns get more complex? This tutorial shows you how stacking multiple layers of perceptrons creates networks capable of learning any pattern—no matter how intricate.</p>
-<p><strong>What you'll learn:</strong> How MLPs combine multiple perceptrons into powerful networks, why depth enables learning complex patterns that single neurons cannot, and how these building blocks form the foundation of all modern neural architectures. We'll work through math and intuition together, with examples that demonstrate clear advantages over single perceptrons.</p>
+<p>Building on your neural network foundation: In the <a href="../nn_intro/">Neural Networks Introduction</a>, you learned how a single perceptron can solve simple problems like basic spam detection. But what happens when the patterns get more complex? This tutorial shows you how stacking multiple layers of perceptrons creates networks capable of learning any pattern—no matter how intricate.</p>
+<p>What you'll learn: How MLPs combine multiple perceptrons into powerful networks, why depth enables learning complex patterns that single neurons cannot, and how these building blocks form the foundation of all modern neural architectures. We'll work through math and intuition together, with examples that demonstrate clear advantages over single perceptrons.</p>
 <hr />
 <h2 id="1-what-is-an-mlp">1. What is an MLP?<a class="headerlink" href="#1-what-is-an-mlp" title="Permanent link">&para;</a></h2>
 <h3 id="recalling-the-perceptrons-success-and-limitations">Recalling the Perceptron's Success and Limitations<a class="headerlink" href="#recalling-the-perceptrons-success-and-limitations" title="Permanent link">&para;</a></h3>
 <p>In the previous tutorial, you saw a single perceptron successfully classify this spam email:</p>
-<p><strong>Email:</strong> "FREE VACATION!!! Click now!!!"<br />
-<strong>Features:</strong> [6 exclamations, has "free", 13 capitals] → <strong>87% spam probability</strong></p>
+<p>Email: "FREE VACATION!!! Click now!!!"<br />
+Features: [6 exclamations, has "free", 13 capitals] → 87% spam probability</p>
 <p>The perceptron worked great! But what if we encounter more sophisticated spam that exploits the perceptron's linear nature?</p>
 <h3 id="when-single-perceptrons-fail-the-xor-like-problem">When Single Perceptrons Fail: The XOR-like Problem<a class="headerlink" href="#when-single-perceptrons-fail-the-xor-like-problem" title="Permanent link">&para;</a></h3>
 <p>Consider these two emails that a single perceptron struggles with:</p>
-<p><strong>Email A:</strong> "You have 1 new message"<br />
-<strong>Features:</strong> [0 exclamations, no "free", 3 capitals] → <strong>Should be: NOT spam</strong></p>
-<p><strong>Email B:</strong> "Get free bitcoins with zero risk!!!"<br />
-<strong>Features:</strong> [3 exclamations, has "free", 8 capitals] → <strong>Should be: SPAM</strong></p>
-<p><strong>Email C:</strong> "FREE SHIPPING on your order"<br />
-<strong>Features:</strong> [0 exclamations, has "free", 13 capitals] → <strong>Should be: NOT spam</strong> (legitimate store)</p>
-<p><strong>Email D:</strong> "Congratulations winner!!!"<br />
-<strong>Features:</strong> [3 exclamations, no "free", 15 capitals] → <strong>Should be: SPAM</strong></p>
-<p><strong>The Problem:</strong> A single perceptron creates a linear decision boundary. It cannot learn the pattern: "Spam when (many capitals AND no 'free') OR (has 'free' AND many exclamations), but not spam when only one condition is true."</p>
+<p>Email A: "You have 1 new message"<br />
+Features: [0 exclamations, no "free", 3 capitals] → Should be: NOT spam</p>
+<p>Email B: "Get free bitcoins with zero risk!!!"<br />
+Features: [3 exclamations, has "free", 8 capitals] → Should be: SPAM</p>
+<p>Email C: "FREE SHIPPING on your order"<br />
+Features: [0 exclamations, has "free", 13 capitals] → Should be: NOT spam (legitimate store)</p>
+<p>Email D: "Congratulations winner!!!"<br />
+Features: [3 exclamations, no "free", 15 capitals] → Should be: SPAM</p>
+<p>The Problem: A single perceptron creates a linear decision boundary. It cannot learn the pattern: "Spam when (many capitals AND no 'free') OR (has 'free' AND many exclamations), but not spam when only one condition is true."</p>
 <h3 id="mlp-vs-single-perceptron">MLP vs Single Perceptron<a class="headerlink" href="#mlp-vs-single-perceptron" title="Permanent link">&para;</a></h3>
-<p><strong>Single Perceptron (Linear Decision):</strong>
+<p>Single Perceptron (Linear Decision):
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Input Features → Single Computation → Output
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>[excl, free, caps] → w₁×excl + w₂×free + w₃×caps + b → spam probability
 </code></pre></div></p>
 <ul>
-<li><strong>Problem:</strong> Can only draw straight lines to separate spam from non-spam</li>
-<li><strong>Limitation:</strong> Cannot handle complex patterns that require curved decision boundaries</li>
+<li>Problem: Can only draw straight lines to separate spam from non-spam</li>
+<li>Limitation: Cannot handle complex patterns that require curved decision boundaries</li>
 </ul>
-<p><strong>MLP (Non-Linear Decisions):</strong>
+<p>MLP (Non-Linear Decisions):
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Layer 1: [excl, free, caps] → [h₁, h₂] (detect patterns like &quot;promotional tone&quot;, &quot;urgency signals&quot;)
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Layer 2: [h₁, h₂] → [spam probability] (combine patterns intelligently)
 </code></pre></div></p>
 <ul>
-<li><strong>Solution:</strong> Each layer can create new features, enabling complex curved decision boundaries</li>
-<li><strong>Power:</strong> Can learn: "IF (urgency signals without legitimacy) OR (promotional tone with pressure) THEN spam"</li>
+<li>Solution: Each layer can create new features, enabling complex curved decision boundaries</li>
+<li>Power: Can learn: "IF (urgency signals without legitimacy) OR (promotional tone with pressure) THEN spam"</li>
 </ul>
-<p><strong>Key Insight:</strong> MLPs solve the fundamental limitation of perceptrons by stacking multiple layers, where each layer learns increasingly sophisticated feature combinations that enable non-linear pattern recognition.</p>
+<p>Key Insight: MLPs solve the fundamental limitation of perceptrons by stacking multiple layers, where each layer learns increasingly sophisticated feature combinations that enable non-linear pattern recognition.</p>
 <hr />
 <h2 id="2-the-core-mlp-equations">2. The Core MLP Equations<a class="headerlink" href="#2-the-core-mlp-equations" title="Permanent link">&para;</a></h2>
 <p>The heart of every MLP layer is this transformation:</p>
@@ -1712,32 +1712,32 @@ $$</p>
 <tr>
 <td>$$x$$</td>
 <td>$$[1, D_{in}]$$</td>
-<td><strong>Input vector</strong> - features coming into this layer</td>
+<td>Input vector - features coming into this layer</td>
 </tr>
 <tr>
 <td>$$W$$</td>
 <td>$$[D_{in}, D_{out}]$$</td>
-<td><strong>Weight matrix</strong> - learned transformation</td>
+<td>Weight matrix - learned transformation</td>
 </tr>
 <tr>
 <td>$$b$$</td>
 <td>$$[1, D_{out}]$$</td>
-<td><strong>Bias vector</strong> - learned offset</td>
+<td>Bias vector - learned offset</td>
 </tr>
 <tr>
 <td>$$x W + b$$</td>
 <td>$$[1, D_{out}]$$</td>
-<td><strong>Linear combination</strong> - weighted sum of inputs</td>
+<td>Linear combination - weighted sum of inputs</td>
 </tr>
 <tr>
 <td>$$\sigma(\cdot)$$</td>
 <td>-</td>
-<td><strong>Activation function</strong> - introduces non-linearity</td>
+<td>Activation function - introduces non-linearity</td>
 </tr>
 <tr>
 <td>$$h$$</td>
 <td>$$[1, D_{out}]$$</td>
-<td><strong>Output vector</strong> - transformed features</td>
+<td>Output vector - transformed features</td>
 </tr>
 </tbody>
 </table>
@@ -1748,7 +1748,7 @@ $$</p>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>                    [w₂₁ w₂₂]
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>                    [w₃₁ w₃₂]
 </code></pre></div>
-<p><strong>Why this structure?</strong></p>
+<p>Why this structure?</p>
 <p>$$
 \begin{aligned}
 \mathbf{xW} \quad &amp;: \text{Matrix multiplication combines input features with learned weights} \newline
@@ -1756,7 +1756,7 @@ $$</p>
 \mathbf{\sigma(\cdot)} \quad &amp;: \text{Non-linearity enables learning complex patterns}
 \end{aligned}
 $$</p>
-<p><strong>Common Activation Functions:</strong></p>
+<p>Common Activation Functions:</p>
 <p>$$
 \begin{aligned}
 \text{ReLU:} \quad &amp;\sigma(z) = \max(0, z) \quad \text{- most popular, simple and effective} \newline
@@ -1776,7 +1776,7 @@ h^{(2)} &amp;= \sigma^{(2)}(h^{(1)} W^{(2)} + b^{(2)}) \newline
 y &amp;= h^{(L-1)} W^{(L)} + b^{(L)}
 \end{aligned}
 $$</p>
-<p><strong>Layer Naming Convention:</strong></p>
+<p>Layer Naming Convention:</p>
 <p>$$
 \begin{aligned}
 \text{Input Layer:} \quad &amp;\text{The original features } x \newline
@@ -1790,7 +1790,7 @@ $$</p>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Each layer transforms its input into increasingly abstract representations
 </code></pre></div>
-<p><strong>What Each Layer Learns:</strong></p>
+<p>What Each Layer Learns:</p>
 <p>$$
 \begin{aligned}
 \text{Layer 1:} \quad &amp;\text{Basic feature combinations (edges, simple patterns)} \newline
@@ -1806,20 +1806,20 @@ $$</p>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Large hidden size (100 neurons): h = [h₁, h₂, ..., h₁₀₀]
 </code></pre></div>
 <ul>
-<li><strong>Larger hidden size</strong>: Can learn more complex patterns, but more parameters</li>
-<li><strong>Smaller hidden size</strong>: Simpler model, less prone to overfitting</li>
+<li>Larger hidden size: Can learn more complex patterns, but more parameters</li>
+<li>Smaller hidden size: Simpler model, less prone to overfitting</li>
 </ul>
-<p><strong>Analogy:</strong> Like having 2 vs 100 "detectors" in each layer to find patterns.</p>
+<p>Analogy: Like having 2 vs 100 "detectors" in each layer to find patterns.</p>
 <h3 id="layer-depth-how-many-layers">Layer Depth: How Many Layers<a class="headerlink" href="#layer-depth-how-many-layers" title="Permanent link">&para;</a></h3>
 <p>Depth controls the complexity of patterns the network can learn:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Shallow (2 layers): Input → Hidden → Output
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Deep (5 layers):    Input → H1 → H2 → H3 → H4 → Output
 </code></pre></div>
 <ul>
-<li><strong>Deeper networks</strong>: Can learn more hierarchical, abstract representations</li>
-<li><strong>Shallow networks</strong>: Simpler, faster, easier to train</li>
+<li>Deeper networks: Can learn more hierarchical, abstract representations</li>
+<li>Shallow networks: Simpler, faster, easier to train</li>
 </ul>
-<p><strong>Rule of Thumb:</strong> Start shallow, go deeper only if needed.</p>
+<p>Rule of Thumb: Start shallow, go deeper only if needed.</p>
 <h3 id="parameter-counting">Parameter Counting<a class="headerlink" href="#parameter-counting" title="Permanent link">&para;</a></h3>
 <p>For a layer with input size $$D_{in}$$ and output size $$D_{out}$$</p>
 <p>$$
@@ -1829,7 +1829,7 @@ $$</p>
 \text{Total:} \quad &amp;D_{in} \times D_{out} + D_{out} = D_{out}(D_{in} + 1)
 \end{aligned}
 $$</p>
-<p><strong>Example Network:</strong></p>
+<p>Example Network:</p>
 <p>$$
 \begin{aligned}
 \text{Input:} \quad &amp;\text{10 features} \newline
@@ -1842,22 +1842,22 @@ $$</p>
 <hr />
 <h2 id="5-worked-example-advanced-spam-detection">5. Worked Example: Advanced Spam Detection<a class="headerlink" href="#5-worked-example-advanced-spam-detection" title="Permanent link">&para;</a></h2>
 <p>Let's trace through a complex example that shows why MLPs are necessary. We'll use the problematic case from Section 1:</p>
-<p><strong>The Challenge:</strong> Detect sophisticated spam that fools single perceptrons<br />
-<strong>Input features</strong>: [num_exclamations, has_word_free, num_capitals]<br />
-<strong>Hidden layer size</strong>: 2 neurons (for pattern detection)<br />
-<strong>Output</strong>: spam probability</p>
+<p>The Challenge: Detect sophisticated spam that fools single perceptrons<br />
+Input features: [num_exclamations, has_word_free, num_capitals]<br />
+Hidden layer size: 2 neurons (for pattern detection)<br />
+Output: spam probability</p>
 <h3 id="step-0-initialize">Step 0: Initialize<a class="headerlink" href="#step-0-initialize" title="Permanent link">&para;</a></h3>
-<p><strong>Test Email (sophisticated spam):</strong>
+<p>Test Email (sophisticated spam):
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Email: &quot;Congratulations winner!!!&quot;
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>x = [3, 0, 15]  # [3 exclamations, no &quot;free&quot;, 15 capitals]
 </code></pre></div></p>
-<p><strong>Why this is hard for a single perceptron:</strong></p>
+<p>Why this is hard for a single perceptron:</p>
 <ul>
 <li>Has exclamations (spam-like) but no "free" word</li>
 <li>Has many capitals (spam-like) but winner congratulations can be legitimate</li>
-<li><strong>Requires learning</strong>: "High urgency (excl + caps) without legitimacy markers = spam"</li>
+<li>Requires learning: "High urgency (excl + caps) without legitimacy markers = spam"</li>
 </ul>
-<p><strong>Learned weights (after training on complex patterns):</strong>
+<p>Learned weights (after training on complex patterns):
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a># Hidden Layer 1 (2 specialized pattern detectors)
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>W¹ = [[0.4, 0.1],     # 3×2 matrix: input-to-hidden
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>      [-0.8, 0.9],    # Neuron 1: urgency detector, Neuron 2: legitimacy detector  
@@ -1871,14 +1871,14 @@ $$</p>
 <a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>
 <a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>b² = [0.2]            # 1-element bias vector
 </code></pre></div></p>
-<p><strong>What each neuron learned to detect:</strong></p>
+<p>What each neuron learned to detect:</p>
 <ul>
-<li><strong>Neuron 1</strong>: "Urgency signals" (high exclamations + capitals, low "free")</li>
-<li><strong>Neuron 2</strong>: "Legitimacy markers" (presence of "free" reduces suspicion)</li>
+<li>Neuron 1: "Urgency signals" (high exclamations + capitals, low "free")</li>
+<li>Neuron 2: "Legitimacy markers" (presence of "free" reduces suspicion)</li>
 </ul>
 <h3 id="step-1-forward-pass-through-hidden-layer">Step 1: Forward Pass Through Hidden Layer<a class="headerlink" href="#step-1-forward-pass-through-hidden-layer" title="Permanent link">&para;</a></h3>
-<p><strong>Input:</strong> $$x = [3, 0, 15]$$ (our sophisticated spam example)</p>
-<p><strong>Compute linear combination:</strong>
+<p>Input: $$x = [3, 0, 15]$$ (our sophisticated spam example)</p>
+<p>Compute linear combination:
 The operation is <code>x @ W¹ + b¹</code> where <code>x</code> is a row vector.
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>   x (1x3)      @      W¹ (3x2)        +    b¹ (1x2)     =   Result (1x2)
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>[3, 0, 15]      @    [[0.4, 0.1],      +   [-2.0, -1.5]
@@ -1891,37 +1891,37 @@ The operation is <code>x @ W¹ + b¹</code> where <code>x</code> is a row vector
 <a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>Step 2: Add bias b¹
 <a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>[5.7, -2.7] + [-2.0, -1.5] = [3.7, -4.2]
 </code></pre></div>
-<strong>Calculation Breakdown:</strong>
+Calculation Breakdown:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Neuron 1 (Urgency Detector): 0.4×3 + (-0.8)×0 + 0.3×15 + (-2.0) 
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>                           = 1.2 + 0 + 4.5 - 2.0 = 3.7
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
 <a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>Neuron 2 (Legitimacy Detector): 0.1×3 + 0.9×0 + (-0.2)×15 + (-1.5)
 <a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>                              = 0.3 + 0 - 3.0 - 1.5 = -4.2
 </code></pre></div></p>
-<p><strong>Apply ReLU activation:</strong>
+<p>Apply ReLU activation:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>h¹ = ReLU([3.7, -4.2]) = [max(0, 3.7), max(0, -4.2)] = [3.7, 0]
 </code></pre></div></p>
-<p><strong>Pattern Detection Results:</strong></p>
+<p>Pattern Detection Results:</p>
 <ul>
-<li><strong>Neuron 1 (Urgency)</strong>: Strongly activated (3.7) - detected high urgency pattern</li>
-<li><strong>Neuron 2 (Legitimacy)</strong>: Silent (0) - no legitimacy markers found</li>
+<li>Neuron 1 (Urgency): Strongly activated (3.7) - detected high urgency pattern</li>
+<li>Neuron 2 (Legitimacy): Silent (0) - no legitimacy markers found</li>
 </ul>
 <h3 id="step-2-forward-pass-through-output-layer">Step 2: Forward Pass Through Output Layer<a class="headerlink" href="#step-2-forward-pass-through-output-layer" title="Permanent link">&para;</a></h3>
-<p><strong>Input:</strong> $$h^{(1)} = [3.7, 0]$$ (urgency detected, no legitimacy)</p>
-<p><strong>Compute linear combination:</strong>
+<p>Input: $$h^{(1)} = [3.7, 0]$$ (urgency detected, no legitimacy)</p>
+<p>Compute linear combination:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>W²h¹ + b² = [[1.5],    [3.7,    [0.2] = [1.5×3.7 + (-0.8)×0] + [0.2]
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>             [-0.8]] × [0]   +         = [5.55] + [0.2]
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>                                       = [5.75]
 </code></pre></div></p>
-<p><strong>Apply sigmoid for probability:</strong>
+<p>Apply sigmoid for probability:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>y = sigmoid(5.75) = 1/(1 + e^(-5.75)) = 1/(1 + 0.003) = 0.997
 </code></pre></div></p>
-<p><strong>Result:</strong> 99.7% probability this email is spam!</p>
-<p><strong>Why the MLP succeeded:</strong></p>
+<p>Result: 99.7% probability this email is spam!</p>
+<p>Why the MLP succeeded:</p>
 <ul>
-<li><strong>Hidden layer</strong> learned to detect "urgency without legitimacy" pattern</li>
-<li><strong>Output layer</strong> learned that this combination strongly indicates spam</li>
-<li><strong>Single perceptron</strong> would have failed to capture this complex relationship</li>
+<li>Hidden layer learned to detect "urgency without legitimacy" pattern</li>
+<li>Output layer learned that this combination strongly indicates spam</li>
+<li>Single perceptron would have failed to capture this complex relationship</li>
 </ul>
 <h3 id="step-3-understanding-what-happened">Step 3: Understanding What Happened<a class="headerlink" href="#step-3-understanding-what-happened" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Original Features: [3 exclamations, no &quot;free&quot;, 15 capitals]
@@ -1930,33 +1930,33 @@ The operation is <code>x @ W¹ + b¹</code> where <code>x</code> is a row vector
 <a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>                         ↓  
 <a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>Output:           0.997      # 99.7% spam probability
 </code></pre></div>
-<p><strong>Hidden Neuron Analysis:</strong></p>
+<p>Hidden Neuron Analysis:</p>
 <ul>
-<li><strong>Neuron 1 (Urgency Detector)</strong>: Strongly activated by exclamations + capitals combination</li>
-<li><strong>Neuron 2 (Legitimacy Detector)</strong>: Silent because no "free" word (legitimacy marker) present</li>
+<li>Neuron 1 (Urgency Detector): Strongly activated by exclamations + capitals combination</li>
+<li>Neuron 2 (Legitimacy Detector): Silent because no "free" word (legitimacy marker) present</li>
 </ul>
-<p><strong>The Power of Multiple Layers:</strong></p>
+<p>The Power of Multiple Layers:</p>
 <ol>
-<li><strong>Layer 1</strong>: Learned specialized pattern detectors (urgency vs legitimacy)</li>
-<li><strong>Layer 2</strong>: Learned to combine these patterns intelligently</li>
-<li><strong>Result</strong>: Detected sophisticated spam that exploits urgency without legitimate context</li>
+<li>Layer 1: Learned specialized pattern detectors (urgency vs legitimacy)</li>
+<li>Layer 2: Learned to combine these patterns intelligently</li>
+<li>Result: Detected sophisticated spam that exploits urgency without legitimate context</li>
 </ol>
-<p><strong>Key Insight:</strong> The MLP learned a complex decision rule: "High urgency signals without legitimacy markers = strong spam indicator." This non-linear pattern would be impossible for a single perceptron to capture.</p>
+<p>Key Insight: The MLP learned a complex decision rule: "High urgency signals without legitimacy markers = strong spam indicator." This non-linear pattern would be impossible for a single perceptron to capture.</p>
 <hr />
 <h2 id="6-training-how-mlps-learn">6. Training: How MLPs Learn<a class="headerlink" href="#6-training-how-mlps-learn" title="Permanent link">&para;</a></h2>
 <h3 id="the-learning-process">The Learning Process<a class="headerlink" href="#the-learning-process" title="Permanent link">&para;</a></h3>
-<p>MLPs learn through <strong>supervised learning</strong>:</p>
+<p>MLPs learn through supervised learning:</p>
 <ol>
-<li><strong>Forward Pass</strong>: Compute predictions using current weights</li>
-<li><strong>Loss Calculation</strong>: Measure how wrong the predictions are</li>
-<li><strong>Backward Pass</strong>: Compute gradients using backpropagation</li>
-<li><strong>Weight Update</strong>: Adjust weights to reduce the loss</li>
+<li>Forward Pass: Compute predictions using current weights</li>
+<li>Loss Calculation: Measure how wrong the predictions are</li>
+<li>Backward Pass: Compute gradients using backpropagation</li>
+<li>Weight Update: Adjust weights to reduce the loss</li>
 </ol>
 <blockquote>
-<p><strong>📚 Mathematical Deep Dive</strong>: For a complete step-by-step mathematical explanation of how gradient descent works from line slopes to neural network training, see <strong><a href="../transformers_math1/#211-from-line-slopes-to-neural-network-training">transformers_math1.md Section 2.1.1</a></strong> - includes worked examples and the connection between simple derivatives and MLP backpropagation.</p>
+<p>📚 Mathematical Deep Dive: For a complete step-by-step mathematical explanation of how gradient descent works from line slopes to neural network training, see <strong><a href="../transformers_math1/#211-from-line-slopes-to-neural-network-training">transformers_math1.md Section 2.1.1</a></strong> - includes worked examples and the connection between simple derivatives and MLP backpropagation.</p>
 </blockquote>
 <h3 id="loss-functions">Loss Functions<a class="headerlink" href="#loss-functions" title="Permanent link">&para;</a></h3>
-<p><strong>For Binary Classification (like spam detection):</strong>
+<p>For Binary Classification (like spam detection):
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>Binary Cross-Entropy: L = -[y*log(ŷ) + (1-y)*log(1-ŷ)]
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
 <a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>Where:
@@ -1964,7 +1964,7 @@ The operation is <code>x @ W¹ + b¹</code> where <code>x</code> is a row vector
 <a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>- y = true label (0 or 1)
 <a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>- ŷ = predicted probability
 </code></pre></div></p>
-<p><strong>For Regression (predicting numbers):</strong>
+<p>For Regression (predicting numbers):
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Mean Squared Error: L = (y - ŷ)²
 <a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
 <a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>Where:
@@ -1973,21 +1973,21 @@ The operation is <code>x @ W¹ + b¹</code> where <code>x</code> is a row vector
 <a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>- ŷ = predicted value
 </code></pre></div></p>
 <h3 id="backpropagation-the-learning-algorithm">Backpropagation: The Learning Algorithm<a class="headerlink" href="#backpropagation-the-learning-algorithm" title="Permanent link">&para;</a></h3>
-<p><strong>Forward Pass</strong> (what we just did):
+<p>Forward Pass (what we just did):
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>x → h¹ → y → Loss
 </code></pre></div></p>
-<p><strong>Backward Pass</strong> (compute gradients):
+<p>Backward Pass (compute gradients):
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>∂L/∂W² ← computed from output
 <a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>∂L/∂W¹ ← flows back through hidden layer
 </code></pre></div></p>
-<p><strong>Weight Updates:</strong>
+<p>Weight Updates:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>W² = W² - α × ∂L/∂W²  # α is learning rate
 <a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>W¹ = W¹ - α × ∂L/∂W¹
 <a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>b² = b² - α × ∂L/∂b²
 <a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>b¹ = b¹ - α × ∂L/∂b¹
 </code></pre></div></p>
 <blockquote>
-<p><strong>🔗 Mathematical Connection</strong>: The backpropagation equations above are derived step-by-step in <strong><a href="../transformers_math1/#211-from-line-slopes-to-neural-network-training">transformers_math1.md Section 2.1.1</a></strong>. See the "Single Hidden Layer MLP" subsection for the complete mathematical derivation including the δ terms and chain rule applications.</p>
+<p>🔗 Mathematical Connection: The backpropagation equations above are derived step-by-step in <strong><a href="../transformers_math1/#211-from-line-slopes-to-neural-network-training">transformers_math1.md Section 2.1.1</a></strong>. See the "Single Hidden Layer MLP" subsection for the complete mathematical derivation including the δ terms and chain rule applications.</p>
 </blockquote>
 <h3 id="training-loop-example">Training Loop Example<a class="headerlink" href="#training-loop-example" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>For each batch of training examples:
@@ -2004,53 +2004,53 @@ The operation is <code>x @ W¹ + b¹</code> where <code>x</code> is a row vector
 <table>
 <thead>
 <tr>
-<th><strong>Aspect</strong></th>
-<th><strong>Linear Regression</strong></th>
-<th><strong>MLP</strong></th>
+<th>Aspect</th>
+<th>Linear Regression</th>
+<th>MLP</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Equation</strong></td>
+<td>Equation</td>
 <td>$$y = x W + b$$</td>
 <td>$$y = h^{(L-1)} W^L + b^L$$ where $$h = \sigma(x W + b)$$</td>
 </tr>
 <tr>
-<td><strong>Decision Boundary</strong></td>
+<td>Decision Boundary</td>
 <td>Straight line/plane</td>
 <td>Curved, complex shapes</td>
 </tr>
 <tr>
-<td><strong>Expressiveness</strong></td>
+<td>Expressiveness</td>
 <td>Limited to linear patterns</td>
 <td>Can learn any continuous function</td>
 </tr>
 <tr>
-<td><strong>Training</strong></td>
+<td>Training</td>
 <td>Closed-form solution</td>
 <td>Iterative optimization</td>
 </tr>
 </tbody>
 </table>
 <h3 id="mlp-advantages">MLP Advantages<a class="headerlink" href="#mlp-advantages" title="Permanent link">&para;</a></h3>
-<p>✅ <strong>Universal Approximation</strong>: Can learn any continuous function with enough neurons
-✅ <strong>Non-linear Patterns</strong>: Captures complex relationships in data
-✅ <strong>Automatic Features</strong>: Learns useful feature combinations
-✅ <strong>Scalable</strong>: Works with large datasets and many features</p>
+<p>✅ Universal Approximation: Can learn any continuous function with enough neurons</p>
+<p>✅ Non-linear Patterns: Captures complex relationships in data</p>
+<p>✅ Automatic Features: Learns useful feature combinations</p>
+<p>✅ Scalable: Works with large datasets and many features</p>
 <h3 id="mlp-limitations">MLP Limitations<a class="headerlink" href="#mlp-limitations" title="Permanent link">&para;</a></h3>
-<p>❌ <strong>No Sequential Memory</strong>: Processes each input independently
-❌ <strong>Fixed Input Size</strong>: Can't handle variable-length inputs
-❌ <strong>No Spatial Structure</strong>: Doesn't understand image/text structure
-❌ <strong>Many Parameters</strong>: Can overfit with small datasets</p>
+<p>❌ No Sequential Memory: Processes each input independently</p>
+<p>❌ Fixed Input Size: Can't handle variable-length inputs</p>
+<p>❌ No Spatial Structure: Doesn't understand image/text structure</p>
+<p>❌ Many Parameters: Can overfit with small datasets</p>
 <h3 id="when-to-use-mlps">When to Use MLPs<a class="headerlink" href="#when-to-use-mlps" title="Permanent link">&para;</a></h3>
-<p><strong>Good for:</strong></p>
+<p>Good for:</p>
 <ul>
 <li>Tabular data (rows and columns)</li>
 <li>Classification and regression tasks</li>
 <li>Fixed-size feature vectors</li>
 <li>When you need a simple, interpretable baseline</li>
 </ul>
-<p><strong>Not ideal for:</strong></p>
+<p>Not ideal for:</p>
 <ul>
 <li>Sequential data (text, time series) → Use RNNs/Transformers</li>
 <li>Images → Use CNNs  </li>
@@ -2060,14 +2060,14 @@ The operation is <code>x @ W¹ + b¹</code> where <code>x</code> is a row vector
 <hr />
 <h2 id="8-common-challenges-and-solutions">8. Common Challenges and Solutions<a class="headerlink" href="#8-common-challenges-and-solutions" title="Permanent link">&para;</a></h2>
 <h3 id="overfitting-when-mlps-memorize">Overfitting: When MLPs Memorize<a class="headerlink" href="#overfitting-when-mlps-memorize" title="Permanent link">&para;</a></h3>
-<p><strong>Problem</strong>: Network performs well on training data but poorly on new data.</p>
-<p><strong>Signs:</strong></p>
+<p>Problem: Network performs well on training data but poorly on new data.</p>
+<p>Signs:</p>
 <ul>
 <li>Training accuracy: 99%</li>
 <li>Test accuracy: 60%</li>
 <li>Large gap indicates overfitting</li>
 </ul>
-<p><strong>Solutions:</strong>
+<p>Solutions:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>1. Reduce model size (fewer layers/neurons)
 <a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>2. Add regularization:
 <a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>   - Dropout: Randomly turn off neurons during training
@@ -2076,20 +2076,20 @@ The operation is <code>x @ W¹ + b¹</code> where <code>x</code> is a row vector
 <a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>4. Early stopping: Stop when validation loss increases
 </code></pre></div></p>
 <h3 id="underfitting-when-mlps-are-too-simple">Underfitting: When MLPs Are Too Simple<a class="headerlink" href="#underfitting-when-mlps-are-too-simple" title="Permanent link">&para;</a></h3>
-<p><strong>Problem</strong>: Network can't learn the underlying patterns.</p>
-<p><strong>Signs:</strong></p>
+<p>Problem: Network can't learn the underlying patterns.</p>
+<p>Signs:</p>
 <ul>
 <li>Both training and test accuracy are low</li>
 <li>Loss plateaus at a high value</li>
 </ul>
-<p><strong>Solutions:</strong>
+<p>Solutions:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>1. Increase model size (more layers/neurons)
 <a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>2. Train for more epochs
 <a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>3. Lower learning rate for finer adjustments
 <a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>4. Check for bugs in data preprocessing
 </code></pre></div></p>
 <h3 id="gradient-problems">Gradient Problems<a class="headerlink" href="#gradient-problems" title="Permanent link">&para;</a></h3>
-<p><strong>Vanishing Gradients</strong>: Gradients become too small in deep networks
+<p>Vanishing Gradients: Gradients become too small in deep networks
 <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>Solutions:
 <a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>
 <a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>- Use ReLU activation (not sigmoid/tanh)
@@ -2097,7 +2097,7 @@ The operation is <code>x @ W¹ + b¹</code> where <code>x</code> is a row vector
 <a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>- Batch normalization
 <a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>- Skip connections
 </code></pre></div></p>
-<p><strong>Exploding Gradients</strong>: Gradients become too large
+<p>Exploding Gradients: Gradients become too large
 <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>Solutions:  
 <a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>
 <a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>- Gradient clipping: Cap gradient magnitude
@@ -2105,7 +2105,7 @@ The operation is <code>x @ W¹ + b¹</code> where <code>x</code> is a row vector
 <a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>- Better weight initialization
 </code></pre></div></p>
 <blockquote>
-<p><strong>🎯 Gradient Flow Mathematics</strong>: To understand the mathematical foundations of why gradients vanish or explode, and how gradient descent fundamentally works, see <strong><a href="../transformers_math1/#211-from-line-slopes-to-neural-network-training">transformers_math1.md Section 2.1.1</a></strong>. The section builds intuition from simple 1D slopes to complex neural network training.</p>
+<p>🎯 Gradient Flow Mathematics: To understand the mathematical foundations of why gradients vanish or explode, and how gradient descent fundamentally works, see <strong><a href="../transformers_math1/#211-from-line-slopes-to-neural-network-training">transformers_math1.md Section 2.1.1</a></strong>. The section builds intuition from simple 1D slopes to complex neural network training.</p>
 </blockquote>
 <hr />
 <h2 id="9-activation-functions-deep-dive">9. Activation Functions Deep Dive<a class="headerlink" href="#9-activation-functions-deep-dive" title="Permanent link">&para;</a></h2>
@@ -2116,13 +2116,13 @@ $$</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>Input:  [-2, -1, 0, 1, 2]
 <a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>Output: [ 0,  0, 0, 1, 2]
 </code></pre></div>
-<p><strong>Advantages:</strong></p>
+<p>Advantages:</p>
 <ul>
 <li>Simple and fast to compute</li>
 <li>Doesn't saturate for positive values</li>
 <li>Sparse activation (many neurons output 0)</li>
 </ul>
-<p><strong>Disadvantages:</strong></p>
+<p>Disadvantages:</p>
 <ul>
 <li>"Dead neurons" - can output 0 forever if weights become negative</li>
 </ul>
@@ -2133,12 +2133,12 @@ $$</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>Input:  [-2, -1, 0, 1, 2]
 <a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>Output: [0.12, 0.27, 0.5, 0.73, 0.88]
 </code></pre></div>
-<p><strong>Advantages:</strong></p>
+<p>Advantages:</p>
 <ul>
 <li>Smooth, differentiable everywhere</li>
 <li>Outputs between 0 and 1 (good for probabilities)</li>
 </ul>
-<p><strong>Disadvantages:</strong></p>
+<p>Disadvantages:</p>
 <ul>
 <li>Saturates for large |x| (gradients → 0)</li>
 <li>Not zero-centered (can slow learning)</li>
@@ -2150,12 +2150,12 @@ $$</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>Input:  [-2, -1, 0, 1, 2]
 <a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>Output: [-0.96, -0.76, 0, 0.76, 0.96]
 </code></pre></div>
-<p><strong>Advantages:</strong></p>
+<p>Advantages:</p>
 <ul>
 <li>Zero-centered (better than sigmoid)</li>
 <li>Smooth and differentiable</li>
 </ul>
-<p><strong>Disadvantages:</strong></p>
+<p>Disadvantages:</p>
 <ul>
 <li>Still suffers from saturation</li>
 <li>More expensive to compute than ReLU</li>
@@ -2175,12 +2175,12 @@ $$</p>
 <hr />
 <h2 id="10-practical-implementation-tips">10. Practical Implementation Tips<a class="headerlink" href="#10-practical-implementation-tips" title="Permanent link">&para;</a></h2>
 <h3 id="network-architecture-design">Network Architecture Design<a class="headerlink" href="#network-architecture-design" title="Permanent link">&para;</a></h3>
-<p><strong>Start Simple:</strong>
+<p>Start Simple:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>1. Begin with 1-2 hidden layers
 <a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>2. Hidden size = 2-4× input size (rule of thumb)
 <a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>3. Add layers only if underfitting
 </code></pre></div></p>
-<p><strong>Common Patterns:</strong>
+<p>Common Patterns:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>Small dataset (&lt; 10K samples):
 <a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>Input → Hidden(64) → Hidden(32) → Output
 <a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>
@@ -2191,27 +2191,27 @@ $$</p>
 <a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>Input → Hidden(256) → Hidden(128) → Hidden(64) → Output
 </code></pre></div></p>
 <h3 id="hyperparameter-tuning">Hyperparameter Tuning<a class="headerlink" href="#hyperparameter-tuning" title="Permanent link">&para;</a></h3>
-<p><strong>Learning Rate:</strong>
+<p>Learning Rate:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>Too high: Loss oscillates or explodes
 <a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>Too low:  Very slow convergence
 <a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>Sweet spot: Usually 0.001 - 0.01
 </code></pre></div></p>
 <blockquote>
-<p><strong>📊 Learning Rate Intuition</strong>: For a visual and mathematical explanation of why learning rate choice matters, see the worked example with f(x) = x² in <strong><a href="../transformers_math1/#211-from-line-slopes-to-neural-network-training">transformers_math1.md Section 2.1.1</a></strong> - shows exactly how different learning rates affect convergence behavior.</p>
+<p>📊 Learning Rate Intuition: For a visual and mathematical explanation of why learning rate choice matters, see the worked example with f(x) = x² in <strong><a href="../transformers_math1/#211-from-line-slopes-to-neural-network-training">transformers_math1.md Section 2.1.1</a></strong> - shows exactly how different learning rates affect convergence behavior.</p>
 </blockquote>
-<p><strong>Batch Size:</strong>
+<p>Batch Size:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>Small (32): Noisy gradients, more exploration
 <a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>Large (512): Stable gradients, faster per epoch
 <a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>Common choice: 64-128
 </code></pre></div></p>
-<p><strong>Training Tips:</strong>
+<p>Training Tips:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>1. Normalize input features: zero mean, unit variance
 <a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>2. Initialize weights properly (Xavier/He initialization)
 <a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>3. Monitor both training and validation loss
 <a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>4. Use learning rate scheduling (reduce over time)
 </code></pre></div></p>
 <h3 id="debugging-checklist">Debugging Checklist<a class="headerlink" href="#debugging-checklist" title="Permanent link">&para;</a></h3>
-<p><strong>If training isn't working:</strong>
+<p>If training isn't working:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>1. Check data: Are labels correct? Proper preprocessing?
 <a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>2. Start tiny: Can model overfit a single batch?
 <a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>3. Verify gradients: Are they flowing properly?
@@ -2222,10 +2222,10 @@ $$</p>
 <h2 id="11-summary-the-mlp-foundation">11. Summary: The MLP Foundation<a class="headerlink" href="#11-summary-the-mlp-foundation" title="Permanent link">&para;</a></h2>
 <h3 id="how-mlps-work">How MLPs Work<a class="headerlink" href="#how-mlps-work" title="Permanent link">&para;</a></h3>
 <ol>
-<li><strong>Layer-wise Processing</strong>: Transform inputs through multiple layers</li>
-<li><strong>Non-linear Combinations</strong>: Each layer learns complex feature combinations  </li>
-<li><strong>Universal Approximation</strong>: Can learn any continuous function with enough neurons</li>
-<li><strong>Supervised Learning</strong>: Learn from input-output examples through backpropagation</li>
+<li>Layer-wise Processing: Transform inputs through multiple layers</li>
+<li>Non-linear Combinations: Each layer learns complex feature combinations  </li>
+<li>Universal Approximation: Can learn any continuous function with enough neurons</li>
+<li>Supervised Learning: Learn from input-output examples through backpropagation</li>
 </ol>
 <h3 id="key-components-working-together">Key Components Working Together<a class="headerlink" href="#key-components-working-together" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>Input Features → Layer 1 → Layer 2 → ... → Output
@@ -2233,24 +2233,24 @@ $$</p>
 <a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>
 <a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>Where each layer applies: Linear Transformation → Non-linear Activation
 </code></pre></div>
-<p><strong>Weight Matrices ($$W$$):</strong> "How should features be combined?"
-<strong>Bias Vectors ($$b$$):</strong> "What are the default activation thresholds?"<br />
-<strong>Activations ($$\sigma$$):</strong> "How should we introduce non-linearity?"</p>
+<p>Weight Matrices ($$W$$): "How should features be combined?"
+Bias Vectors ($$b$$): "What are the default activation thresholds?"<br />
+Activations ($$\sigma$$): "How should we introduce non-linearity?"</p>
 <h3 id="capacity-control">Capacity Control<a class="headerlink" href="#capacity-control" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>Width (hidden size)</strong>: How many patterns each layer can detect</li>
-<li><strong>Depth (num layers)</strong>: How complex/hierarchical patterns can be</li>
-<li><strong>Regularization</strong>: Controls overfitting vs underfitting balance</li>
+<li>Width (hidden size): How many patterns each layer can detect</li>
+<li>Depth (num layers): How complex/hierarchical patterns can be</li>
+<li>Regularization: Controls overfitting vs underfitting balance</li>
 </ul>
 <h3 id="mlps-role-in-modern-ai">MLP's Role in Modern AI<a class="headerlink" href="#mlps-role-in-modern-ai" title="Permanent link">&para;</a></h3>
-<p><strong>Foundation for Everything:</strong></p>
+<p>Foundation for Everything:</p>
 <ul>
-<li><strong>CNNs</strong>: MLPs + spatial structure for images</li>
-<li><strong>RNNs</strong>: MLPs + memory for sequences  </li>
-<li><strong>Transformers</strong>: MLPs + attention mechanisms</li>
-<li><strong>Modern architectures</strong>: All use MLP components</li>
+<li>CNNs: MLPs + spatial structure for images</li>
+<li>RNNs: MLPs + memory for sequences  </li>
+<li>Transformers: MLPs + attention mechanisms</li>
+<li>Modern architectures: All use MLP components</li>
 </ul>
-<p><strong>Key Insight:</strong> MLPs are the "universal building block" - understanding them deeply helps with all neural network architectures.</p>
+<p>Key Insight: MLPs are the "universal building block" - understanding them deeply helps with all neural network architectures.</p>
 <hr />
 <h2 id="12-final-visualization-advanced-spam-detection">12. Final Visualization: Advanced Spam Detection<a class="headerlink" href="#12-final-visualization-advanced-spam-detection" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>Email: &quot;Congratulations winner!!!&quot;
@@ -2264,27 +2264,27 @@ $$</p>
 <a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a>                ↓
 <a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a>After Sigmoid:  y = 0.997  # 99.7% spam probability
 </code></pre></div>
-<p><strong>The Journey:</strong> From raw email features to sophisticated spam detection through specialized pattern recognition. The MLP learned to detect complex spam patterns that single perceptrons cannot handle.</p>
-<p><strong>What It Learned:</strong></p>
+<p>The Journey: From raw email features to sophisticated spam detection through specialized pattern recognition. The MLP learned to detect complex spam patterns that single perceptrons cannot handle.</p>
+<p>What It Learned:</p>
 <ul>
-<li><strong>Hidden neuron 1 (Urgency Detector)</strong>: Detects high-pressure tactics (exclamations + capitals)</li>
-<li><strong>Hidden neuron 2 (Legitimacy Detector)</strong>: Detects legitimate context markers (silent here)</li>
-<li><strong>Output combination</strong>: Learned "urgency without legitimacy = strong spam signal"</li>
+<li>Hidden neuron 1 (Urgency Detector): Detects high-pressure tactics (exclamations + capitals)</li>
+<li>Hidden neuron 2 (Legitimacy Detector): Detects legitimate context markers (silent here)</li>
+<li>Output combination: Learned "urgency without legitimacy = strong spam signal"</li>
 </ul>
-<p><strong>Why This Matters:</strong> This example shows MLPs solving problems beyond single perceptron capabilities—the foundation for all complex neural network architectures.</p>
+<p>Why This Matters: This example shows MLPs solving problems beyond single perceptron capabilities—the foundation for all complex neural network architectures.</p>
 <hr />
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
 <p>Now that you understand MLPs:</p>
 <ol>
-<li><strong>Limitations</strong>: MLPs can't handle sequences well (no memory)</li>
-<li><strong>Next Architecture</strong>: RNNs add memory for sequential data</li>
-<li><strong>Modern Context</strong>: MLPs are components in Transformers and other architectures</li>
-<li><strong>Implementation</strong>: Try building an MLP in PyTorch or TensorFlow</li>
+<li>Limitations: MLPs can't handle sequences well (no memory)</li>
+<li>Next Architecture: RNNs add memory for sequential data</li>
+<li>Modern Context: MLPs are components in Transformers and other architectures</li>
+<li>Implementation: Try building an MLP in PyTorch or TensorFlow</li>
 </ol>
 <blockquote>
-<p><strong>Continue Learning</strong>: Ready for sequences? See <strong><a href="../rnn_intro/">rnn_intro.md</a></strong> to learn how RNNs add memory to the MLP foundation.</p>
+<p>Continue Learning: Ready for sequences? See <strong><a href="../rnn_intro/">rnn_intro.md</a></strong> to learn how RNNs add memory to the MLP foundation.</p>
 </blockquote>
-<p><strong>Remember:</strong> MLPs taught us that neural networks could learn complex, non-linear patterns through simple transformations. Every modern architecture builds on these core principles - making MLPs essential foundational knowledge.</p>
+<p>Remember: MLPs taught us that neural networks could learn complex, non-linear patterns through simple transformations. Every modern architecture builds on these core principles - making MLPs essential foundational knowledge.</p>
 
 
 
@@ -2346,9 +2346,11 @@ $$</p>
     
       <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
+        <script src="../javascripts/mathjax-init.js"></script>
+      
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
-        <script src="../javascripts/mathjax.js"></script>
+        <script src="../javascripts/mathjax-refresh.js"></script>
       
     
   </body>

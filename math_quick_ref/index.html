@@ -1504,7 +1504,7 @@
 <p>A comprehensive reference of core mathematical concepts used in neural networks and deep learning, with detailed intuitions and practical PyTorch examples.</p>
 <h2 id="linear-algebra">Linear Algebra<a class="headerlink" href="#linear-algebra" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>📓 <strong>Jupyter Notebook:</strong> <a href="pynb/math_ref/linear_algebra.ipynb">pynb/math_ref/linear_algebra.ipynb</a></p>
+<p>📓 Jupyter Notebook: <a href="pynb/math_ref/linear_algebra.ipynb">pynb/math_ref/linear_algebra.ipynb</a></p>
 </blockquote>
 <h3 id="matrix-multiplication">Matrix Multiplication<a class="headerlink" href="#matrix-multiplication" title="Permanent link">&para;</a></h3>
 <p>$$
@@ -1513,44 +1513,44 @@
 C_{ij} &amp;= \sum_k A_{ik}B_{kj}
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> The fundamental operation of neural networks. Each row of the weight matrix represents neuron weights, each column of the input matrix represents input vectors. The result computes weighted sums for all neurons simultaneously, enabling parallel computation. This is why a single matrix multiplication can represent an entire layer's forward pass.</p>
-<p><strong>How it affects output:</strong> Matrix multiplication transforms input vectors from one feature space to another. Small changes in weights create proportional changes in outputs, making gradient-based learning possible.</p>
+<p>Intuition: The fundamental operation of neural networks. Each row of the weight matrix represents neuron weights, each column of the input matrix represents input vectors. The result computes weighted sums for all neurons simultaneously, enabling parallel computation. This is why a single matrix multiplication can represent an entire layer's forward pass.</p>
+<p>How it affects output: Matrix multiplication transforms input vectors from one feature space to another. Small changes in weights create proportional changes in outputs, making gradient-based learning possible.</p>
 <h3 id="matrix-transpose">Matrix Transpose<a class="headerlink" href="#matrix-transpose" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
 (\mathbf{A})^T_{ij} = \mathbf{A}_{ji}
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Essential for backpropagation. When gradients flow backward through a layer with weights, we need the transpose to properly route the gradient signals back to the previous layer. The transpose "reverses" the forward direction of information flow.</p>
-<p><strong>How it affects output:</strong> Transpose changes how information flows. In forward pass, weights map inputs to outputs. In backward pass, transpose maps output gradients back to input gradients.</p>
+<p>Intuition: Essential for backpropagation. When gradients flow backward through a layer with weights, we need the transpose to properly route the gradient signals back to the previous layer. The transpose "reverses" the forward direction of information flow.</p>
+<p>How it affects output: Transpose changes how information flows. In forward pass, weights map inputs to outputs. In backward pass, transpose maps output gradients back to input gradients.</p>
 <h3 id="matrix-inverse">Matrix Inverse<a class="headerlink" href="#matrix-inverse" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
 \mathbf{A}\mathbf{A}^{-1} = \mathbf{I}
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Used in analytical solutions for least squares (normal equations) and understanding linear transformations. In neural networks, helps analyze layer transformations and appears in second-order optimization methods like Newton's method.</p>
-<p><strong>How it affects output:</strong> Matrix inverse provides exact solutions when they exist. However, neural networks rarely use inverses directly due to computational cost and numerical instability.</p>
+<p>Intuition: Used in analytical solutions for least squares (normal equations) and understanding linear transformations. In neural networks, helps analyze layer transformations and appears in second-order optimization methods like Newton's method.</p>
+<p>How it affects output: Matrix inverse provides exact solutions when they exist. However, neural networks rarely use inverses directly due to computational cost and numerical instability.</p>
 <h3 id="eigenvalues--eigenvectors">Eigenvalues &amp; Eigenvectors<a class="headerlink" href="#eigenvalues--eigenvectors" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
 \mathbf{A}\mathbf{v} = \lambda\mathbf{v}
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Reveals principal directions of data variation (PCA), helps analyze gradient flow and conditioning of weight matrices. Large eigenvalues can indicate exploding gradients, while small ones suggest vanishing gradients. Critical for understanding optimization landscapes.</p>
-<p><strong>How it affects output:</strong> Eigenvalues indicate how much each direction gets amplified. Large eigenvalues can cause exploding gradients, small ones cause vanishing gradients.</p>
+<p>Intuition: Reveals principal directions of data variation (PCA), helps analyze gradient flow and conditioning of weight matrices. Large eigenvalues can indicate exploding gradients, while small ones suggest vanishing gradients. Critical for understanding optimization landscapes.</p>
+<p>How it affects output: Eigenvalues indicate how much each direction gets amplified. Large eigenvalues can cause exploding gradients, small ones cause vanishing gradients.</p>
 <h3 id="singular-value-decomposition-svd">Singular Value Decomposition (SVD)<a class="headerlink" href="#singular-value-decomposition-svd" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
 \mathbf{A} = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^T
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Decomposes any matrix into orthogonal transformations and scaling. Used in dimensionality reduction, weight initialization, and analyzing the effective rank of learned representations. Helps understand what transformations neural network layers are actually learning.</p>
-<p><strong>How it affects output:</strong> SVD reveals the intrinsic dimensionality and structure of transformations. It's used for initialization to maintain gradient flow and for analyzing what neural networks learn.</p>
+<p>Intuition: Decomposes any matrix into orthogonal transformations and scaling. Used in dimensionality reduction, weight initialization, and analyzing the effective rank of learned representations. Helps understand what transformations neural network layers are actually learning.</p>
+<p>How it affects output: SVD reveals the intrinsic dimensionality and structure of transformations. It's used for initialization to maintain gradient flow and for analyzing what neural networks learn.</p>
 <hr />
 <h2 id="vectors--geometry">Vectors &amp; Geometry<a class="headerlink" href="#vectors--geometry" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>📓 <strong>Jupyter Notebook:</strong> <a href="pynb/math_ref/vectors_geometry.ipynb">pynb/math_ref/vectors_geometry.ipynb</a></p>
+<p>📓 Jupyter Notebook: <a href="pynb/math_ref/vectors_geometry.ipynb">pynb/math_ref/vectors_geometry.ipynb</a></p>
 </blockquote>
 <h3 id="dot-product">Dot Product<a class="headerlink" href="#dot-product" title="Permanent link">&para;</a></h3>
 <p>$$
@@ -1558,36 +1558,36 @@ $$</p>
 \mathbf{a} \cdot \mathbf{b} = \sum_i a_i b_i = |\mathbf{a}||\mathbf{b}|\cos(\theta)
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Measures how "aligned" two vectors are. In neurons, the dot product between input vectors and weight vectors gives the raw activation strength—high when input pattern matches what the neuron is looking for. This is the core operation that determines neuron firing.</p>
-<p><strong>How it affects output:</strong> High dot product means input and weight vectors point in similar directions, creating strong positive activation. Orthogonal vectors produce zero activation.</p>
+<p>Intuition: Measures how "aligned" two vectors are. In neurons, the dot product between input vectors and weight vectors gives the raw activation strength—high when input pattern matches what the neuron is looking for. This is the core operation that determines neuron firing.</p>
+<p>How it affects output: High dot product means input and weight vectors point in similar directions, creating strong positive activation. Orthogonal vectors produce zero activation.</p>
 <h3 id="cosine-similarity">Cosine Similarity<a class="headerlink" href="#cosine-similarity" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
 \cos(\theta) = \frac{\mathbf{a} \cdot \mathbf{b}}{|\mathbf{a}||\mathbf{b}|}
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Measures similarity independent of magnitude. Used in attention mechanisms, word embeddings, and similarity-based learning. Helps neural networks focus on directional patterns rather than absolute magnitudes, making them more robust to scaling variations.</p>
-<p><strong>How it affects output:</strong> Cosine similarity ranges from -1 to 1, making it scale-invariant. Similar directions get high scores regardless of vector magnitude.</p>
+<p>Intuition: Measures similarity independent of magnitude. Used in attention mechanisms, word embeddings, and similarity-based learning. Helps neural networks focus on directional patterns rather than absolute magnitudes, making them more robust to scaling variations.</p>
+<p>How it affects output: Cosine similarity ranges from -1 to 1, making it scale-invariant. Similar directions get high scores regardless of vector magnitude.</p>
 <h3 id="euclidean-distance">Euclidean Distance<a class="headerlink" href="#euclidean-distance" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
 d(\mathbf{a}, \mathbf{b}) = |\mathbf{a} - \mathbf{b}|_2 = \sqrt{\sum_i (a_i - b_i)^2}
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Measures how "far apart" two points are in feature space. Used in loss functions (MSE), clustering, and nearest neighbor methods. In neural networks, helps measure prediction errors and similarity between representations.</p>
-<p><strong>How it affects output:</strong> Smaller distances indicate more similar points. MSE loss penalizes large errors quadratically, making the model focus on reducing big mistakes first.</p>
+<p>Intuition: Measures how "far apart" two points are in feature space. Used in loss functions (MSE), clustering, and nearest neighbor methods. In neural networks, helps measure prediction errors and similarity between representations.</p>
+<p>How it affects output: Smaller distances indicate more similar points. MSE loss penalizes large errors quadratically, making the model focus on reducing big mistakes first.</p>
 <h3 id="lp-norms">Lp Norms<a class="headerlink" href="#lp-norms" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
 |\mathbf{x}|_p = \left(\sum_i |x_i|^p\right)^{1/p}
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Measures vector "size" in different ways. L1 norm promotes sparsity (many weights become zero), L2 norm promotes smoothness (weights stay small). Used in regularization to control model complexity and prevent overfitting by penalizing large weights.</p>
-<p><strong>How it affects output:</strong> L1 norm creates sparse solutions (many zeros), L2 norm creates smooth solutions (small values). Higher p values focus more on the largest elements.</p>
+<p>Intuition: Measures vector "size" in different ways. L1 norm promotes sparsity (many weights become zero), L2 norm promotes smoothness (weights stay small). Used in regularization to control model complexity and prevent overfitting by penalizing large weights.</p>
+<p>How it affects output: L1 norm creates sparse solutions (many zeros), L2 norm creates smooth solutions (small values). Higher p values focus more on the largest elements.</p>
 <hr />
 <h2 id="calculus">Calculus<a class="headerlink" href="#calculus" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>📓 <strong>Jupyter Notebook:</strong> <a href="pynb/math_ref/calculus.ipynb">pynb/math_ref/calculus.ipynb</a></p>
+<p>📓 Jupyter Notebook: <a href="pynb/math_ref/calculus.ipynb">pynb/math_ref/calculus.ipynb</a></p>
 </blockquote>
 <h3 id="derivatives">Derivatives<a class="headerlink" href="#derivatives" title="Permanent link">&para;</a></h3>
 <p>$$
@@ -1595,52 +1595,52 @@ $$</p>
 f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Measures how fast a function changes. In neural networks, tells us how much the loss changes when we tweak a parameter. This is the foundation of gradient-based learning—we follow the derivative to find better parameter values.</p>
-<p><strong>How it affects output:</strong> Derivatives tell us sensitivity - how much output changes for small input changes. Essential for parameter updates.</p>
+<p>Intuition: Measures how fast a function changes. In neural networks, tells us how much the loss changes when we tweak a parameter. This is the foundation of gradient-based learning—we follow the derivative to find better parameter values.</p>
+<p>How it affects output: Derivatives tell us sensitivity - how much output changes for small input changes. Essential for parameter updates.</p>
 <h3 id="partial-derivatives">Partial Derivatives<a class="headerlink" href="#partial-derivatives" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
 \frac{\partial f}{\partial x_i}
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Derivative with respect to one variable while holding others constant. Neural networks have millions of parameters, so we need partial derivatives to see how the loss changes with respect to each individual weight or bias.</p>
-<p><strong>How it affects output:</strong> Each parameter gets its own gradient, allowing independent optimization of millions of parameters simultaneously.</p>
+<p>Intuition: Derivative with respect to one variable while holding others constant. Neural networks have millions of parameters, so we need partial derivatives to see how the loss changes with respect to each individual weight or bias.</p>
+<p>How it affects output: Each parameter gets its own gradient, allowing independent optimization of millions of parameters simultaneously.</p>
 <h3 id="chain-rule">Chain Rule<a class="headerlink" href="#chain-rule" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
 \frac{d}{dx}f(g(x)) = f'(g(x)) \cdot g'(x)
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> The mathematical foundation of backpropagation. Neural networks are compositions of functions (layer after layer), so to compute gradients we multiply derivatives along the chain from output back to input. This is why it's called "backpropagation"—propagating derivatives backward through the composition.</p>
-<p><strong>How it affects output:</strong> Chain rule enables automatic differentiation through arbitrarily deep networks by systematically applying the composition rule.</p>
+<p>Intuition: The mathematical foundation of backpropagation. Neural networks are compositions of functions (layer after layer), so to compute gradients we multiply derivatives along the chain from output back to input. This is why it's called "backpropagation"—propagating derivatives backward through the composition.</p>
+<p>How it affects output: Chain rule enables automatic differentiation through arbitrarily deep networks by systematically applying the composition rule.</p>
 <h3 id="gradient">Gradient<a class="headerlink" href="#gradient" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
 \nabla f = \left[\frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, \ldots, \frac{\partial f}{\partial x_n}\right]
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Points in the direction of steepest increase. In neural network training, we move parameters in the negative gradient direction (steepest decrease) to minimize the loss function. The gradient tells us both direction and magnitude of the best parameter update.</p>
-<p><strong>How it affects output:</strong> Gradient provides both direction (sign) and magnitude for optimal parameter updates. Larger gradients indicate more sensitive parameters.</p>
+<p>Intuition: Points in the direction of steepest increase. In neural network training, we move parameters in the negative gradient direction (steepest decrease) to minimize the loss function. The gradient tells us both direction and magnitude of the best parameter update.</p>
+<p>How it affects output: Gradient provides both direction (sign) and magnitude for optimal parameter updates. Larger gradients indicate more sensitive parameters.</p>
 <h3 id="hessian">Hessian<a class="headerlink" href="#hessian" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
 \mathbf{H}_{ij} = \frac{\partial^2 f}{\partial x_i \partial x_j}
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Matrix of second derivatives that describes the curvature of the loss surface. Helps understand convergence behavior and is used in advanced optimization methods like Newton's method and natural gradients. High curvature areas require smaller learning rates.</p>
-<p><strong>How it affects output:</strong> Hessian reveals optimization landscape curvature. High condition numbers indicate difficult optimization requiring careful learning rates.</p>
+<p>Intuition: Matrix of second derivatives that describes the curvature of the loss surface. Helps understand convergence behavior and is used in advanced optimization methods like Newton's method and natural gradients. High curvature areas require smaller learning rates.</p>
+<p>How it affects output: Hessian reveals optimization landscape curvature. High condition numbers indicate difficult optimization requiring careful learning rates.</p>
 <h3 id="jacobian">Jacobian<a class="headerlink" href="#jacobian" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
 \mathbf{J}_{ij} = \frac{\partial f_i}{\partial x_j}
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Matrix of first derivatives for vector-valued functions. Essential for backpropagation through layers that output vectors (like hidden layers). Each element shows how one output component changes with respect to one input component, enabling gradient flow through complex architectures.</p>
-<p><strong>How it affects output:</strong> Jacobian enables gradient flow through vector outputs, crucial for multi-output layers and complex architectures.</p>
+<p>Intuition: Matrix of first derivatives for vector-valued functions. Essential for backpropagation through layers that output vectors (like hidden layers). Each element shows how one output component changes with respect to one input component, enabling gradient flow through complex architectures.</p>
+<p>How it affects output: Jacobian enables gradient flow through vector outputs, crucial for multi-output layers and complex architectures.</p>
 <hr />
 <h2 id="differential-equations">Differential Equations<a class="headerlink" href="#differential-equations" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>📓 <strong>Jupyter Notebook:</strong> <a href="pynb/math_ref/differential_equations.ipynb">pynb/math_ref/differential_equations.ipynb</a></p>
+<p>📓 Jupyter Notebook: <a href="pynb/math_ref/differential_equations.ipynb">pynb/math_ref/differential_equations.ipynb</a></p>
 </blockquote>
 <h3 id="ordinary-differential-equations-odes">Ordinary Differential Equations (ODEs)<a class="headerlink" href="#ordinary-differential-equations-odes" title="Permanent link">&para;</a></h3>
 <p>$$
@@ -1648,20 +1648,20 @@ $$</p>
 \frac{dy}{dt} = f(y, t)
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Models how quantities change over time. Neural ODEs treat layer depth as continuous time, allowing adaptive depth and memory-efficient training. ResNets approximate the solution to ODEs, explaining why skip connections work so well for deep networks.</p>
-<p><strong>How it affects output:</strong> ODEs provide continuous depth, memory efficiency, and theoretical foundations for understanding deep networks as dynamical systems.</p>
+<p>Intuition: Models how quantities change over time. Neural ODEs treat layer depth as continuous time, allowing adaptive depth and memory-efficient training. ResNets approximate the solution to ODEs, explaining why skip connections work so well for deep networks.</p>
+<p>How it affects output: ODEs provide continuous depth, memory efficiency, and theoretical foundations for understanding deep networks as dynamical systems.</p>
 <h3 id="partial-differential-equations-pdes">Partial Differential Equations (PDEs)<a class="headerlink" href="#partial-differential-equations-pdes" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
 \frac{\partial u}{\partial t} = f\left(u, \frac{\partial u}{\partial x}, \frac{\partial^2 u}{\partial x^2}, \ldots\right)
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Models complex spatiotemporal phenomena. Physics-informed neural networks (PINNs) embed PDE constraints directly into the loss function, allowing neural networks to solve scientific computing problems while respecting physical laws.</p>
-<p><strong>How it affects output:</strong> PINNs ensure solutions satisfy physical laws, enabling neural networks to solve scientific problems with built-in physical constraints.</p>
+<p>Intuition: Models complex spatiotemporal phenomena. Physics-informed neural networks (PINNs) embed PDE constraints directly into the loss function, allowing neural networks to solve scientific computing problems while respecting physical laws.</p>
+<p>How it affects output: PINNs ensure solutions satisfy physical laws, enabling neural networks to solve scientific problems with built-in physical constraints.</p>
 <hr />
 <h2 id="nonlinear-functions">Nonlinear Functions<a class="headerlink" href="#nonlinear-functions" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>📓 <strong>Jupyter Notebook:</strong> <a href="pynb/math_ref/nonlinear_functions.ipynb">pynb/math_ref/nonlinear_functions.ipynb</a></p>
+<p>📓 Jupyter Notebook: <a href="pynb/math_ref/nonlinear_functions.ipynb">pynb/math_ref/nonlinear_functions.ipynb</a></p>
 </blockquote>
 <h3 id="hyperbolic-tangent-tanh">Hyperbolic Tangent (tanh)<a class="headerlink" href="#hyperbolic-tangent-tanh" title="Permanent link">&para;</a></h3>
 <p>$$
@@ -1669,28 +1669,28 @@ $$</p>
 \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Activation function that squashes inputs to (-1, 1). Provides nonlinearity needed for complex patterns while keeping outputs bounded. The S-shape introduces smooth nonlinear decision boundaries, and its zero-centered output helps with gradient flow compared to sigmoid.</p>
-<p><strong>How it affects output:</strong> Tanh produces zero-centered outputs helping gradient flow, but can suffer from vanishing gradients when inputs are large.</p>
+<p>Intuition: Activation function that squashes inputs to (-1, 1). Provides nonlinearity needed for complex patterns while keeping outputs bounded. The S-shape introduces smooth nonlinear decision boundaries, and its zero-centered output helps with gradient flow compared to sigmoid.</p>
+<p>How it affects output: Tanh produces zero-centered outputs helping gradient flow, but can suffer from vanishing gradients when inputs are large.</p>
 <h3 id="sigmoid">Sigmoid<a class="headerlink" href="#sigmoid" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
 \sigma(x) = \frac{1}{1 + e^{-x}}
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Squashes inputs to (0, 1), naturally interpreted as probabilities. Used in binary classification and gating mechanisms (LSTM gates). However, suffers from vanishing gradients at extremes, which is why ReLU became more popular in deep networks.</p>
-<p><strong>How it affects output:</strong> Sigmoid outputs natural probabilities but suffers from vanishing gradients, making it problematic for deep networks but perfect for gates.</p>
+<p>Intuition: Squashes inputs to (0, 1), naturally interpreted as probabilities. Used in binary classification and gating mechanisms (LSTM gates). However, suffers from vanishing gradients at extremes, which is why ReLU became more popular in deep networks.</p>
+<p>How it affects output: Sigmoid outputs natural probabilities but suffers from vanishing gradients, making it problematic for deep networks but perfect for gates.</p>
 <h3 id="relu">ReLU<a class="headerlink" href="#relu" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
 \text{ReLU}(x) = \max(0, x)
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Simple nonlinearity that sets negative values to zero. Solves vanishing gradient problem because gradient is either 0 or 1. Promotes sparsity (many neurons inactive) which makes networks more interpretable and efficient. Biologically inspired by neuron firing thresholds.</p>
-<p><strong>How it affects output:</strong> ReLU enables deep networks by preventing vanishing gradients and promoting sparsity, but can suffer from dying neurons.</p>
+<p>Intuition: Simple nonlinearity that sets negative values to zero. Solves vanishing gradient problem because gradient is either 0 or 1. Promotes sparsity (many neurons inactive) which makes networks more interpretable and efficient. Biologically inspired by neuron firing thresholds.</p>
+<p>How it affects output: ReLU enables deep networks by preventing vanishing gradients and promoting sparsity, but can suffer from dying neurons.</p>
 <hr />
 <h2 id="probability--statistics">Probability &amp; Statistics<a class="headerlink" href="#probability--statistics" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>📓 <strong>Jupyter Notebook:</strong> <a href="pynb/math_ref/probability_statistics.ipynb">pynb/math_ref/probability_statistics.ipynb</a></p>
+<p>📓 Jupyter Notebook: <a href="pynb/math_ref/probability_statistics.ipynb">pynb/math_ref/probability_statistics.ipynb</a></p>
 </blockquote>
 <h3 id="expectation">Expectation<a class="headerlink" href="#expectation" title="Permanent link">&para;</a></h3>
 <p>$$
@@ -1698,36 +1698,36 @@ $$</p>
 \mathbb{E}[X] = \sum_x x \cdot P(X = x)
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Average value of a random variable. In neural networks, we often work with expected loss over data distributions. Batch statistics, dropout, and stochastic optimization all rely on expectation to handle randomness in training and make models robust to unseen data.</p>
-<p><strong>How it affects output:</strong> Expectation provides theoretical foundation for loss functions, batch statistics, and stochastic optimization in neural networks.</p>
+<p>Intuition: Average value of a random variable. In neural networks, we often work with expected loss over data distributions. Batch statistics, dropout, and stochastic optimization all rely on expectation to handle randomness in training and make models robust to unseen data.</p>
+<p>How it affects output: Expectation provides theoretical foundation for loss functions, batch statistics, and stochastic optimization in neural networks.</p>
 <h3 id="variance">Variance<a class="headerlink" href="#variance" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
 \text{Var}(X) = \mathbb{E}[(X - \mathbb{E}[X])^2]
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Measures spread of a distribution. Critical for weight initialization (to prevent vanishing/exploding gradients) and batch normalization (to stabilize training). Understanding variance helps design networks that maintain good signal propagation through many layers.</p>
-<p><strong>How it affects output:</strong> Proper variance control through initialization and normalization prevents vanishing/exploding gradients and stabilizes training.</p>
+<p>Intuition: Measures spread of a distribution. Critical for weight initialization (to prevent vanishing/exploding gradients) and batch normalization (to stabilize training). Understanding variance helps design networks that maintain good signal propagation through many layers.</p>
+<p>How it affects output: Proper variance control through initialization and normalization prevents vanishing/exploding gradients and stabilizes training.</p>
 <h3 id="softmax">Softmax<a class="headerlink" href="#softmax" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
 \text{softmax}(x_i) = \frac{e^{x_i}}{\sum_j e^{x_j}}
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Converts real values to probability distribution. Essential for multi-class classification and attention mechanisms. The exponential amplifies differences while ensuring outputs sum to 1, creating a "soft" version of selecting the maximum value that's differentiable for gradient-based learning.</p>
-<p><strong>How it affects output:</strong> Softmax creates valid probability distributions and enables differentiable "argmax" operations for classification and attention.</p>
+<p>Intuition: Converts real values to probability distribution. Essential for multi-class classification and attention mechanisms. The exponential amplifies differences while ensuring outputs sum to 1, creating a "soft" version of selecting the maximum value that's differentiable for gradient-based learning.</p>
+<p>How it affects output: Softmax creates valid probability distributions and enables differentiable "argmax" operations for classification and attention.</p>
 <h3 id="cross-entropy-loss">Cross-Entropy Loss<a class="headerlink" href="#cross-entropy-loss" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
 \mathcal{L} = -\sum_i y_i \log(\hat{y}_i)
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Measures difference between predicted and true probability distributions. Natural loss function for classification because it heavily penalizes confident wrong predictions. Mathematically connected to maximum likelihood estimation and information theory—minimizing cross-entropy maximizes the likelihood of correct predictions.</p>
-<p><strong>How it affects output:</strong> Cross-entropy encourages confident correct predictions while heavily penalizing confident mistakes, leading to well-calibrated classifiers.</p>
+<p>Intuition: Measures difference between predicted and true probability distributions. Natural loss function for classification because it heavily penalizes confident wrong predictions. Mathematically connected to maximum likelihood estimation and information theory—minimizing cross-entropy maximizes the likelihood of correct predictions.</p>
+<p>How it affects output: Cross-entropy encourages confident correct predictions while heavily penalizing confident mistakes, leading to well-calibrated classifiers.</p>
 <hr />
 <h2 id="optimization">Optimization<a class="headerlink" href="#optimization" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>📓 <strong>Jupyter Notebook:</strong> <a href="pynb/math_ref/optimization.ipynb">pynb/math_ref/optimization.ipynb</a></p>
+<p>📓 Jupyter Notebook: <a href="pynb/math_ref/optimization.ipynb">pynb/math_ref/optimization.ipynb</a></p>
 </blockquote>
 <h3 id="gradient-descent">Gradient Descent<a class="headerlink" href="#gradient-descent" title="Permanent link">&para;</a></h3>
 <p>$$
@@ -1735,8 +1735,8 @@ $$</p>
 \theta_{t+1} = \theta_t - \alpha \nabla_\theta \mathcal{L}(\theta_t)
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Iteratively moves parameters in direction of steepest loss decrease. The fundamental learning algorithm for neural networks. The learning rate controls step size—too large causes instability, too small causes slow convergence. Modern variants (Adam, RMSprop) adapt the learning rate automatically.</p>
-<p><strong>How it affects output:</strong> Gradient descent provides the fundamental mechanism for learning by iteratively improving parameters based on loss gradients.</p>
+<p>Intuition: Iteratively moves parameters in direction of steepest loss decrease. The fundamental learning algorithm for neural networks. The learning rate controls step size—too large causes instability, too small causes slow convergence. Modern variants (Adam, RMSprop) adapt the learning rate automatically.</p>
+<p>How it affects output: Gradient descent provides the fundamental mechanism for learning by iteratively improving parameters based on loss gradients.</p>
 <h3 id="adam-optimizer">Adam Optimizer<a class="headerlink" href="#adam-optimizer" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
@@ -1745,12 +1745,12 @@ v_t &amp;= \beta_2 v_{t-1} + (1-\beta_2)g_t^2 \newline
 \theta_t &amp;= \theta_{t-1} - \frac{\alpha}{\sqrt{v_t} + \epsilon}\hat{m}_t
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Adaptive learning rate optimizer that maintains running averages of gradients (momentum) and squared gradients (variance). Automatically adjusts learning rates per parameter based on historical gradients. Like cruise control for optimization - speeds up in flat areas, slows down in steep areas.</p>
-<p><strong>How it affects output:</strong> Adam adapts learning rates per parameter, leading to faster convergence and better handling of sparse gradients compared to SGD.</p>
+<p>Intuition: Adaptive learning rate optimizer that maintains running averages of gradients (momentum) and squared gradients (variance). Automatically adjusts learning rates per parameter based on historical gradients. Like cruise control for optimization - speeds up in flat areas, slows down in steep areas.</p>
+<p>How it affects output: Adam adapts learning rates per parameter, leading to faster convergence and better handling of sparse gradients compared to SGD.</p>
 <hr />
 <h2 id="attention-mechanisms">Attention Mechanisms<a class="headerlink" href="#attention-mechanisms" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>📓 <strong>Jupyter Notebook:</strong> <a href="pynb/math_ref/attention_mechanisms.ipynb">pynb/math_ref/attention_mechanisms.ipynb</a></p>
+<p>📓 Jupyter Notebook: <a href="pynb/math_ref/attention_mechanisms.ipynb">pynb/math_ref/attention_mechanisms.ipynb</a></p>
 </blockquote>
 <h3 id="scaled-dot-product-attention">Scaled Dot-Product Attention<a class="headerlink" href="#scaled-dot-product-attention" title="Permanent link">&para;</a></h3>
 <p>$$
@@ -1758,12 +1758,12 @@ $$</p>
 \text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> The core operation of transformers. Queries (Q) search through keys (K) to find relevant information, then retrieve corresponding values (V). The scaling prevents attention from becoming too sharp/peaked as dimensions grow, maintaining good gradient flow and distributed attention weights.</p>
-<p><strong>How it affects output:</strong> Attention allows models to dynamically focus on relevant parts of the input, enabling long-range dependencies and context-aware representations.</p>
+<p>Intuition: The core operation of transformers. Queries (Q) search through keys (K) to find relevant information, then retrieve corresponding values (V). The scaling prevents attention from becoming too sharp/peaked as dimensions grow, maintaining good gradient flow and distributed attention weights.</p>
+<p>How it affects output: Attention allows models to dynamically focus on relevant parts of the input, enabling long-range dependencies and context-aware representations.</p>
 <hr />
 <h2 id="transformer-components">Transformer Components<a class="headerlink" href="#transformer-components" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>📓 <strong>Jupyter Notebook:</strong> <a href="pynb/math_ref/transformer_components.ipynb">pynb/math_ref/transformer_components.ipynb</a></p>
+<p>📓 Jupyter Notebook: <a href="pynb/math_ref/transformer_components.ipynb">pynb/math_ref/transformer_components.ipynb</a></p>
 </blockquote>
 <h3 id="layer-normalization">Layer Normalization<a class="headerlink" href="#layer-normalization" title="Permanent link">&para;</a></h3>
 <p>$$
@@ -1771,20 +1771,20 @@ $$</p>
 \text{LayerNorm}(x) = \frac{x - \mu}{\sigma} \odot \gamma + \beta \quad \text{where } \mu, \sigma \text{ computed per sample}
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Normalizes activations within each sample to have zero mean and unit variance. Unlike batch normalization, works independently for each sample, making it stable for variable sequence lengths and small batch sizes. Helps with gradient flow and training stability.</p>
-<p><strong>How it affects output:</strong> Layer normalization stabilizes training by normalizing layer inputs, reducing internal covariate shift and enabling higher learning rates.</p>
+<p>Intuition: Normalizes activations within each sample to have zero mean and unit variance. Unlike batch normalization, works independently for each sample, making it stable for variable sequence lengths and small batch sizes. Helps with gradient flow and training stability.</p>
+<p>How it affects output: Layer normalization stabilizes training by normalizing layer inputs, reducing internal covariate shift and enabling higher learning rates.</p>
 <h3 id="residual-connections">Residual Connections<a class="headerlink" href="#residual-connections" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
 \mathbf{h}_{l+1} = \mathbf{h}_l + F(\mathbf{h}_l)
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Creates "gradient highways" that allow information to flow directly through the network. Essential for training very deep networks (like transformers with many layers) by preventing vanishing gradients. Acts like a safety net - even if some layers learn poorly, information can still reach the output.</p>
-<p><strong>How it affects output:</strong> Residual connections enable training of much deeper networks by providing gradient highways and allowing layers to learn incremental changes.</p>
+<p>Intuition: Creates "gradient highways" that allow information to flow directly through the network. Essential for training very deep networks (like transformers with many layers) by preventing vanishing gradients. Acts like a safety net - even if some layers learn poorly, information can still reach the output.</p>
+<p>How it affects output: Residual connections enable training of much deeper networks by providing gradient highways and allowing layers to learn incremental changes.</p>
 <hr />
 <h2 id="advanced-concepts">Advanced Concepts<a class="headerlink" href="#advanced-concepts" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>📓 <strong>Jupyter Notebook:</strong> <a href="pynb/math_ref/advanced_concepts.ipynb">pynb/math_ref/advanced_concepts.ipynb</a></p>
+<p>📓 Jupyter Notebook: <a href="pynb/math_ref/advanced_concepts.ipynb">pynb/math_ref/advanced_concepts.ipynb</a></p>
 </blockquote>
 <h3 id="temperature-scaling">Temperature Scaling<a class="headerlink" href="#temperature-scaling" title="Permanent link">&para;</a></h3>
 <p>$$
@@ -1792,8 +1792,8 @@ $$</p>
 \text{softmax}(z/\tau) \quad \text{where } \tau \text{ is temperature}
 \end{aligned}
 $$</p>
-<p><strong>Intuition:</strong> Controls the "sharpness" of probability distributions. Lower temperature makes the distribution more peaked (confident), higher temperature makes it more uniform (uncertain). Used in generation for creativity control and in calibration to match predicted confidence with actual accuracy.</p>
-<p><strong>How it affects output:</strong> Temperature scaling controls the confidence/uncertainty trade-off in model outputs, enabling calibrated predictions and controllable generation creativity.</p>
+<p>Intuition: Controls the "sharpness" of probability distributions. Lower temperature makes the distribution more peaked (confident), higher temperature makes it more uniform (uncertain). Used in generation for creativity control and in calibration to match predicted confidence with actual accuracy.</p>
+<p>How it affects output: Temperature scaling controls the confidence/uncertainty trade-off in model outputs, enabling calibrated predictions and controllable generation creativity.</p>
 
 
 
@@ -1855,9 +1855,11 @@ $$</p>
     
       <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
+        <script src="../javascripts/mathjax-init.js"></script>
+      
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
-        <script src="../javascripts/mathjax.js"></script>
+        <script src="../javascripts/mathjax-refresh.js"></script>
       
     
   </body>

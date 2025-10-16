@@ -1515,25 +1515,25 @@
 <h3 id="1-llm-weights">1. LLM Weights<a class="headerlink" href="#1-llm-weights" title="Permanent link">&para;</a></h3>
 <h4 id="introduction-how-knowledge-becomes-internalized-in-llm-weights">Introduction: How Knowledge Becomes Internalized in LLM Weights<a class="headerlink" href="#introduction-how-knowledge-becomes-internalized-in-llm-weights" title="Permanent link">&para;</a></h4>
 <p>Consider how humans internalize knowledge: when you learn that "Paris is the capital of France," this fact doesn't get stored in a single brain cell. Instead, it becomes encoded across neural connections that activate together when you think about Paris, France, or capitals. LLM weights work similarly - they store knowledge as <strong>learned patterns distributed across billions of parameters</strong>.</p>
-<p><strong>Knowledge Internalization Process:</strong></p>
+<p>Knowledge Internalization Process:</p>
 <ul>
-<li><strong>Training Exposure</strong>: During training, the model encounters "Paris is the capital of France" in thousands of different contexts</li>
-<li><strong>Statistical Learning</strong>: Weights learn that "Paris" and "capital of France" frequently co-occur and have semantic relationships</li>
-<li><strong>Distributed Encoding</strong>: This knowledge becomes encoded across many weight matrices, not stored as discrete facts</li>
-<li><strong>Pattern Activation</strong>: During inference, when asked about Paris, the learned weight patterns activate to generate contextually appropriate responses</li>
+<li>Training Exposure: During training, the model encounters "Paris is the capital of France" in thousands of different contexts</li>
+<li>Statistical Learning: Weights learn that "Paris" and "capital of France" frequently co-occur and have semantic relationships</li>
+<li>Distributed Encoding: This knowledge becomes encoded across many weight matrices, not stored as discrete facts</li>
+<li>Pattern Activation: During inference, when asked about Paris, the learned weight patterns activate to generate contextually appropriate responses</li>
 </ul>
 <p>Unlike databases where "Paris → capital → France" might be a clear lookup table entry, LLMs internalize this as statistical associations that enable both recall and generalization to new contexts.</p>
-<p><strong>Core Intuition</strong>: Think of LLM weights like a distributed neural architecture where:</p>
+<p>Core Intuition: Think of LLM weights like a distributed neural architecture where:</p>
 <ul>
-<li><strong>Embedding weights</strong> position tokens in high-dimensional semantic space using vector representations (analogous to principal component analysis projections)</li>
-<li><strong>Attention weights</strong> learn contextual dependencies between tokens using learned similarity functions</li>
-<li><strong>Feed-forward weights</strong> perform non-linear feature transformations through learned basis functions and activations</li>
+<li>Embedding weights position tokens in high-dimensional semantic space using vector representations (analogous to principal component analysis projections)</li>
+<li>Attention weights learn contextual dependencies between tokens using learned similarity functions</li>
+<li>Feed-forward weights perform non-linear feature transformations through learned basis functions and activations</li>
 </ul>
 <p>The magic happens when these three types of weights work together to generate contextual understanding.</p>
 <h4 id="weight-computation-timeline-and-lifecycle">Weight Computation Timeline and Lifecycle<a class="headerlink" href="#weight-computation-timeline-and-lifecycle" title="Permanent link">&para;</a></h4>
-<p><strong>The Journey of a Token Through Transformer Layers</strong></p>
+<p>The Journey of a Token Through Transformer Layers</p>
 <p>To understand how weights store knowledge, let's follow the word "cat" through a transformer model step-by-step.</p>
-<p><strong>Step 1: From Text to Numbers (Tokenization and Embedding)</strong></p>
+<p>Step 1: From Text to Numbers (Tokenization and Embedding)</p>
 <p>First, we need to understand how text becomes numbers that neural networks can process:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Text: &quot;cat&quot;
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>↓ Tokenization (convert text to numbers)
@@ -1541,32 +1541,32 @@
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>↓ Embedding Lookup (convert ID to vector)
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>Embedding vector: [0.8, 0.2, 0.1]  (learned position in semantic space)
 </code></pre></div>
-<p><strong>Important Note on Vector Dimensions:</strong>
+<p>Important Note on Vector Dimensions:
 Throughout this document, we use <strong>3-dimensional vectors</strong> like [0.8, 0.2, 0.1] for educational clarity. This is a <strong>simplified example</strong> to make the mathematics tractable and intuitive.</p>
-<p><strong>Real-world embeddings are much larger:</strong></p>
+<p>Real-world embeddings are much larger:</p>
 <ul>
-<li><strong>BERT-base</strong>: 768 dimensions</li>
-<li><strong>GPT-3</strong>: 4,096 dimensions  </li>
-<li><strong>GPT-4</strong>: 8,192+ dimensions</li>
+<li>BERT-base: 768 dimensions</li>
+<li>GPT-3: 4,096 dimensions  </li>
+<li>GPT-4: 8,192+ dimensions</li>
 </ul>
-<p><strong>Why we use 3D examples:</strong></p>
+<p>Why we use 3D examples:</p>
 <ol>
-<li><strong>Mathematical clarity</strong>: Easy to follow dot products and matrix multiplications</li>
-<li><strong>Visual intuition</strong>: Can conceptualize 3D space (length, width, height)</li>
-<li><strong>Concrete calculations</strong>: All arithmetic is human-verifiable</li>
-<li><strong>Pedagogical progression</strong>: Build understanding before introducing complexity</li>
+<li>Mathematical clarity: Easy to follow dot products and matrix multiplications</li>
+<li>Visual intuition: Can conceptualize 3D space (length, width, height)</li>
+<li>Concrete calculations: All arithmetic is human-verifiable</li>
+<li>Pedagogical progression: Build understanding before introducing complexity</li>
 </ol>
-<p><strong>The principles remain identical at any scale</strong> - whether 3D or 768D, the attention mechanisms, similarity calculations, and weight interactions work exactly the same way.</p>
-<p><strong>What is W_embed?</strong></p>
+<p>The principles remain identical at any scale - whether 3D or 768D, the attention mechanisms, similarity calculations, and weight interactions work exactly the same way.</p>
+<p>What is W_embed?</p>
 <ul>
-<li><code>W_embed</code> is the <strong>embedding matrix</strong> with shape <code>[vocab_size, embedding_dim]</code></li>
+<li><code>W_embed</code> is the embedding matrix with shape <code>[vocab_size, embedding_dim]</code></li>
 <li>For a vocabulary of 50,000 words and 768-dimensional embeddings: <code>W_embed</code> is <code>[50000, 768]</code></li>
 <li>Each row represents one word's position in semantic space</li>
 <li><code>W_embed[1247]</code> gives us the embedding vector for token ID 1247 ("cat")</li>
 </ul>
-<p><strong>During Training Phase:</strong></p>
+<p>During Training Phase:</p>
 <ol>
-<li><strong>Embedding Weight Learning:</strong>
+<li>Embedding Weight Learning:
    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Input: Token &quot;cat&quot; (ID: 1247)
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Lookup: embedding_vector = W_embed[1247] = [0.8, 0.2, 0.1]
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
@@ -1577,7 +1577,7 @@ Throughout this document, we use <strong>3-dimensional vectors</strong> like [0.
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>- Goal: Similar words (cat, dog, animal) get similar vectors
 </code></pre></div></li>
 </ol>
-<p>The exact values aren't meaningful individually. What matters is their <strong>relationships</strong>:</p>
+<p>The exact values aren't meaningful individually. What matters is their relationships:</p>
 <ul>
 <li><code>cat=[0.8, 0.2, 0.1]</code> and <code>dog=[0.7, 0.3, 0.2]</code> are close (similar animals)</li>
 <li>
@@ -1590,12 +1590,12 @@ Throughout this document, we use <strong>3-dimensional vectors</strong> like [0.
 <p><strong>The Database Join Analogy: Understanding Query, Key, and Value</strong></p>
 <p>Consider a distributed database system performing content-based joins. For each information request:</p>
 <ul>
-<li><strong>Query (Q):</strong> The search criteria or predicate (the current token's information requirements)</li>
-<li><strong>Key (K):</strong> The indexed attributes or metadata (how other tokens advertise their content)</li>
-<li><strong>Value (V):</strong> The actual data payload (the semantic information other tokens provide)</li>
+<li>Query (Q): The search criteria or predicate (the current token's information requirements)</li>
+<li>Key (K): The indexed attributes or metadata (how other tokens advertise their content)</li>
+<li>Value (V): The actual data payload (the semantic information other tokens provide)</li>
 </ul>
 <p>The attention mechanism compares the Query to all Keys to decide which Values (information) are most relevant to the current word.</p>
-<p><strong>Step-by-Step Attention Computation:</strong></p>
+<p>Step-by-Step Attention Computation:</p>
 <p>Context: "The big cat runs"
    Current focus: "cat" wants to understand its context</p>
 <p>Starting point: h_cat = [0.8, 0.2, 0.1] (3D embedding from previous layer)
@@ -1615,16 +1615,16 @@ Throughout this document, we use <strong>3-dimensional vectors</strong> like [0.
 <a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>   - Dimension 1 (0.27): Moderately looking for &quot;size attributes&quot;
 <a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>   - Dimension 2 (0.29): Moderately looking for &quot;location context&quot;
 </code></pre></div></p>
-<p><strong>Matrix Multiplication Details:</strong>
+<p>Matrix Multiplication Details:
    Each column of W_q creates one dimension of the query vector:</p>
 <ul>
 <li>Q_cat[0] = 0.8×0.9 + 0.2×0.2 + 0.1×0.1 = 0.77 (column 1 → "animal properties")</li>
 <li>Q_cat[1] = 0.8×0.1 + 0.2×0.8 + 0.1×0.3 = 0.27 (column 2 → "size attributes")  </li>
 <li>Q_cat[2] = 0.8×0.2 + 0.2×0.3 + 0.1×0.7 = 0.29 (column 3 → "location context")</li>
 </ul>
-<p><strong>Analogy:</strong> Think of W_q columns as "question templates"—each column extracts a different aspect of the word's meaning to help the model decide what information to seek from other words.</p>
+<p>Analogy: Think of W_q columns as "question templates"—each column extracts a different aspect of the word's meaning to help the model decide what information to seek from other words.</p>
 <p>In real models, both the input and output dimensions are much larger (e.g., 768 or 4096), but the principle is the same: the weight matrix transforms the input embedding into a query vector for attention.</p>
-<p><strong>Why Question-Forming Matrix Matters:</strong>
+<p>Why Question-Forming Matrix Matters:
    Different words need different types of questions:</p>
 <ul>
 <li>Nouns ask: "What describes me?" "What category am I?"</li>
@@ -1683,9 +1683,9 @@ Throughout this document, we use <strong>3-dimensional vectors</strong> like [0.
 <ol>
 <li><strong>Feed-Forward Weight Computation: Pattern Recognition and Refinement</strong></li>
 </ol>
-<p><strong>What happens after attention?</strong>
+<p>What happens after attention?
    After attention, "cat" now has a rich, context-aware representation that knows it's "big" and related to "animal". The feed-forward network (FFN) acts like a pattern recognition system that extracts and refines higher-level concepts.</p>
-<p><strong>The Two-Stage Processing Pipeline:</strong></p>
+<p>The Two-Stage Processing Pipeline:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>FFN(x) = W_2 · ReLU(W_1 · x + b_1) + b_2
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Input: x = [0.75, 0.28, 0.15] (enriched cat representation after attention)
@@ -1768,15 +1768,15 @@ Throughout this document, we use <strong>3-dimensional vectors</strong> like [0.
 <a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>
 <a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>Linear combinations alone cannot capture these complex logical relationships
 </code></pre></div>
-<p><strong>Why ReLU Here (Not Softmax)?</strong></p>
+<p>Why ReLU Here (Not Softmax)?</p>
 <ul>
-<li><strong>ReLU</strong>: Used for <strong>feature transformation</strong> - binary decision (keep/discard features)</li>
-<li><strong>Softmax</strong>: Used for <strong>probability distributions</strong> - when we need weights that sum to 1</li>
-<li><strong>FFN goal</strong>: Refine and extract patterns, not create attention weights</li>
-<li><strong>Sparsity</strong>: ReLU creates sparse activations (many zeros), making computation efficient</li>
+<li>ReLU: Used for feature transformation - binary decision (keep/discard features)</li>
+<li>Softmax: Used for probability distributions - when we need weights that sum to 1</li>
+<li>FFN goal: Refine and extract patterns, not create attention weights</li>
+<li>Sparsity: ReLU creates sparse activations (many zeros), making computation efficient</li>
 </ul>
-<p><strong>During Inference Phase: Deterministic Knowledge Retrieval</strong></p>
-<p><strong>What does "deterministic weight application" mean?</strong></p>
+<p>During Inference Phase: Deterministic Knowledge Retrieval</p>
+<p>What does "deterministic weight application" mean?</p>
 <p>Think of inference like playing a recorded symphony - every note is predetermined, no improvisation:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Inference vs Training Comparison:
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
@@ -1790,16 +1790,16 @@ Throughout this document, we use <strong>3-dimensional vectors</strong> like [0.
 <a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>Input: &quot;Dogs play&quot; → Forward pass → Output: &quot;with balls&quot;
 <a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>[Same weights, deterministic output for same input]
 </code></pre></div>
-<p><strong>Step-by-Step Deterministic Process:</strong></p>
+<p>Step-by-Step Deterministic Process:</p>
 <ol>
-<li><strong>Weight Loading</strong>: Pre-trained 175B parameters loaded into GPU memory as frozen matrices</li>
-<li><strong>Forward Computation</strong>: Exact same mathematical operations every time</li>
+<li>Weight Loading: Pre-trained 175B parameters loaded into GPU memory as frozen matrices</li>
+<li>Forward Computation: Exact same mathematical operations every time</li>
 <li>W_embed[token_id] → always returns same embedding</li>
 <li>Attention(Q,K,V) → same attention weights for same input</li>
 <li>FFN(x) → same transformations applied</li>
-<li><strong>Hidden State Flow</strong>: <code>token_id → embedding → layer_1 → ... → layer_96 → output</code></li>
+<li>Hidden State Flow: <code>token_id → embedding → layer_1 → ... → layer_96 → output</code></li>
 </ol>
-<p><strong>Why "Deterministic" Matters:</strong></p>
+<p>Why "Deterministic" Matters:</p>
 <ul>
 <li>Same input always produces same output (reproducible)</li>
 <li>No learning during inference (weights don't update)  </li>
@@ -1807,9 +1807,9 @@ Throughout this document, we use <strong>3-dimensional vectors</strong> like [0.
 <li>Enables caching and optimization strategies</li>
 </ul>
 <h4 id="hidden-states-and-weight-interaction">Hidden States and Weight Interaction<a class="headerlink" href="#hidden-states-and-weight-interaction" title="Permanent link">&para;</a></h4>
-<p><strong>What Are Hidden States?</strong></p>
+<p>What Are Hidden States?</p>
 <p>Think of hidden states as "evolving understanding" of each word as it passes through transformer layers. Like how your understanding of "bank" changes when you read "river bank" vs "savings bank", hidden states capture context-dependent meaning.</p>
-<p><strong>The Complete Journey: From Static Embeddings to Rich Representations</strong></p>
+<p>The Complete Journey: From Static Embeddings to Rich Representations</p>
 <p>Let's trace how the word "cat" evolves through multiple transformer layers:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Input Sentence: &quot;The big cat runs&quot;
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
@@ -1826,7 +1826,7 @@ Throughout this document, we use <strong>3-dimensional vectors</strong> like [0.
 How it's computed:</p>
 <ol>
 <li>
-<p><strong>Create Value vectors</strong>: First, each token's hidden state <code>h</code> is projected into a Value vector <code>v</code> using a learned weight matrix <code>W_v</code>.</p>
+<p>Create Value vectors: First, each token's hidden state <code>h</code> is projected into a Value vector <code>v</code> using a learned weight matrix <code>W_v</code>.</p>
 <ul>
 <li><code>v_the = h_the · W_v</code></li>
 <li><code>v_big = h_big · W_v</code></li>
@@ -1836,13 +1836,13 @@ These <code>v</code> vectors represent the information each token offers.</li>
 </ul>
 </li>
 <li>
-<p><strong>Compute attention weights</strong>: The model calculates attention weights (as shown previously) that determine how much "cat" should pay attention to every other token.</p>
+<p>Compute attention weights: The model calculates attention weights (as shown previously) that determine how much "cat" should pay attention to every other token.</p>
 <ul>
 <li>Attention weights for "cat": <code>[the: 0.05, big: 0.35, cat: 0.40, runs: 0.20]</code></li>
 </ul>
 </li>
 <li>
-<p><strong>Calculate the weighted sum of Value vectors</strong>: The new representation for "cat", <code>h_cat'</code>, is the sum of all Value vectors in the sequence, weighted by their respective attention scores.
+<p>Calculate the weighted sum of Value vectors: The new representation for "cat", <code>h_cat'</code>, is the sum of all Value vectors in the sequence, weighted by their respective attention scores.
     <code>h_cat' = 0.05·v_the + 0.35·v_big + 0.40·v_cat + 0.20·v_runs</code></p>
 </li>
 </ol>
@@ -1858,22 +1858,22 @@ These <code>v</code> vectors represent the information each token offers.</li>
 <a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>- It anticipates &quot;runs&quot; (the action it performs)
 <a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>- It has absorbed semantic relationships from training data
 </code></pre></div>
-<p><strong>How Knowledge Emerges</strong></p>
+<p>How Knowledge Emerges</p>
 <p>The relationship "cats are animals" emerges through this multi-layer process:</p>
 <ol>
-<li><strong>Embedding Layer</strong>: Positions "cat" and "animal" in similar regions of semantic space through learned linear transformations</li>
-<li><strong>Attention Layers</strong>: Learn contextual dependencies where "cat" tokens develop strong attention patterns with "animal" tokens through self-supervised learning</li>
-<li><strong>Feed-Forward Layers</strong>: Extract hierarchical taxonomic relationships (cat ⊂ mammal ⊂ animal) through non-linear feature combinations</li>
-<li><strong>Output Layer</strong>: High logit values for "animal" when predicting after "The cat is an ___" through learned classification weights</li>
+<li>Embedding Layer: Positions "cat" and "animal" in similar regions of semantic space through learned linear transformations</li>
+<li>Attention Layers: Learn contextual dependencies where "cat" tokens develop strong attention patterns with "animal" tokens through self-supervised learning</li>
+<li>Feed-Forward Layers: Extract hierarchical taxonomic relationships (cat ⊂ mammal ⊂ animal) through non-linear feature combinations</li>
+<li>Output Layer: High logit values for "animal" when predicting after "The cat is an ___" through learned classification weights</li>
 </ol>
-<p><strong>The Distributed Knowledge Pattern</strong>:</p>
+<p>The Distributed Knowledge Pattern:</p>
 <ul>
 <li>No single weight stores "cats are animals"</li>
 <li>The relationship emerges from the collective behavior of millions of weights</li>
 <li>Knowledge is implicit in the learned transformations, not explicit storage</li>
 </ul>
 <h4 id="multi-head-attention-why-multiple-perspectives-matter">Multi-Head Attention: Why Multiple Perspectives Matter<a class="headerlink" href="#multi-head-attention-why-multiple-perspectives-matter" title="Permanent link">&para;</a></h4>
-<p><strong>The Problem with Single Attention</strong></p>
+<p>The Problem with Single Attention</p>
 <p>Imagine trying to understand "The big cat runs fast" with only one type of question. You might focus on:</p>
 <ul>
 <li>ONLY grammar: "cat" relates to "runs" (subject-verb)</li>
@@ -1881,7 +1881,7 @@ These <code>v</code> vectors represent the information each token offers.</li>
 <li>ONLY modifiers: "big" relates to "cat" (adjective-noun)</li>
 </ul>
 <p>But you need ALL these relationships simultaneously!</p>
-<p><strong>Multi-Head Solution: Parallel Attention Specialists</strong></p>
+<p>Multi-Head Solution: Parallel Attention Specialists</p>
 <p>Think of multi-head attention like having multiple specialists analyze the same sentence:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>Single Head Attention (Limited):
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>&quot;The big cat runs fast&quot;
@@ -1895,7 +1895,7 @@ These <code>v</code> vectors represent the information each token offers.</li>
 <a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>Head 3: cat ↔ animal_concepts (semantic specialist)
 <a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>Head 4: fast ↔ runs (adverb specialist)
 </code></pre></div>
-<p><strong>Gentle Introduction: From 1 Head to 12 Heads</strong></p>
+<p>Gentle Introduction: From 1 Head to 12 Heads</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Step 1: Understanding the Architecture
 <a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>d_model = 768 (total representation size)
 <a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>num_heads = 12 (number of parallel attention mechanisms)
@@ -1909,7 +1909,7 @@ These <code>v</code> vectors represent the information each token offers.</li>
 <a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>
 <a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>Total parameters: same as single head, but organized differently
 </code></pre></div>
-<p><strong>Intuitive Head Specialization Example:</strong></p>
+<p>Intuitive Head Specialization Example:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>Context: &quot;The big brown cat runs quickly&quot;
 <a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
 <a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>Head 1: Grammar Specialist (Subject-Verb-Object patterns)
@@ -1933,7 +1933,7 @@ These <code>v</code> vectors represent the information each token offers.</li>
 <a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>K_quickly = [0.5, 0.2, 0.9, ..., 0.7] (64-dim)  
 <a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a>High attention: runs ↔ quickly
 </code></pre></div>
-<p><strong>How Heads Combine: The Integration Magic</strong></p>
+<p>How Heads Combine: The Integration Magic</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>After parallel processing:
 <a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>Head 1 output: [0.9, 0.2, 0.1, ..., 0.3] (cat with grammar info)
 <a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>Head 2 output: [0.1, 0.8, 0.6, ..., 0.2] (cat with size/color info)
@@ -1951,14 +1951,14 @@ These <code>v</code> vectors represent the information each token offers.</li>
 <a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>- Semantic category (animal)
 <a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>- Action context (runs quickly)
 </code></pre></div>
-<p><strong>Why This Architecture Works So Well:</strong></p>
+<p>Why This Architecture Works So Well:</p>
 <ol>
-<li><strong>Specialization</strong>: Each head learns different types of relationships</li>
-<li><strong>Parallel Processing</strong>: All relationships computed simultaneously  </li>
-<li><strong>Complementary Views</strong>: Different heads capture different aspects</li>
-<li><strong>Rich Integration</strong>: Final representation combines all perspectives</li>
+<li>Specialization: Each head learns different types of relationships</li>
+<li>Parallel Processing: All relationships computed simultaneously  </li>
+<li>Complementary Views: Different heads capture different aspects</li>
+<li>Rich Integration: Final representation combines all perspectives</li>
 </ol>
-<p><strong>Multi-Head Attention Summary:</strong></p>
+<p>Multi-Head Attention Summary:</p>
 <table>
 <thead>
 <tr>
@@ -1970,44 +1970,44 @@ These <code>v</code> vectors represent the information each token offers.</li>
 </thead>
 <tbody>
 <tr>
-<td><strong>Grammar Heads (1,5)</strong></td>
+<td>Grammar Heads (1,5)</td>
 <td>Subject-verb-object patterns</td>
 <td>cat ↔ runs, animal ↔ is</td>
 <td>Syntactic understanding</td>
 </tr>
 <tr>
-<td><strong>Modifier Heads (2,4)</strong></td>
+<td>Modifier Heads (2,4)</td>
 <td>Adjective-noun relationships</td>
 <td>big ↔ cat, small ↔ pet</td>
 <td>Descriptive attributes</td>
 </tr>
 <tr>
-<td><strong>Semantic Heads (3,7,11)</strong></td>
+<td>Semantic Heads (3,7,11)</td>
 <td>Category hierarchies</td>
 <td>cat ↔ animal, pet ↔ domestic</td>
 <td>Conceptual relationships</td>
 </tr>
 <tr>
-<td><strong>Position Heads (6,8)</strong></td>
+<td>Position Heads (6,8)</td>
 <td>Sequential dependencies</td>
 <td>nearby words, sentence structure</td>
 <td>Word order importance</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Why Concatenation Matters:</strong> Each head contributes specialized knowledge (64 dimensions each), and concatenating all 12 heads (12×64=768) creates a rich representation that combines grammatical, semantic, and positional understanding.</p>
-<p><strong>Knowledge Encoding Patterns:</strong>
+<p>Why Concatenation Matters: Each head contributes specialized knowledge (64 dimensions each), and concatenating all 12 heads (12×64=768) creates a rich representation that combines grammatical, semantic, and positional understanding.</p>
+<p>Knowledge Encoding Patterns:
 The relationship "cats are animals" emerges through distributed processing:</p>
 <ul>
-<li><strong>Semantic heads</strong>: Learn hierarchical category relationships (cat→animal)</li>
-<li><strong>Grammar heads</strong>: Learn syntactic patterns ("cat is", "animal that")</li>
-<li><strong>Modifier heads</strong>: Learn contextual associations (pets, domestic, wild)</li>
-<li><strong>FFN layers</strong>: Integrate these multi-head insights into refined understanding</li>
+<li>Semantic heads: Learn hierarchical category relationships (cat→animal)</li>
+<li>Grammar heads: Learn syntactic patterns ("cat is", "animal that")</li>
+<li>Modifier heads: Learn contextual associations (pets, domestic, wild)</li>
+<li>FFN layers: Integrate these multi-head insights into refined understanding</li>
 </ul>
 <h4 id="understanding-scale-what-does-billion-parameters-actually-mean">Understanding Scale: What Does "Billion Parameters" Actually Mean?<a class="headerlink" href="#understanding-scale-what-does-billion-parameters-actually-mean" title="Permanent link">&para;</a></h4>
 <p>Now that we understand how individual weights work, let's examine the scale at which modern LLMs operate.</p>
 <p>Think of parameters as the learned coefficients in a massive system of linear equations. Each parameter represents a weight in the network's computational graph that determines how information propagates through the model's layers during inference.</p>
-<p><strong>Concrete Example - GPT-3.5 (~175 billion parameters):</strong>
+<p>Concrete Example - GPT-3.5 (~175 billion parameters):
 <em>Note: Parameter counts are illustrative approximations based on publicly available specifications.</em></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>Embedding Layer:
 <a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>
@@ -2036,31 +2036,31 @@ The relationship "cats are animals" emerges through distributed processing:</p>
 <a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a>- 175 billion parameters × 4 bytes/float = 700 GB of raw weights
 <a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a>- Why expensive GPU memory is crucial for inference
 </code></pre></div>
-<p><strong>Scale Perspective:</strong></p>
+<p>Scale Perspective:</p>
 <ul>
-<li><strong>1 million parameters</strong>: Small research model, basic pattern recognition</li>
-<li><strong>100 million</strong>: BERT-base, practical applications, good language understanding  </li>
-<li><strong>1 billion</strong>: GPT-2, moderate reasoning capability, coherent text generation</li>
-<li><strong>100+ billion</strong>: GPT-3/4, ChatGPT, strong reasoning, complex problem solving</li>
-<li><strong>1 trillion+</strong>: Cutting-edge research models, approaching human-level performance</li>
+<li>1 million parameters: Small research model, basic pattern recognition</li>
+<li>100 million: BERT-base, practical applications, good language understanding  </li>
+<li>1 billion: GPT-2, moderate reasoning capability, coherent text generation</li>
+<li>100+ billion: GPT-3/4, ChatGPT, strong reasoning, complex problem solving</li>
+<li>1 trillion+: Cutting-edge research models, approaching human-level performance</li>
 </ul>
-<p><strong>Critical Insight</strong>: Each parameter stores a tiny piece of learned knowledge - no single parameter understands "cats are animals", but collectively they encode this relationship through the distributed weight patterns we've explored above.</p>
+<p>Critical Insight: Each parameter stores a tiny piece of learned knowledge - no single parameter understands "cats are animals", but collectively they encode this relationship through the distributed weight patterns we've explored above.</p>
 <h3 id="2-vector-store-knowledge-storage">2. Vector Store Knowledge Storage<a class="headerlink" href="#2-vector-store-knowledge-storage" title="Permanent link">&para;</a></h3>
 <h4 id="introduction-what-are-vector-stores">Introduction: What Are Vector Stores?<a class="headerlink" href="#introduction-what-are-vector-stores" title="Permanent link">&para;</a></h4>
-<p>Consider a high-dimensional content-addressable memory system where instead of organizing documents by hierarchical taxonomies, each document is positioned based on its learned semantic representation - a dense numerical encoding capturing its conceptual relationships. Vector databases work exactly this way: they store knowledge as <strong>discrete embeddings</strong> (high-dimensional numerical vectors) that can be efficiently retrieved through approximate nearest neighbor search.</p>
-<p><strong>Core Intuition</strong>: Think of vector stores like:</p>
+<p>Consider a high-dimensional content-addressable memory system where instead of organizing documents by hierarchical taxonomies, each document is positioned based on its learned semantic representation - a dense numerical encoding capturing its conceptual relationships. Vector databases work exactly this way: they store knowledge as discrete embeddings (high-dimensional numerical vectors) that can be efficiently retrieved through approximate nearest neighbor search.</p>
+<p>Core Intuition: Think of vector stores like:</p>
 <ul>
-<li><strong>A multidimensional indexing system</strong>: Every piece of text gets coordinates in learned semantic space using embedding functions</li>
-<li><strong>An approximate nearest neighbor engine</strong>: Find documents with high cosine similarity to query vectors in sublinear time</li>
-<li><strong>Explicit knowledge representation</strong>: Unlike LLMs, knowledge is stored as retrievable dense vectors rather than distributed weight patterns</li>
+<li>A multidimensional indexing system: Every piece of text gets coordinates in learned semantic space using embedding functions</li>
+<li>An approximate nearest neighbor engine: Find documents with high cosine similarity to query vectors in sublinear time</li>
+<li>Explicit knowledge representation: Unlike LLMs, knowledge is stored as retrievable dense vectors rather than distributed weight patterns</li>
 </ul>
-<p><strong>Key Difference from LLMs</strong>: While LLMs encode knowledge implicitly in weight patterns, vector stores maintain explicit, searchable representations of facts and documents.</p>
+<p>Key Difference from LLMs: While LLMs encode knowledge implicitly in weight patterns, vector stores maintain explicit, searchable representations of facts and documents.</p>
 <h4 id="how-vector-search-works-from-simple-to-sophisticated">How Vector Search Works: From Simple to Sophisticated<a class="headerlink" href="#how-vector-search-works-from-simple-to-sophisticated" title="Permanent link">&para;</a></h4>
-<p><strong>The Fundamental Challenge</strong></p>
+<p>The Fundamental Challenge</p>
 <p>Given a query like "What animals make good pets?", how do we find relevant documents from millions of stored vectors? This is the core challenge vector databases solve.</p>
 <h4 id="vector-indexing-methods">Vector Indexing Methods<a class="headerlink" href="#vector-indexing-methods" title="Permanent link">&para;</a></h4>
 <p>Understanding how vector databases achieve fast similarity search at scale requires examining different indexing strategies. Each method represents a different trade-off between speed, accuracy, and memory usage.</p>
-<p><strong>Method 1: Brute Force Search (The Simple Approach)</strong></p>
+<p>Method 1: Brute Force Search (The Simple Approach)</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>Problem: Find documents similar to query &quot;What animals are pets?&quot;
 <a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>
 <a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>Step 1: Convert query to vector
@@ -2084,15 +2084,15 @@ The relationship "cats are animals" emerges through distributed processing:</p>
 <a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a>
 <a id="__codelineno-19-22" name="__codelineno-19-22" href="#__codelineno-19-22"></a>Complexity: O(n·d) where n=documents, d=dimensions
 </code></pre></div>
-<p><strong>Mathematical Problem</strong>: For n documents with d-dimensional vectors:</p>
+<p>Mathematical Problem: For n documents with d-dimensional vectors:</p>
 <ul>
-<li><strong>Time complexity</strong>: O(n·d) - we compute d multiplications for each of n documents</li>
-<li><strong>Example</strong>: 100M documents × 768 dimensions = 76.8 billion operations per query</li>
-<li><strong>Reality check</strong>: At 1 billion ops/second, that's 77 seconds per search!</li>
+<li>Time complexity: O(n·d) - we compute d multiplications for each of n documents</li>
+<li>Example: 100M documents × 768 dimensions = 76.8 billion operations per query</li>
+<li>Reality check: At 1 billion ops/second, that's 77 seconds per search!</li>
 </ul>
 <p>The solution: <strong>Approximate Nearest Neighbor (ANN)</strong> methods that trade a small amount of accuracy for massive speed improvements.</p>
-<p><strong>Method 2: HNSW - The Highway System for Vectors</strong></p>
-<p><strong>The Elevator Building Analogy:</strong> Think of HNSW (Hierarchical Navigable Small World) like navigating a tall building with multiple elevator systems:</p>
+<p>Method 2: HNSW - The Highway System for Vectors</p>
+<p>The Elevator Building Analogy: Think of HNSW (Hierarchical Navigable Small World) like navigating a tall building with multiple elevator systems:</p>
 <p><div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>Analogy: Finding someone in a large office building
 <a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>
 <a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>- Level 2 (Express elevators): Connect to major floors only [Floor 1 ←→ Floor 20 ←→ Floor 40]
@@ -2104,36 +2104,36 @@ The relationship "cats are animals" emerges through distributed processing:</p>
 <a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>Level 1: [doc1] ←→ [doc2] ←→ [doc5] ←→ [doc8] ←→ [doc12] (medium connections)
 <a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>Level 0: [doc1] ←→ [doc2] ←→ [doc3] ←→ [doc4] ←→ [doc5] ←→ ... (dense, local connections)
 </code></pre></div>
-<strong>Mathematical Foundation:</strong></p>
+Mathematical Foundation:</p>
 <ul>
-<li><strong>Time complexity</strong>: O(log n) on average</li>
-<li><strong>Space complexity</strong>: O(n·M) where M is average connections per node</li>
-<li><strong>Search algorithm</strong>: Greedy search through hierarchical graph layers</li>
+<li>Time complexity: O(log n) on average</li>
+<li>Space complexity: O(n·M) where M is average connections per node</li>
+<li>Search algorithm: Greedy search through hierarchical graph layers</li>
 </ul>
-<p><strong>Search Process:</strong></p>
+<p>Search Process:</p>
 <ol>
 <li>Start at Level 2, find closest document to query</li>
 <li>Navigate to similar documents at this level</li>
 <li>Drop down to Level 1, continue navigation  </li>
 <li>Drop to Level 0, find final closest matches</li>
 </ol>
-<p><strong>Performance Math</strong>: </p>
+<p>Performance Math: </p>
 <ul>
 <li>Brute force: 100M comparisons for 100M documents</li>
 <li>HNSW: ~27 comparisons (log₂(100M) ≈ 27)</li>
-<li><strong>Speedup</strong>: 3.7 million times faster!</li>
+<li>Speedup: 3.7 million times faster!</li>
 </ul>
-<p><strong>Hands-on Implementation:</strong></p>
+<p>Hands-on Implementation:</p>
 <blockquote>
-<p>📓 <strong>Interactive Tutorial:</strong> See HNSW in action with executable Python code in <a href="../pynb/vector_search/vector_search.ipynb">pynb/vector_search/vector_search.ipynb</a></p>
+<p>📓 Interactive Tutorial: See HNSW in action with executable Python code in <a href="../pynb/vector_search/vector_search.ipynb">pynb/vector_search/vector_search.ipynb</a></p>
 <p>The notebook demonstrates:
 - Building HNSW index with customizable parameters (M, ef_construction)
 - Performance comparisons with timing benchmarks
 - Recall vs speed trade-offs with real data
 - Parameter tuning effects on search quality</p>
 </blockquote>
-<p><strong>Method 3: IVF - The Clustering Approach</strong></p>
-<p><strong>The Filing Cabinet Analogy:</strong> Think of IVF (Inverted File) like organizing documents in labeled filing cabinets:</p>
+<p>Method 3: IVF - The Clustering Approach</p>
+<p>The Filing Cabinet Analogy: Think of IVF (Inverted File) like organizing documents in labeled filing cabinets:</p>
 <p><div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>Office Filing System:
 <a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>Cabinet_1 (Animal Research): [Doc1, Doc2, Doc3, ...]
 <a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>Cabinet_2 (Computer Science): [Doc10, Doc11, Doc12, ...] 
@@ -2149,36 +2149,36 @@ The relationship "cats are animals" emerges through distributed processing:</p>
 <a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a>├── &quot;Big house in park&quot; → [0.12, 0.85, 0.43]
 <a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a>└── &quot;House needs cleaning&quot; → [0.08, 0.78, 0.35]
 </code></pre></div>
-<strong>Mathematical Foundation:</strong></p>
+Mathematical Foundation:</p>
 <ul>
-<li><strong>Time complexity</strong>: O(n/k + k) where k = number of clusters</li>
-<li><strong>Space complexity</strong>: O(n + k·d) for storing documents and centroids</li>
-<li><strong>Optimal k</strong>: Usually √n clusters (e.g., 1000 clusters for 1M documents)</li>
+<li>Time complexity: O(n/k + k) where k = number of clusters</li>
+<li>Space complexity: O(n + k·d) for storing documents and centroids</li>
+<li>Optimal k: Usually √n clusters (e.g., 1000 clusters for 1M documents)</li>
 </ul>
-<p><strong>Search Process:</strong></p>
+<p>Search Process:</p>
 <ol>
 <li>Query: "What animals are pets?" → [0.72, 0.31, 0.18]</li>
 <li>Find closest cluster centroid → Cluster 1 (animals)</li>
 <li>Search only within Cluster 1 → much faster!</li>
 <li>Reduced search: 3 documents instead of 5 total</li>
 </ol>
-<p><strong>Performance Math:</strong></p>
+<p>Performance Math:</p>
 <ul>
-<li><strong>1M documents, 1000 clusters</strong>: Search 1000 docs instead of 1M</li>
-<li><strong>Speedup</strong>: 1000× faster than brute force</li>
-<li><strong>Trade-off</strong>: Might miss documents in wrong clusters (~2-5% recall loss)</li>
+<li>1M documents, 1000 clusters: Search 1000 docs instead of 1M</li>
+<li>Speedup: 1000× faster than brute force</li>
+<li>Trade-off: Might miss documents in wrong clusters (~2-5% recall loss)</li>
 </ul>
-<p><strong>Hands-on Implementation:</strong></p>
+<p>Hands-on Implementation:</p>
 <blockquote>
-<p>📓 <strong>Interactive Tutorial:</strong> Experience IVF clustering with executable Python code in <a href="../pynb/vector_search/vector_search.ipynb">pynb/vector_search/vector_search.ipynb</a></p>
+<p>📓 Interactive Tutorial: Experience IVF clustering with executable Python code in <a href="../pynb/vector_search/vector_search.ipynb">pynb/vector_search/vector_search.ipynb</a></p>
 <p>The notebook demonstrates:
 - Building IVF index with k-means clustering
 - Effect of cluster count (nlist) on performance
 - Search probe tuning (nprobes) for accuracy vs speed
 - Cluster distribution analysis and optimization</p>
 </blockquote>
-<p><strong>Method 4: Product Quantization - The Compression Master</strong></p>
-<p><strong>The Color Palette Analogy:</strong> Think of quantization like converting a detailed photograph to use only a limited set of colors, like the 16-color palette on old video games. Instead of millions of possible colors, you pick the closest match from your small palette, making the image much smaller to store while keeping it recognizable.</p>
+<p>Method 4: Product Quantization - The Compression Master</p>
+<p>The Color Palette Analogy: Think of quantization like converting a detailed photograph to use only a limited set of colors, like the 16-color palette on old video games. Instead of millions of possible colors, you pick the closest match from your small palette, making the image much smaller to store while keeping it recognizable.</p>
 <p>PQ is like creating a "summary" of each vector to save memory:</p>
 <p><div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>Real-World Memory Problem:
 <a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>1 million documents × 768 dimensions × 32 bits/float = 24.6 GB RAM
@@ -2211,34 +2211,34 @@ The relationship "cats are animals" emerges through distributed processing:</p>
 <a id="__codelineno-22-29" name="__codelineno-22-29" href="#__codelineno-22-29"></a>Compressed: 8 chunks × 8 bits/chunk = 64 bits per vector (8 bytes)
 <a id="__codelineno-22-30" name="__codelineno-22-30" href="#__codelineno-22-30"></a>Compression ratio: 24,576 ÷ 64 = 384× smaller!
 </code></pre></div>
-<strong>Mathematical Foundation:</strong></p>
+Mathematical Foundation:</p>
 <ul>
-<li><strong>Compression ratio</strong>: d/(m·log₂(k)) where d=dimensions, m=subvectors, k=centroids per subvector</li>
-<li><strong>Typical setup</strong>: 768D → 8 subvectors of 96D each, 256 centroids per subvector</li>
-<li><strong>Memory per vector</strong>: m·log₂(k) = 8·log₂(256) = 8·8 = 64 bits = 8 bytes</li>
+<li>Compression ratio: d/(m·log₂(k)) where d=dimensions, m=subvectors, k=centroids per subvector</li>
+<li>Typical setup: 768D → 8 subvectors of 96D each, 256 centroids per subvector</li>
+<li>Memory per vector: m·log₂(k) = 8·log₂(256) = 8·8 = 64 bits = 8 bytes</li>
 </ul>
-<p><strong>Memory savings calculation:</strong></p>
+<p>Memory savings calculation:</p>
 <ul>
-<li><strong>Original</strong>: 1M vectors × (768 × 4 bytes) = 3.072 GB  </li>
-<li><strong>Compressed</strong>: 1M vectors × 8 bytes = 8 MB</li>
-<li><strong>Compression</strong>: 384× smaller memory usage!</li>
+<li>Original: 1M vectors × (768 × 4 bytes) = 3.072 GB  </li>
+<li>Compressed: 1M vectors × 8 bytes = 8 MB</li>
+<li>Compression: 384× smaller memory usage!</li>
 </ul>
-<p><strong>Performance Trade-offs:</strong>
+<p>Performance Trade-offs:
 ✓ Massive memory reduction (100-400×)
 ✓ Faster similarity computation (lookup tables)
 ✓ Better cache performance (more vectors fit in memory)
 ✗ Small accuracy loss (~2-5% recall drop)
 ✗ Requires training phase to learn centroids</p>
-<p><strong>Hands-on Implementation:</strong></p>
+<p>Hands-on Implementation:</p>
 <blockquote>
-<p>📓 <strong>Interactive Tutorial:</strong> Explore Product Quantization compression with executable Python code in <a href="../pynb/vector_search/vector_search.ipynb">pynb/vector_search/vector_search.ipynb</a></p>
+<p>📓 Interactive Tutorial: Explore Product Quantization compression with executable Python code in <a href="../pynb/vector_search/vector_search.ipynb">pynb/vector_search/vector_search.ipynb</a></p>
 <p>The notebook demonstrates:
 - Vector splitting into subvectors and centroid learning
 - Compression ratio calculations (384× memory reduction)
 - Asymmetric distance computation for search
 - Combined IVF+PQ implementation for best of both worlds</p>
 </blockquote>
-<p><strong>Performance Comparison with Real Numbers:</strong></p>
+<p>Performance Comparison with Real Numbers:</p>
 <table>
 <thead>
 <tr>
@@ -2251,28 +2251,28 @@ The relationship "cats are animals" emerges through distributed processing:</p>
 </thead>
 <tbody>
 <tr>
-<td><strong>Brute Force</strong></td>
+<td>Brute Force</td>
 <td>77 seconds</td>
 <td>3.0 GB</td>
 <td>100%</td>
 <td>Small datasets (&lt;10K vectors), exact results required</td>
 </tr>
 <tr>
-<td><strong>HNSW</strong></td>
+<td>HNSW</td>
 <td>0.02 seconds</td>
 <td>4.5 GB</td>
 <td>95-99%</td>
 <td>Real-time applications, high-dimensional data</td>
 </tr>
 <tr>
-<td><strong>IVF (1000 clusters)</strong></td>
+<td>IVF (1000 clusters)</td>
 <td>0.08 seconds</td>
 <td>3.2 GB</td>
 <td>90-95%</td>
 <td>Medium datasets, balanced performance needs</td>
 </tr>
 <tr>
-<td><strong>IVF + PQ</strong></td>
+<td>IVF + PQ</td>
 <td>0.05 seconds</td>
 <td>8 MB</td>
 <td>85-92%</td>
@@ -2283,20 +2283,20 @@ The relationship "cats are animals" emerges through distributed processing:</p>
 <h4 id="from-theory-to-practice-implementing-vector-search">From Theory to Practice: Implementing Vector Search<a class="headerlink" href="#from-theory-to-practice-implementing-vector-search" title="Permanent link">&para;</a></h4>
 <p>Now that we understand the mathematical foundations and trade-offs of different indexing methods, let's see how these concepts translate into real-world implementations. While there are many vector database solutions available (Pinecone, Weaviate, Chroma, etc.), we'll use <strong>OpenSearch</strong> as our practical example because:</p>
 <ol>
-<li><strong>Open source and widely adopted</strong>: Used by many companies for production search</li>
-<li><strong>Multiple algorithm support</strong>: Implements HNSW, IVF, and product quantization we just learned about</li>
-<li><strong>Mature ecosystem</strong>: Battle-tested with extensive documentation and community support</li>
-<li><strong>Hybrid capabilities</strong>: Combines vector search with traditional text search seamlessly</li>
+<li>Open source and widely adopted: Used by many companies for production search</li>
+<li>Multiple algorithm support: Implements HNSW, IVF, and product quantization we just learned about</li>
+<li>Mature ecosystem: Battle-tested with extensive documentation and community support</li>
+<li>Hybrid capabilities: Combines vector search with traditional text search seamlessly</li>
 </ol>
-<p><strong>What is OpenSearch?</strong>
+<p>What is OpenSearch?
 OpenSearch is an open-source search and analytics engine that started as a fork of Elasticsearch. It has built-in support for k-nearest neighbor (k-NN) search, making it an excellent platform for vector similarity search. Think of it as a database specifically designed for finding similar items quickly.</p>
-<p><strong>Why Vector Search in OpenSearch Matters:</strong></p>
+<p>Why Vector Search in OpenSearch Matters:</p>
 <ul>
-<li><strong>Real-world scale</strong>: Handles millions of documents in production environments</li>
-<li><strong>Production features</strong>: Includes monitoring, scaling, and reliability features you need</li>
-<li><strong>Learning bridge</strong>: Understanding OpenSearch patterns helps with other vector databases</li>
+<li>Real-world scale: Handles millions of documents in production environments</li>
+<li>Production features: Includes monitoring, scaling, and reliability features you need</li>
+<li>Learning bridge: Understanding OpenSearch patterns helps with other vector databases</li>
 </ul>
-<p><strong>Mathematical Summary:</strong></p>
+<p>Mathematical Summary:</p>
 <table>
 <thead>
 <tr>
@@ -2308,25 +2308,25 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 </thead>
 <tbody>
 <tr>
-<td><strong>Brute Force</strong></td>
+<td>Brute Force</td>
 <td>O(n·d)</td>
 <td>O(n·d)</td>
 <td>None</td>
 </tr>
 <tr>
-<td><strong>HNSW</strong></td>
+<td>HNSW</td>
 <td>O(log n)</td>
 <td>O(n·M)</td>
 <td>M=connections, ef=search width</td>
 </tr>
 <tr>
-<td><strong>IVF</strong></td>
+<td>IVF</td>
 <td>O(n/k + k)</td>
 <td>O(n·d + k·d)</td>
 <td>k=clusters, probes=search clusters</td>
 </tr>
 <tr>
-<td><strong>Product Quantization</strong></td>
+<td>Product Quantization</td>
 <td>O(n·d/m)</td>
 <td>O(n·m + k^m)</td>
 <td>m=subvectors, k=centroids</td>
@@ -2335,8 +2335,8 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 </table>
 <h4 id="comprehensive-hands-on-tutorial">Comprehensive Hands-on Tutorial<a class="headerlink" href="#comprehensive-hands-on-tutorial" title="Permanent link">&para;</a></h4>
 <blockquote>
-<p>📓 <strong>Complete Implementation Guide:</strong> <a href="../pynb/vector_search/vector_search.ipynb">pynb/vector_search/vector_search.ipynb</a></p>
-<p><strong>What you'll build and compare:</strong></p>
+<p>📓 Complete Implementation Guide: <a href="../pynb/vector_search/vector_search.ipynb">pynb/vector_search/vector_search.ipynb</a></p>
+<p>What you'll build and compare:</p>
 <ol>
 <li><strong>Brute Force Search</strong> - Baseline implementation with O(n·d) complexity</li>
 <li><strong>HNSW Implementation</strong> - Graph-based fast search with parameter tuning</li>
@@ -2344,13 +2344,13 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <li><strong>Product Quantization</strong> - Memory compression with 100-400× reduction</li>
 <li><strong>Combined Methods</strong> - IVF+PQ for optimal speed and memory efficiency</li>
 </ol>
-<p><strong>Interactive Features:</strong>
+<p>Interactive Features:
 - <strong>Real benchmarks</strong> with timing comparisons and speedup calculations
 - <strong>Performance visualization</strong> showing speed vs accuracy trade-offs
 - <strong>Parameter exploration</strong> to understand tuning effects
 - <strong>Memory analysis</strong> with compression ratio calculations
 - <strong>Production considerations</strong> for choosing the right method</p>
-<p><strong>Educational Value:</strong>
+<p>Educational Value:
 - Execute all code step-by-step to understand how each algorithm works
 - Modify parameters to see their impact on performance and accuracy
 - Compare methods side-by-side with real datasets
@@ -2359,7 +2359,7 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <h4 id="understanding-index-performance-trade-offs">Understanding Index Performance Trade-offs<a class="headerlink" href="#understanding-index-performance-trade-offs" title="Permanent link">&para;</a></h4>
 <p>Different indexes optimize for different priorities:</p>
 <h4 id="vector-database-terminology-and-index-implementations">Vector Database Terminology and Index Implementations<a class="headerlink" href="#vector-database-terminology-and-index-implementations" title="Permanent link">&para;</a></h4>
-<p><strong>Index Performance Characteristics:</strong></p>
+<p>Index Performance Characteristics:</p>
 <table>
 <thead>
 <tr>
@@ -2372,28 +2372,28 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 </thead>
 <tbody>
 <tr>
-<td><strong>IVF_FLAT</strong></td>
+<td>IVF_FLAT</td>
 <td>O(n)</td>
 <td>O(√n)</td>
 <td>High (exact vectors)</td>
 <td>High</td>
 </tr>
 <tr>
-<td><strong>IVF_PQ</strong></td>
+<td>IVF_PQ</td>
 <td>O(n)</td>
 <td>O(√n)</td>
 <td>Low (compressed)</td>
 <td>Medium</td>
 </tr>
 <tr>
-<td><strong>HNSW</strong></td>
+<td>HNSW</td>
 <td>O(n log n)</td>
 <td>O(log n)</td>
 <td>Medium (graph structure)</td>
 <td>High</td>
 </tr>
 <tr>
-<td><strong>IVF_SQ8</strong></td>
+<td>IVF_SQ8</td>
 <td>O(n)</td>
 <td>O(√n)</td>
 <td>Medium (8-bit quantized)</td>
@@ -2401,7 +2401,7 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 </tr>
 </tbody>
 </table>
-<p><strong>Practical Example with Our Vocabulary:</strong>
+<p>Practical Example with Our Vocabulary:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>Document Collection:
 <a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>doc1: &quot;The cat sleeps in house&quot; → vector_1: [0.82, 0.31, 0.15, ...]
 <a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>doc2: &quot;Big dog runs in park&quot; → vector_2: [0.79, 0.25, 0.18, ...]
@@ -2423,7 +2423,7 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <a id="__codelineno-23-19" name="__codelineno-23-19" href="#__codelineno-23-19"></a>- Best for: Real-time applications, balanced accuracy/speed
 </code></pre></div></p>
 <h4 id="vector-database-operations-and-production-considerations">Vector Database Operations and Production Considerations<a class="headerlink" href="#vector-database-operations-and-production-considerations" title="Permanent link">&para;</a></h4>
-<p><strong>Insertion Pipeline:</strong>
+<p>Insertion Pipeline:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>1. Document Processing:
 <a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>   &quot;Cats are small animals&quot; → Text preprocessing
 <a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>
@@ -2437,7 +2437,7 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a>4. Metadata Association:
 <a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a>   vector_id → {text: &quot;Cats are small animals&quot;, category: &quot;animals&quot;, timestamp: &quot;2024-01-15&quot;}
 </code></pre></div></p>
-<p><strong>How Search Actually Works:</strong>
+<p>How Search Actually Works:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>You ask: &quot;What do pets do?&quot;
 <a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>
 <a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>Step 1: Your question becomes numbers: [0.72, 0.31, 0.18, ...]
@@ -2449,7 +2449,7 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>   - doc1: &quot;Cats enjoy sleeping&quot; (87% similar) ✓
 <a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>   - doc5: &quot;Houses need cleaning&quot; (85% similar, but about places) ✗
 </code></pre></div></p>
-<p><strong>Handling Large Databases:</strong>
+<p>Handling Large Databases:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>When you have millions of documents, you split them across multiple servers:
 <a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>
 <a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>Server 1: documents 1 to 1 million
@@ -2465,7 +2465,7 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <a id="__codelineno-26-13" name="__codelineno-26-13" href="#__codelineno-26-13"></a>
 <a id="__codelineno-26-14" name="__codelineno-26-14" href="#__codelineno-26-14"></a>This makes searches faster even with huge databases.
 </code></pre></div></p>
-<p><strong>Adding New Documents:</strong>
+<p>Adding New Documents:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>When you add new documents to your database:
 <a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>
 <a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>For HNSW (building-style): Add the new document as a &quot;room&quot; and connect it to nearby &quot;rooms&quot;
@@ -2485,10 +2485,10 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <hr />
 <h2 id="part-ii-generation-and-retrieval-control">PART II: Generation and Retrieval Control<a class="headerlink" href="#part-ii-generation-and-retrieval-control" title="Permanent link">&para;</a></h2>
 <h3 id="3-controlling-randomness-temperature-top-k-and-top-p-in-llms-and-vector-stores">3. Controlling Randomness: Temperature, Top-K, and Top-P in LLMs and Vector Stores<a class="headerlink" href="#3-controlling-randomness-temperature-top-k-and-top-p-in-llms-and-vector-stores" title="Permanent link">&para;</a></h3>
-<p><strong>Why Control Randomness?</strong></p>
+<p>Why Control Randomness?</p>
 <p>Both LLMs and vector stores deal with probability distributions and ranking. Understanding how to control randomness and selection helps optimize both systems for different use cases.</p>
 <h4 id="temperature-top-k-top-p-in-llm-text-generation">Temperature, Top-K, Top-P in LLM Text Generation<a class="headerlink" href="#temperature-top-k-top-p-in-llm-text-generation" title="Permanent link">&para;</a></h4>
-<p><strong>The Problem: Deterministic vs Creative Output</strong></p>
+<p>The Problem: Deterministic vs Creative Output</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>LLM Next-Token Prediction for &quot;The cat is ___&quot;:
 <a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>Raw probabilities: [animal: 0.4, big: 0.25, sleeping: 0.15, running: 0.1, purple: 0.05, ...]
 <a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>
@@ -2499,7 +2499,7 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a>
 <a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a>We need balanced control between coherence and creativity
 </code></pre></div>
-<p><strong>Temperature: Controlling Confidence</strong></p>
+<p>Temperature: Controlling Confidence</p>
 <p>Temperature adjusts the "sharpness" of probability distributions:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>Original probabilities: [animal: 0.4, big: 0.25, sleeping: 0.15, running: 0.1, purple: 0.05]
 <a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>
@@ -2517,7 +2517,7 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <a id="__codelineno-29-14" name="__codelineno-29-14" href="#__codelineno-29-14"></a>
 <a id="__codelineno-29-15" name="__codelineno-29-15" href="#__codelineno-29-15"></a>Formula: softmax(logits/temperature)
 </code></pre></div>
-<p><strong>Top-K: Limiting Vocabulary</strong></p>
+<p>Top-K: Limiting Vocabulary</p>
 <p>Top-K keeps only the K most likely tokens:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>Original: [animal: 0.4, big: 0.25, sleeping: 0.15, running: 0.1, purple: 0.05, flying: 0.03, ...]
 <a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>
@@ -2530,7 +2530,7 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a>Result: [animal: 1.0]
 <a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a>Effect: Deterministic, always picks most likely token
 </code></pre></div>
-<p><strong>Top-P (Nucleus Sampling): Dynamic Vocabulary</strong></p>
+<p>Top-P (Nucleus Sampling): Dynamic Vocabulary</p>
 <p>Top-P keeps tokens until cumulative probability reaches P:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>Sorted probabilities: [animal: 0.4, big: 0.25, sleeping: 0.15, running: 0.1, purple: 0.05, ...]
 <a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>
@@ -2544,7 +2544,7 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a>Kept: [animal: 0.4, big: 0.25, sleeping: 0.15, running: 0.1]
 <a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a>Effect: Adaptive vocabulary size based on probability distribution
 </code></pre></div>
-<p><strong>Practical LLM Generation Settings:</strong></p>
+<p>Practical LLM Generation Settings:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>Creative Writing: Temperature=1.2, Top-P=0.9
 <a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>
 <a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>- More diverse, interesting outputs
@@ -2562,7 +2562,7 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 </code></pre></div>
 <h4 id="how-vector-stores-handle-search-control">How Vector Stores Handle Search Control<a class="headerlink" href="#how-vector-stores-handle-search-control" title="Permanent link">&para;</a></h4>
 <p>Just like LLMs use temperature and sampling to control text generation, vector stores have their own ways to control search results. The concepts are surprisingly similar!</p>
-<p><strong>Similarity Threshold (Like Temperature Control)</strong></p>
+<p>Similarity Threshold (Like Temperature Control)</p>
 <p>When you search a vector database, you get back documents with similarity scores. Just like temperature controls how "picky" an LLM is about word choices, similarity thresholds control how "picky" your search is about results.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>Simple Example: Searching for &quot;What animals make good pets?&quot;
 <a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>Similarity scores: [doc1: 0.95, doc2: 0.78, doc3: 0.65, doc4: 0.45, doc5: 0.23]
@@ -2582,7 +2582,7 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <a id="__codelineno-33-16" name="__codelineno-33-16" href="#__codelineno-33-16"></a>Result: Less picky, more diverse results
 <a id="__codelineno-33-17" name="__codelineno-33-17" href="#__codelineno-33-17"></a>Good for: Exploring ideas, brainstorming, research
 </code></pre></div>
-<p><strong>Top-K Results (Identical Concept)</strong></p>
+<p>Top-K Results (Identical Concept)</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>Vector search Top-K = 3:
 <a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>Return top 3 most similar documents regardless of similarity scores
 <a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>Useful for: Fixed-size result sets, pagination
@@ -2591,7 +2591,7 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a>Return only the most similar document  
 <a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a>Useful for: Finding single best match
 </code></pre></div>
-<p><strong>Similarity Cutoff (Like Top-P)</strong></p>
+<p>Similarity Cutoff (Like Top-P)</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>Dynamic result size based on similarity quality:
 <a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>
 <a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>Cumulative similarity approach:
@@ -2606,7 +2606,7 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <a id="__codelineno-35-12" name="__codelineno-35-12" href="#__codelineno-35-12"></a>- doc1: 0.95, doc2: 0.78 (gap: 0.17)
 <a id="__codelineno-35-13" name="__codelineno-35-13" href="#__codelineno-35-13"></a>- If gap_threshold = 0.15, stop after doc1
 </code></pre></div>
-<p><strong>Practical Vector Store Settings:</strong></p>
+<p>Practical Vector Store Settings:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>High-Precision Search: High threshold (0.8), Top-K=5
 <a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>
 <a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>- Medical/legal documents
@@ -2627,18 +2627,22 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <h3 id="comprehensive-mathematical-resources">Comprehensive Mathematical Resources<a class="headerlink" href="#comprehensive-mathematical-resources" title="Permanent link">&para;</a></h3>
 <p>This document focuses on conceptual understanding. For detailed mathematical derivations, formal proofs, and implementation details, please consult our dedicated mathematical resources:</p>
 <h4 id="transformers-mathematics-guide-part-1"><a href="../transformers_math1/">Transformers Mathematics Guide Part 1</a><a class="headerlink" href="#transformers-mathematics-guide-part-1" title="Permanent link">&para;</a></h4>
-<p><strong>Essential sections for this document:</strong>
-- <strong>Sections 2.1-2.3:</strong> Mathematical preliminaries (linear algebra, matrix calculus, probability theory)
-- <strong>Section 4.2-4.3:</strong> High-dimensional geometry and similarity metrics (cosine similarity, euclidean distance, concentration of measure)
-- <strong>Section 5:</strong> Attention mechanism derivations (scaled dot-product attention, softmax gradients, backpropagation)<br />
-- <strong>Section 6:</strong> Multi-head attention mathematics (subspace projections, positional encodings, RoPE)</p>
+<p>Essential sections for this document:</p>
+<ul>
+<li>Sections 2.1-2.3: Mathematical preliminaries (linear algebra, matrix calculus, probability theory)</li>
+<li>Section 4.2-4.3: High-dimensional geometry and similarity metrics (cosine similarity, euclidean distance, concentration of measure)</li>
+<li>Section 5: Attention mechanism derivations (scaled dot-product attention, softmax gradients, backpropagation)  </li>
+<li>Section 6: Multi-head attention mathematics (subspace projections, positional encodings, RoPE)</li>
+</ul>
 <h4 id="transformers-mathematics-guide-part-2"><a href="../transformers_math2/">Transformers Mathematics Guide Part 2</a><a class="headerlink" href="#transformers-mathematics-guide-part-2" title="Permanent link">&para;</a></h4>
-<p><strong>Essential sections for this document:</strong>
-- <strong>Section 9:</strong> Optimization theory (gradient descent, Adam optimizer, learning rate schedules)
-- <strong>Section 10:</strong> Efficient attention implementations for scaling
-- <strong>Section 11:</strong> Regularization and calibration techniques</p>
+<p>Essential sections for this document:</p>
+<ul>
+<li>Section 9: Optimization theory (gradient descent, Adam optimizer, learning rate schedules)</li>
+<li>Section 10: Efficient attention implementations for scaling</li>
+<li>Section 11: Regularization and calibration techniques</li>
+</ul>
 <h4 id="mathematical-quick-reference"><a href="../math_quick_ref/">Mathematical Quick Reference</a><a class="headerlink" href="#mathematical-quick-reference" title="Permanent link">&para;</a></h4>
-<p><strong>Quick lookup for:</strong></p>
+<p>Quick lookup for:</p>
 <ul>
 <li>Linear algebra operations (matrix multiplication, transpose, eigenvalues)</li>
 <li>Vector geometry (dot products, norms, similarity metrics)</li>
@@ -2652,7 +2656,7 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <hr />
 <h2 id="part-iv-system-comparison-and-integration">PART IV: System Comparison and Integration<a class="headerlink" href="#part-iv-system-comparison-and-integration" title="Permanent link">&para;</a></h2>
 <h3 id="4-critical-question-are-they-the-same-concept">4. Critical Question: Are They the Same Concept?<a class="headerlink" href="#4-critical-question-are-they-the-same-concept" title="Permanent link">&para;</a></h3>
-<p><strong>NO</strong> - These are fundamentally different approaches:</p>
+<p>NO - These are fundamentally different approaches:</p>
 <table>
 <thead>
 <tr>
@@ -2663,27 +2667,27 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 </thead>
 <tbody>
 <tr>
-<td><strong>Storage</strong></td>
+<td>Storage</td>
 <td>Distributed patterns</td>
 <td>Discrete vectors</td>
 </tr>
 <tr>
-<td><strong>Knowledge Access</strong></td>
+<td>Knowledge Access</td>
 <td>Generated through computation</td>
 <td>Retrieved through search</td>
 </tr>
 <tr>
-<td><strong>Updates</strong></td>
+<td>Updates</td>
 <td>Requires retraining</td>
 <td>Add/remove vectors</td>
 </tr>
 <tr>
-<td><strong>Capacity</strong></td>
+<td>Capacity</td>
 <td>Limited by parameter count</td>
 <td>Unlimited external storage</td>
 </tr>
 <tr>
-<td><strong>Latency</strong></td>
+<td>Latency</td>
 <td>Fixed computation cost</td>
 <td>Variable search cost</td>
 </tr>
@@ -2692,28 +2696,28 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <h3 id="5-similarity-calculations-across-systems">5. Similarity Calculations Across Systems<a class="headerlink" href="#5-similarity-calculations-across-systems" title="Permanent link">&para;</a></h3>
 <p>Both LLM weights and vector stores fundamentally rely on similarity calculations, but they use them in distinctly different ways:</p>
 <h4 id="how-llms-use-similarity">How LLMs Use Similarity<a class="headerlink" href="#how-llms-use-similarity" title="Permanent link">&para;</a></h4>
-<p><strong>During Training:</strong></p>
+<p>During Training:</p>
 <ul>
 <li>
-<p><strong>Attention Mechanism:</strong> Uses dot products (related to cosine similarity)
+<p>Attention Mechanism: Uses dot products (related to cosine similarity)
   <div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>Attention(Q,K,V) = softmax(QK^T/√d)V
 </code></pre></div>
   The QK^T operation computes similarity between query and key vectors.</p>
 </li>
 <li>
-<p><strong>Gradient Flow:</strong> Backpropagation updates weights based on similarity between predicted and actual tokens.</p>
+<p>Gradient Flow: Backpropagation updates weights based on similarity between predicted and actual tokens.</p>
 </li>
-<li><strong>Example:</strong> When processing "The big cat ___", attention weights learn that "cat" tokens should attend strongly to "animal" tokens.</li>
+<li>Example: When processing "The big cat ___", attention weights learn that "cat" tokens should attend strongly to "animal" tokens.</li>
 </ul>
-<p><strong>During Inference:</strong></p>
+<p>During Inference:</p>
 <ul>
-<li><strong>No explicit similarity search</strong> - knowledge emerges from distributed computation</li>
-<li><strong>Next-token prediction:</strong> Computes probability distributions over vocabulary</li>
-<li><strong>Example:</strong> For "The big cat ___", the model outputs P("runs") = 0.3, P("sleeps") = 0.25 through learned weight patterns</li>
+<li>No explicit similarity search - knowledge emerges from distributed computation</li>
+<li>Next-token prediction: Computes probability distributions over vocabulary</li>
+<li>Example: For "The big cat ___", the model outputs P("runs") = 0.3, P("sleeps") = 0.25 through learned weight patterns</li>
 </ul>
 <h4 id="how-vector-stores-use-similarity">How Vector Stores Use Similarity<a class="headerlink" href="#how-vector-stores-use-similarity" title="Permanent link">&para;</a></h4>
-<p><strong>Explicit similarity search for retrieval:</strong></p>
-<p><strong>Unified Example - Query: "What animals make good pets?"</strong>
+<p>Explicit similarity search for retrieval:</p>
+<p>Unified Example - Query: "What animals make good pets?"
 <div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>Step 1: Query → Embedding
 <a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>&quot;What animals make good pets?&quot; → [0.72, 0.31, 0.18]
 <a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a>
@@ -2731,17 +2735,13 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <a id="__codelineno-38-15" name="__codelineno-38-15" href="#__codelineno-38-15"></a>threshold = 0.5 → docs 1&amp;2 pass, doc3 filtered out
 <a id="__codelineno-38-16" name="__codelineno-38-16" href="#__codelineno-38-16"></a>Final ranking: doc2 (0.96), doc1 (0.94)
 </code></pre></div></p>
-<p><strong>Key Distinction:</strong></p>
+<p>Key Distinction:</p>
 <ul>
-<li><strong>LLMs</strong>: Internal similarity for attention → generates new content</li>
-<li>
-<p><strong>Vector Stores</strong>: External similarity for retrieval → finds existing content</p>
-</li>
-<li>
-<p><strong>RAG Pipeline (Retrieval-Augmented Generation):</strong></p>
-</li>
+<li>LLMs: Internal similarity for attention → generates new content</li>
+<li>Vector Stores: External similarity for retrieval → finds existing content</li>
+<li>RAG Pipeline (Retrieval-Augmented Generation):</li>
 </ul>
-<p><strong>Complete Workflow:</strong>
+<p>Complete Workflow:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>Step 1: User Query Processing
 <a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>User: &quot;What do cats eat in the wild?&quot;
 <a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a>↓
@@ -2766,20 +2766,20 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <a id="__codelineno-39-22" name="__codelineno-39-22" href="#__codelineno-39-22"></a>LLM processes augmented prompt → Generates informed response
 <a id="__codelineno-39-23" name="__codelineno-39-23" href="#__codelineno-39-23"></a>&quot;Based on the provided sources, wild cats primarily hunt small mammals...&quot;
 </code></pre></div></p>
-<p><strong>Key Benefits:</strong></p>
+<p>Key Benefits:</p>
 <ul>
-<li><strong>Current information</strong>: Vector store provides up-to-date facts</li>
-<li><strong>Source attribution</strong>: Clear traceability to retrieved documents  </li>
-<li><strong>Reduced hallucination</strong>: LLM responses grounded in real data</li>
+<li>Current information: Vector store provides up-to-date facts</li>
+<li>Source attribution: Clear traceability to retrieved documents  </li>
+<li>Reduced hallucination: LLM responses grounded in real data</li>
 </ul>
 <h3 id="6-practical-integration">6. Practical Integration<a class="headerlink" href="#6-practical-integration" title="Permanent link">&para;</a></h3>
 <h4 id="complementary-systems">Complementary Systems<a class="headerlink" href="#complementary-systems" title="Permanent link">&para;</a></h4>
-<p><strong>How LLMs and vector stores work together:</strong></p>
+<p>How LLMs and vector stores work together:</p>
 <ol>
-<li><strong>LLM Weights Store:</strong> General language patterns, reasoning capabilities, common knowledge</li>
-<li><strong>Vector Stores Handle:</strong> Specific facts, recent information, large knowledge bases</li>
+<li>LLM Weights Store: General language patterns, reasoning capabilities, common knowledge</li>
+<li>Vector Stores Handle: Specific facts, recent information, large knowledge bases</li>
 </ol>
-<p><strong>Trade-offs:</strong></p>
+<p>Trade-offs:</p>
 <table>
 <thead>
 <tr>
@@ -2790,43 +2790,43 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 </thead>
 <tbody>
 <tr>
-<td><strong>Speed</strong></td>
+<td>Speed</td>
 <td>Fast (fixed computation)</td>
 <td>Variable (depends on index size)</td>
 </tr>
 <tr>
-<td><strong>Updates</strong></td>
+<td>Updates</td>
 <td>Slow (retraining required)</td>
 <td>Fast (add/remove vectors)</td>
 </tr>
 <tr>
-<td><strong>Accuracy</strong></td>
+<td>Accuracy</td>
 <td>High for trained knowledge</td>
 <td>High for indexed content</td>
 </tr>
 <tr>
-<td><strong>Cost</strong></td>
+<td>Cost</td>
 <td>High inference cost</td>
 <td>Storage + search cost</td>
 </tr>
 </tbody>
 </table>
 <h4 id="concrete-comparative-example">Concrete Comparative Example<a class="headerlink" href="#concrete-comparative-example" title="Permanent link">&para;</a></h4>
-<p><strong>Sentence:</strong> "Small pet loves park"</p>
-<p><strong>In LLM Weights:</strong></p>
+<p>Sentence: "Small pet loves park"</p>
+<p>In LLM Weights:</p>
 <ul>
 <li>Training updates attention patterns between "small"→"pet", "pet"→"loves", "loves"→"park"</li>
 <li>Knowledge encoded as probability: P("loves"|"small pet") = 0.15</li>
 <li>Retrieved through forward pass computation</li>
 </ul>
-<p><strong>In Vector Store:</strong></p>
+<p>In Vector Store:</p>
 <ul>
 <li>Document: "Small pets love spending time in parks" → Vector: [0.45, 0.67, 0.22]</li>
 <li>Query: "pet activities" → Vector: [0.43, 0.65, 0.24]</li>
 <li>Cosine similarity: 0.98 → Document retrieved</li>
 <li>Knowledge accessed through explicit search</li>
 </ul>
-<p><strong>Key Difference:</strong> LLM generates the relationship through learned patterns, while vector store retrieves pre-existing representations.</p>
+<p>Key Difference: LLM generates the relationship through learned patterns, while vector store retrieves pre-existing representations.</p>
 <h4 id="system-limitations-and-considerations">System Limitations and Considerations<a class="headerlink" href="#system-limitations-and-considerations" title="Permanent link">&para;</a></h4>
 <table>
 <thead>
@@ -2838,12 +2838,12 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 </thead>
 <tbody>
 <tr>
-<td><strong>LLM Weights</strong></td>
+<td>LLM Weights</td>
 <td>• Hallucinations and confabulation<br>• Outdated information (training cutoff)<br>• Expensive retraining for updates<br>• Fixed knowledge capacity</td>
 <td>• Use confidence scoring<br>• Combine with retrieval systems<br>• Regular model updates<br>• Parameter-efficient fine-tuning</td>
 </tr>
 <tr>
-<td><strong>Vector Stores</strong></td>
+<td>Vector Stores</td>
 <td>• Dependent on embedding quality<br>• Potential stale/outdated data<br>• Limited semantic understanding<br>• Retrieval relevance challenges</td>
 <td>• High-quality embedding models<br>• Regular data refreshing<br>• Hybrid search (semantic + keyword)<br>• Query expansion techniques</td>
 </tr>
@@ -2855,37 +2855,37 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
 <h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h2>
 <p>This comprehensive exploration reveals that LLM weights and vector stores represent <strong>fundamentally different yet complementary approaches</strong> to knowledge storage and retrieval:</p>
 <h3 id="key-distinctions">Key Distinctions<a class="headerlink" href="#key-distinctions" title="Permanent link">&para;</a></h3>
-<p><strong>LLM weights</strong> store knowledge as:</p>
+<p>LLM weights store knowledge as:</p>
 <ul>
-<li><strong>Distributed patterns</strong> across billions of parameters where knowledge is internalized during training</li>
-<li><strong>Implicit relationships</strong> learned through statistical associations in training data</li>
-<li><strong>Generated responses</strong> via computational processes that activate learned patterns</li>
-<li><strong>Fixed representations</strong> requiring retraining to update internalized knowledge</li>
+<li>Distributed patterns across billions of parameters where knowledge is internalized during training</li>
+<li>Implicit relationships learned through statistical associations in training data</li>
+<li>Generated responses via computational processes that activate learned patterns</li>
+<li>Fixed representations requiring retraining to update internalized knowledge</li>
 </ul>
-<p><strong>Vector stores</strong> maintain knowledge as:</p>
+<p>Vector stores maintain knowledge as:</p>
 <ul>
-<li><strong>Discrete vectors</strong> in searchable databases</li>
-<li><strong>Explicit documents</strong> with clear provenance  </li>
-<li><strong>Retrieved information</strong> through similarity search</li>
-<li><strong>Dynamic content</strong> easily updated by adding/removing vectors</li>
+<li>Discrete vectors in searchable databases</li>
+<li>Explicit documents with clear provenance  </li>
+<li>Retrieved information through similarity search</li>
+<li>Dynamic content easily updated by adding/removing vectors</li>
 </ul>
 <h3 id="unified-understanding">Unified Understanding<a class="headerlink" href="#unified-understanding" title="Permanent link">&para;</a></h3>
 <p>As explored in Section 5, both systems leverage similarity calculations but serve different purposes - LLMs use internal similarity for attention-based generation while vector stores use external similarity for document retrieval.</p>
-<p>Both benefit from <strong>generation control parameters</strong>:</p>
+<p>Both benefit from generation control parameters:</p>
 <ul>
-<li><strong>LLMs</strong>: Temperature, top-k, top-p for creativity vs. consistency</li>
-<li><strong>Vector stores</strong>: Similarity thresholds, result limits for precision vs. recall</li>
+<li>LLMs: Temperature, top-k, top-p for creativity vs. consistency</li>
+<li>Vector stores: Similarity thresholds, result limits for precision vs. recall</li>
 </ul>
 <h3 id="practical-integration">Practical Integration<a class="headerlink" href="#practical-integration" title="Permanent link">&para;</a></h3>
 <p>Modern AI systems achieve optimal performance by combining both approaches:</p>
 <ul>
-<li><strong>Vector stores</strong> provide specific, current, and attributable information</li>
-<li><strong>LLM weights</strong> contribute reasoning, synthesis, and natural language generation</li>
-<li><strong>RAG architectures</strong> demonstrate how retrieval augments generation effectively</li>
+<li>Vector stores provide specific, current, and attributable information</li>
+<li>LLM weights contribute reasoning, synthesis, and natural language generation</li>
+<li>RAG architectures demonstrate how retrieval augments generation effectively</li>
 </ul>
 <h3 id="mathematical-foundation">Mathematical Foundation<a class="headerlink" href="#mathematical-foundation" title="Permanent link">&para;</a></h3>
 <p>The underlying mathematics—from high-dimensional geometry to attention mechanisms—provides the theoretical foundation that makes both systems possible. For deeper mathematical understanding, see the comprehensive treatment in <a href="../transformers_math1/">transformers_math1.md</a> and <a href="../transformers_math2/">transformers_math2.md</a>.</p>
-<p><strong>Final Insight</strong>: Understanding both knowledge storage paradigms enables practitioners to design more effective AI systems that leverage the strengths of each approach while mitigating their individual limitations.</p>
+<p>Final Insight: Understanding both knowledge storage paradigms enables practitioners to design more effective AI systems that leverage the strengths of each approach while mitigating their individual limitations.</p>
 
 
 
@@ -2947,9 +2947,11 @@ OpenSearch is an open-source search and analytics engine that started as a fork 
     
       <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
+        <script src="../javascripts/mathjax-init.js"></script>
+      
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
-        <script src="../javascripts/mathjax.js"></script>
+        <script src="../javascripts/mathjax-refresh.js"></script>
       
     
   </body>

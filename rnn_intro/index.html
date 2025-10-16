@@ -2165,28 +2165,28 @@
 
 
 <h1 id="recurrent-neural-networks-rnns-a-step-by-step-tutorial">Recurrent Neural Networks (RNNs): A Step-by-Step Tutorial<a class="headerlink" href="#recurrent-neural-networks-rnns-a-step-by-step-tutorial" title="Permanent link">&para;</a></h1>
-<p><strong>Building on your MLP foundation:</strong> In the <a href="../mlp_intro/">MLP Tutorial</a>, you learned how multiple layers enable learning complex, non-linear patterns. But MLPs have a crucial limitation—they can only process fixed-size inputs and have no memory between different examples. What happens when you need to understand sequences like "The cat sat on the mat" where word order matters and context builds up over time?</p>
-<p><strong>What you'll learn:</strong> How RNNs solve the sequence modeling challenge by adding memory to neural networks, why this breakthrough enabled modern language AI, and how the evolution from early RNNs to advanced architectures paved the way for transformers. We'll work through detailed examples and trace the historical journey from RNN limitations to modern solutions.</p>
-<p><strong>Prerequisites:</strong> Completed <a href="../mlp_intro/">MLP Tutorial</a> and basic understanding of sequential data (text, time series).</p>
+<p>Building on your MLP foundation: In the <a href="../mlp_intro/">MLP Tutorial</a>, you learned how multiple layers enable learning complex, non-linear patterns. But MLPs have a crucial limitation—they can only process fixed-size inputs and have no memory between different examples. What happens when you need to understand sequences like "The cat sat on the mat" where word order matters and context builds up over time?</p>
+<p>What you'll learn: How RNNs solve the sequence modeling challenge by adding memory to neural networks, why this breakthrough enabled modern language AI, and how the evolution from early RNNs to advanced architectures paved the way for transformers. We'll work through detailed examples and trace the historical journey from RNN limitations to modern solutions.</p>
+<p>Prerequisites: Completed <a href="../mlp_intro/">MLP Tutorial</a> and basic understanding of sequential data (text, time series).</p>
 <h2 id="1-the-sequential-challenge-why-mlps-arent-enough">1. The Sequential Challenge: Why MLPs Aren't Enough<a class="headerlink" href="#1-the-sequential-challenge-why-mlps-arent-enough" title="Permanent link">&para;</a></h2>
 <h3 id="the-problem-with-fixed-size-inputs">The Problem with Fixed-Size Inputs<a class="headerlink" href="#the-problem-with-fixed-size-inputs" title="Permanent link">&para;</a></h3>
 <p>Remember from the <a href="../mlp_intro/">MLP Tutorial</a> how MLPs excel at learning complex patterns by stacking multiple layers? But there's a fundamental limitation: MLPs require <strong>fixed-size inputs</strong>. Every example fed into the network must have exactly the same number of features.</p>
-<p><strong>This creates a major problem for sequential data:</strong></p>
+<p>This creates a major problem for sequential data:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&quot;Hello world&quot; (2 words) vs &quot;The quick brown fox jumps&quot; (5 words)
 </code></pre></div>
 <p>How do you feed both into the same MLP when they have different lengths?</p>
 <h3 id="failed-approaches-bags-of-words-and-padding">Failed Approaches: Bags of Words and Padding<a class="headerlink" href="#failed-approaches-bags-of-words-and-padding" title="Permanent link">&para;</a></h3>
-<p><strong>Before RNNs, researchers tried several workarounds:</strong></p>
+<p>Before RNNs, researchers tried several workarounds:</p>
 <h4 id="1-bag-of-words-ignoring-order">1. Bag-of-Words (Ignoring Order)<a class="headerlink" href="#1-bag-of-words-ignoring-order" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&quot;The cat sat on the mat&quot; → [the: 2, cat: 1, sat: 1, on: 1, mat: 1]
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>&quot;The mat sat on the cat&quot; → [the: 2, cat: 1, sat: 1, on: 1, mat: 1]
 </code></pre></div>
-<p><strong>Problem</strong>: Both sentences get identical representations despite opposite meanings!</p>
+<p>Problem: Both sentences get identical representations despite opposite meanings!</p>
 <h4 id="2-fixed-window-approaches">2. Fixed-Window Approaches<a class="headerlink" href="#2-fixed-window-approaches" title="Permanent link">&para;</a></h4>
 <p><div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&quot;The cat sat on the mat&quot; with window size 3:
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>[&quot;The cat sat&quot;, &quot;cat sat on&quot;, &quot;sat on the&quot;, &quot;on the mat&quot;]
 </code></pre></div>
-<strong>Problems</strong>:</p>
+Problems:</p>
 <ul>
 <li>Can't capture dependencies longer than window size</li>
 <li>Arbitrary choice of window size</li>
@@ -2196,28 +2196,28 @@
 <p><div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Truncate: &quot;The quick brown fox jumps over the lazy dog&quot; → &quot;The quick brown&quot;
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Pad: &quot;Hello world&quot; → [&quot;Hello&quot;, &quot;world&quot;, PAD, PAD, PAD]
 </code></pre></div>
-<strong>Problems</strong>:</p>
+Problems:</p>
 <ul>
 <li>Information loss from truncation  </li>
 <li>Computational waste from padding</li>
 <li>Still need to choose a fixed length</li>
 </ul>
 <h3 id="why-mlps-failed-for-sequences">Why MLPs Failed for Sequences<a class="headerlink" href="#why-mlps-failed-for-sequences" title="Permanent link">&para;</a></h3>
-<p><strong>Mathematical Constraint</strong>: If we have sequences of different lengths, there's no natural way to feed both into the same MLP architecture:</p>
+<p>Mathematical Constraint: If we have sequences of different lengths, there's no natural way to feed both into the same MLP architecture:</p>
 <p>$$
 \begin{aligned}
 \text{Sequence lengths:} \quad &amp;n \neq m \newline
 \text{Problem:} \quad &amp;\text{Weight matrix } W^{(1)} \text{ requires fixed input dimension}
 \end{aligned}
 $$</p>
-<p><strong>Missing Piece</strong>: MLPs have no mechanism to handle variable-length inputs or model temporal dependencies. Each input dimension is treated independently, with no understanding of sequential structure.</p>
-<p><strong>The Need</strong>: What if we could process sequences <strong>one element at a time</strong> while maintaining <strong>memory</strong> of what we've seen so far?</p>
+<p>Missing Piece: MLPs have no mechanism to handle variable-length inputs or model temporal dependencies. Each input dimension is treated independently, with no understanding of sequential structure.</p>
+<p>The Need: What if we could process sequences <strong>one element at a time</strong> while maintaining <strong>memory</strong> of what we've seen so far?</p>
 <hr />
 <h2 id="2-what-is-an-rnn">2. What is an RNN?<a class="headerlink" href="#2-what-is-an-rnn" title="Permanent link">&para;</a></h2>
-<p><strong>The Breakthrough Idea</strong>: What if we could process sequences <strong>one element at a time</strong> while maintaining <strong>internal memory</strong> that gets updated as we go? This is exactly what Recurrent Neural Networks (RNNs) introduced.</p>
+<p>The Breakthrough Idea: What if we could process sequences <strong>one element at a time</strong> while maintaining <strong>internal memory</strong> that gets updated as we go? This is exactly what Recurrent Neural Networks (RNNs) introduced.</p>
 <h3 id="the-rnn-innovation-adding-memory">The RNN Innovation: Adding Memory<a class="headerlink" href="#the-rnn-innovation-adding-memory" title="Permanent link">&para;</a></h3>
-<p><strong>RNNs solved the sequential challenge</strong> with a revolutionary concept: instead of processing the entire sequence at once, process it <strong>one element at a time</strong>, maintaining a <strong>hidden state</strong> that carries information forward.</p>
-<p><strong>Core Innovation</strong>: The network has a "memory" (hidden state) that:</p>
+<p>RNNs solved the sequential challenge with a revolutionary concept: instead of processing the entire sequence at once, process it <strong>one element at a time</strong>, maintaining a <strong>hidden state</strong> that carries information forward.</p>
+<p>Core Innovation: The network has a "memory" (hidden state) that:</p>
 <ol>
 <li>Gets updated after processing each sequence element</li>
 <li>Carries information about everything seen so far  </li>
@@ -2225,9 +2225,9 @@ $$</p>
 </ol>
 <h3 id="rnn-vs-regular-neural-network-mlp">RNN vs Regular Neural Network (MLP)<a class="headerlink" href="#rnn-vs-regular-neural-network-mlp" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p><strong>📚 Foundational Knowledge</strong>: For a complete step-by-step tutorial on MLPs, see <strong><a href="../mlp_intro/">mlp_intro.md</a></strong>.</p>
+<p>📚 Foundational Knowledge: For a complete step-by-step tutorial on MLPs, see <strong><a href="../mlp_intro/">mlp_intro.md</a></strong>.</p>
 </blockquote>
-<p><strong>Regular MLP (Multi-Layer Perceptron):</strong>
+<p>Regular MLP (Multi-Layer Perceptron):
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Input → Hidden Layer → Output
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  x   →      h       →   y
 </code></pre></div></p>
@@ -2236,7 +2236,7 @@ $$</p>
 <li>No memory between different inputs</li>
 <li>Each layer has different weights</li>
 </ul>
-<p><strong>RNN (Recurrent Neural Network):</strong>
+<p>RNN (Recurrent Neural Network):
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Time step 1: x₁ → RNN → h₁ → y₁
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Time step 2: x₂ → RNN → h₂ → y₂  (uses h₁ as memory)
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Time step 3: x₃ → RNN → h₃ → y₃  (uses h₂ as memory)
@@ -2246,7 +2246,7 @@ $$</p>
 <li>Carries "hidden state" (memory) between time steps</li>
 <li>Same weights reused at every time step</li>
 </ul>
-<p><strong>Key Insight:</strong> An RNN is like having a single neural network that processes a sequence by applying itself repeatedly, each time using both the current input and its memory of the past.</p>
+<p>Key Insight: An RNN is like having a single neural network that processes a sequence by applying itself repeatedly, each time using both the current input and its memory of the past.</p>
 <hr />
 <h2 id="3-the-core-rnn-equation">3. The Core RNN Equation<a class="headerlink" href="#3-the-core-rnn-equation" title="Permanent link">&para;</a></h2>
 <p>The heart of every RNN is this update rule:</p>
@@ -2268,32 +2268,32 @@ $$</p>
 <tr>
 <td>$$x_t$$</td>
 <td>$$[1, E]$$</td>
-<td><strong>Current input</strong> - word embedding at time $$t$$</td>
+<td>Current input - word embedding at time $$t$$</td>
 </tr>
 <tr>
 <td>$$h_{t-1}$$</td>
 <td>$$[1, H]$$</td>
-<td><strong>Past memory</strong> - hidden state from previous step</td>
+<td>Past memory - hidden state from previous step</td>
 </tr>
 <tr>
 <td>$$W_{xh}$$</td>
 <td>$$[E, H]$$</td>
-<td><strong>Input weights</strong> - transform current input</td>
+<td>Input weights - transform current input</td>
 </tr>
 <tr>
 <td>$$W_{hh}$$</td>
 <td>$$[H, H]$$</td>
-<td><strong>Hidden weights</strong> - transform past memory</td>
+<td>Hidden weights - transform past memory</td>
 </tr>
 <tr>
 <td>$$b_h$$</td>
 <td>$$(H,)$$</td>
-<td><strong>Bias</strong> - learned offset</td>
+<td>Bias - learned offset</td>
 </tr>
 <tr>
 <td>$$h_t$$</td>
 <td>$$(H,)$$</td>
-<td><strong>New memory</strong> - updated hidden state</td>
+<td>New memory - updated hidden state</td>
 </tr>
 </tbody>
 </table>
@@ -2307,13 +2307,13 @@ $$</p>
 <a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>                      ↓
 <a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>                New Memory h_t
 </code></pre></div>
-<p><strong>Why <code>tanh</code>?</strong></p>
+<p>Why <code>tanh</code>?</p>
 <ul>
-<li><strong>Non-linearity:</strong> Without it, the RNN would just be linear algebra (boring!)</li>
-<li><strong>Bounded output:</strong> <code>tanh</code> keeps values between -1 and +1, preventing explosion</li>
-<li><strong>Zero-centered:</strong> Helps with gradient flow during training</li>
+<li>Non-linearity: Without it, the RNN would just be linear algebra (boring!)</li>
+<li>Bounded output: <code>tanh</code> keeps values between -1 and +1, preventing explosion</li>
+<li>Zero-centered: Helps with gradient flow during training</li>
 </ul>
-<p><strong>The Magic:</strong> At each step, the RNN combines three components:</p>
+<p>The Magic: At each step, the RNN combines three components:</p>
 <p>$$
 \begin{aligned}
 \text{Current Input:} \quad &amp;x_t W_{xh} \quad \text{(What's happening now)} \newline
@@ -2325,28 +2325,28 @@ $$</p>
 <h2 id="4-understanding-hidden-states-vs-hidden-layers">4. Understanding Hidden States vs Hidden Layers<a class="headerlink" href="#4-understanding-hidden-states-vs-hidden-layers" title="Permanent link">&para;</a></h2>
 <p>Before diving deeper into RNN implementation details, it's crucial to clarify a fundamental distinction that often confuses newcomers: <strong>hidden states</strong> vs <strong>hidden layers</strong>. This distinction is especially important for RNNs because they handle both concepts in unique ways.</p>
 <h3 id="core-concepts-states-vs-layers">Core Concepts: States vs Layers<a class="headerlink" href="#core-concepts-states-vs-layers" title="Permanent link">&para;</a></h3>
-<p><strong>Hidden State</strong>: The internal representation at a specific point in time or processing step
-<strong>Hidden Layer</strong>: The architectural component (collection of neurons) that produces hidden states</p>
+<p>Hidden State: The internal representation at a specific point in time or processing step
+Hidden Layer: The architectural component (collection of neurons) that produces hidden states</p>
 <h3 id="key-distinctions">Key Distinctions<a class="headerlink" href="#key-distinctions" title="Permanent link">&para;</a></h3>
 <h4 id="hidden-layers-architecture">Hidden Layers (Architecture)<a class="headerlink" href="#hidden-layers-architecture" title="Permanent link">&para;</a></h4>
 <ul>
-<li><strong>What</strong>: Physical neural network structure between input and output</li>
-<li><strong>Purpose</strong>: Transform data through learned parameters (weights and biases)</li>
-<li><strong>Persistence</strong>: Fixed architecture throughout training and inference</li>
-<li><strong>Example</strong>: A 128-neuron recurrent layer in an RNN</li>
+<li>What: Physical neural network structure between input and output</li>
+<li>Purpose: Transform data through learned parameters (weights and biases)</li>
+<li>Persistence: Fixed architecture throughout training and inference</li>
+<li>Example: A 128-neuron recurrent layer in an RNN</li>
 </ul>
 <h4 id="hidden-states-dynamic-representations">Hidden States (Dynamic Representations)<a class="headerlink" href="#hidden-states-dynamic-representations" title="Permanent link">&para;</a></h4>
 <ul>
-<li><strong>What</strong>: Actual vector values flowing through the network at any given moment</li>
-<li><strong>Purpose</strong>: Encode processed information at intermediate stages</li>
-<li><strong>Persistence</strong>: Change with each input/time step</li>
-<li><strong>Example</strong>: 128-dimensional vector of activations from that layer</li>
+<li>What: Actual vector values flowing through the network at any given moment</li>
+<li>Purpose: Encode processed information at intermediate stages</li>
+<li>Persistence: Change with each input/time step</li>
+<li>Example: 128-dimensional vector of activations from that layer</li>
 </ul>
 <h3 id="rnn-specific-examples">RNN-Specific Examples<a class="headerlink" href="#rnn-specific-examples" title="Permanent link">&para;</a></h3>
 <h4 id="the-architecture-hidden-layer">The Architecture (Hidden Layer)<a class="headerlink" href="#the-architecture-hidden-layer" title="Permanent link">&para;</a></h4>
 <p>In our RNN equation, we can identify the architectural versus dynamic components:</p>
 <p>$$h_t = \tanh(x_t W_{xh} + h_{t-1} W_{hh} + b_h)$$</p>
-<p><strong>Hidden Layer (Architecture)</strong>: The fixed computational structure</p>
+<p>Hidden Layer (Architecture): The fixed computational structure</p>
 <p>$$
 \begin{aligned}
 \text{Weight matrices:} \quad &amp;W_{xh}, W_{hh} \text{ and bias } b_h \newline
@@ -2362,7 +2362,7 @@ $$</p>
 <a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  h₂: [0.7, 0.3, ..., 0.9] (after processing x₂, 128 values)
 <a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>  h₃: [0.1, 0.5, ..., 0.4] (after processing x₃, 128 values)
 </code></pre></div>
-<p><strong>Key Insight</strong>: The <strong>same layer</strong> produces different <strong>states</strong> over time. The RNN architecture is fixed, but the hidden states evolve as the sequence is processed.</p>
+<p>Key Insight: The <strong>same layer</strong> produces different <strong>states</strong> over time. The RNN architecture is fixed, but the hidden states evolve as the sequence is processed.</p>
 <h3 id="mathematical-relationship-for-rnns">Mathematical Relationship for RNNs<a class="headerlink" href="#mathematical-relationship-for-rnns" title="Permanent link">&para;</a></h3>
 <p>For RNNs, the relationship is:</p>
 <p>$$
@@ -2382,35 +2382,35 @@ $$</p>
 <p>Think of it like a <strong>notebook and note-taking process</strong>:</p>
 <h4 id="hidden-layer--the-notebook-design">Hidden Layer = The Notebook Design<a class="headerlink" href="#hidden-layer--the-notebook-design" title="Permanent link">&para;</a></h4>
 <ul>
-<li><strong>Fixed structure</strong>: Number of pages (neurons), ruling style (activation function)</li>
-<li><strong>Consistent tools</strong>: Same pen (weights) used throughout</li>
-<li><strong>Physical constraints</strong>: Page size determines how much can be written</li>
+<li>Fixed structure: Number of pages (neurons), ruling style (activation function)</li>
+<li>Consistent tools: Same pen (weights) used throughout</li>
+<li>Physical constraints: Page size determines how much can be written</li>
 </ul>
 <h4 id="hidden-states--the-actual-notes">Hidden States = The Actual Notes<a class="headerlink" href="#hidden-states--the-actual-notes" title="Permanent link">&para;</a></h4>
 <ul>
-<li><strong>Content changes</strong>: Each page contains different information</li>
-<li><strong>Temporal evolution</strong>: Notes build up over time</li>
-<li><strong>Dynamic information</strong>: What's written depends on what you're processing</li>
+<li>Content changes: Each page contains different information</li>
+<li>Temporal evolution: Notes build up over time</li>
+<li>Dynamic information: What's written depends on what you're processing</li>
 </ul>
 <h3 id="common-confusions-clarified">Common Confusions Clarified<a class="headerlink" href="#common-confusions-clarified" title="Permanent link">&para;</a></h3>
 <h4 id="confusion-1-hidden-layers-store-memory">Confusion 1: "Hidden layers store memory"<a class="headerlink" href="#confusion-1-hidden-layers-store-memory" title="Permanent link">&para;</a></h4>
-<p>❌ <strong>Wrong</strong>: Layers are architectural blueprints—they don't store anything
-✅ <strong>Correct</strong>: Hidden states carry information/memory from one time step to the next</p>
-<p><strong>RNN Context</strong>: The hidden state $$h_{t-1}$$ carries memory forward, not the layer itself.</p>
+<p>❌ Wrong: Layers are architectural blueprints—they don't store anything</p>
+<p>✅ Correct: Hidden states carry information/memory from one time step to the next</p>
+<p>RNN Context: The hidden state $$h_{t-1}$$ carries memory forward, not the layer itself.</p>
 <h4 id="confusion-2-rnns-have-one-hidden-state">Confusion 2: "RNNs have one hidden state"<a class="headerlink" href="#confusion-2-rnns-have-one-hidden-state" title="Permanent link">&para;</a></h4>
-<p>❌ <strong>Wrong</strong>: RNNs have one type of recurrent layer architecture
-✅ <strong>Correct</strong>: RNNs produce a sequence of hidden states over time ($$h_1, h_2, h_3, ..., h_T$$)</p>
-<p><strong>RNN Context</strong>: Each time step produces a new hidden state that encodes the sequence history.</p>
+<p>❌ Wrong: RNNs have one type of recurrent layer architecture</p>
+<p>✅ Correct: RNNs produce a sequence of hidden states over time ($$h_1, h_2, h_3, ..., h_T$$)</p>
+<p>RNN Context: Each time step produces a new hidden state that encodes the sequence history.</p>
 <h4 id="confusion-3-adding-more-hidden-layers-gives-more-memory">Confusion 3: "Adding more hidden layers gives more memory"<a class="headerlink" href="#confusion-3-adding-more-hidden-layers-gives-more-memory" title="Permanent link">&para;</a></h4>
-<p>❌ <strong>Wrong</strong>: More layers do not equal longer memory
-✅ <strong>Correct</strong>: Layer depth affects transformation complexity; sequence length affects memory span</p>
-<p><strong>RNN Context</strong>: Memory span depends on sequence length and gradient flow, not layer count.</p>
+<p>❌ Wrong: More layers do not equal longer memory</p>
+<p>✅ Correct: Layer depth affects transformation complexity; sequence length affects memory span</p>
+<p>RNN Context: Memory span depends on sequence length and gradient flow, not layer count.</p>
 <h3 id="practical-implications-for-rnns">Practical Implications for RNNs<a class="headerlink" href="#practical-implications-for-rnns" title="Permanent link">&para;</a></h3>
 <h4 id="for-model-design">For Model Design<a class="headerlink" href="#for-model-design" title="Permanent link">&para;</a></h4>
 <ul>
-<li><strong>Layer architecture</strong>: Choose hidden size based on memory capacity needs</li>
-<li><strong>State initialization</strong>: Decide how to initialize initial state (usually zeros)</li>
-<li><strong>Layer stacking</strong>: Multiple RNN layers create deeper transformations</li>
+<li>Layer architecture: Choose hidden size based on memory capacity needs</li>
+<li>State initialization: Decide how to initialize initial state (usually zeros)</li>
+<li>Layer stacking: Multiple RNN layers create deeper transformations</li>
 </ul>
 <p>$$
 \begin{aligned}
@@ -2421,9 +2421,9 @@ $$</p>
 $$</p>
 <h4 id="for-debugging">For Debugging<a class="headerlink" href="#for-debugging" title="Permanent link">&para;</a></h4>
 <ul>
-<li><strong>Analyze layer</strong>: Check weight initialization, gradient flow through parameters</li>
-<li><strong>Analyze states</strong>: Monitor hidden state evolution, detect vanishing/exploding patterns</li>
-<li><strong>Memory tracking</strong>: Watch how information flows between time steps</li>
+<li>Analyze layer: Check weight initialization, gradient flow through parameters</li>
+<li>Analyze states: Monitor hidden state evolution, detect vanishing/exploding patterns</li>
+<li>Memory tracking: Watch how information flows between time steps</li>
 </ul>
 <p>$$
 \begin{aligned}
@@ -2432,8 +2432,8 @@ $$</p>
 $$</p>
 <h4 id="for-training">For Training<a class="headerlink" href="#for-training" title="Permanent link">&para;</a></h4>
 <ul>
-<li><strong>Layer-level</strong>: Adjust hidden size, learning rates, regularization</li>
-<li><strong>State-level</strong>: Monitor gradient magnitudes, use gradient clipping, detect saturation</li>
+<li>Layer-level: Adjust hidden size, learning rates, regularization</li>
+<li>State-level: Monitor gradient magnitudes, use gradient clipping, detect saturation</li>
 </ul>
 <h3 id="key-insight-for-rnns">Key Insight for RNNs<a class="headerlink" href="#key-insight-for-rnns" title="Permanent link">&para;</a></h3>
 <p><strong>Hidden layers</strong> are the <strong>computational machinery</strong> (the RNN equation with its weights), while <strong>hidden states</strong> are the <strong>evolving memory</strong> that flows through this machinery at each time step.</p>
@@ -2667,10 +2667,12 @@ $$</p>
 &amp;\frac{\partial \text{loss}}{\partial W_1} \leftarrow \text{flows back two layers}
 \end{aligned}
 $$</p>
-<p><strong>Characteristics:</strong>
-- Each layer has <strong>different weights</strong>
-- Gradients flow <strong>backward through layers</strong>
-- Training is <strong>straightforward</strong> - standard backprop</p>
+<p><strong>Characteristics:</strong></p>
+<ul>
+<li>Each layer has <strong>different weights</strong></li>
+<li>Gradients flow <strong>backward through layers</strong></li>
+<li>Training is <strong>straightforward</strong> - standard backprop</li>
+</ul>
 <h3 id="rnn-training-backpropagation-through-time-bptt">RNN Training: Backpropagation Through Time (BPTT)<a class="headerlink" href="#rnn-training-backpropagation-through-time-bptt" title="Permanent link">&para;</a></h3>
 <p>$$
 \begin{aligned}
@@ -2682,13 +2684,15 @@ $$</p>
 &amp;\frac{\partial \text{loss}}{\partial b_h} \leftarrow \text{sum of gradients from ALL time steps}
 \end{aligned}
 $$</p>
-<p><strong>Characteristics:</strong>
-- <strong>Same weights</strong> used at every time step
-- Gradients flow <strong>backward through time AND layers</strong>
-- Training is <strong>more complex</strong> - gradients must be accumulated across time</p>
+<p><strong>Characteristics:</strong></p>
+<ul>
+<li><strong>Same weights</strong> used at every time step</li>
+<li>Gradients flow <strong>backward through time AND layers</strong></li>
+<li>Training is <strong>more complex</strong> - gradients must be accumulated across time</li>
+</ul>
 <h3 id="the-gradient-flow-challenge">The Gradient Flow Challenge<a class="headerlink" href="#the-gradient-flow-challenge" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p><strong>📚 Historical Context</strong>: The vanishing gradient problem was a major obstacle in early sequence modeling. For historical timeline and mathematical progression, see <strong><a href="../history_quick_ref/">History Quick Reference</a></strong>.</p>
+<p>📚 Historical Context: The vanishing gradient problem was a major obstacle in early sequence modeling. For historical timeline and mathematical progression, see <strong><a href="../history_quick_ref/">History Quick Reference</a></strong>.</p>
 </blockquote>
 <p>In deep RNNs or long sequences, gradients can:</p>
 <p><strong>Vanish (become too small):</strong></p>
@@ -2718,8 +2722,8 @@ $$</p>
 <h2 id="9-the-vanishing-gradient-problem-rnns-fatal-flaw">9. The Vanishing Gradient Problem: RNN's Fatal Flaw<a class="headerlink" href="#9-the-vanishing-gradient-problem-rnns-fatal-flaw" title="Permanent link">&para;</a></h2>
 <h3 id="why-gradients-vanish">Why Gradients Vanish<a class="headerlink" href="#why-gradients-vanish" title="Permanent link">&para;</a></h3>
 <p>The <strong>vanishing gradient problem</strong> is the critical limitation that prevented vanilla RNNs from being truly successful for long sequences. To understand it, we need to examine how gradients flow backward through time during training.</p>
-<p><strong>The Mathematical Problem</strong>: When training RNNs using Backpropagation Through Time (BPTT), gradients must flow backward through all time steps to update the weights.</p>
-<p><strong>Gradient Chain</strong>: For an RNN, the gradient flowing from time T to time 1 involves:</p>
+<p>The Mathematical Problem: When training RNNs using Backpropagation Through Time (BPTT), gradients must flow backward through all time steps to update the weights.</p>
+<p>Gradient Chain: For an RNN, the gradient flowing from time T to time 1 involves:</p>
 <p>$$
 \begin{aligned}
 \text{RNN equation:} \quad &amp;h_t = \tanh(x_t W_{xh} + h_{t-1} W_{hh} + b_h) \newline
@@ -2728,16 +2732,16 @@ $$</p>
 $$</p>
 <p><strong>Why This Causes Problems:</strong></p>
 <ol>
-<li><strong>Tanh Derivative Range</strong>: $$\tanh'(x) \in (0, 1]$$, typically around 0.1-0.5</li>
-<li><strong>Repeated Multiplication</strong>: Product of many small numbers approaches zero exponentially</li>
-<li><strong>Weight Matrix Effects</strong>: If eigenvalues are small, this compounds the decay</li>
+<li>Tanh Derivative Range: $$\tanh'(x) \in (0, 1]$$, typically around 0.1-0.5</li>
+<li>Repeated Multiplication: Product of many small numbers approaches zero exponentially</li>
+<li>Weight Matrix Effects: If eigenvalues are small, this compounds the decay</li>
 </ol>
 <p>$$
 \begin{aligned}
 \text{Condition:} \quad \text{eigenvalues of } W_{hh} &lt; 1 \quad \text{(compounds the decay)}
 \end{aligned}
 $$</p>
-<p><strong>Example</strong>: For a sequence of length 50:</p>
+<p>Example: For a sequence of length 50:</p>
 <p>$$
 \begin{aligned}
 \text{Given:} \quad &amp;\tanh'(\cdot) \approx 0.3 \text{ and } |W_{hh}| \approx 0.8 \newline
@@ -2746,34 +2750,34 @@ $$</p>
 \end{aligned}
 $$</p>
 <h3 id="impact-on-learning">Impact on Learning<a class="headerlink" href="#impact-on-learning" title="Permanent link">&para;</a></h3>
-<p><strong>Long-Range Dependencies</strong>: RNNs cannot learn patterns that span many time steps because the gradient signal from distant time steps vanishes.</p>
-<p><strong>Example Problem</strong>: In "The cat, which was sitting on the comfortable mat, was hungry", the RNN struggles to connect "cat" with "was hungry" due to the intervening words.</p>
+<p>Long-Range Dependencies: RNNs cannot learn patterns that span many time steps because the gradient signal from distant time steps vanishes.</p>
+<p>Example Problem: In "The cat, which was sitting on the comfortable mat, was hungry", the RNN struggles to connect "cat" with "was hungry" due to the intervening words.</p>
 <hr />
 <h2 id="10-evolution-beyond-vanilla-rnns">10. Evolution Beyond Vanilla RNNs<a class="headerlink" href="#10-evolution-beyond-vanilla-rnns" title="Permanent link">&para;</a></h2>
 <h3 id="gating-mechanisms-lstms-and-grus">Gating Mechanisms: LSTMs and GRUs<a class="headerlink" href="#gating-mechanisms-lstms-and-grus" title="Permanent link">&para;</a></h3>
-<p><strong>The Solution</strong>: Add <strong>gating mechanisms</strong> that can selectively remember or forget information, solving the vanishing gradient problem.</p>
+<p>The Solution: Add <strong>gating mechanisms</strong> that can selectively remember or forget information, solving the vanishing gradient problem.</p>
 <p><strong>Long Short-Term Memory (LSTM)</strong> networks introduced three gates:</p>
 <ul>
-<li><strong>Forget Gate</strong>: Decides what to remove from memory</li>
-<li><strong>Input Gate</strong>: Decides what new information to store  </li>
-<li><strong>Output Gate</strong>: Controls what parts of memory to output</li>
+<li>Forget Gate: Decides what to remove from memory</li>
+<li>Input Gate: Decides what new information to store  </li>
+<li>Output Gate: Controls what parts of memory to output</li>
 </ul>
 <p><strong>Gated Recurrent Unit (GRU)</strong> simplified LSTMs with two gates:</p>
 <ul>
-<li><strong>Reset Gate</strong>: Controls how much past information to forget</li>
-<li><strong>Update Gate</strong>: Controls how much new information to add</li>
+<li>Reset Gate: Controls how much past information to forget</li>
+<li>Update Gate: Controls how much new information to add</li>
 </ul>
-<p><strong>Key Breakthrough</strong>: These gates create "gradient highways" that allow error signals to flow back through time without vanishing.</p>
+<p>Key Breakthrough: These gates create "gradient highways" that allow error signals to flow back through time without vanishing.</p>
 <h3 id="seq2seq-the-encoder-decoder-revolution">Seq2Seq: The Encoder-Decoder Revolution<a class="headerlink" href="#seq2seq-the-encoder-decoder-revolution" title="Permanent link">&para;</a></h3>
-<p><strong>The Translation Challenge</strong>: Vanilla RNNs could only produce outputs at each time step, limiting their applications. How do you translate "Hello world" to "Hola mundo" when the input and output have different lengths and structures?</p>
-<p><strong>Sequence-to-Sequence (Seq2Seq) Innovation</strong>: Sutskever et al. (2014) introduced a breakthrough solution—split the network into two specialized parts:</p>
+<p>The Translation Challenge: Vanilla RNNs could only produce outputs at each time step, limiting their applications. How do you translate "Hello world" to "Hola mundo" when the input and output have different lengths and structures?</p>
+<p>Sequence-to-Sequence (Seq2Seq) Innovation: Sutskever et al. (2014) introduced a breakthrough solution—split the network into two specialized parts:</p>
 <h4 id="the-encoder-decoder-architecture">The Encoder-Decoder Architecture<a class="headerlink" href="#the-encoder-decoder-architecture" title="Permanent link">&para;</a></h4>
-<p><strong>Core Idea</strong>: Split sequence processing into two phases:</p>
+<p>Core Idea: Split sequence processing into two phases:</p>
 <ol>
-<li><strong>Encoder</strong>: Process input sequence and compress into fixed-size representation</li>
-<li><strong>Decoder</strong>: Generate output sequence from compressed representation</li>
+<li>Encoder: Process input sequence and compress into fixed-size representation</li>
+<li>Decoder: Generate output sequence from compressed representation</li>
 </ol>
-<p><strong>Architecture Visualization</strong>:
+<p>Architecture Visualization:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Input: &quot;Hello world&quot;
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>       ↓
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>┌─────────────────────┐
@@ -2793,14 +2797,14 @@ $$</p>
 <a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>Output: &quot;Hola mundo&quot;
 </code></pre></div></p>
 <h4 id="mathematical-framework">Mathematical Framework<a class="headerlink" href="#mathematical-framework" title="Permanent link">&para;</a></h4>
-<p><strong>Encoder Process</strong>:</p>
+<p>Encoder Process:</p>
 <p>$$
 \begin{aligned}
 h_t^{enc} &amp;= f_{enc}(x_t, h_{t-1}^{enc}) \newline
 c &amp;= h_T^{enc} \quad \text{(Final hidden state becomes context)}
 \end{aligned}
 $$</p>
-<p><strong>Decoder Process</strong>:</p>
+<p>Decoder Process:</p>
 <p>$$
 \begin{aligned}
 h_t^{dec} &amp;= f_{dec}(y_{t-1}, h_{t-1}^{dec}, c) \newline
@@ -2816,58 +2820,58 @@ h_t^{dec} \quad &amp;: \text{Decoder hidden state}
 \end{aligned}
 $$</p>
 <h4 id="training-with-teacher-forcing">Training with Teacher Forcing<a class="headerlink" href="#training-with-teacher-forcing" title="Permanent link">&para;</a></h4>
-<p><strong>Smart Training Trick</strong>: During training, use ground truth previous tokens rather than model predictions:</p>
+<p>Smart Training Trick: During training, use ground truth previous tokens rather than model predictions:</p>
 <p>$$y_{t-1} = y_{t-1}^{truth} \quad \text{(not model prediction)}$$</p>
 <p>This speeds up training and improves stability.</p>
 <h4 id="applications-unlocked">Applications Unlocked<a class="headerlink" href="#applications-unlocked" title="Permanent link">&para;</a></h4>
-<p><strong>Seq2Seq enabled entirely new AI capabilities</strong>:</p>
+<p>Seq2Seq enabled entirely new AI capabilities:</p>
 <ul>
-<li><strong>Machine Translation</strong>: "Hello world" → "Hola mundo"</li>
-<li><strong>Text Summarization</strong>: Long article → Short summary</li>
-<li><strong>Question Answering</strong>: Question + context → Answer</li>
-<li><strong>Code Generation</strong>: Natural language → Programming code</li>
+<li>Machine Translation: "Hello world" → "Hola mundo"</li>
+<li>Text Summarization: Long article → Short summary</li>
+<li>Question Answering: Question + context → Answer</li>
+<li>Code Generation: Natural language → Programming code</li>
 </ul>
 <h4 id="the-information-bottleneck-problem">The Information Bottleneck Problem<a class="headerlink" href="#the-information-bottleneck-problem" title="Permanent link">&para;</a></h4>
-<p><strong>Critical Discovery</strong>: Despite its success, Seq2Seq had a fundamental limitation—all information about the input sequence must pass through a single fixed-size context vector $c$.</p>
-<p><strong>Mathematical Constraint</strong>: Regardless of input length, encoder must compress everything into:</p>
+<p>Critical Discovery: Despite its success, Seq2Seq had a fundamental limitation—all information about the input sequence must pass through a single fixed-size context vector $c$.</p>
+<p>Mathematical Constraint: Regardless of input length, encoder must compress everything into:</p>
 <p>$$c \in \mathbb{R}^h \quad \text{(fixed hidden size)}$$</p>
-<p><strong>Problems This Created</strong>:</p>
+<p>Problems This Created:</p>
 <ul>
-<li><strong>Information Loss</strong>: Long inputs cannot be fully captured in fixed-size vector</li>
-<li><strong>Performance Degradation</strong>: Translation quality decreases with input length</li>
-<li><strong>Forgetting</strong>: Early input information often lost by end of encoding</li>
+<li>Information Loss: Long inputs cannot be fully captured in fixed-size vector</li>
+<li>Performance Degradation: Translation quality decreases with input length</li>
+<li>Forgetting: Early input information often lost by end of encoding</li>
 </ul>
-<p><strong>Empirical Evidence</strong>:</p>
+<p>Empirical Evidence:</p>
 <ul>
 <li>Sentences with 10-20 words: Good translation quality</li>
 <li>Sentences with 30-40 words: Noticeable quality degradation  </li>
 <li>Sentences with 50+ words: Poor translation quality</li>
 </ul>
-<p><strong>The Critical Realization</strong>: This bottleneck problem led researchers to ask: <em>"What if the decoder could look back at ALL encoder states, not just the final one?"</em> This question sparked the <strong>attention mechanism revolution</strong> that eventually led to Transformers.</p>
+<p>The Critical Realization: This bottleneck problem led researchers to ask: <em>"What if the decoder could look back at ALL encoder states, not just the final one?"</em> This question sparked the <strong>attention mechanism revolution</strong> that eventually led to Transformers.</p>
 <hr />
 <h2 id="11-summary-the-rnn-legacy">11. Summary: The RNN Legacy<a class="headerlink" href="#11-summary-the-rnn-legacy" title="Permanent link">&para;</a></h2>
 <h3 id="how-rnns-changed-everything">How RNNs Changed Everything<a class="headerlink" href="#how-rnns-changed-everything" title="Permanent link">&para;</a></h3>
 <p>RNNs introduced the revolutionary concept of <strong>neural memory</strong>, solving the fundamental challenge of processing variable-length sequences. This breakthrough enabled:</p>
 <ol>
-<li><strong>Variable-Length Processing</strong>: No more fixed-size input constraints</li>
-<li><strong>Sequential Understanding</strong>: Networks that understand word order matters</li>
-<li><strong>Context Accumulation</strong>: Memory that builds up over time</li>
-<li><strong>Weight Sharing</strong>: Efficient parameter usage across time steps</li>
+<li>Variable-Length Processing: No more fixed-size input constraints</li>
+<li>Sequential Understanding: Networks that understand word order matters</li>
+<li>Context Accumulation: Memory that builds up over time</li>
+<li>Weight Sharing: Efficient parameter usage across time steps</li>
 </ol>
 <h3 id="why-rnns-led-to-transformers">Why RNNs Led to Transformers<a class="headerlink" href="#why-rnns-led-to-transformers" title="Permanent link">&para;</a></h3>
-<p><strong>RNN Contributions</strong>:</p>
+<p>RNN Contributions:</p>
 <ul>
 <li>✅ Solved variable-length sequence processing</li>
 <li>✅ Introduced neural memory concepts</li>
 <li>✅ Enabled sequence-to-sequence learning</li>
 </ul>
-<p><strong>RNN Limitations</strong>:</p>
+<p>RNN Limitations:</p>
 <ul>
 <li>❌ Vanishing gradients limited long-range dependencies</li>
 <li>❌ Sequential processing prevented parallelization  </li>
 <li>❌ Hidden state bottleneck in seq2seq models</li>
 </ul>
-<p><strong>The Complete Evolution Story</strong>:
+<p>The Complete Evolution Story:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>MLPs: Fixed-size inputs only
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>  ↓ (How to handle variable sequences?)
 <a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>RNNs: Sequential processing + memory
@@ -2880,23 +2884,23 @@ $$</p>
 <a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>  ↓ (Still have RNN sequential bottleneck)
 <a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>Transformers: Pure attention, no recurrence = parallel processing
 </code></pre></div></p>
-<p><strong>The Critical Questions That Led to Transformers</strong>:</p>
+<p>The Critical Questions That Led to Transformers:</p>
 <ol>
-<li><strong>RNN Era</strong>: "How can we give neural networks memory?" → <strong>RNNs</strong></li>
-<li><strong>LSTM Era</strong>: "How can we solve vanishing gradients?" → <strong>LSTMs/GRUs</strong></li>
-<li><strong>Seq2Seq Era</strong>: "How can we handle different input/output lengths?" → <strong>Encoder-Decoder</strong></li>
-<li><strong>Attention Era</strong>: "How can we solve the bottleneck problem?" → <strong>Attention Mechanisms</strong></li>
-<li><strong>Transformer Era</strong>: "What if we remove recurrence entirely?" → <strong>Transformers</strong></li>
+<li>RNN Era: "How can we give neural networks memory?" → <strong>RNNs</strong></li>
+<li>LSTM Era: "How can we solve vanishing gradients?" → <strong>LSTMs/GRUs</strong></li>
+<li>Seq2Seq Era: "How can we handle different input/output lengths?" → <strong>Encoder-Decoder</strong></li>
+<li>Attention Era: "How can we solve the bottleneck problem?" → <strong>Attention Mechanisms</strong></li>
+<li>Transformer Era: "What if we remove recurrence entirely?" → <strong>Transformers</strong></li>
 </ol>
-<p><strong>Key Insight</strong>: Each limitation drove the next innovation. The Seq2Seq bottleneck problem was particularly crucial—it led researchers to attention mechanisms, which then sparked the revolutionary question: <em>"What if attention is all you need?"</em></p>
+<p>Key Insight: Each limitation drove the next innovation. The Seq2Seq bottleneck problem was particularly crucial—it led researchers to attention mechanisms, which then sparked the revolutionary question: <em>"What if attention is all you need?"</em></p>
 <h3 id="rnns-lasting-impact">RNN's Lasting Impact<a class="headerlink" href="#rnns-lasting-impact" title="Permanent link">&para;</a></h3>
-<p><strong>Conceptual Foundations</strong>: Modern architectures still use RNN insights:</p>
+<p>Conceptual Foundations: Modern architectures still use RNN insights:</p>
 <ul>
-<li><strong>Memory mechanisms</strong>: Hidden states evolved into attention</li>
-<li><strong>Sequential processing</strong>: Influenced positional encoding</li>
-<li><strong>Encoder-decoder</strong>: Template for many modern architectures</li>
+<li>Memory mechanisms: Hidden states evolved into attention</li>
+<li>Sequential processing: Influenced positional encoding</li>
+<li>Encoder-decoder: Template for many modern architectures</li>
 </ul>
-<p><strong>Applications</strong>: RNNs proved neural networks could handle:</p>
+<p>Applications: RNNs proved neural networks could handle:</p>
 <ul>
 <li>Machine translation and text generation</li>
 <li>Speech recognition and synthesis  </li>
@@ -2920,21 +2924,21 @@ $$</p>
 <h2 id="13-next-steps">13. Next Steps<a class="headerlink" href="#13-next-steps" title="Permanent link">&para;</a></h2>
 <p>Now that you understand RNNs and their complete evolution:</p>
 <h3 id="the-bridge-to-modern-ai">The Bridge to Modern AI<a class="headerlink" href="#the-bridge-to-modern-ai" title="Permanent link">&para;</a></h3>
-<p><strong>You've learned the complete story</strong>: From MLPs that couldn't handle sequences, to RNNs that introduced memory, to LSTMs that solved vanishing gradients, to Seq2Seq that enabled translation, and finally the <strong>critical bottleneck problem</strong> that sparked the attention revolution.</p>
-<p><strong>The Transformer Breakthrough Awaits</strong>: You now understand exactly WHY researchers asked <em>"What if attention is all you need?"</em> The answer to that question created the architecture powering ChatGPT, GPT-4, and modern AI.</p>
+<p>You've learned the complete story: From MLPs that couldn't handle sequences, to RNNs that introduced memory, to LSTMs that solved vanishing gradients, to Seq2Seq that enabled translation, and finally the <strong>critical bottleneck problem</strong> that sparked the attention revolution.</p>
+<p>The Transformer Breakthrough Awaits: You now understand exactly WHY researchers asked <em>"What if attention is all you need?"</em> The answer to that question created the architecture powering ChatGPT, GPT-4, and modern AI.</p>
 <h3 id="your-learning-journey-continues">Your Learning Journey Continues<a class="headerlink" href="#your-learning-journey-continues" title="Permanent link">&para;</a></h3>
 <ol>
-<li><strong>The Attention Revolution</strong>: Discover how attention mechanisms solved the Seq2Seq bottleneck you just learned about</li>
-<li><strong>Transformer Architecture</strong>: See how removing recurrence entirely enabled massive parallel processing  </li>
-<li><strong>Modern Applications</strong>: Understand how these breakthroughs power today's AI systems</li>
-<li><strong>Implementation Practice</strong>: Build these architectures yourself with PyTorch</li>
+<li>The Attention Revolution: Discover how attention mechanisms solved the Seq2Seq bottleneck you just learned about</li>
+<li>Transformer Architecture: See how removing recurrence entirely enabled massive parallel processing  </li>
+<li>Modern Applications: Understand how these breakthroughs power today's AI systems</li>
+<li>Implementation Practice: Build these architectures yourself with PyTorch</li>
 </ol>
 <blockquote>
 <p><strong>Ready for the Revolutionary Answer?</strong> See <strong><a href="../transformers_fundamentals/">Transformer Fundamentals</a></strong> to learn how the question <em>"What if attention is all you need?"</em> led to the architecture that powers modern AI. You'll see exactly how the Transformer solved every RNN limitation while preserving the core insights about memory and sequence processing.</p>
 </blockquote>
 <h3 id="the-complete-historical-arc">The Complete Historical Arc<a class="headerlink" href="#the-complete-historical-arc" title="Permanent link">&para;</a></h3>
-<p><strong>What you've mastered</strong>: The 30-year journey from simple perceptrons to the brink of the transformer revolution. Every limitation you learned about—vanishing gradients, sequential bottlenecks, information compression—directly motivated the final breakthrough that changed everything.</p>
-<p><strong>What's next</strong>: The elegant solution that solved them all.</p>
+<p>What you've mastered: The 30-year journey from simple perceptrons to the brink of the transformer revolution. Every limitation you learned about—vanishing gradients, sequential bottlenecks, information compression—directly motivated the final breakthrough that changed everything.</p>
+<p>What's next: The elegant solution that solved them all.</p>
 
 
 
@@ -2996,9 +3000,11 @@ $$</p>
     
       <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
+        <script src="../javascripts/mathjax-init.js"></script>
+      
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
-        <script src="../javascripts/mathjax.js"></script>
+        <script src="../javascripts/mathjax-refresh.js"></script>
       
     
   </body>
