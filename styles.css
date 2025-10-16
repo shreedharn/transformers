@@ -41,8 +41,25 @@
 
 /* Keep code/math a touch smaller to match */
 .md-typeset pre, .md-typeset code{ font-size: .85em; }
-.md-typeset mjx-container[display="true"]{ font-size: 85%; }
 
+/* ===== MathJax sizing: both inline and display ===== */
+/* Display math (block equations) */
+.md-typeset mjx-container[display="true"]{ font-size: 85%; }
 mjx-container[jax="CHTML"][display="true"] {
   text-align: left !important;
+}
+
+/* Inline math (formulas within text) */
+.md-typeset mjx-container:not([display="true"]) {
+  font-size: 85%;
+}
+
+/* Additional fallback for all MathJax containers */
+.md-typeset mjx-container {
+  font-size: 85%;
+}
+
+/* Target MathJax elements more specifically */
+mjx-math {
+  font-size: 0.85em !important;
 }
