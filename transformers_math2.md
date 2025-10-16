@@ -40,7 +40,7 @@ W \sim \mathcal{N}\left(0, \frac{2}{n_{\text{in}} + n_{\text{out}}}\right) \quad
 ### 8.2 Mixed Precision Training
 
 **FP16 Forward, FP32 Gradients:** Use half precision for speed, full precision for numerical stability:
-💻 **Implementation Example**: For Automatic Mixed Precision implementation, see [Optimization Notebook](./pynb/math_ref/optimization.ipynb)
+💻 Implementation Example: For Automatic Mixed Precision implementation, see [Optimization Notebook](./pynb/math_ref/optimization.ipynb)
 
 ### 8.3 Gradient Clipping
 
@@ -50,7 +50,7 @@ W \sim \mathcal{N}\left(0, \frac{2}{n_{\text{in}} + n_{\text{out}}}\right) \quad
 
 ### 9.1 From SGD to Adam
 
-📚 **Quick Reference**: See [Adam Optimizer](./math_quick_ref.md#mathematical-quick-reference-for-neural-networks) and [Gradient Descent](./math_quick_ref.md#mathematical-quick-reference-for-neural-networks) in the mathematical reference table.
+📚 Quick Reference: See [Adam Optimizer](./math_quick_ref.md#mathematical-quick-reference-for-neural-networks) and [Gradient Descent](./math_quick_ref.md#mathematical-quick-reference-for-neural-networks) in the mathematical reference table.
 
 **SGD with Momentum:**
 ```math
@@ -129,7 +129,7 @@ Adam is like having a smart GPS that adjusts your driving based on two things:
 **$\beta_2$ Warmup:** Start with high $\beta_2$ (e.g., 0.99) and gradually decrease to final value (e.g., 0.999) over first few thousand steps. Helps with training stability.
 
 **Gradient Accumulation:** Simulate larger batch sizes:
-💻 **Implementation Example**: For gradient accumulation implementation, see [Optimization Notebook](./pynb/math_ref/optimization.ipynb)
+💻 Implementation Example: For gradient accumulation implementation, see [Optimization Notebook](./pynb/math_ref/optimization.ipynb)
 
 ### 9.3 Learning Rate Schedules
 
@@ -219,10 +219,10 @@ where $c = \max_i x_i$ prevents overflow.
 
 **Detailed Complexity Breakdown:**
 
-1. **QK^T computation**: $O(n^2 d)$ time, $O(n^2)$ space
-2. **Softmax normalization**: $O(n^2)$ time and space
-3. **Attention-Value multiplication**: $O(n^2 d)$ time, $O(nd)$ space
-4. **Total**: $O(n^2 d)$ time, $O(n^2 + nd)$ space
+1. QK^T computation: $O(n^2 d)$ time, $O(n^2)$ space
+2. Softmax normalization: $O(n^2)$ time and space
+3. Attention-Value multiplication: $O(n^2 d)$ time, $O(nd)$ space
+4. Total: $O(n^2 d)$ time, $O(n^2 + nd)$ space
 
 **Scaling Challenges:**
 
@@ -278,16 +278,16 @@ where $c = \max_i x_i$ prevents overflow.
 K_{\text{cache}} \gets \mathrm{concat}(K_{\text{cache}},\ k_{\text{new}}) \tag{42}
 ```
 
-- **$K_{\text{cache}}$**: Cached keys from previous tokens.
-- **$V_{\text{cache}}$**: Cached values from previous tokens.
-- **$k_{\text{new}}, v_{\text{new}}$**: Key and value for the new token.
-- **$q_{\text{new}}$**: Query for the new token.
+- $K_{\text{cache}}$: Cached keys from previous tokens.
+- $V_{\text{cache}}$: Cached values from previous tokens.
+- $k_{\text{new}}, v_{\text{new}}$: Key and value for the new token.
+- $q_{\text{new}}$: Query for the new token.
 
 At each generation step, append the new key and value to the cache, then compute attention using the full cache.
 
 **Memory Trade-off:** Cache size grows as $O(nd)$ but eliminates $O(n^2)$ recomputation.
 
-💻 **Implementation Example**: For KV Cache implementation, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
+💻 Implementation Example: For KV Cache implementation, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
 
 ### 10.5 Linear Attention Approximations
 

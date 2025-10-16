@@ -30,14 +30,14 @@ How do you feed both into the same MLP when they have different lengths?
 "The mat sat on the cat" → [the: 2, cat: 1, sat: 1, on: 1, mat: 1]
 ```
 
-**Problem**: Both sentences get identical representations despite opposite meanings!
+Problem: Both sentences get identical representations despite opposite meanings!
 
 #### 2. Fixed-Window Approaches 
 ```
 "The cat sat on the mat" with window size 3:
 ["The cat sat", "cat sat on", "sat on the", "on the mat"]
 ```
-**Problems**:
+Problems:
 
 - Can't capture dependencies longer than window size
 - Arbitrary choice of window size
@@ -48,7 +48,7 @@ How do you feed both into the same MLP when they have different lengths?
 Truncate: "The quick brown fox jumps over the lazy dog" → "The quick brown"
 Pad: "Hello world" → ["Hello", "world", PAD, PAD, PAD]
 ```
-**Problems**:
+Problems:
 
 - Information loss from truncation  
 - Computational waste from padding
@@ -56,7 +56,7 @@ Pad: "Hello world" → ["Hello", "world", PAD, PAD, PAD]
 
 ### Why MLPs Failed for Sequences
 
-**Mathematical Constraint**: If we have sequences of different lengths, there's no natural way to feed both into the same MLP architecture:
+Mathematical Constraint: If we have sequences of different lengths, there's no natural way to feed both into the same MLP architecture:
 
 $$
 \begin{aligned}
@@ -65,21 +65,21 @@ $$
 \end{aligned}
 $$
 
-**Missing Piece**: MLPs have no mechanism to handle variable-length inputs or model temporal dependencies. Each input dimension is treated independently, with no understanding of sequential structure.
+Missing Piece: MLPs have no mechanism to handle variable-length inputs or model temporal dependencies. Each input dimension is treated independently, with no understanding of sequential structure.
 
-**The Need**: What if we could process sequences **one element at a time** while maintaining **memory** of what we've seen so far?
+The Need: What if we could process sequences **one element at a time** while maintaining **memory** of what we've seen so far?
 
 ---
 
 ## 2. What is an RNN?
 
-**The Breakthrough Idea**: What if we could process sequences **one element at a time** while maintaining **internal memory** that gets updated as we go? This is exactly what Recurrent Neural Networks (RNNs) introduced.
+The Breakthrough Idea: What if we could process sequences **one element at a time** while maintaining **internal memory** that gets updated as we go? This is exactly what Recurrent Neural Networks (RNNs) introduced.
 
 ### The RNN Innovation: Adding Memory
 
 **RNNs solved the sequential challenge** with a revolutionary concept: instead of processing the entire sequence at once, process it **one element at a time**, maintaining a **hidden state** that carries information forward.
 
-**Core Innovation**: The network has a "memory" (hidden state) that:
+Core Innovation: The network has a "memory" (hidden state) that:
 
 1. Gets updated after processing each sequence element
 2. Carries information about everything seen so far  
@@ -87,7 +87,7 @@ $$
 
 ### RNN vs Regular Neural Network (MLP)
 
-> **📚 Foundational Knowledge**: For a complete step-by-step tutorial on MLPs, see **[mlp_intro.md](./mlp_intro.md)**.
+> 📚 Foundational Knowledge: For a complete step-by-step tutorial on MLPs, see **[mlp_intro.md](./mlp_intro.md)**.
 
 **Regular MLP (Multi-Layer Perceptron):**
 ```
@@ -172,24 +172,24 @@ Before diving deeper into RNN implementation details, it's crucial to clarify a 
 
 ### Core Concepts: States vs Layers
 
-**Hidden State**: The internal representation at a specific point in time or processing step
-**Hidden Layer**: The architectural component (collection of neurons) that produces hidden states
+Hidden State: The internal representation at a specific point in time or processing step
+Hidden Layer: The architectural component (collection of neurons) that produces hidden states
 
 ### Key Distinctions
 
 #### Hidden Layers (Architecture)
 
-- **What**: Physical neural network structure between input and output
-- **Purpose**: Transform data through learned parameters (weights and biases)
-- **Persistence**: Fixed architecture throughout training and inference
-- **Example**: A 128-neuron recurrent layer in an RNN
+- What: Physical neural network structure between input and output
+- Purpose: Transform data through learned parameters (weights and biases)
+- Persistence: Fixed architecture throughout training and inference
+- Example: A 128-neuron recurrent layer in an RNN
 
 #### Hidden States (Dynamic Representations)
 
-- **What**: Actual vector values flowing through the network at any given moment
-- **Purpose**: Encode processed information at intermediate stages
-- **Persistence**: Change with each input/time step
-- **Example**: 128-dimensional vector of activations from that layer
+- What: Actual vector values flowing through the network at any given moment
+- Purpose: Encode processed information at intermediate stages
+- Persistence: Change with each input/time step
+- Example: 128-dimensional vector of activations from that layer
 
 ### RNN-Specific Examples
 
@@ -198,7 +198,7 @@ In our RNN equation, we can identify the architectural versus dynamic components
 
 $$h\_t = \tanh(x\_t W\_{xh} + h\_{t-1} W\_{hh} + b\_h)$$
 
-**Hidden Layer (Architecture)**: The fixed computational structure
+Hidden Layer (Architecture): The fixed computational structure
 
 $$
 \begin{aligned}
@@ -218,7 +218,7 @@ Hidden States (dynamic):
   h₃: [0.1, 0.5, ..., 0.4] (after processing x₃, 128 values)
 ```
 
-**Key Insight**: The **same layer** produces different **states** over time. The RNN architecture is fixed, but the hidden states evolve as the sequence is processed.
+Key Insight: The **same layer** produces different **states** over time. The RNN architecture is fixed, but the hidden states evolve as the sequence is processed.
 
 ### Mathematical Relationship for RNNs
 
@@ -245,45 +245,45 @@ $$
 Think of it like a **notebook and note-taking process**:
 
 #### Hidden Layer = The Notebook Design
-- **Fixed structure**: Number of pages (neurons), ruling style (activation function)
-- **Consistent tools**: Same pen (weights) used throughout
-- **Physical constraints**: Page size determines how much can be written
+- Fixed structure: Number of pages (neurons), ruling style (activation function)
+- Consistent tools: Same pen (weights) used throughout
+- Physical constraints: Page size determines how much can be written
 
 #### Hidden States = The Actual Notes
-- **Content changes**: Each page contains different information
-- **Temporal evolution**: Notes build up over time
-- **Dynamic information**: What's written depends on what you're processing
+- Content changes: Each page contains different information
+- Temporal evolution: Notes build up over time
+- Dynamic information: What's written depends on what you're processing
 
 ### Common Confusions Clarified
 
 #### Confusion 1: "Hidden layers store memory"
-❌ **Wrong**: Layers are architectural blueprints—they don't store anything
+❌ Wrong: Layers are architectural blueprints—they don't store anything
 
-✅ **Correct**: Hidden states carry information/memory from one time step to the next
+✅ Correct: Hidden states carry information/memory from one time step to the next
 
-**RNN Context**: The hidden state $$h\_{t-1}$$ carries memory forward, not the layer itself.
+RNN Context: The hidden state $$h\_{t-1}$$ carries memory forward, not the layer itself.
 
 #### Confusion 2: "RNNs have one hidden state"  
-❌ **Wrong**: RNNs have one type of recurrent layer architecture
+❌ Wrong: RNNs have one type of recurrent layer architecture
 
-✅ **Correct**: RNNs produce a sequence of hidden states over time ($$h\_1, h\_2, h\_3, ..., h\_T$$)
+✅ Correct: RNNs produce a sequence of hidden states over time ($$h\_1, h\_2, h\_3, ..., h\_T$$)
 
-**RNN Context**: Each time step produces a new hidden state that encodes the sequence history.
+RNN Context: Each time step produces a new hidden state that encodes the sequence history.
 
 #### Confusion 3: "Adding more hidden layers gives more memory"
-❌ **Wrong**: More layers do not equal longer memory
+❌ Wrong: More layers do not equal longer memory
 
-✅ **Correct**: Layer depth affects transformation complexity; sequence length affects memory span
+✅ Correct: Layer depth affects transformation complexity; sequence length affects memory span
 
-**RNN Context**: Memory span depends on sequence length and gradient flow, not layer count.
+RNN Context: Memory span depends on sequence length and gradient flow, not layer count.
 
 ### Practical Implications for RNNs
 
 #### For Model Design
 
-- **Layer architecture**: Choose hidden size based on memory capacity needs
-- **State initialization**: Decide how to initialize initial state (usually zeros)
-- **Layer stacking**: Multiple RNN layers create deeper transformations
+- Layer architecture: Choose hidden size based on memory capacity needs
+- State initialization: Decide how to initialize initial state (usually zeros)
+- Layer stacking: Multiple RNN layers create deeper transformations
 
 $$
 \begin{aligned}
@@ -295,9 +295,9 @@ $$
 
 #### For Debugging
 
-- **Analyze layer**: Check weight initialization, gradient flow through parameters
-- **Analyze states**: Monitor hidden state evolution, detect vanishing/exploding patterns
-- **Memory tracking**: Watch how information flows between time steps
+- Analyze layer: Check weight initialization, gradient flow through parameters
+- Analyze states: Monitor hidden state evolution, detect vanishing/exploding patterns
+- Memory tracking: Watch how information flows between time steps
 
 $$
 \begin{aligned}
@@ -306,8 +306,8 @@ $$
 $$
 
 #### For Training
-- **Layer-level**: Adjust hidden size, learning rates, regularization
-- **State-level**: Monitor gradient magnitudes, use gradient clipping, detect saturation
+- Layer-level: Adjust hidden size, learning rates, regularization
+- State-level: Monitor gradient magnitudes, use gradient clipping, detect saturation
 
 ### Key Insight for RNNs
 
@@ -594,7 +594,7 @@ $$
 
 ### The Gradient Flow Challenge
 
-> **📚 Historical Context**: The vanishing gradient problem was a major obstacle in early sequence modeling. For historical timeline and mathematical progression, see **[History Quick Reference](./history_quick_ref.md)**.
+> 📚 Historical Context: The vanishing gradient problem was a major obstacle in early sequence modeling. For historical timeline and mathematical progression, see **[History Quick Reference](./history_quick_ref.md)**.
 
 In deep RNNs or long sequences, gradients can:
 
@@ -632,9 +632,9 @@ $$
 
 The **vanishing gradient problem** is the critical limitation that prevented vanilla RNNs from being truly successful for long sequences. To understand it, we need to examine how gradients flow backward through time during training.
 
-**The Mathematical Problem**: When training RNNs using Backpropagation Through Time (BPTT), gradients must flow backward through all time steps to update the weights.
+The Mathematical Problem: When training RNNs using Backpropagation Through Time (BPTT), gradients must flow backward through all time steps to update the weights.
 
-**Gradient Chain**: For an RNN, the gradient flowing from time T to time 1 involves:
+Gradient Chain: For an RNN, the gradient flowing from time T to time 1 involves:
 
 $$
 \begin{aligned}
@@ -645,9 +645,9 @@ $$
 
 **Why This Causes Problems:**
 
-1. **Tanh Derivative Range**: $$\tanh'(x) \in (0, 1]$$, typically around 0.1-0.5
-2. **Repeated Multiplication**: Product of many small numbers approaches zero exponentially
-3. **Weight Matrix Effects**: If eigenvalues are small, this compounds the decay
+1. Tanh Derivative Range: $$\tanh'(x) \in (0, 1]$$, typically around 0.1-0.5
+2. Repeated Multiplication: Product of many small numbers approaches zero exponentially
+3. Weight Matrix Effects: If eigenvalues are small, this compounds the decay
 
 $$
 \begin{aligned}
@@ -655,7 +655,7 @@ $$
 \end{aligned}
 $$
 
-**Example**: For a sequence of length 50:
+Example: For a sequence of length 50:
 
 $$
 \begin{aligned}
@@ -667,9 +667,9 @@ $$
 
 ### Impact on Learning
 
-**Long-Range Dependencies**: RNNs cannot learn patterns that span many time steps because the gradient signal from distant time steps vanishes.
+Long-Range Dependencies: RNNs cannot learn patterns that span many time steps because the gradient signal from distant time steps vanishes.
 
-**Example Problem**: In "The cat, which was sitting on the comfortable mat, was hungry", the RNN struggles to connect "cat" with "was hungry" due to the intervening words.
+Example Problem: In "The cat, which was sitting on the comfortable mat, was hungry", the RNN struggles to connect "cat" with "was hungry" due to the intervening words.
 
 ---
 
@@ -677,35 +677,35 @@ $$
 
 ### Gating Mechanisms: LSTMs and GRUs
 
-**The Solution**: Add **gating mechanisms** that can selectively remember or forget information, solving the vanishing gradient problem.
+The Solution: Add **gating mechanisms** that can selectively remember or forget information, solving the vanishing gradient problem.
 
 **Long Short-Term Memory (LSTM)** networks introduced three gates:
 
-- **Forget Gate**: Decides what to remove from memory
-- **Input Gate**: Decides what new information to store  
-- **Output Gate**: Controls what parts of memory to output
+- Forget Gate: Decides what to remove from memory
+- Input Gate: Decides what new information to store  
+- Output Gate: Controls what parts of memory to output
 
 **Gated Recurrent Unit (GRU)** simplified LSTMs with two gates:
 
-- **Reset Gate**: Controls how much past information to forget
-- **Update Gate**: Controls how much new information to add
+- Reset Gate: Controls how much past information to forget
+- Update Gate: Controls how much new information to add
 
-**Key Breakthrough**: These gates create "gradient highways" that allow error signals to flow back through time without vanishing.
+Key Breakthrough: These gates create "gradient highways" that allow error signals to flow back through time without vanishing.
 
 ### Seq2Seq: The Encoder-Decoder Revolution
 
-**The Translation Challenge**: Vanilla RNNs could only produce outputs at each time step, limiting their applications. How do you translate "Hello world" to "Hola mundo" when the input and output have different lengths and structures?
+The Translation Challenge: Vanilla RNNs could only produce outputs at each time step, limiting their applications. How do you translate "Hello world" to "Hola mundo" when the input and output have different lengths and structures?
 
-**Sequence-to-Sequence (Seq2Seq) Innovation**: Sutskever et al. (2014) introduced a breakthrough solution—split the network into two specialized parts:
+Sequence-to-Sequence (Seq2Seq) Innovation: Sutskever et al. (2014) introduced a breakthrough solution—split the network into two specialized parts:
 
 #### The Encoder-Decoder Architecture
 
-**Core Idea**: Split sequence processing into two phases:
+Core Idea: Split sequence processing into two phases:
 
-1. **Encoder**: Process input sequence and compress into fixed-size representation
-2. **Decoder**: Generate output sequence from compressed representation
+1. Encoder: Process input sequence and compress into fixed-size representation
+2. Decoder: Generate output sequence from compressed representation
 
-**Architecture Visualization**:
+Architecture Visualization:
 ```
 Input: "Hello world"
        ↓
@@ -728,7 +728,7 @@ Output: "Hola mundo"
 
 #### Mathematical Framework
 
-**Encoder Process**:
+Encoder Process:
 
 $$
 \begin{aligned}
@@ -737,7 +737,7 @@ c &= h\_T^{enc} \quad \text{(Final hidden state becomes context)}
 \end{aligned}
 $$
 
-**Decoder Process**:
+Decoder Process:
 
 $$
 \begin{aligned}
@@ -758,7 +758,7 @@ $$
 
 #### Training with Teacher Forcing
 
-**Smart Training Trick**: During training, use ground truth previous tokens rather than model predictions:
+Smart Training Trick: During training, use ground truth previous tokens rather than model predictions:
 
 $$y\_{t-1} = y\_{t-1}^{truth} \quad \text{(not model prediction)}$$
 
@@ -766,34 +766,34 @@ This speeds up training and improves stability.
 
 #### Applications Unlocked
 
-**Seq2Seq enabled entirely new AI capabilities**:
+Seq2Seq enabled entirely new AI capabilities:
 
-- **Machine Translation**: "Hello world" → "Hola mundo"
-- **Text Summarization**: Long article → Short summary
-- **Question Answering**: Question + context → Answer
-- **Code Generation**: Natural language → Programming code
+- Machine Translation: "Hello world" → "Hola mundo"
+- Text Summarization: Long article → Short summary
+- Question Answering: Question + context → Answer
+- Code Generation: Natural language → Programming code
 
 #### The Information Bottleneck Problem
 
-**Critical Discovery**: Despite its success, Seq2Seq had a fundamental limitation—all information about the input sequence must pass through a single fixed-size context vector $c$.
+Critical Discovery: Despite its success, Seq2Seq had a fundamental limitation—all information about the input sequence must pass through a single fixed-size context vector $c$.
 
-**Mathematical Constraint**: Regardless of input length, encoder must compress everything into:
+Mathematical Constraint: Regardless of input length, encoder must compress everything into:
 
 $$c \in \mathbb{R}^h \quad \text{(fixed hidden size)}$$
 
-**Problems This Created**:
+Problems This Created:
 
-- **Information Loss**: Long inputs cannot be fully captured in fixed-size vector
-- **Performance Degradation**: Translation quality decreases with input length
-- **Forgetting**: Early input information often lost by end of encoding
+- Information Loss: Long inputs cannot be fully captured in fixed-size vector
+- Performance Degradation: Translation quality decreases with input length
+- Forgetting: Early input information often lost by end of encoding
 
-**Empirical Evidence**:
+Empirical Evidence:
 
 - Sentences with 10-20 words: Good translation quality
 - Sentences with 30-40 words: Noticeable quality degradation  
 - Sentences with 50+ words: Poor translation quality
 
-**The Critical Realization**: This bottleneck problem led researchers to ask: *"What if the decoder could look back at ALL encoder states, not just the final one?"* This question sparked the **attention mechanism revolution** that eventually led to Transformers.
+The Critical Realization: This bottleneck problem led researchers to ask: *"What if the decoder could look back at ALL encoder states, not just the final one?"* This question sparked the **attention mechanism revolution** that eventually led to Transformers.
 
 ---
 
@@ -803,26 +803,26 @@ $$c \in \mathbb{R}^h \quad \text{(fixed hidden size)}$$
 
 RNNs introduced the revolutionary concept of **neural memory**, solving the fundamental challenge of processing variable-length sequences. This breakthrough enabled:
 
-1. **Variable-Length Processing**: No more fixed-size input constraints
-2. **Sequential Understanding**: Networks that understand word order matters
-3. **Context Accumulation**: Memory that builds up over time
-4. **Weight Sharing**: Efficient parameter usage across time steps
+1. Variable-Length Processing: No more fixed-size input constraints
+2. Sequential Understanding: Networks that understand word order matters
+3. Context Accumulation: Memory that builds up over time
+4. Weight Sharing: Efficient parameter usage across time steps
 
 ### Why RNNs Led to Transformers
 
-**RNN Contributions**:
+RNN Contributions:
 
 - ✅ Solved variable-length sequence processing
 - ✅ Introduced neural memory concepts
 - ✅ Enabled sequence-to-sequence learning
 
-**RNN Limitations**:
+RNN Limitations:
 
 - ❌ Vanishing gradients limited long-range dependencies
 - ❌ Sequential processing prevented parallelization  
 - ❌ Hidden state bottleneck in seq2seq models
 
-**The Complete Evolution Story**:
+The Complete Evolution Story:
 ```
 MLPs: Fixed-size inputs only
   ↓ (How to handle variable sequences?)
@@ -837,25 +837,25 @@ Attention: Decoder can look at ALL encoder states
 Transformers: Pure attention, no recurrence = parallel processing
 ```
 
-**The Critical Questions That Led to Transformers**:
+The Critical Questions That Led to Transformers:
 
-1. **RNN Era**: "How can we give neural networks memory?" → **RNNs**
-2. **LSTM Era**: "How can we solve vanishing gradients?" → **LSTMs/GRUs**
-3. **Seq2Seq Era**: "How can we handle different input/output lengths?" → **Encoder-Decoder**
-4. **Attention Era**: "How can we solve the bottleneck problem?" → **Attention Mechanisms**
-5. **Transformer Era**: "What if we remove recurrence entirely?" → **Transformers**
+1. RNN Era: "How can we give neural networks memory?" → **RNNs**
+2. LSTM Era: "How can we solve vanishing gradients?" → **LSTMs/GRUs**
+3. Seq2Seq Era: "How can we handle different input/output lengths?" → **Encoder-Decoder**
+4. Attention Era: "How can we solve the bottleneck problem?" → **Attention Mechanisms**
+5. Transformer Era: "What if we remove recurrence entirely?" → **Transformers**
 
-**Key Insight**: Each limitation drove the next innovation. The Seq2Seq bottleneck problem was particularly crucial—it led researchers to attention mechanisms, which then sparked the revolutionary question: *"What if attention is all you need?"*
+Key Insight: Each limitation drove the next innovation. The Seq2Seq bottleneck problem was particularly crucial—it led researchers to attention mechanisms, which then sparked the revolutionary question: *"What if attention is all you need?"*
 
 ### RNN's Lasting Impact
 
-**Conceptual Foundations**: Modern architectures still use RNN insights:
+Conceptual Foundations: Modern architectures still use RNN insights:
 
-- **Memory mechanisms**: Hidden states evolved into attention
-- **Sequential processing**: Influenced positional encoding
-- **Encoder-decoder**: Template for many modern architectures
+- Memory mechanisms: Hidden states evolved into attention
+- Sequential processing: Influenced positional encoding
+- Encoder-decoder: Template for many modern architectures
 
-**Applications**: RNNs proved neural networks could handle:
+Applications: RNNs proved neural networks could handle:
 
 - Machine translation and text generation
 - Speech recognition and synthesis  
@@ -887,21 +887,21 @@ Now that you understand RNNs and their complete evolution:
 
 ### The Bridge to Modern AI
 
-**You've learned the complete story**: From MLPs that couldn't handle sequences, to RNNs that introduced memory, to LSTMs that solved vanishing gradients, to Seq2Seq that enabled translation, and finally the **critical bottleneck problem** that sparked the attention revolution.
+You've learned the complete story: From MLPs that couldn't handle sequences, to RNNs that introduced memory, to LSTMs that solved vanishing gradients, to Seq2Seq that enabled translation, and finally the **critical bottleneck problem** that sparked the attention revolution.
 
-**The Transformer Breakthrough Awaits**: You now understand exactly WHY researchers asked *"What if attention is all you need?"* The answer to that question created the architecture powering ChatGPT, GPT-4, and modern AI.
+The Transformer Breakthrough Awaits: You now understand exactly WHY researchers asked *"What if attention is all you need?"* The answer to that question created the architecture powering ChatGPT, GPT-4, and modern AI.
 
 ### Your Learning Journey Continues
 
-1. **The Attention Revolution**: Discover how attention mechanisms solved the Seq2Seq bottleneck you just learned about
-2. **Transformer Architecture**: See how removing recurrence entirely enabled massive parallel processing  
-3. **Modern Applications**: Understand how these breakthroughs power today's AI systems
-4. **Implementation Practice**: Build these architectures yourself with PyTorch
+1. The Attention Revolution: Discover how attention mechanisms solved the Seq2Seq bottleneck you just learned about
+2. Transformer Architecture: See how removing recurrence entirely enabled massive parallel processing  
+3. Modern Applications: Understand how these breakthroughs power today's AI systems
+4. Implementation Practice: Build these architectures yourself with PyTorch
 
 > **Ready for the Revolutionary Answer?** See **[Transformer Fundamentals](./transformers_fundamentals.md)** to learn how the question *"What if attention is all you need?"* led to the architecture that powers modern AI. You'll see exactly how the Transformer solved every RNN limitation while preserving the core insights about memory and sequence processing.
 
 ### The Complete Historical Arc
 
-**What you've mastered**: The 30-year journey from simple perceptrons to the brink of the transformer revolution. Every limitation you learned about—vanishing gradients, sequential bottlenecks, information compression—directly motivated the final breakthrough that changed everything.
+What you've mastered: The 30-year journey from simple perceptrons to the brink of the transformer revolution. Every limitation you learned about—vanishing gradients, sequential bottlenecks, information compression—directly motivated the final breakthrough that changed everything.
 
-**What's next**: The elegant solution that solved them all.
+What's next: The elegant solution that solved them all.

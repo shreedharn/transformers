@@ -34,34 +34,34 @@ This repository provides a comprehensive exploration of transformer architecture
 
 ### Covered Architectures
 
-- **Encoder-Only**: BERT, RoBERTa, ELECTRA
-- **Decoder-Only**: GPT family, PaLM, LLaMA
-- **Encoder-Decoder**: T5, BART, UL2
+- Encoder-Only: BERT, RoBERTa, ELECTRA
+- Decoder-Only: GPT family, PaLM, LLaMA
+- Encoder-Decoder: T5, BART, UL2
 
 ### Implementation Topics
 
-- **Core Components**: Multi-head attention, feed-forward networks, normalization
-- **Training**: Objectives, data curriculum, optimization
-- **Efficiency**: KV caching, quantization, parameter-efficient fine-tuning
-- **Evaluation**: Metrics, benchmarks, diagnostic tools
+- Core Components: Multi-head attention, feed-forward networks, normalization
+- Training: Objectives, data curriculum, optimization
+- Efficiency: KV caching, quantization, parameter-efficient fine-tuning
+- Evaluation: Metrics, benchmarks, diagnostic tools
 
 ### Mathematical Rigor
 
-- **Tensor operations**: Detailed shape analysis and complexity bounds
-- **Gradient computation**: Complete backpropagation derivations
-- **Optimization theory**: Adam, learning rate schedules, gradient clipping
-- **Information theory**: Entropy, mutual information, compression bounds
+- Tensor operations: Detailed shape analysis and complexity bounds
+- Gradient computation: Complete backpropagation derivations
+- Optimization theory: Adam, learning rate schedules, gradient clipping
+- Information theory: Entropy, mutual information, compression bounds
 
 ## 🎯 Learning Objectives
 
 After completing this repository, you will understand:
 
-1. **Historical Context**: Why transformers were developed and how they evolved
-2. **Core Architecture**: Detailed operation of every transformer component
-3. **Mathematical Foundations**: Rigorous theoretical underpinnings
-4. **Practical Implementation**: Production deployment considerations
-5. **Current Landscape**: Modern variants and optimization techniques
-6. **Future Directions**: Emerging research and development trends
+1. Historical Context: Why transformers were developed and how they evolved
+2. Core Architecture: Detailed operation of every transformer component
+3. Mathematical Foundations: Rigorous theoretical underpinnings
+4. Practical Implementation: Production deployment considerations
+5. Current Landscape: Modern variants and optimization techniques
+6. Future Directions: Emerging research and development trends
 
 ## 📚 Further Reading
 

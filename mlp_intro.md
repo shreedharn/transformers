@@ -167,8 +167,8 @@ Small hidden size (2 neurons):   h = [h₁, h₂]
 Large hidden size (100 neurons): h = [h₁, h₂, ..., h₁₀₀]
 ```
 
-- **Larger hidden size**: Can learn more complex patterns, but more parameters
-- **Smaller hidden size**: Simpler model, less prone to overfitting
+- Larger hidden size: Can learn more complex patterns, but more parameters
+- Smaller hidden size: Simpler model, less prone to overfitting
 
 **Analogy:** Like having 2 vs 100 "detectors" in each layer to find patterns.
 
@@ -181,8 +181,8 @@ Shallow (2 layers): Input → Hidden → Output
 Deep (5 layers):    Input → H1 → H2 → H3 → H4 → Output
 ```
 
-- **Deeper networks**: Can learn more hierarchical, abstract representations
-- **Shallow networks**: Simpler, faster, easier to train
+- Deeper networks: Can learn more hierarchical, abstract representations
+- Shallow networks: Simpler, faster, easier to train
 
 **Rule of Thumb:** Start shallow, go deeper only if needed.
 
@@ -217,9 +217,9 @@ $$
 Let's trace through a complex example that shows why MLPs are necessary. We'll use the problematic case from Section 1:
 
 **The Challenge:** Detect sophisticated spam that fools single perceptrons  
-**Input features**: [num_exclamations, has_word_free, num_capitals]  
-**Hidden layer size**: 2 neurons (for pattern detection)  
-**Output**: spam probability
+Input features: [num_exclamations, has_word_free, num_capitals]  
+Hidden layer size: 2 neurons (for pattern detection)  
+Output: spam probability
 
 ### Step 0: Initialize
 
@@ -233,7 +233,7 @@ x = [3, 0, 15]  # [3 exclamations, no "free", 15 capitals]
 
 - Has exclamations (spam-like) but no "free" word
 - Has many capitals (spam-like) but winner congratulations can be legitimate
-- **Requires learning**: "High urgency (excl + caps) without legitimacy markers = spam"
+- Requires learning: "High urgency (excl + caps) without legitimacy markers = spam"
 
 **Learned weights (after training on complex patterns):**
 ```
@@ -253,8 +253,8 @@ b² = [0.2]            # 1-element bias vector
 
 **What each neuron learned to detect:**
 
-- **Neuron 1**: "Urgency signals" (high exclamations + capitals, low "free")
-- **Neuron 2**: "Legitimacy markers" (presence of "free" reduces suspicion)
+- Neuron 1: "Urgency signals" (high exclamations + capitals, low "free")
+- Neuron 2: "Legitimacy markers" (presence of "free" reduces suspicion)
 
 ### Step 1: Forward Pass Through Hidden Layer
 
@@ -290,8 +290,8 @@ h¹ = ReLU([3.7, -4.2]) = [max(0, 3.7), max(0, -4.2)] = [3.7, 0]
 
 **Pattern Detection Results:**
 
-- **Neuron 1 (Urgency)**: Strongly activated (3.7) - detected high urgency pattern
-- **Neuron 2 (Legitimacy)**: Silent (0) - no legitimacy markers found
+- Neuron 1 (Urgency): Strongly activated (3.7) - detected high urgency pattern
+- Neuron 2 (Legitimacy): Silent (0) - no legitimacy markers found
 
 ### Step 2: Forward Pass Through Output Layer
 
@@ -329,14 +329,14 @@ Output:           0.997      # 99.7% spam probability
 
 **Hidden Neuron Analysis:**
 
-- **Neuron 1 (Urgency Detector)**: Strongly activated by exclamations + capitals combination
-- **Neuron 2 (Legitimacy Detector)**: Silent because no "free" word (legitimacy marker) present
+- Neuron 1 (Urgency Detector): Strongly activated by exclamations + capitals combination
+- Neuron 2 (Legitimacy Detector): Silent because no "free" word (legitimacy marker) present
 
 **The Power of Multiple Layers:**
 
-1. **Layer 1**: Learned specialized pattern detectors (urgency vs legitimacy)
-2. **Layer 2**: Learned to combine these patterns intelligently
-3. **Result**: Detected sophisticated spam that exploits urgency without legitimate context
+1. Layer 1: Learned specialized pattern detectors (urgency vs legitimacy)
+2. Layer 2: Learned to combine these patterns intelligently
+3. Result: Detected sophisticated spam that exploits urgency without legitimate context
 
 **Key Insight:** The MLP learned a complex decision rule: "High urgency signals without legitimacy markers = strong spam indicator." This non-linear pattern would be impossible for a single perceptron to capture.
 
@@ -348,12 +348,12 @@ Output:           0.997      # 99.7% spam probability
 
 MLPs learn through **supervised learning**:
 
-1. **Forward Pass**: Compute predictions using current weights
-2. **Loss Calculation**: Measure how wrong the predictions are
-3. **Backward Pass**: Compute gradients using backpropagation
-4. **Weight Update**: Adjust weights to reduce the loss
+1. Forward Pass: Compute predictions using current weights
+2. Loss Calculation: Measure how wrong the predictions are
+3. Backward Pass: Compute gradients using backpropagation
+4. Weight Update: Adjust weights to reduce the loss
 
-> **📚 Mathematical Deep Dive**: For a complete step-by-step mathematical explanation of how gradient descent works from line slopes to neural network training, see **[transformers_math1.md Section 2.1.1](./transformers_math1.md#211-from-line-slopes-to-neural-network-training)** - includes worked examples and the connection between simple derivatives and MLP backpropagation.
+> 📚 Mathematical Deep Dive: For a complete step-by-step mathematical explanation of how gradient descent works from line slopes to neural network training, see **[transformers_math1.md Section 2.1.1](./transformers_math1.md#211-from-line-slopes-to-neural-network-training)** - includes worked examples and the connection between simple derivatives and MLP backpropagation.
 
 ### Loss Functions
 
@@ -398,7 +398,7 @@ b² = b² - α × ∂L/∂b²
 b¹ = b¹ - α × ∂L/∂b¹
 ```
 
-> **🔗 Mathematical Connection**: The backpropagation equations above are derived step-by-step in **[transformers_math1.md Section 2.1.1](./transformers_math1.md#211-from-line-slopes-to-neural-network-training)**. See the "Single Hidden Layer MLP" subsection for the complete mathematical derivation including the δ terms and chain rule applications.
+> 🔗 Mathematical Connection: The backpropagation equations above are derived step-by-step in **[transformers_math1.md Section 2.1.1](./transformers_math1.md#211-from-line-slopes-to-neural-network-training)**. See the "Single Hidden Layer MLP" subsection for the complete mathematical derivation including the δ terms and chain rule applications.
 
 ### Training Loop Example
 
@@ -427,23 +427,23 @@ For each batch of training examples:
 
 ### MLP Advantages
 
-✅ **Universal Approximation**: Can learn any continuous function with enough neurons
+✅ Universal Approximation: Can learn any continuous function with enough neurons
 
-✅ **Non-linear Patterns**: Captures complex relationships in data
+✅ Non-linear Patterns: Captures complex relationships in data
 
-✅ **Automatic Features**: Learns useful feature combinations
+✅ Automatic Features: Learns useful feature combinations
 
-✅ **Scalable**: Works with large datasets and many features
+✅ Scalable: Works with large datasets and many features
 
 ### MLP Limitations
 
-❌ **No Sequential Memory**: Processes each input independently
+❌ No Sequential Memory: Processes each input independently
 
-❌ **Fixed Input Size**: Can't handle variable-length inputs
+❌ Fixed Input Size: Can't handle variable-length inputs
 
-❌ **No Spatial Structure**: Doesn't understand image/text structure
+❌ No Spatial Structure: Doesn't understand image/text structure
 
-❌ **Many Parameters**: Can overfit with small datasets
+❌ Many Parameters: Can overfit with small datasets
 
 ### When to Use MLPs
 
@@ -467,7 +467,7 @@ For each batch of training examples:
 
 ### Overfitting: When MLPs Memorize
 
-**Problem**: Network performs well on training data but poorly on new data.
+Problem: Network performs well on training data but poorly on new data.
 
 **Signs:**
 
@@ -488,7 +488,7 @@ For each batch of training examples:
 
 ### Underfitting: When MLPs Are Too Simple
 
-**Problem**: Network can't learn the underlying patterns.
+Problem: Network can't learn the underlying patterns.
 
 **Signs:**
 
@@ -506,7 +506,7 @@ For each batch of training examples:
 
 ### Gradient Problems
 
-**Vanishing Gradients**: Gradients become too small in deep networks
+Vanishing Gradients: Gradients become too small in deep networks
 ```
 Solutions:
 
@@ -516,7 +516,7 @@ Solutions:
 - Skip connections
 ```
 
-**Exploding Gradients**: Gradients become too large
+Exploding Gradients: Gradients become too large
 ```
 Solutions:  
 
@@ -525,7 +525,7 @@ Solutions:
 - Better weight initialization
 ```
 
-> **🎯 Gradient Flow Mathematics**: To understand the mathematical foundations of why gradients vanish or explode, and how gradient descent fundamentally works, see **[transformers_math1.md Section 2.1.1](./transformers_math1.md#211-from-line-slopes-to-neural-network-training)**. The section builds intuition from simple 1D slopes to complex neural network training.
+> 🎯 Gradient Flow Mathematics: To understand the mathematical foundations of why gradients vanish or explode, and how gradient descent fundamentally works, see **[transformers_math1.md Section 2.1.1](./transformers_math1.md#211-from-line-slopes-to-neural-network-training)**. The section builds intuition from simple 1D slopes to complex neural network training.
 
 ---
 
@@ -646,7 +646,7 @@ Too low:  Very slow convergence
 Sweet spot: Usually 0.001 - 0.01
 ```
 
-> **📊 Learning Rate Intuition**: For a visual and mathematical explanation of why learning rate choice matters, see the worked example with f(x) = x² in **[transformers_math1.md Section 2.1.1](./transformers_math1.md#211-from-line-slopes-to-neural-network-training)** - shows exactly how different learning rates affect convergence behavior.
+> 📊 Learning Rate Intuition: For a visual and mathematical explanation of why learning rate choice matters, see the worked example with f(x) = x² in **[transformers_math1.md Section 2.1.1](./transformers_math1.md#211-from-line-slopes-to-neural-network-training)** - shows exactly how different learning rates affect convergence behavior.
 
 **Batch Size:**
 ```
@@ -682,10 +682,10 @@ Common choice: 64-128
 
 ### How MLPs Work
 
-1. **Layer-wise Processing**: Transform inputs through multiple layers
-2. **Non-linear Combinations**: Each layer learns complex feature combinations  
-3. **Universal Approximation**: Can learn any continuous function with enough neurons
-4. **Supervised Learning**: Learn from input-output examples through backpropagation
+1. Layer-wise Processing: Transform inputs through multiple layers
+2. Non-linear Combinations: Each layer learns complex feature combinations  
+3. Universal Approximation: Can learn any continuous function with enough neurons
+4. Supervised Learning: Learn from input-output examples through backpropagation
 
 ### Key Components Working Together
 
@@ -702,18 +702,18 @@ Where each layer applies: Linear Transformation → Non-linear Activation
 
 ### Capacity Control
 
-- **Width (hidden size)**: How many patterns each layer can detect
-- **Depth (num layers)**: How complex/hierarchical patterns can be
-- **Regularization**: Controls overfitting vs underfitting balance
+- Width (hidden size): How many patterns each layer can detect
+- Depth (num layers): How complex/hierarchical patterns can be
+- Regularization: Controls overfitting vs underfitting balance
 
 ### MLP's Role in Modern AI
 
 **Foundation for Everything:**
 
-- **CNNs**: MLPs + spatial structure for images
-- **RNNs**: MLPs + memory for sequences  
-- **Transformers**: MLPs + attention mechanisms
-- **Modern architectures**: All use MLP components
+- CNNs: MLPs + spatial structure for images
+- RNNs: MLPs + memory for sequences  
+- Transformers: MLPs + attention mechanisms
+- Modern architectures: All use MLP components
 
 **Key Insight:** MLPs are the "universal building block" - understanding them deeply helps with all neural network architectures.
 
@@ -738,9 +738,9 @@ After Sigmoid:  y = 0.997  # 99.7% spam probability
 
 **What It Learned:**
 
-- **Hidden neuron 1 (Urgency Detector)**: Detects high-pressure tactics (exclamations + capitals)
-- **Hidden neuron 2 (Legitimacy Detector)**: Detects legitimate context markers (silent here)
-- **Output combination**: Learned "urgency without legitimacy = strong spam signal"
+- Hidden neuron 1 (Urgency Detector): Detects high-pressure tactics (exclamations + capitals)
+- Hidden neuron 2 (Legitimacy Detector): Detects legitimate context markers (silent here)
+- Output combination: Learned "urgency without legitimacy = strong spam signal"
 
 **Why This Matters:** This example shows MLPs solving problems beyond single perceptron capabilities—the foundation for all complex neural network architectures.
 
@@ -750,11 +750,11 @@ After Sigmoid:  y = 0.997  # 99.7% spam probability
 
 Now that you understand MLPs:
 
-1. **Limitations**: MLPs can't handle sequences well (no memory)
-2. **Next Architecture**: RNNs add memory for sequential data
-3. **Modern Context**: MLPs are components in Transformers and other architectures
-4. **Implementation**: Try building an MLP in PyTorch or TensorFlow
+1. Limitations: MLPs can't handle sequences well (no memory)
+2. Next Architecture: RNNs add memory for sequential data
+3. Modern Context: MLPs are components in Transformers and other architectures
+4. Implementation: Try building an MLP in PyTorch or TensorFlow
 
-> **Continue Learning**: Ready for sequences? See **[rnn_intro.md](./rnn_intro.md)** to learn how RNNs add memory to the MLP foundation.
+> Continue Learning: Ready for sequences? See **[rnn_intro.md](./rnn_intro.md)** to learn how RNNs add memory to the MLP foundation.
 
 **Remember:** MLPs taught us that neural networks could learn complex, non-linear patterns through simple transformations. Every modern architecture builds on these core principles - making MLPs essential foundational knowledge.

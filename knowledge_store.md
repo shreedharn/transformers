@@ -10,14 +10,14 @@ Consider how humans internalize knowledge: when you learn that "Paris is the cap
 
 **Knowledge Internalization Process:**
 
-- **Training Exposure**: During training, the model encounters "Paris is the capital of France" in thousands of different contexts
-- **Statistical Learning**: Weights learn that "Paris" and "capital of France" frequently co-occur and have semantic relationships
-- **Distributed Encoding**: This knowledge becomes encoded across many weight matrices, not stored as discrete facts
-- **Pattern Activation**: During inference, when asked about Paris, the learned weight patterns activate to generate contextually appropriate responses
+- Training Exposure: During training, the model encounters "Paris is the capital of France" in thousands of different contexts
+- Statistical Learning: Weights learn that "Paris" and "capital of France" frequently co-occur and have semantic relationships
+- Distributed Encoding: This knowledge becomes encoded across many weight matrices, not stored as discrete facts
+- Pattern Activation: During inference, when asked about Paris, the learned weight patterns activate to generate contextually appropriate responses
 
 Unlike databases where "Paris → capital → France" might be a clear lookup table entry, LLMs internalize this as statistical associations that enable both recall and generalization to new contexts.
 
-**Core Intuition**: Think of LLM weights like a distributed neural architecture where:
+Core Intuition: Think of LLM weights like a distributed neural architecture where:
 
 - **Embedding weights** position tokens in high-dimensional semantic space using vector representations (analogous to principal component analysis projections)
 - **Attention weights** learn contextual dependencies between tokens using learned similarity functions
@@ -48,16 +48,16 @@ Throughout this document, we use **3-dimensional vectors** like [0.8, 0.2, 0.1] 
 
 **Real-world embeddings are much larger:**
 
-- **BERT-base**: 768 dimensions
-- **GPT-3**: 4,096 dimensions  
-- **GPT-4**: 8,192+ dimensions
+- BERT-base: 768 dimensions
+- GPT-3: 4,096 dimensions  
+- GPT-4: 8,192+ dimensions
 
 **Why we use 3D examples:**
 
-1. **Mathematical clarity**: Easy to follow dot products and matrix multiplications
-2. **Visual intuition**: Can conceptualize 3D space (length, width, height)
-3. **Concrete calculations**: All arithmetic is human-verifiable
-4. **Pedagogical progression**: Build understanding before introducing complexity
+1. Mathematical clarity: Easy to follow dot products and matrix multiplications
+2. Visual intuition: Can conceptualize 3D space (length, width, height)
+3. Concrete calculations: All arithmetic is human-verifiable
+4. Pedagogical progression: Build understanding before introducing complexity
 
 **The principles remain identical at any scale** - whether 3D or 768D, the attention mechanisms, similarity calculations, and weight interactions work exactly the same way.
 
@@ -297,10 +297,10 @@ Throughout this document, we use **3-dimensional vectors** like [0.8, 0.2, 0.1] 
 
    **Why ReLU Here (Not Softmax)?**
 
-   - **ReLU**: Used for **feature transformation** - binary decision (keep/discard features)
-   - **Softmax**: Used for **probability distributions** - when we need weights that sum to 1
-   - **FFN goal**: Refine and extract patterns, not create attention weights
-   - **Sparsity**: ReLU creates sparse activations (many zeros), making computation efficient
+   - ReLU: Used for **feature transformation** - binary decision (keep/discard features)
+   - Softmax: Used for **probability distributions** - when we need weights that sum to 1
+   - FFN goal: Refine and extract patterns, not create attention weights
+   - Sparsity: ReLU creates sparse activations (many zeros), making computation efficient
 
 **During Inference Phase: Deterministic Knowledge Retrieval**
 
@@ -324,12 +324,12 @@ Input: "Dogs play" → Forward pass → Output: "with balls"
 
 **Step-by-Step Deterministic Process:**
 
-1. **Weight Loading**: Pre-trained 175B parameters loaded into GPU memory as frozen matrices
-2. **Forward Computation**: Exact same mathematical operations every time
+1. Weight Loading: Pre-trained 175B parameters loaded into GPU memory as frozen matrices
+2. Forward Computation: Exact same mathematical operations every time
    - W_embed[token_id] → always returns same embedding
    - Attention(Q,K,V) → same attention weights for same input
    - FFN(x) → same transformations applied
-3. **Hidden State Flow**: `token_id → embedding → layer_1 → ... → layer_96 → output`
+3. Hidden State Flow: `token_id → embedding → layer_1 → ... → layer_96 → output`
 
 **Why "Deterministic" Matters:**
 
@@ -366,17 +366,17 @@ Layer 1 (After Self-Attention - Words Start Talking):
 ```
 How it's computed:
 
-1.  **Create Value vectors**: First, each token's hidden state `h` is projected into a Value vector `v` using a learned weight matrix `W_v`.
+1.  Create Value vectors: First, each token's hidden state `h` is projected into a Value vector `v` using a learned weight matrix `W_v`.
     *   `v_the = h_the · W_v`
     *   `v_big = h_big · W_v`
     *   `v_cat = h_cat · W_v`
     *   `v_runs = h_runs · W_v`
     These `v` vectors represent the information each token offers.
 
-2.  **Compute attention weights**: The model calculates attention weights (as shown previously) that determine how much "cat" should pay attention to every other token.
+2.  Compute attention weights: The model calculates attention weights (as shown previously) that determine how much "cat" should pay attention to every other token.
     *   Attention weights for "cat": `[the: 0.05, big: 0.35, cat: 0.40, runs: 0.20]`
 
-3.  **Calculate the weighted sum of Value vectors**: The new representation for "cat", `h_cat'`, is the sum of all Value vectors in the sequence, weighted by their respective attention scores.
+3.  Calculate the weighted sum of Value vectors: The new representation for "cat", `h_cat'`, is the sum of all Value vectors in the sequence, weighted by their respective attention scores.
     `h_cat' = 0.05·v_the + 0.35·v_big + 0.40·v_cat + 0.20·v_runs`
 
 This process mixes information from the entire sequence into each token's representation, guided by the learned attention patterns. The result is that `h_cat'` is no longer just the generic embedding for "cat", but a new vector that has absorbed context—it now "knows" it's a "big cat".
@@ -399,12 +399,12 @@ Through 6 layers of processing:
 
 The relationship "cats are animals" emerges through this multi-layer process:
 
-1. **Embedding Layer**: Positions "cat" and "animal" in similar regions of semantic space through learned linear transformations
-2. **Attention Layers**: Learn contextual dependencies where "cat" tokens develop strong attention patterns with "animal" tokens through self-supervised learning
-3. **Feed-Forward Layers**: Extract hierarchical taxonomic relationships (cat ⊂ mammal ⊂ animal) through non-linear feature combinations
-4. **Output Layer**: High logit values for "animal" when predicting after "The cat is an ___" through learned classification weights
+1. Embedding Layer: Positions "cat" and "animal" in similar regions of semantic space through learned linear transformations
+2. Attention Layers: Learn contextual dependencies where "cat" tokens develop strong attention patterns with "animal" tokens through self-supervised learning
+3. Feed-Forward Layers: Extract hierarchical taxonomic relationships (cat ⊂ mammal ⊂ animal) through non-linear feature combinations
+4. Output Layer: High logit values for "animal" when predicting after "The cat is an ___" through learned classification weights
 
-**The Distributed Knowledge Pattern**:
+The Distributed Knowledge Pattern:
 
 - No single weight stores "cats are animals"
 - The relationship emerges from the collective behavior of millions of weights
@@ -507,10 +507,10 @@ Final "cat" representation now contains:
 
 **Why This Architecture Works So Well:**
 
-1. **Specialization**: Each head learns different types of relationships
-2. **Parallel Processing**: All relationships computed simultaneously  
-3. **Complementary Views**: Different heads capture different aspects
-4. **Rich Integration**: Final representation combines all perspectives
+1. Specialization: Each head learns different types of relationships
+2. Parallel Processing: All relationships computed simultaneously  
+3. Complementary Views: Different heads capture different aspects
+4. Rich Integration: Final representation combines all perspectives
 
 **Multi-Head Attention Summary:**
 
@@ -526,10 +526,10 @@ Final "cat" representation now contains:
 **Knowledge Encoding Patterns:**
 The relationship "cats are animals" emerges through distributed processing:
 
-- **Semantic heads**: Learn hierarchical category relationships (cat→animal)
-- **Grammar heads**: Learn syntactic patterns ("cat is", "animal that")
-- **Modifier heads**: Learn contextual associations (pets, domestic, wild)
-- **FFN layers**: Integrate these multi-head insights into refined understanding
+- Semantic heads: Learn hierarchical category relationships (cat→animal)
+- Grammar heads: Learn syntactic patterns ("cat is", "animal that")
+- Modifier heads: Learn contextual associations (pets, domestic, wild)
+- FFN layers: Integrate these multi-head insights into refined understanding
 
 #### Understanding Scale: What Does "Billion Parameters" Actually Mean?
 
@@ -571,13 +571,13 @@ Storage Requirements:
 
 **Scale Perspective:**
 
-- **1 million parameters**: Small research model, basic pattern recognition
-- **100 million**: BERT-base, practical applications, good language understanding  
-- **1 billion**: GPT-2, moderate reasoning capability, coherent text generation
-- **100+ billion**: GPT-3/4, ChatGPT, strong reasoning, complex problem solving
-- **1 trillion+**: Cutting-edge research models, approaching human-level performance
+- 1 million parameters: Small research model, basic pattern recognition
+- 100 million: BERT-base, practical applications, good language understanding  
+- 1 billion: GPT-2, moderate reasoning capability, coherent text generation
+- 100+ billion: GPT-3/4, ChatGPT, strong reasoning, complex problem solving
+- 1 trillion+: Cutting-edge research models, approaching human-level performance
 
-**Critical Insight**: Each parameter stores a tiny piece of learned knowledge - no single parameter understands "cats are animals", but collectively they encode this relationship through the distributed weight patterns we've explored above.
+Critical Insight: Each parameter stores a tiny piece of learned knowledge - no single parameter understands "cats are animals", but collectively they encode this relationship through the distributed weight patterns we've explored above.
 
 ### 2. Vector Store Knowledge Storage
 
@@ -585,13 +585,13 @@ Storage Requirements:
 
 Consider a high-dimensional content-addressable memory system where instead of organizing documents by hierarchical taxonomies, each document is positioned based on its learned semantic representation - a dense numerical encoding capturing its conceptual relationships. Vector databases work exactly this way: they store knowledge as **discrete embeddings** (high-dimensional numerical vectors) that can be efficiently retrieved through approximate nearest neighbor search.
 
-**Core Intuition**: Think of vector stores like:
+Core Intuition: Think of vector stores like:
 
-- **A multidimensional indexing system**: Every piece of text gets coordinates in learned semantic space using embedding functions
-- **An approximate nearest neighbor engine**: Find documents with high cosine similarity to query vectors in sublinear time
-- **Explicit knowledge representation**: Unlike LLMs, knowledge is stored as retrievable dense vectors rather than distributed weight patterns
+- A multidimensional indexing system: Every piece of text gets coordinates in learned semantic space using embedding functions
+- An approximate nearest neighbor engine: Find documents with high cosine similarity to query vectors in sublinear time
+- Explicit knowledge representation: Unlike LLMs, knowledge is stored as retrievable dense vectors rather than distributed weight patterns
 
-**Key Difference from LLMs**: While LLMs encode knowledge implicitly in weight patterns, vector stores maintain explicit, searchable representations of facts and documents.
+Key Difference from LLMs: While LLMs encode knowledge implicitly in weight patterns, vector stores maintain explicit, searchable representations of facts and documents.
 
 #### How Vector Search Works: From Simple to Sophisticated
 
@@ -630,11 +630,11 @@ Step 4: Rank results
 Complexity: O(n·d) where n=documents, d=dimensions
 ```
 
-**Mathematical Problem**: For n documents with d-dimensional vectors:
+Mathematical Problem: For n documents with d-dimensional vectors:
 
-- **Time complexity**: O(n·d) - we compute d multiplications for each of n documents
-- **Example**: 100M documents × 768 dimensions = 76.8 billion operations per query
-- **Reality check**: At 1 billion ops/second, that's 77 seconds per search!
+- Time complexity: O(n·d) - we compute d multiplications for each of n documents
+- Example: 100M documents × 768 dimensions = 76.8 billion operations per query
+- Reality check: At 1 billion ops/second, that's 77 seconds per search!
 
 The solution: **Approximate Nearest Neighbor (ANN)** methods that trade a small amount of accuracy for massive speed improvements.
 
@@ -656,9 +656,9 @@ Level 0: [doc1] ←→ [doc2] ←→ [doc3] ←→ [doc4] ←→ [doc5] ←→ .
 ```
 **Mathematical Foundation:**
 
-- **Time complexity**: O(log n) on average
-- **Space complexity**: O(n·M) where M is average connections per node
-- **Search algorithm**: Greedy search through hierarchical graph layers
+- Time complexity: O(log n) on average
+- Space complexity: O(n·M) where M is average connections per node
+- Search algorithm: Greedy search through hierarchical graph layers
 
 **Search Process:**
 
@@ -667,11 +667,11 @@ Level 0: [doc1] ←→ [doc2] ←→ [doc3] ←→ [doc4] ←→ [doc5] ←→ .
 3. Drop down to Level 1, continue navigation  
 4. Drop to Level 0, find final closest matches
 
-**Performance Math**: 
+Performance Math: 
 
 - Brute force: 100M comparisons for 100M documents
 - HNSW: ~27 comparisons (log₂(100M) ≈ 27)
-- **Speedup**: 3.7 million times faster!
+- Speedup: 3.7 million times faster!
 
 **Hands-on Implementation:**
 
@@ -705,9 +705,9 @@ Cluster 2 (House docs): centroid = [0.1, 0.8, 0.3]
 ```
 **Mathematical Foundation:**
 
-- **Time complexity**: O(n/k + k) where k = number of clusters
-- **Space complexity**: O(n + k·d) for storing documents and centroids
-- **Optimal k**: Usually √n clusters (e.g., 1000 clusters for 1M documents)
+- Time complexity: O(n/k + k) where k = number of clusters
+- Space complexity: O(n + k·d) for storing documents and centroids
+- Optimal k: Usually √n clusters (e.g., 1000 clusters for 1M documents)
 
 **Search Process:**
 
@@ -718,9 +718,9 @@ Cluster 2 (House docs): centroid = [0.1, 0.8, 0.3]
 
 **Performance Math:**
 
-- **1M documents, 1000 clusters**: Search 1000 docs instead of 1M
-- **Speedup**: 1000× faster than brute force
-- **Trade-off**: Might miss documents in wrong clusters (~2-5% recall loss)
+- 1M documents, 1000 clusters: Search 1000 docs instead of 1M
+- Speedup: 1000× faster than brute force
+- Trade-off: Might miss documents in wrong clusters (~2-5% recall loss)
 
 **Hands-on Implementation:**
 
@@ -772,15 +772,15 @@ Compression ratio: 24,576 ÷ 64 = 384× smaller!
 ```
 **Mathematical Foundation:**
 
-- **Compression ratio**: d/(m·log₂(k)) where d=dimensions, m=subvectors, k=centroids per subvector
-- **Typical setup**: 768D → 8 subvectors of 96D each, 256 centroids per subvector
-- **Memory per vector**: m·log₂(k) = 8·log₂(256) = 8·8 = 64 bits = 8 bytes
+- Compression ratio: d/(m·log₂(k)) where d=dimensions, m=subvectors, k=centroids per subvector
+- Typical setup: 768D → 8 subvectors of 96D each, 256 centroids per subvector
+- Memory per vector: m·log₂(k) = 8·log₂(256) = 8·8 = 64 bits = 8 bytes
 
 **Memory savings calculation:**
 
-- **Original**: 1M vectors × (768 × 4 bytes) = 3.072 GB  
-- **Compressed**: 1M vectors × 8 bytes = 8 MB
-- **Compression**: 384× smaller memory usage!
+- Original: 1M vectors × (768 × 4 bytes) = 3.072 GB  
+- Compressed: 1M vectors × 8 bytes = 8 MB
+- Compression: 384× smaller memory usage!
 
 **Performance Trade-offs:**
 ✓ Massive memory reduction (100-400×)
@@ -812,19 +812,19 @@ Compression ratio: 24,576 ÷ 64 = 384× smaller!
 
 Now that we understand the mathematical foundations and trade-offs of different indexing methods, let's see how these concepts translate into real-world implementations. While there are many vector database solutions available (Pinecone, Weaviate, Chroma, etc.), we'll use **OpenSearch** as our practical example because:
 
-1. **Open source and widely adopted**: Used by many companies for production search
-2. **Multiple algorithm support**: Implements HNSW, IVF, and product quantization we just learned about
-3. **Mature ecosystem**: Battle-tested with extensive documentation and community support
-4. **Hybrid capabilities**: Combines vector search with traditional text search seamlessly
+1. Open source and widely adopted: Used by many companies for production search
+2. Multiple algorithm support: Implements HNSW, IVF, and product quantization we just learned about
+3. Mature ecosystem: Battle-tested with extensive documentation and community support
+4. Hybrid capabilities: Combines vector search with traditional text search seamlessly
 
 **What is OpenSearch?**
 OpenSearch is an open-source search and analytics engine that started as a fork of Elasticsearch. It has built-in support for k-nearest neighbor (k-NN) search, making it an excellent platform for vector similarity search. Think of it as a database specifically designed for finding similar items quickly.
 
 **Why Vector Search in OpenSearch Matters:**
 
-- **Real-world scale**: Handles millions of documents in production environments
-- **Production features**: Includes monitoring, scaling, and reliability features you need
-- **Learning bridge**: Understanding OpenSearch patterns helps with other vector databases
+- Real-world scale: Handles millions of documents in production environments
+- Production features: Includes monitoring, scaling, and reliability features you need
+- Learning bridge: Understanding OpenSearch patterns helps with other vector databases
 
 **Mathematical Summary:**
 
@@ -1249,8 +1249,8 @@ Final ranking: doc2 (0.96), doc1 (0.94)
 
 **Key Distinction:**
 
-- **LLMs**: Internal similarity for attention → generates new content
-- **Vector Stores**: External similarity for retrieval → finds existing content
+- LLMs: Internal similarity for attention → generates new content
+- Vector Stores: External similarity for retrieval → finds existing content
 3. **RAG Pipeline (Retrieval-Augmented Generation):**
 
 **Complete Workflow:**
@@ -1282,9 +1282,9 @@ LLM processes augmented prompt → Generates informed response
 
 **Key Benefits:**
 
-- **Current information**: Vector store provides up-to-date facts
-- **Source attribution**: Clear traceability to retrieved documents  
-- **Reduced hallucination**: LLM responses grounded in real data
+- Current information: Vector store provides up-to-date facts
+- Source attribution: Clear traceability to retrieved documents  
+- Reduced hallucination: LLM responses grounded in real data
 
 ### 6. Practical Integration
 
@@ -1362,8 +1362,8 @@ As explored in Section 5, both systems leverage similarity calculations but serv
 
 Both benefit from **generation control parameters**:
 
-- **LLMs**: Temperature, top-k, top-p for creativity vs. consistency
-- **Vector stores**: Similarity thresholds, result limits for precision vs. recall
+- LLMs: Temperature, top-k, top-p for creativity vs. consistency
+- Vector stores: Similarity thresholds, result limits for precision vs. recall
 
 ### Practical Integration
 
@@ -1377,4 +1377,4 @@ Modern AI systems achieve optimal performance by combining both approaches:
 
 The underlying mathematics—from high-dimensional geometry to attention mechanisms—provides the theoretical foundation that makes both systems possible. For deeper mathematical understanding, see the comprehensive treatment in [transformers_math1.md](./transformers_math1.md) and [transformers_math2.md](./transformers_math2.md).
 
-**Final Insight**: Understanding both knowledge storage paradigms enables practitioners to design more effective AI systems that leverage the strengths of each approach while mitigating their individual limitations.
+Final Insight: Understanding both knowledge storage paradigms enables practitioners to design more effective AI systems that leverage the strengths of each approach while mitigating their individual limitations.

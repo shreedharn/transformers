@@ -41,7 +41,7 @@ After reading this guide, you'll be able to:
 
 ## 2. Tensors: Vectors & Matrices in PyTorch
 
-📓 **Interactive Examples**: [Tensor Basics Notebook](./pynb/basic/tensors_basics.ipynb)
+📓 Interactive Examples: [Tensor Basics Notebook](./pynb/basic/tensors_basics.ipynb)
 
 ### Core Mental Model
 
@@ -59,7 +59,7 @@ The notebook covers:
 
 ## 3. Autograd (Finding Gradients)
 
-📓 **Interactive Examples**: [Autograd Notebook](./pynb/basic/autograd.ipynb)
+📓 Interactive Examples: [Autograd Notebook](./pynb/basic/autograd.ipynb)
 
 This notebook covers:
 
@@ -74,7 +74,7 @@ This notebook covers:
 
 ## 4. Modules, Parameters, Initialization
 
-📓 **Interactive Examples**: [Modules & Parameters Notebook](./pynb/basic/modules_parameters.ipynb)
+📓 Interactive Examples: [Modules & Parameters Notebook](./pynb/basic/modules_parameters.ipynb)
 
 This notebook covers:
 
@@ -151,13 +151,13 @@ for name, param in model.named_parameters():
 ```
 
 **Math** Cross-Reference to `./transformers_math1.md`:
-> **MLP Forward Pass (13-15)**: `z^(1) = xW^(1) + b^(1)`, `h^(1) = σ(z^(1))`, `z^(2) = h^(1)W^(2) + b^(2)`
+> MLP Forward Pass (13-15): `z^(1) = xW^(1) + b^(1)`, `h^(1) = σ(z^(1))`, `z^(2) = h^(1)W^(2) + b^(2)`
 > 
-> **LayerNorm (19)**: `LayerNorm(x) = γ ⊙ (x - μ)/√(σ² + ε) + β` where `γ, β` are learnable parameters
+> LayerNorm (19): `LayerNorm(x) = γ ⊙ (x - μ)/√(σ² + ε) + β` where `γ, β` are learnable parameters
 
 ## 5. Optimization Loop & Losses
 
-📓 **Interactive Examples**: [Optimization & Training Notebook](./pynb/basic/optimization_training.ipynb)
+📓 Interactive Examples: [Optimization & Training Notebook](./pynb/basic/optimization_training.ipynb)
 
 This notebook covers:
 
@@ -168,7 +168,7 @@ This notebook covers:
 - Learning rate scheduling strategies
 
 **Math** Cross-Reference to `./math_quick_ref.md`:
-> **Adam Updates**: Adaptive learning rates with momentum. **Learning Rate Warmup** prevents early training instability in large models.
+> Adam Updates: Adaptive learning rates with momentum. **Learning Rate Warmup** prevents early training instability in large models.
 
 ## 6. Vanishing/Exploding Gradients
 
@@ -176,7 +176,7 @@ This notebook covers:
 
 In deep networks, gradients can vanish (become too small) or explode (become too large) as they backpropagate through layers. This is especially problematic for RNNs processing long sequences.
 
-> **See also**: `./rnn_intro.md` discusses how vanishing gradients motivated the development of LSTM/GRU architectures with gating mechanisms.
+> See also: `./rnn_intro.md` discusses how vanishing gradients motivated the development of LSTM/GRU architectures with gating mechanisms.
 
 ### Practical Fixes in PyTorch
 
@@ -287,9 +287,9 @@ print(f"Gradient norm with clipping: {clipped_norm:.2f}")
 ```
 
 **Math** Cross-Reference to `./transformers_math1.md`:
-> **Residual as ODE (4)**: `h_{l+1} = h_l + F(h_l)` approximates the differential equation `dh/dt = F(h)`, enabling gradient highways through skip connections.
+> Residual as ODE (4): `h_{l+1} = h_l + F(h_l)` approximates the differential equation `dh/dt = F(h)`, enabling gradient highways through skip connections.
 >
-> **Gradient Clipping (11)**: `g̃ = min(1, c/||g||₂) · g` scales gradients proportionally when norm exceeds threshold `c`.
+> Gradient Clipping (11): `g̃ = min(1, c/||g||₂) · g` scales gradients proportionally when norm exceeds threshold `c`.
 
 ## 7. Mapping Table: ML Concepts → PyTorch Objects
 
@@ -337,7 +337,7 @@ print(f"Gradient norm with clipping: {clipped_norm:.2f}")
 
 ## 8. MLPs in PyTorch
 
-📓 **Interactive Examples**: [MLPs Notebook](./pynb/dl/mlps.ipynb)
+📓 Interactive Examples: [MLPs Notebook](./pynb/dl/mlps.ipynb)
 
 This notebook demonstrates:
 
@@ -474,11 +474,11 @@ targets_correct = torch.tensor([0, 1, 2])      # Long - correct
 ```
 
 **Math** Cross-Reference to `./transformers_math1.md`:
-> **MLP Forward/Backprop (13-18)**: The code above implements `z^(1) = xW^(1) + b^(1)`, `h^(1) = σ(z^(1))`, `z^(2) = h^(1)W^(2) + b^(2)` with automatic gradient computation for the backward pass.
+> MLP Forward/Backprop (13-18): The code above implements `z^(1) = xW^(1) + b^(1)`, `h^(1) = σ(z^(1))`, `z^(2) = h^(1)W^(2) + b^(2)` with automatic gradient computation for the backward pass.
 
 ## 9. RNNs, LSTMs, GRUs
 
-📓 **Interactive Examples**: [RNNs, LSTMs, GRUs Notebook](./pynb/dl/rnns.ipynb)
+📓 Interactive Examples: [RNNs, LSTMs, GRUs Notebook](./pynb/dl/rnns.ipynb)
 
 This notebook covers:
 
@@ -489,7 +489,7 @@ This notebook covers:
 
 ### Why Gating Mechanisms?
 
-> **See also**: `./rnn_intro.md` explains how vanilla RNNs suffer from vanishing gradients over long sequences, motivating LSTM/GRU architectures with gates that control information flow.
+> See also: `./rnn_intro.md` explains how vanilla RNNs suffer from vanishing gradients over long sequences, motivating LSTM/GRU architectures with gates that control information flow.
 
 ### Minimal Sequence Classifier with LSTM
 
@@ -642,11 +642,11 @@ def compare_rnn_architectures():
 compare_rnn_architectures()
 ```
 
-**Gotcha**: Always use gradient clipping with RNNs to prevent exploding gradients, especially for long sequences.
+Gotcha: Always use gradient clipping with RNNs to prevent exploding gradients, especially for long sequences.
 
 ## 10. Transformers in PyTorch
 
-📓 **Interactive Examples**: [Transformers Notebook](./pynb/dl/transformers.ipynb)
+📓 Interactive Examples: [Transformers Notebook](./pynb/dl/transformers.ipynb)
 
 This notebook demonstrates:
 
@@ -655,7 +655,7 @@ This notebook demonstrates:
 - Causal and padding masks
 - Next-token prediction with character-level models
 
-> **See also**: `./transformers_fundamentals.md` explains the complete Transformer block flow: multi-head self-attention → residual connection → layer norm → feed-forward network → residual connection → layer norm.
+> See also: `./transformers_fundamentals.md` explains the complete Transformer block flow: multi-head self-attention → residual connection → layer norm → feed-forward network → residual connection → layer norm.
 
 ### Self-Attention from Scratch
 
@@ -905,11 +905,11 @@ with torch.no_grad():
 ```
 
 **Math** Cross-Reference to `./transformers_math1.md`:
-> **Scaled Dot-Product Attention (23)**: `Attention(Q,K,V) = softmax(QK^T/√d_k)V`
+> Scaled Dot-Product Attention (23): `Attention(Q,K,V) = softmax(QK^T/√d_k)V`
 > 
-> **Why 1/√d_k scaling**: Prevents attention weights from becoming too peaked as dimensions increase, maintaining gradient flow.
+> Why 1/√d_k scaling: Prevents attention weights from becoming too peaked as dimensions increase, maintaining gradient flow.
 >
-> **Complete Transformer Block (32-35)**: Pre-LayerNorm architecture with residual connections around attention and FFN.
+> Complete Transformer Block (32-35): Pre-LayerNorm architecture with residual connections around attention and FFN.
 
 ## 11. Most-Used PyTorch APIs
 
@@ -1065,7 +1065,7 @@ tensor = tensor.to(device)
 
 ## 12. Common Gotchas & How to Avoid Them
 
-📓 **Interactive Examples**: [Debugging & Gotchas Notebook](./pynb/basic/debugging_gotchas.ipynb)
+📓 Interactive Examples: [Debugging & Gotchas Notebook](./pynb/basic/debugging_gotchas.ipynb)
 
 This notebook covers:
 
@@ -1564,10 +1564,10 @@ debug_shapes()
 
 **Math** Cross-Reference to `./transformers_math1.md`:
 > This example implements:
-> - **Attention (23)**: Self-attention within each transformer layer
-> - **FFN (36)**: Feed-forward networks in transformer layers  
-> - **Causal masking**: Ensures autoregressive property for language modeling
-> - **Cross-entropy loss (2)**: Standard objective for next-token prediction
+> - Attention (23): Self-attention within each transformer layer
+> - FFN (36): Feed-forward networks in transformer layers  
+> - Causal masking: Ensures autoregressive property for language modeling
+> - Cross-entropy loss (2): Standard objective for next-token prediction
 
 ## 14. Appendix: Quick Mapping & Formula Cards
 
@@ -1723,4 +1723,4 @@ pytorch_checklist()
 
 **Congratulations!** 🎉 You now have a comprehensive guide to PyTorch for sequence modeling. This reference covers the essential patterns you'll use whether building MLPs, RNNs, or Transformers. Keep this handy as you build your own models!
 
-> **Remember**: Start simple, debug with shapes, and always set your random seeds for reproducible results!
+> Remember: Start simple, debug with shapes, and always set your random seeds for reproducible results!

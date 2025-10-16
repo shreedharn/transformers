@@ -35,7 +35,7 @@ For the complete journey including **efficient inference**, **scaling laws**, an
 
 ## 2. Neural Network Training: Mathematical Foundations
 
-📚 **Quick Reference**: For pure mathematical concepts and formulas, see [Mathematical Quick Reference](./math_quick_ref.md). This section focuses on mathematical concepts **in the context of deep learning**.
+📚 Quick Reference: For pure mathematical concepts and formulas, see [Mathematical Quick Reference](./math_quick_ref.md). This section focuses on mathematical concepts **in the context of deep learning**.
 
 ### 2.1 From Training to Inference: The Complete Journey
 
@@ -129,10 +129,10 @@ Iteration 10: x ≈ 0.27, f(x) ≈ 0.07
 
 **Setting up the Problem:** In machine learning, we have:
 
-- **X**: Input matrix with shape (samples × features) - each row is one data point
-- **W**: Weight matrix with shape (features × outputs) - the parameters we want to learn  
-- **b**: Bias vector with shape (outputs,) - additional adjustable parameters
-- **Y_hat**: Predictions with shape (samples × outputs), computed as Y_hat = XW + b
+- X: Input matrix with shape (samples × features) - each row is one data point
+- W: Weight matrix with shape (features × outputs) - the parameters we want to learn  
+- b: Bias vector with shape (outputs,) - additional adjustable parameters
+- Y_hat: Predictions with shape (samples × outputs), computed as Y_hat = XW + b
 
 **Loss Function:** We measure how wrong our predictions are using mean squared error:
 
@@ -310,7 +310,7 @@ This enables training very deep networks by maintaining gradient flow.
 
 **Stability Consideration:** The transformation $F$ should be well-conditioned to avoid exploding/vanishing gradients.
 
-💻 **Implementation Example**: For a practical implementation of residual connections, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
+💻 Implementation Example: For a practical implementation of residual connections, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
 
 ### 2.2 Deep Learning Mathematics in Context
 
@@ -527,11 +527,11 @@ This is exactly what attention computes when finding relevant keys for a given q
 
 **Connection to Attention:** Query-key similarity in attention is inner product search over learned embeddings.
 
-💻 **Implementation Example**: For high-dimensional similarity comparisons, see [Vectors & Geometry Notebook](./pynb/math_ref/vectors_geometry.ipynb)
+💻 Implementation Example: For high-dimensional similarity comparisons, see [Vectors & Geometry Notebook](./pynb/math_ref/vectors_geometry.ipynb)
 
 ## 5. From Similarity to Attention
 
-📚 **Quick Reference**: See [Scaled Dot-Product Attention](./math_quick_ref.md#mathematical-quick-reference-for-neural-networks) in the mathematical reference table.
+📚 Quick Reference: See [Scaled Dot-Product Attention](./math_quick_ref.md#mathematical-quick-reference-for-neural-networks) in the mathematical reference table.
 
 ### 5.1 Deriving Scaled Dot-Product Attention
 
@@ -591,7 +591,7 @@ where mask $M_{ij} \in \{0, -\infty\}$ with $M_{ij} = -\infty$ if $i < j$ (futur
 
 **Numerical Stability:** Instead of $-\infty$, use large negative values (e.g., $-10^9$) to prevent NaN gradients:
 
-💻 **Implementation Example**: For causal mask implementation, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
+💻 Implementation Example: For causal mask implementation, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
 
 **Padding Masks:** Mask out padding tokens by setting their attention scores to $-\infty$ before softmax. This ensures padding tokens receive zero attention weight.
 
@@ -641,7 +641,7 @@ G_Q &= G_S K/\sqrt{d_k},\quad G_K = G_S^T Q/\sqrt{d_k}.
 
 ## 6. Multi-Head Attention & Positional Information
 
-📚 **Quick Reference**: See [Multi-Head Attention](./math_quick_ref.md#mathematical-quick-reference-for-neural-networks) and [Positional Encoding](./math_quick_ref.md#mathematical-quick-reference-for-neural-networks) in the mathematical reference table.
+📚 Quick Reference: See [Multi-Head Attention](./math_quick_ref.md#mathematical-quick-reference-for-neural-networks) and [Positional Encoding](./math_quick_ref.md#mathematical-quick-reference-for-neural-networks) in the mathematical reference table.
 
 ### 6.1 Multi-Head as Subspace Projections
 
@@ -685,10 +685,10 @@ Instead of computing each head separately, implementations often:
 
 **Parameter Analysis:**
 
-- **Per-head projections**: $3 \times d_{\text{model}} \times d_k = 3 \times d_{\text{model}} \times (d_{\text{model}}/h)$
-- **Total projections**: $3d_{\text{model}}^2$ (same as single-head with full dimension)
-- **Output projection**: $W^O \in \mathbb{R}^{d_{\text{model}} \times d_{\text{model}}}$ adds $d_{\text{model}}^2$ parameters
-- **Total multi-head parameters**: $4d_{\text{model}}^2$
+- Per-head projections: $3 \times d_{\text{model}} \times d_k = 3 \times d_{\text{model}} \times (d_{\text{model}}/h)$
+- Total projections: $3d_{\text{model}}^2$ (same as single-head with full dimension)
+- Output projection: $W^O \in \mathbb{R}^{d_{\text{model}} \times d_{\text{model}}}$ adds $d_{\text{model}}^2$ parameters
+- Total multi-head parameters: $4d_{\text{model}}^2$
 
 ### 6.2 Advanced Positional Encodings
 
@@ -702,9 +702,9 @@ PE_{(pos,2i+1)} &= \cos(pos/10000^{2i/d_{\text{model}}}) \quad (29)
 
 **Mathematical Properties of Sinusoidal Encoding:**
 
-- **Linearity**: For any fixed offset $k$, $PE_{pos+k}$ can be expressed as a linear function of $PE_{pos}$
-- **Relative position encoding**: The dot product $PE_{pos_i} \cdot PE_{pos_j}$ depends only on $|pos_i - pos_j|$
-- **Extrapolation**: Can handle sequences longer than seen during training
+- Linearity: For any fixed offset $k$, $PE_{pos+k}$ can be expressed as a linear function of $PE_{pos}$
+- Relative position encoding: The dot product $PE_{pos_i} \cdot PE_{pos_j}$ depends only on $|pos_i - pos_j|$
+- Extrapolation: Can handle sequences longer than seen during training
 
 **RoPE (Rotary Position Embedding):** Rotates query-key pairs by position-dependent angles:
 ```math
@@ -726,14 +726,14 @@ where $\theta_i = 10000^{-2i/d_{\text{model}}}$ for dimension pairs.
 
 **Key RoPE Properties:**
 
-- **Relative position dependency**: $\mathbf{q}_m^T \mathbf{k}_n$ depends only on $(m-n)$, not absolute positions
-- **Length preservation**: Rotation matrices preserve vector norms
-- **Computational efficiency**: Can be implemented without explicit matrix multiplication
-- **Long sequence generalization**: Better extrapolation to longer sequences than learned embeddings
+- Relative position dependency: $\mathbf{q}_m^T \mathbf{k}_n$ depends only on $(m-n)$, not absolute positions
+- Length preservation: Rotation matrices preserve vector norms
+- Computational efficiency: Can be implemented without explicit matrix multiplication
+- Long sequence generalization: Better extrapolation to longer sequences than learned embeddings
 
 **RoPE Implementation Insight:** Instead of rotating the full vectors, RoPE applies rotations to consecutive dimension pairs, enabling efficient implementation via element-wise operations.
 
-💻 **Implementation Example**: For RoPE (Rotary Position Embedding) implementation, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
+💻 Implementation Example: For RoPE (Rotary Position Embedding) implementation, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
     
 
 ### 6.3 Alternative Position Encodings
@@ -892,7 +892,7 @@ A = \begin{bmatrix}
 O = \begin{bmatrix}0.359 & 0.641\\0.500 & 0.500\end{bmatrix} \begin{bmatrix}2 & 0 & 1\\1 & 1 & 0\end{bmatrix} = \begin{bmatrix}1.359 & 0.641 & 0.359\\1.500 & 0.500 & 0.500\end{bmatrix}
 ```
 
-💻 **Implementation Example**: For attention computation verification, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
+💻 Implementation Example: For attention computation verification, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
 
 ### 9.2 Backprop Through Simple Attention
 
@@ -906,7 +906,7 @@ O = \begin{bmatrix}0.359 & 0.641\\0.500 & 0.500\end{bmatrix} \begin{bmatrix}2 & 
 \frac{\partial \mathcal{L}}{\partial V} = A^T \frac{\partial \mathcal{L}}{\partial O} = \begin{bmatrix}0.359 & 0.500\\0.641 & 0.500\end{bmatrix}\begin{bmatrix}1 & 0 & 1\\0 & 1 & 0\end{bmatrix} = \begin{bmatrix}0.359 & 0.500 & 0.359\\0.641 & 0.500 & 0.641\end{bmatrix}
 ```
 
-💻 **Implementation Example**: For gradient verification using finite differences, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
+💻 Implementation Example: For gradient verification using finite differences, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
 
 **Check for Understanding:** Verify that gradient shapes match parameter shapes and that the chain rule is applied correctly.
 

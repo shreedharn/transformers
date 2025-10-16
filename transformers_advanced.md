@@ -14,12 +14,12 @@
 
 Modern transformer training employs various objectives depending on the architecture and intended use case. Understanding these objectives is crucial for effective model development and fine-tuning.
 
-**Causal Language Modeling (CLM)**:
+Causal Language Modeling (CLM):
 
-- **Objective**: Predict probability for autoregressive generation
-- **Use case**: GPT-style models for text generation
-- **Advantages**: Simple, scales well with data, emergent capabilities appear with scale
-- **Properties**: Enables natural text completion and few-shot learning
+- Objective: Predict probability for autoregressive generation
+- Use case: GPT-style models for text generation
+- Advantages: Simple, scales well with data, emergent capabilities appear with scale
+- Properties: Enables natural text completion and few-shot learning
 
   $$
   \begin{aligned}
@@ -28,12 +28,12 @@ Modern transformer training employs various objectives depending on the architec
   \end{aligned}
   $$
 
-**Masked Language Modeling (MLM)**:
+Masked Language Modeling (MLM):
 
-- **Objective**: Predict masked tokens using bidirectional context
-- **Use case**: BERT-style models for understanding tasks
-- **Advantages**: Better representations for classification and analysis
-- **Limitations**: Doesn't naturally generate sequences, requires special handling for generation
+- Objective: Predict masked tokens using bidirectional context
+- Use case: BERT-style models for understanding tasks
+- Advantages: Better representations for classification and analysis
+- Limitations: Doesn't naturally generate sequences, requires special handling for generation
 
   $$
   \begin{aligned}
@@ -41,12 +41,12 @@ Modern transformer training employs various objectives depending on the architec
   \end{aligned}
   $$
 
-**Span Corruption (T5-style)**:
+Span Corruption (T5-style):
 
-- **Objective**: Mask contiguous spans, predict them autoregressively
-- **Process**: Replace spans with sentinel tokens, predict original content
-- **Advantages**: Bridges understanding and generation capabilities
-- **Use case**: Sequence-to-sequence tasks like summarization, translation
+- Objective: Mask contiguous spans, predict them autoregressively
+- Process: Replace spans with sentinel tokens, predict original content
+- Advantages: Bridges understanding and generation capabilities
+- Use case: Sequence-to-sequence tasks like summarization, translation
 
   $$
   \begin{aligned}
@@ -60,10 +60,10 @@ After pre-training, models learn to follow instructions through supervised fine-
 
 **Instruction Tuning Process:**
 
-1. **Data collection**: Curate high-quality (instruction, response) pairs
-2. **Format standardization**: Consistent prompt templates and response structures
-3. **Fine-tuning**: Continue training with supervised learning on instruction data
-4. **Evaluation**: Test on held-out instruction-following benchmarks
+1. Data collection: Curate high-quality (instruction, response) pairs
+2. Format standardization: Consistent prompt templates and response structures
+3. Fine-tuning: Continue training with supervised learning on instruction data
+4. Evaluation: Test on held-out instruction-following benchmarks
 
 **Mathematical Formulation:**
 
@@ -78,18 +78,18 @@ $$
 
 **Key Considerations:**
 
-- **Data quality over quantity**: Better curation dramatically improves performance
-- **Format consistency**: Standardized templates help generalization across tasks
-- **Task diversity**: Broad instruction coverage improves zero-shot capabilities
-- **Length distribution**: Balance short and long responses for robustness
+- Data quality over quantity: Better curation dramatically improves performance
+- Format consistency: Standardized templates help generalization across tasks
+- Task diversity: Broad instruction coverage improves zero-shot capabilities
+- Length distribution: Balance short and long responses for robustness
 
 ### Alignment: RLHF and Beyond
 
-**Reinforcement Learning from Human Feedback (RLHF)**:
+Reinforcement Learning from Human Feedback (RLHF):
 
-1. **Reward Model Training**: Train classifier on human preference pairs
-2. **Policy Optimization**: Use PPO to optimize against reward model
-3. **Iterative refinement**: Alternate between reward model updates and policy optimization
+1. Reward Model Training: Train classifier on human preference pairs
+2. Policy Optimization: Use PPO to optimize against reward model
+3. Iterative refinement: Alternate between reward model updates and policy optimization
 
   $$
   \begin{aligned}
@@ -100,12 +100,12 @@ $$
   \end{aligned}
   $$
 
-3. **Iterative refinement**: Alternate between reward model updates and policy optimization
+3. Iterative refinement: Alternate between reward model updates and policy optimization
 
-**Direct Preference Optimization (DPO)**:
+Direct Preference Optimization (DPO):
 
-- **Innovation**: Optimize preferences directly without explicit reward model
-- **Advantages**: Simpler pipeline, more stable training, avoids reward hacking
+- Innovation: Optimize preferences directly without explicit reward model
+- Advantages: Simpler pipeline, more stable training, avoids reward hacking
 
   $$
   \begin{aligned}
@@ -113,7 +113,7 @@ $$
   \end{aligned}
   $$
 
-**Constitutional AI (CAI)**:
+Constitutional AI (CAI):
 
 - Use AI feedback instead of human feedback for scalability
 - Define "constitution" of principles for model behavior
@@ -123,44 +123,44 @@ $$
 
 **Data Quality Metrics:**
 
-- **Perplexity filtering**: Remove high-perplexity (incoherent) text
-- **Deduplication**: Exact and near-exact duplicate removal
-- **Content filtering**: Remove toxic, personal, or low-quality content
-- **Language detection**: Ensure consistent language distribution
+- Perplexity filtering: Remove high-perplexity (incoherent) text
+- Deduplication: Exact and near-exact duplicate removal
+- Content filtering: Remove toxic, personal, or low-quality content
+- Language detection: Ensure consistent language distribution
 
 **Curriculum Learning Strategies:**
 
-- **Progressive difficulty**: Start with simpler tasks, gradually increase complexity
-- **Domain mixing**: Balance different content types (web, books, code, academic)
-- **Length scheduling**: Gradually increase sequence length during training
-- **Quality progression**: Start with high-quality data, add noisier sources later
+- Progressive difficulty: Start with simpler tasks, gradually increase complexity
+- Domain mixing: Balance different content types (web, books, code, academic)
+- Length scheduling: Gradually increase sequence length during training
+- Quality progression: Start with high-quality data, add noisier sources later
 
 **Critical Considerations:**
 
-- **Data contamination**: Evaluation data leaking into training sets
-- **Distribution mismatch**: Training vs. deployment context differences
-- **Bias amplification**: Training data biases reflected in model behavior
-- **Privacy concerns**: Personal information in training data
+- Data contamination: Evaluation data leaking into training sets
+- Distribution mismatch: Training vs. deployment context differences
+- Bias amplification: Training data biases reflected in model behavior
+- Privacy concerns: Personal information in training data
 
 ### Multi-Task Learning and Meta-Learning
 
 **Multi-Task Training Benefits:**
 
-- **Transfer learning**: Skills learned on one task transfer to others
-- **Regularization**: Prevents overfitting to single task patterns
-- **Efficiency**: Single model handles multiple capabilities
+- Transfer learning: Skills learned on one task transfer to others
+- Regularization: Prevents overfitting to single task patterns
+- Efficiency: Single model handles multiple capabilities
 
 **Implementation Patterns:**
 
-- **Task tokens**: Prepend special tokens indicating task type
-- **Prompt formatting**: Consistent instruction templates across tasks
-- **Loss weighting**: Balance different task contributions to total loss
+- Task tokens: Prepend special tokens indicating task type
+- Prompt formatting: Consistent instruction templates across tasks
+- Loss weighting: Balance different task contributions to total loss
 
 **Meta-Learning for Few-Shot Capabilities:**
 
-- **In-context learning**: Provide examples within the input context
-- **Gradient-based meta-learning**: Learn initialization for fast adaptation
-- **Prompt-based learning**: Learn to generate effective prompts for new tasks
+- In-context learning: Provide examples within the input context
+- Gradient-based meta-learning: Learn initialization for fast adaptation
+- Prompt-based learning: Learn to generate effective prompts for new tasks
 
 ---
 
@@ -172,10 +172,10 @@ $$
 
 **The Learning Process:**
 
-1. **Show examples**: Give the model text with known answers
-2. **Let it guess**: Model predicts what comes next
-3. **Grade the answer**: Compare prediction with the correct word
-4. **Learn from mistakes**: Adjust internal "thought processes" to do better next time
+1. Show examples: Give the model text with known answers
+2. Let it guess: Model predicts what comes next
+3. Grade the answer: Compare prediction with the correct word
+4. Learn from mistakes: Adjust internal "thought processes" to do better next time
 
 **Why is this called "backpropagation"?** The error information flows backward through all the layers, helping each layer learn what it should have done differently.
 
@@ -375,7 +375,7 @@ Updated model ready for next forward pass
 
 ### Low-Rank Adaptation (LoRA)
 
-**Core Insight**: Fine-tuning weight updates have low intrinsic dimensionality. LoRA approximates these updates using low-rank matrix decomposition.
+Core Insight: Fine-tuning weight updates have low intrinsic dimensionality. LoRA approximates these updates using low-rank matrix decomposition.
 
 **Mathematical Formulation:**
 
@@ -415,9 +415,9 @@ class LoRALinear(nn.Module):
 
 **Key Parameters:**
 
-- **Rank**: Controls adaptation capacity vs. efficiency trade-off
-- **Alpha**: Scaling factor for LoRA contributions
-- **Target modules**: Which layers to adapt (attention projections, FFN layers)
+- Rank: Controls adaptation capacity vs. efficiency trade-off
+- Alpha: Scaling factor for LoRA contributions
+- Target modules: Which layers to adapt (attention projections, FFN layers)
 
   $$
   \begin{aligned}
@@ -428,26 +428,26 @@ class LoRALinear(nn.Module):
 
 **Benefits:**
 
-- **Parameter efficiency**: Only ~0.1-1% of parameters require training
-- **Memory efficiency**: Reduced optimizer state and gradient computation
-- **Modularity**: Multiple task-specific LoRA modules can be swapped
-- **Merge capability**: LoRA weights can be merged back into base model
+- Parameter efficiency: Only ~0.1-1% of parameters require training
+- Memory efficiency: Reduced optimizer state and gradient computation
+- Modularity: Multiple task-specific LoRA modules can be swapped
+- Merge capability: LoRA weights can be merged back into base model
 
 **Limitations:**
 
-- **Expressiveness constraints**: Low-rank assumption may limit adaptation for very different domains
-- **Rank selection**: Optimal rank varies by task and must be tuned
-- **Attention-only adaptation**: Standard LoRA typically only adapts attention layers
+- Expressiveness constraints: Low-rank assumption may limit adaptation for very different domains
+- Rank selection: Optimal rank varies by task and must be tuned
+- Attention-only adaptation: Standard LoRA typically only adapts attention layers
 
 ### QLoRA: Quantized Base + Low-Rank Adapters
 
-**Innovation**: Combines aggressive quantization of base model with full-precision LoRA adapters.
+Innovation: Combines aggressive quantization of base model with full-precision LoRA adapters.
 
 **Architecture:**
 
-- **Base model**: 4-bit quantized weights (frozen)
-- **LoRA adapters**: Full precision (trainable)
-- **Quantization scheme**: 4-bit NormalFloat (NF4) for better distribution matching
+- Base model: 4-bit quantized weights (frozen)
+- LoRA adapters: Full precision (trainable)
+- Quantization scheme: 4-bit NormalFloat (NF4) for better distribution matching
 
 **Mathematical Framework:**
 
@@ -461,16 +461,16 @@ $$
 
 **Implementation Benefits:**
 
-- **Memory reduction**: 65B parameter models trainable on single 48GB GPU
-- **Quality preservation**: Minimal degradation compared to full-precision fine-tuning
-- **Accessibility**: Democratizes large model fine-tuning
+- Memory reduction: 65B parameter models trainable on single 48GB GPU
+- Quality preservation: Minimal degradation compared to full-precision fine-tuning
+- Accessibility: Democratizes large model fine-tuning
 
 ### Other Parameter-Efficient Methods
 
-**Prefix Tuning**:
+Prefix Tuning:
 
-- **Concept**: Prepend trainable "virtual tokens" to input sequences
-- **Use cases**: Task-specific conditioning without weight modification
+- Concept: Prepend trainable "virtual tokens" to input sequences
+- Use cases: Task-specific conditioning without weight modification
 
   $$
   \begin{aligned}
@@ -479,10 +479,10 @@ $$
   \end{aligned}
   $$
 
-**P-Tuning v2**:
+P-Tuning v2:
 
-- **Extension**: Trainable prompts at multiple transformer layers
-- **Advantages**: More expressive than single-layer prefix tuning
+- Extension: Trainable prompts at multiple transformer layers
+- Advantages: More expressive than single-layer prefix tuning
 
   $$
   \begin{aligned}
@@ -490,10 +490,10 @@ $$
   \end{aligned}
   $$
 
-**Adapter Layers**:
+Adapter Layers:
 
-- **Structure**: Small MLPs inserted between transformer sublayers
-- **Bottleneck**: Down-project, activate, up-project architecture
+- Structure: Small MLPs inserted between transformer sublayers
+- Bottleneck: Down-project, activate, up-project architecture
 
   $$
   \begin{aligned}
@@ -501,9 +501,9 @@ $$
   \end{aligned}
   $$
 
-**IA³ (Infused Adapter by Inhibiting and Amplifying Inner Activations)**:
+IA³ (Infused Adapter by Inhibiting and Amplifying Inner Activations):
 
-- **Mechanism**: Element-wise scaling of intermediate activations
+- Mechanism: Element-wise scaling of intermediate activations
 
   $$
   \begin{aligned}
@@ -512,50 +512,50 @@ $$
   \end{aligned}
   $$
 
-- **Ultra-efficiency**: Introduces only ~0.01% additional parameters
+- Ultra-efficiency: Introduces only ~0.01% additional parameters
 
 ### Choosing the Right Method
 
-**For General Tasks**: LoRA provides best balance of performance and efficiency
+For General Tasks: LoRA provides best balance of performance and efficiency
 
 - Rank 16-64 typically sufficient for most tasks
 - Target attention projections (Q, V) at minimum
 - Add FFN layers for more complex adaptations
 
-**For Memory-Constrained Environments**: QLoRA enables large model fine-tuning
+For Memory-Constrained Environments: QLoRA enables large model fine-tuning
 
 - Essential for models >20B parameters on consumer hardware
 - Minimal quality loss compared to full-precision training
 
-**For Multi-Task Scenarios**: Adapter layers or prefix tuning
+For Multi-Task Scenarios: Adapter layers or prefix tuning
 
 - Easy task switching without model reloading
 - Clear separation between base capabilities and task-specific behavior
 
-**For Extreme Efficiency**: IA³ for minimal parameter overhead
+For Extreme Efficiency: IA³ for minimal parameter overhead
 
 - When computational budget is extremely limited
 - Suitable for simple adaptation tasks
 
 ### Training Best Practices
 
-**Data Quality**:
+Data Quality:
 
-- **Curation**: High-quality examples more important than quantity
-- **Format consistency**: Standardize input/output templates
-- **Diversity**: Cover representative range of target task patterns
+- Curation: High-quality examples more important than quantity
+- Format consistency: Standardize input/output templates
+- Diversity: Cover representative range of target task patterns
 
-**Hyperparameter Tuning**:
+Hyperparameter Tuning:
 
-- **Learning rate**: Typically higher than full fine-tuning (1e-4 to 1e-3)
-- **Rank selection**: Start with 16, increase if underfitting
-- **Alpha scaling**: Usually 2×rank, adjust based on adaptation strength needed
+- Learning rate: Typically higher than full fine-tuning (1e-4 to 1e-3)
+- Rank selection: Start with 16, increase if underfitting
+- Alpha scaling: Usually 2×rank, adjust based on adaptation strength needed
 
-**Evaluation Strategy**:
+Evaluation Strategy:
 
-- **Baseline comparison**: Compare against full fine-tuning when possible
-- **Generalization testing**: Validate on out-of-distribution examples
-- **Resource monitoring**: Track memory, compute, and storage requirements
+- Baseline comparison: Compare against full fine-tuning when possible
+- Generalization testing: Validate on out-of-distribution examples
+- Resource monitoring: Track memory, compute, and storage requirements
 
 ---
 
@@ -567,35 +567,35 @@ Modern transformer models contain billions of parameters stored in high-precisio
 
 **Core Trade-offs:**
 
-- **Memory**: Lower precision → smaller model size → fits on smaller hardware
-- **Compute**: Integer operations faster than floating-point on many devices
-- **Quality**: Aggressive quantization can degrade model performance
-- **Calibration**: Finding optimal quantization parameters requires careful tuning
+- Memory: Lower precision → smaller model size → fits on smaller hardware
+- Compute: Integer operations faster than floating-point on many devices
+- Quality: Aggressive quantization can degrade model performance
+- Calibration: Finding optimal quantization parameters requires careful tuning
 
 ### Post-Training vs. Quantization-Aware Training
 
-**Post-Training Quantization (PTQ)**:
+Post-Training Quantization (PTQ):
 
-- **Process**: Convert pre-trained weights without additional training
-- **Advantages**: Fast deployment, no training data required
-- **Performance**: Works well for 8-bit, acceptable quality loss
-- **Limitations**: Struggles with aggressive quantization (4-bit or below)
+- Process: Convert pre-trained weights without additional training
+- Advantages: Fast deployment, no training data required
+- Performance: Works well for 8-bit, acceptable quality loss
+- Limitations: Struggles with aggressive quantization (4-bit or below)
 
-**Quantization-Aware Training (QAT)**:
+Quantization-Aware Training (QAT):
 
-- **Process**: Include quantization simulation during training
-- **Advantages**: Better accuracy preservation, handles extreme quantization
-- **Requirements**: Access to training data and computational resources
-- **Use case**: Critical for 2-bit, binary, or highly optimized deployment
+- Process: Include quantization simulation during training
+- Advantages: Better accuracy preservation, handles extreme quantization
+- Requirements: Access to training data and computational resources
+- Use case: Critical for 2-bit, binary, or highly optimized deployment
 
 ### Common Quantization Schemes
 
-**8-bit Integer (INT8) Quantization**:
+8-bit Integer (INT8) Quantization:
 
-- **Range mapping**: FP16 values → [-128, 127] integer range
-- **Quality**: Minimal accuracy loss (typically <1%)
-- **Memory reduction**: 2× smaller than FP16
-- **Implementation**: Well-supported across hardware platforms
+- Range mapping: FP16 values → [-128, 127] integer range
+- Quality: Minimal accuracy loss (typically <1%)
+- Memory reduction: 2× smaller than FP16
+- Implementation: Well-supported across hardware platforms
 
 **Mathematical Formulation:**
 
@@ -608,17 +608,17 @@ x\_{\text{float}} &= s \cdot (x\_{\text{quantized}} - z) \quad \text{(Dequantiza
 \end{aligned}
 $$
 
-**4-bit Integer (INT4) Quantization**:
+4-bit Integer (INT4) Quantization:
 
-- **Range**: 16 distinct values per parameter
-- **Memory**: 4× reduction from FP16
-- **Quality impact**: Significant without careful calibration
-- **Advanced methods**: GPTQ, AWQ for optimal weight selection
+- Range: 16 distinct values per parameter
+- Memory: 4× reduction from FP16
+- Quality impact: Significant without careful calibration
+- Advanced methods: GPTQ, AWQ for optimal weight selection
 
-**GPTQ (Gradual Post-Training Quantization)**:
+GPTQ (Gradual Post-Training Quantization):
 
-- **Strategy**: Minimize reconstruction error layer by layer
-- **Process**: Use Hessian information to guide quantization decisions
+- Strategy: Minimize reconstruction error layer by layer
+- Process: Use Hessian information to guide quantization decisions
 
   $$
   \begin{aligned}
@@ -626,25 +626,25 @@ $$
   \end{aligned}
   $$
 
-**AWQ (Activation-aware Weight Quantization)**:
+AWQ (Activation-aware Weight Quantization):
 
-- **Insight**: Protect weights important for activations from quantization
-- **Method**: Scale weights by activation magnitude before quantization
-- **Result**: Better preservation of model quality
+- Insight: Protect weights important for activations from quantization
+- Method: Scale weights by activation magnitude before quantization
+- Result: Better preservation of model quality
 
 ### Where Quantization Helps Most
 
 **High-Impact Areas:**
 
-1. **Linear layer weights**: Majority of model parameters (attention, FFN)
-2. **Embedding tables**: Large vocabulary models have massive embedding matrices
-3. **KV cache**: During generation, cached keys/values consume significant memory
+1. Linear layer weights: Majority of model parameters (attention, FFN)
+2. Embedding tables: Large vocabulary models have massive embedding matrices
+3. KV cache: During generation, cached keys/values consume significant memory
 
 **Sensitive Components** (quantize carefully):
 
-- **Attention scores**: Small perturbations can affect attention patterns significantly
-- **Layer normalization**: Statistics require higher precision for stability
-- **Outlier activations**: Some channels have much larger magnitude ranges
+- Attention scores: Small perturbations can affect attention patterns significantly
+- Layer normalization: Statistics require higher precision for stability
+- Outlier activations: Some channels have much larger magnitude ranges
 
 ### Implementation Example
 
@@ -676,38 +676,38 @@ class QuantizedLinear(nn.Module):
 
 ### Mixed-Precision Strategies
 
-**Selective Quantization**: Different precision for different components
+Selective Quantization: Different precision for different components
 
-- **Attention weights**: 8-bit or 4-bit
-- **FFN weights**: 4-bit (more robust to quantization)
-- **Embeddings**: 8-bit (vocabulary quality important)
-- **Layer norms**: FP16 (critical for stability)
+- Attention weights: 8-bit or 4-bit
+- FFN weights: 4-bit (more robust to quantization)
+- Embeddings: 8-bit (vocabulary quality important)
+- Layer norms: FP16 (critical for stability)
 
-**Dynamic Quantization**: Adjust precision based on runtime characteristics
+Dynamic Quantization: Adjust precision based on runtime characteristics
 
-- **Per-token adaptation**: Higher precision for important tokens
-- **Per-layer adaptation**: Different precision across transformer layers
-- **Outlier handling**: Full precision for outlier activations
+- Per-token adaptation: Higher precision for important tokens
+- Per-layer adaptation: Different precision across transformer layers
+- Outlier handling: Full precision for outlier activations
 
 ### Deployment Considerations
 
-**Hardware Optimization**:
+Hardware Optimization:
 
-- **CPU inference**: INT8 operations well-optimized on modern processors
-- **GPU inference**: Tensor cores support mixed-precision efficiently
-- **Edge devices**: INT4/INT8 crucial for mobile and embedded deployment
+- CPU inference: INT8 operations well-optimized on modern processors
+- GPU inference: Tensor cores support mixed-precision efficiently
+- Edge devices: INT4/INT8 crucial for mobile and embedded deployment
 
-**Memory Bandwidth**:
+Memory Bandwidth:
 
-- **Bottleneck shift**: From compute to memory bandwidth at low precision
-- **Cache efficiency**: Smaller models fit better in CPU/GPU caches
-- **I/O reduction**: Less data movement between memory hierarchies
+- Bottleneck shift: From compute to memory bandwidth at low precision
+- Cache efficiency: Smaller models fit better in CPU/GPU caches
+- I/O reduction: Less data movement between memory hierarchies
 
-**Quality Monitoring**:
+Quality Monitoring:
 
-- **Calibration datasets**: Use representative data for quantization parameter tuning
-- **A/B testing**: Compare quantized vs. full-precision outputs
-- **Task-specific metrics**: Monitor performance on downstream applications
+- Calibration datasets: Use representative data for quantization parameter tuning
+- A/B testing: Compare quantized vs. full-precision outputs
+- Task-specific metrics: Monitor performance on downstream applications
 
 ---
 
@@ -715,7 +715,7 @@ class QuantizedLinear(nn.Module):
 
 ### Intrinsic vs. Extrinsic Evaluation
 
-**Perplexity**: Measures how well model predicts next tokens
+Perplexity: Measures how well model predicts next tokens
 
 $$
 \begin{aligned}
@@ -723,77 +723,77 @@ $$
 \end{aligned}
 $$
 
-**Benefits**: Fast computation, good for model comparison on same domain
-**Limitations**: Doesn't correlate perfectly with downstream task performance
+Benefits: Fast computation, good for model comparison on same domain
+Limitations: Doesn't correlate perfectly with downstream task performance
 
-**Capability Benchmarks**: Task-specific evaluation suites
+Capability Benchmarks: Task-specific evaluation suites
 
-- **MMLU**: Massive Multitask Language Understanding (57 academic subjects)
-- **HumanEval**: Code generation and completion tasks
-- **GSM8K**: Grade school math word problems
-- **HellaSwag**: Common-sense reasoning about physical situations
+- MMLU: Massive Multitask Language Understanding (57 academic subjects)
+- HumanEval: Code generation and completion tasks
+- GSM8K: Grade school math word problems
+- HellaSwag: Common-sense reasoning about physical situations
 
-**Benefits**: More aligned with user utility and real-world performance
-**Risks**: Can be gamed through training data contamination or overfitting
+Benefits: More aligned with user utility and real-world performance
+Risks: Can be gamed through training data contamination or overfitting
 
 ### Long-Context Evaluation
 
-**Needle-in-a-Haystack Tests**:
+Needle-in-a-Haystack Tests:
 
-- **Setup**: Insert specific fact in long context, test retrieval ability
-- **Variants**: Multiple needles, distracting information, reasoning over retrieved facts
-- **Metrics**: Exact match accuracy, position sensitivity analysis
+- Setup: Insert specific fact in long context, test retrieval ability
+- Variants: Multiple needles, distracting information, reasoning over retrieved facts
+- Metrics: Exact match accuracy, position sensitivity analysis
 
-**Synthetic Long-Context Tasks**:
+Synthetic Long-Context Tasks:
 
-- **Sorting**: Sort lists longer than training context
-- **Counting**: Count occurrences across extended sequences
-- **Pattern matching**: Identify recurring patterns in long sequences
+- Sorting: Sort lists longer than training context
+- Counting: Count occurrences across extended sequences
+- Pattern matching: Identify recurring patterns in long sequences
 
-**Real-World Long-Context Applications**:
+Real-World Long-Context Applications:
 
-- **Document QA**: Answer questions about research papers, legal documents
-- **Code completion**: Complete functions using large codebases as context
-- **Conversation**: Maintain coherence across extended dialogues
+- Document QA: Answer questions about research papers, legal documents
+- Code completion: Complete functions using large codebases as context
+- Conversation: Maintain coherence across extended dialogues
 
-**Evaluation Challenges**:
+Evaluation Challenges:
 
-- **Position bias**: Models may attend preferentially to certain positions
-- **Length extrapolation**: Performance degradation beyond training length
-- **Computational cost**: Long sequences expensive to evaluate at scale
+- Position bias: Models may attend preferentially to certain positions
+- Length extrapolation: Performance degradation beyond training length
+- Computational cost: Long sequences expensive to evaluate at scale
 
 ### Performance Metrics
 
-**Latency Measurements**:
+Latency Measurements:
 
-- **Time to First Token (TTFT)**: Critical for interactive applications
-- **Time Between Tokens (TBT)**: Affects perceived generation speed
-- **End-to-end latency**: Total request processing time
+- Time to First Token (TTFT): Critical for interactive applications
+- Time Between Tokens (TBT): Affects perceived generation speed
+- End-to-end latency: Total request processing time
 
-**Throughput Metrics**:
+Throughput Metrics:
 
-- **Tokens per second**: Raw generation speed
-- **Requests per second**: Concurrent request handling capacity
-- **Batching efficiency**: How well system utilizes hardware with multiple requests
+- Tokens per second: Raw generation speed
+- Requests per second: Concurrent request handling capacity
+- Batching efficiency: How well system utilizes hardware with multiple requests
 
-**Memory Usage**:
+Memory Usage:
 
-- **Peak memory**: Maximum RAM/VRAM consumption
-- **KV cache growth**: Memory scaling with sequence length
-- **Memory bandwidth**: Data transfer rates between components
+- Peak memory: Maximum RAM/VRAM consumption
+- KV cache growth: Memory scaling with sequence length
+- Memory bandwidth: Data transfer rates between components
 
-**Quality Metrics**:
+Quality Metrics:
 
-- **BLEU/ROUGE**: N-gram overlap for generation tasks
-- **BERTScore**: Semantic similarity using learned embeddings
-- **Human evaluation**: Relevance, coherence, factuality ratings
+- BLEU/ROUGE: N-gram overlap for generation tasks
+- BERTScore: Semantic similarity using learned embeddings
+- Human evaluation: Relevance, coherence, factuality ratings
 
 ### Common Failure Modes and Diagnostics
 
-**Attention Collapse**:
+Attention Collapse:
 
-- **Symptom**: Uniform attention weights across positions
-- **Causes**: Poor initialization, insufficient training, inappropriate learning rates
+- Symptom: Uniform attention weights across positions
+- Causes: Poor initialization, insufficient training, inappropriate learning rates
 
   $$
   \begin{aligned}
@@ -801,48 +801,48 @@ $$
   \end{aligned}
   $$
 
-**Gradient Vanishing/Exploding**:
+Gradient Vanishing/Exploding:
 
-- **Symptoms**: Training loss plateaus or becomes unstable
-- **Diagnosis**: Monitor gradient norms across layers
-- **Solutions**: Gradient clipping, learning rate adjustment, architecture modifications
+- Symptoms: Training loss plateaus or becomes unstable
+- Diagnosis: Monitor gradient norms across layers
+- Solutions: Gradient clipping, learning rate adjustment, architecture modifications
 
-**Position Interpolation Failure**:
+Position Interpolation Failure:
 
-- **Symptom**: Poor performance beyond training sequence length
-- **Diagnosis**: Test systematically at different sequence lengths
-- **Solutions**: Better position encoding, length extrapolation techniques
+- Symptom: Poor performance beyond training sequence length
+- Diagnosis: Test systematically at different sequence lengths
+- Solutions: Better position encoding, length extrapolation techniques
 
-**Calibration Issues**:
+Calibration Issues:
 
-- **Symptom**: Overconfident predictions on uncertain inputs
-- **Diagnosis**: Reliability diagrams, expected calibration error
-- **Solutions**: Temperature scaling, ensemble methods, uncertainty quantification
+- Symptom: Overconfident predictions on uncertain inputs
+- Diagnosis: Reliability diagrams, expected calibration error
+- Solutions: Temperature scaling, ensemble methods, uncertainty quantification
 
 ### Debugging Checklist
 
-**Training Diagnostics**:
+Training Diagnostics:
 
-1. **Loss curves**: Smooth decreasing training loss, reasonable validation gap
-2. **Gradient flow**: Healthy gradient magnitudes throughout network depth
-3. **Attention patterns**: Reasonable attention distributions, no pathological collapse
-4. **Learning rate**: Appropriate schedule, no oscillations or plateaus
+1. Loss curves: Smooth decreasing training loss, reasonable validation gap
+2. Gradient flow: Healthy gradient magnitudes throughout network depth
+3. Attention patterns: Reasonable attention distributions, no pathological collapse
+4. Learning rate: Appropriate schedule, no oscillations or plateaus
 
-**Generation Quality**:
+Generation Quality:
 
-1. **Repetition detection**: Check for pathological repetition patterns
-2. **Coherence evaluation**: Long-form generation maintains topic and style
-3. **Factual accuracy**: Cross-reference generations with known facts
-4. **Bias assessment**: Test for demographic, cultural, or topical biases
+1. Repetition detection: Check for pathological repetition patterns
+2. Coherence evaluation: Long-form generation maintains topic and style
+3. Factual accuracy: Cross-reference generations with known facts
+4. Bias assessment: Test for demographic, cultural, or topical biases
 
-**Performance Profiling**:
+Performance Profiling:
 
-1. **Memory profiling**: Identify memory bottlenecks and leaks
-2. **Compute utilization**: Check GPU/CPU utilization efficiency
-3. **I/O analysis**: Network, disk, and memory bandwidth usage
-4. **Scaling behavior**: Performance characteristics with batch size, sequence length
+1. Memory profiling: Identify memory bottlenecks and leaks
+2. Compute utilization: Check GPU/CPU utilization efficiency
+3. I/O analysis: Network, disk, and memory bandwidth usage
+4. Scaling behavior: Performance characteristics with batch size, sequence length
 
-**Quick Diagnostic Tests**:
+Quick Diagnostic Tests:
 ```python
 # Example diagnostic functions
 def check_attention_entropy(attention_weights):
@@ -946,68 +946,68 @@ This comprehensive guide has traced the complete journey of transformer architec
 
 ### Core Architecture Components
 
-1. **Text → Tokens**: Subword tokenization (BPE, SentencePiece) maps variable-length text to discrete token sequences
-2. **Tokens → Embeddings**: Learnable lookup tables convert discrete tokens to dense vector representations
-3. **Positional Encoding**: Various schemes (sinusoidal, learned, RoPE, ALiBi) inject sequence order information
-4. **Transformer Stack**: Hierarchical layers of attention + FFN with residual connections and normalization
-5. **Self-Attention**: Scaled dot-product attention computes contextualized representations via query-key-value mechanism
-6. **KV Caching**: Optimization technique for autoregressive generation reducing O(n²) to O(n) per step
-7. **Feed-Forward Networks**: Position-wise transformations providing nonlinear processing capacity
-8. **Output Generation**: Language model head with sampling strategies for next-token prediction
+1. Text → Tokens: Subword tokenization (BPE, SentencePiece) maps variable-length text to discrete token sequences
+2. Tokens → Embeddings: Learnable lookup tables convert discrete tokens to dense vector representations
+3. Positional Encoding: Various schemes (sinusoidal, learned, RoPE, ALiBi) inject sequence order information
+4. Transformer Stack: Hierarchical layers of attention + FFN with residual connections and normalization
+5. Self-Attention: Scaled dot-product attention computes contextualized representations via query-key-value mechanism
+6. KV Caching: Optimization technique for autoregressive generation reducing O(n²) to O(n) per step
+7. Feed-Forward Networks: Position-wise transformations providing nonlinear processing capacity
+8. Output Generation: Language model head with sampling strategies for next-token prediction
 
 ### Architectural Variants and Applications
 
-**Encoder-Only (BERT-style)**: Bidirectional attention for understanding tasks
+Encoder-Only (BERT-style): Bidirectional attention for understanding tasks
 
 - Classification, named entity recognition, semantic similarity
 - Full context awareness with MLM training objective
 
-**Decoder-Only (GPT-style)**: Causal attention for generation tasks
+Decoder-Only (GPT-style): Causal attention for generation tasks
 
 - Text completion, creative writing, few-shot learning
 - Autoregressive capability with CLM training objective
 
-**Encoder-Decoder (T5-style)**: Combined architecture for sequence-to-sequence tasks
+Encoder-Decoder (T5-style): Combined architecture for sequence-to-sequence tasks
 
 - Translation, summarization, structured generation
 - Bidirectional understanding + autoregressive generation
 
 ### Training and Learning Dynamics
 
-**Pre-training Objectives**: CLM, MLM, and span corruption optimize for different capabilities
-**Instruction Tuning**: Supervised fine-tuning on (instruction, response) pairs for following directions
-**Alignment Methods**: RLHF, DPO, and Constitutional AI for human preference alignment
-**Backpropagation**: Gradient flow through attention, FFN, and normalization layers
-**Optimization**: Adam with learning rate scheduling and gradient clipping
+Pre-training Objectives: CLM, MLM, and span corruption optimize for different capabilities
+Instruction Tuning: Supervised fine-tuning on (instruction, response) pairs for following directions
+Alignment Methods: RLHF, DPO, and Constitutional AI for human preference alignment
+Backpropagation: Gradient flow through attention, FFN, and normalization layers
+Optimization: Adam with learning rate scheduling and gradient clipping
 
 ### Practical Deployment Considerations
 
-**Parameter-Efficient Methods**: LoRA, QLoRA, adapters, and prefix tuning for resource-constrained adaptation
-**Quantization**: 8-bit and 4-bit compression with PTQ and QAT for deployment efficiency
-**Evaluation**: Perplexity, capability benchmarks, and diagnostic tools for model assessment
-**Scaling Optimizations**: FlashAttention, mixed precision, and efficient serving strategies
+Parameter-Efficient Methods: LoRA, QLoRA, adapters, and prefix tuning for resource-constrained adaptation
+Quantization: 8-bit and 4-bit compression with PTQ and QAT for deployment efficiency
+Evaluation: Perplexity, capability benchmarks, and diagnostic tools for model assessment
+Scaling Optimizations: FlashAttention, mixed precision, and efficient serving strategies
 
 ### Key Mathematical Insights
 
 Each architectural component involves specific mathematical transformations:
 
-- **Attention complexity**: O(n² d_model) dominates computational cost for long sequences
-- **Parameter distribution**: ~2/3 of parameters in FFN layers, ~1/3 in attention
-- **Memory scaling**: KV cache grows linearly with sequence length during generation
-- **Training dynamics**: Residual connections and layer normalization enable stable gradient flow
+- Attention complexity: O(n² d_model) dominates computational cost for long sequences
+- Parameter distribution: ~2/3 of parameters in FFN layers, ~1/3 in attention
+- Memory scaling: KV cache grows linearly with sequence length during generation
+- Training dynamics: Residual connections and layer normalization enable stable gradient flow
 
 ### Future Directions and Emerging Techniques
 
-**Efficiency Research**: Linear attention variants, state space models, and mixture of experts
-**Scaling Laws**: Optimal allocation of compute between parameters, data, and training time
-**Multimodal Integration**: Vision transformers and cross-modal attention mechanisms
-**Long Context**: Techniques for handling sequences beyond traditional training lengths
+Efficiency Research: Linear attention variants, state space models, and mixture of experts
+Scaling Laws: Optimal allocation of compute between parameters, data, and training time
+Multimodal Integration: Vision transformers and cross-modal attention mechanisms
+Long Context: Techniques for handling sequences beyond traditional training lengths
 
 ### The Transformer Revolution
 
 The transformer architecture's key innovations—attention mechanisms, residual connections, and layer normalization—have enabled the current generation of large language models. Understanding both the mathematical foundations and practical implementation details is crucial for researchers and practitioners working with modern AI systems.
 
-**Core Insight**: Transformers succeed by combining three essential elements:
+Core Insight: Transformers succeed by combining three essential elements:
 
 1. **Parallelizable computation** through attention mechanisms
 2. **Stable training dynamics** via residual connections and normalization
@@ -1021,9 +1021,9 @@ This foundation continues to drive advances in natural language processing, comp
 
 Before diving deeper into transformer research or implementation, ensure you have a solid understanding of:
 
-- **Foundational Architecture**: Covered in [Transformer Fundamentals](./transformers_fundamentals.md)
-- **Mathematical Foundations**: Linear algebra, calculus, and probability theory
-- **Training Procedures**: Backpropagation, optimization, and regularization
-- **Practical Considerations**: Memory management, computational efficiency, and deployment strategies
+- Foundational Architecture: Covered in [Transformer Fundamentals](./transformers_fundamentals.md)
+- Mathematical Foundations: Linear algebra, calculus, and probability theory
+- Training Procedures: Backpropagation, optimization, and regularization
+- Practical Considerations: Memory management, computational efficiency, and deployment strategies
 
 Together with the fundamentals guide, this comprehensive coverage provides everything needed to understand, implement, and optimize transformer models for real-world applications.

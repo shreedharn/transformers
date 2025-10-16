@@ -14,13 +14,13 @@ A foundational guide to understanding neural networks, their role in artificial 
 
 **How do they work?** Instead of reading text word-by-word (like humans), they read all words simultaneously and figure out which words are most important to pay attention to for understanding meaning.
 
-**🔍 Key Innovation**: The "attention mechanism" - the ability to focus on relevant parts of text while ignoring irrelevant parts.
+🔍 Key Innovation: The "attention mechanism" - the ability to focus on relevant parts of text while ignoring irrelevant parts.
 
-**📈 Real-world impact**: 
+📈 Real-world impact: 
 
-- **ChatGPT**: Conversational AI
-- **GitHub Copilot**: Code completion
-- **Google Translate**: Language translation
+- ChatGPT: Conversational AI
+- GitHub Copilot: Code completion
+- Google Translate: Language translation
 
 **👆 How do we get there?** This guide will take you from the basics of neural networks through the foundations that make transformers possible!
 
@@ -46,43 +46,43 @@ Think of these as nested boxes, where each inner box is a subset of the outer on
 ```
 
 ### Artificial Intelligence (AI)
-**Definition**: Systems that can perform tasks that typically require human intelligence.
+Definition: Systems that can perform tasks that typically require human intelligence.
 
 **Examples:**
 
-- **Chatbots**: Like Siri or Alexa responding to voice commands
-- **Self-driving cars**: Navigating roads and making driving decisions
-- **Game playing**: Chess programs like Deep Blue or Go programs like AlphaGo
-- **Recommendation systems**: Netflix suggesting movies you might like
+- Chatbots: Like Siri or Alexa responding to voice commands
+- Self-driving cars: Navigating roads and making driving decisions
+- Game playing: Chess programs like Deep Blue or Go programs like AlphaGo
+- Recommendation systems: Netflix suggesting movies you might like
 
 ### Machine Learning (ML)
-**Definition**: A subset of AI where systems learn patterns from data without being explicitly programmed for every scenario.
+Definition: A subset of AI where systems learn patterns from data without being explicitly programmed for every scenario.
 
 **Examples:**
 
-- **Email spam detection**: Learning to identify spam based on patterns in previous emails
-- **Credit scoring**: Determining loan approval based on historical financial data
-- **Image recognition**: Identifying objects in photos after training on thousands of labeled images
-- **Stock price prediction**: Using historical market data to forecast trends
+- Email spam detection: Learning to identify spam based on patterns in previous emails
+- Credit scoring: Determining loan approval based on historical financial data
+- Image recognition: Identifying objects in photos after training on thousands of labeled images
+- Stock price prediction: Using historical market data to forecast trends
 
 **Traditional ML Techniques:**
 
-- **Logistic Regression**: For binary classification (spam/not spam)
-- **Decision Trees**: For rule-based decision making
-- **Support Vector Machines**: For finding optimal boundaries between classes
-- **Random Forest**: Combining multiple decision trees for better predictions
+- Logistic Regression: For binary classification (spam/not spam)
+- Decision Trees: For rule-based decision making
+- Support Vector Machines: For finding optimal boundaries between classes
+- Random Forest: Combining multiple decision trees for better predictions
 
 ### Deep Learning (DL)
-**Definition**: A subset of ML that uses neural networks with multiple layers to learn increasingly complex patterns.
+Definition: A subset of ML that uses neural networks with multiple layers to learn increasingly complex patterns.
 
 **Examples:**
 
-- **Large Language Models**: ChatGPT, GPT-4, BERT understanding and generating human-like text
-- **Computer Vision**: Self-driving cars recognizing pedestrians, traffic signs, and other vehicles
-- **Speech Recognition**: Converting spoken words to text with high accuracy
-- **Machine Translation**: Google Translate converting between languages
+- Large Language Models: ChatGPT, GPT-4, BERT understanding and generating human-like text
+- Computer Vision: Self-driving cars recognizing pedestrians, traffic signs, and other vehicles
+- Speech Recognition: Converting spoken words to text with high accuracy
+- Machine Translation: Google Translate converting between languages
 
-**Key Difference**: Deep learning can automatically discover the features it needs to learn from raw data, while traditional ML often requires humans to manually engineer these features.
+Key Difference: Deep learning can automatically discover the features it needs to learn from raw data, while traditional ML often requires humans to manually engineer these features.
 
 Now that we understand where deep learning fits in the AI landscape, let's explore why it has become the dominant approach for natural language processing tasks.
 
@@ -130,7 +130,7 @@ Bag of Words representation (same for both):
 {the: 2, cat: 1, sat: 1, on: 1, mat: 1}
 ```
 
-**Problem**: Both sentences have identical representations despite completely different meanings!
+Problem: Both sentences have identical representations despite completely different meanings!
 
 #### 3. Long-Range Dependencies
 Traditional ML struggles to capture relationships between words that are far apart in a sentence.
@@ -147,7 +147,7 @@ Traditional ML has difficulty connecting "book" with "interesting" because they'
 #### 1. Automatic Feature Learning
 Neural networks automatically learn useful features from raw text data.
 
-**Word Embeddings**: Neural networks learn to represent words as vectors that capture semantic meaning.
+Word Embeddings: Neural networks learn to represent words as vectors that capture semantic meaning.
 
 ```
 king - man + woman ≈ queen
@@ -169,11 +169,11 @@ Models like RNNs and Transformers can process text sequentially and understand w
 
 **Evolution of Sequence Models:**
 
-1. **RNNs**: Process text word by word, maintaining memory of previous words
-2. **LSTMs**: Improved RNNs that better handle long sequences
-3. **Transformers**: Revolutionary approach that processes all words simultaneously and learns attention patterns
+1. RNNs: Process text word by word, maintaining memory of previous words
+2. LSTMs: Improved RNNs that better handle long sequences
+3. Transformers: Revolutionary approach that processes all words simultaneously and learns attention patterns
 
-> 📖 **For sequence modeling details**: See [rnn_intro.md](./rnn_intro.md) for complete RNN/LSTM tutorial with worked examples, and [transformers_fundamentals.md](./transformers_fundamentals.md) for comprehensive transformer architecture guide.
+> 📖 For sequence modeling details: See [rnn_intro.md](./rnn_intro.md) for complete RNN/LSTM tutorial with worked examples, and [transformers_fundamentals.md](./transformers_fundamentals.md) for comprehensive transformer architecture guide.
 
 Having seen why deep learning outperforms traditional methods for language tasks, let's explore the fundamental building blocks that make this revolution possible, starting with the most basic unit: the artificial neuron.
 
@@ -207,18 +207,18 @@ Neural networks perform three fundamental operations at each layer:
 
 Where:
 
-- **Weights (W)**: Control feature importance and geometric transformations
-- **Bias (b)**: Provide flexible positioning of decision boundaries  
-- **Activation (f)**: Introduce nonlinearity through space warping
+- Weights (W): Control feature importance and geometric transformations
+- Bias (b): Provide flexible positioning of decision boundaries  
+- Activation (f): Introduce nonlinearity through space warping
 
 Each component serves a distinct geometric purpose that becomes clear when we visualize how neural networks transform data through high-dimensional space.
 
 #### Components of a Perceptron
 
-1. **Inputs (x₁, x₂, ..., xₙ)**: The data features fed into the neuron
-2. **Weights (w₁, w₂, ..., wₙ)**: Numbers that determine the importance of each input
-3. **Bias (b)**: An additional parameter that allows the neuron to shift its output
-4. **Activation Function (f)**: A function that determines the final output
+1. Inputs (x₁, x₂, ..., xₙ): The data features fed into the neuron
+2. Weights (w₁, w₂, ..., wₙ): Numbers that determine the importance of each input
+3. Bias (b): An additional parameter that allows the neuron to shift its output
+4. Activation Function (f): A function that determines the final output
 
 The perceptron's mathematical operation can be expressed as:
 
@@ -252,9 +252,9 @@ Weights determine how input features are combined and transformed:
 
 **Geometric Interpretation:**
 
-- **Direction**: Weights define the orientation of decision boundaries (lines in 2D, hyperplanes in higher dimensions)
-- **Importance**: Larger weights amplify the influence of corresponding features
-- **Scaling**: Weights stretch or compress space along different dimensions
+- Direction: Weights define the orientation of decision boundaries (lines in 2D, hyperplanes in higher dimensions)
+- Importance: Larger weights amplify the influence of corresponding features
+- Scaling: Weights stretch or compress space along different dimensions
 
 **Intuitive Analogy:**
 Think of weights as **feature importance multipliers**. If you're predicting house prices:
@@ -293,9 +293,9 @@ This freedom to position boundaries anywhere in space is crucial for fitting rea
 
 **Geometric Intuition:**
 
-- **1D**: Bias shifts the intercept (like the 'c' in y = mx + c)
-- **2D**: Bias moves the separating line parallel to itself
-- **n-D**: Bias translates the hyperplane to the optimal position
+- 1D: Bias shifts the intercept (like the 'c' in y = mx + c)
+- 2D: Bias moves the separating line parallel to itself
+- n-D: Bias translates the hyperplane to the optimal position
 
 **Practical Analogy:**
 Bias is like the **default activation level**. Even with zero input, a neuron can still fire due to its bias, similar to how a light switch might have a default "dim" setting.
@@ -324,7 +324,7 @@ x_3 &= \text{Number of capital letters}
 }
 $$
 
-**Example Email**: "FREE VACATION!!! Click now!!!"
+Example Email: "FREE VACATION!!! Click now!!!"
 
 $$
 {\textstyle
@@ -359,7 +359,7 @@ $$
 
 \begin{aligned} f(1.9) &= \frac{1}{1 + e^{-1.9}} = 0.87 \end{aligned}
 
-**Result**: 0.87 (87% probability it's spam)
+Result: 0.87 (87% probability it's spam)
 
 #### Common Activation Functions
 
@@ -375,7 +375,7 @@ Output:  0 -------- 0 -------- +∞
 
 This simple operation proves remarkably effective, preventing vanishing gradients while creating sparse, efficient representations.
 
-> 📖 **For vanishing gradients deep dive**: See [pytorch_ref.md Section 6](./pytorch_ref.md#6-vanishingexploding-gradients) for causes, detection, and solutions, plus [rnn_intro.md Section 9](./rnn_intro.md#9-the-vanishing-gradient-problem-rnns-fatal-flaw) for RNN-specific analysis.
+> 📖 For vanishing gradients deep dive: See [pytorch_ref.md Section 6](./pytorch_ref.md#6-vanishingexploding-gradients) for causes, detection, and solutions, plus [rnn_intro.md Section 9](./rnn_intro.md#9-the-vanishing-gradient-problem-rnns-fatal-flaw) for RNN-specific analysis.
 
 **Sigmoid** compresses any real number into probability-like values:
 
@@ -403,9 +403,9 @@ Its zero-centered nature makes it preferable to sigmoid for hidden layers in man
 
 Each activation function **warps the geometric space**:
 
-- **ReLU**: Folds space along hyperplanes (creates piecewise linear regions)
-- **Sigmoid/Tanh**: Smoothly compress distant regions toward boundaries
-- **Stacked layers**: Compose multiple warps to create arbitrarily complex decision surfaces
+- ReLU: Folds space along hyperplanes (creates piecewise linear regions)
+- Sigmoid/Tanh: Smoothly compress distant regions toward boundaries
+- Stacked layers: Compose multiple warps to create arbitrarily complex decision surfaces
 
 #### PyTorch Implementation
 
@@ -470,16 +470,16 @@ No single straight line can separate the 1s from the 0s in this case! Classes ar
 
 The XOR problem beautifully demonstrates why neural networks need all three components working together. Here's how a simple 2-layer network transforms the impossible into the trivial:
 
-**Network Architecture**: Input(2) → Hidden(2, ReLU) → Output(1, sigmoid)
+Network Architecture: Input(2) → Hidden(2, ReLU) → Output(1, sigmoid)
 
-> 📖 **For complete worked examples**: See [mlp_intro.md Section 5](./mlp_intro.md#5-worked-example-advanced-spam-detection) for detailed forward pass calculations with real numbers you can trace by hand.
+> 📖 For complete worked examples: See [mlp_intro.md Section 5](./mlp_intro.md#5-worked-example-advanced-spam-detection) for detailed forward pass calculations with real numbers you can trace by hand.
 
 #### Step 1: First Layer Without Activation
 
 Hidden neurons learn:
 
-- **Neuron A**: \begin{aligned} z_A &= x_1 - 0.5  \text{ (detects "x₁ > 0.5")}\end{aligned}
-- **Neuron B**: \begin{aligned} z_B &= x_2 - 0.5  \text{ (detects "x₂ > 0.5")}\end{aligned}  
+- Neuron A: \begin{aligned} z_A &= x_1 - 0.5  \text{ (detects "x₁ > 0.5")}\end{aligned}
+- Neuron B: \begin{aligned} z_B &= x_2 - 0.5  \text{ (detects "x₂ > 0.5")}\end{aligned}  
 
 Note: Bias (-0.5) shifts decision boundaries away from origin.
 
@@ -518,12 +518,12 @@ Input Layer → Hidden Layer(s) → Output Layer
 
 These components orchestrate a sophisticated geometric transformation system: weights control orientation and scaling, bias ensures optimal positioning, and activation functions bend space nonlinearly. When repeated across layers, this process builds arbitrarily complex decision manifolds.
 
-**Unified Intuition**: Think of neural networks as **high-dimensional sculptors**:
+Unified Intuition: Think of neural networks as **high-dimensional sculptors**:
 
-- **Weights**: Control the direction and strength of each sculpting tool
-- **Bias**: Position each tool at the optimal location  
-- **Activation**: Apply nonlinear bending/folding operations
-- **Depth**: Compose many sculpting operations to create arbitrarily complex shapes
+- Weights: Control the direction and strength of each sculpting tool
+- Bias: Position each tool at the optimal location  
+- Activation: Apply nonlinear bending/folding operations
+- Depth: Compose many sculpting operations to create arbitrarily complex shapes
 
 Multiple layers create a natural hierarchy of abstraction. Early layers learn simple patterns and features, middle layers combine these into complex patterns, and the output layer makes final decisions. In text processing, this might progress from detecting individual words and punctuation, to recognizing phrases and local context, and finally to understanding complete sentence meaning and intent.
 
@@ -535,13 +535,13 @@ Understanding how neural networks operate geometrically helps build intuition fo
 
 #### 1D Case: Function Approximation
 
-**Single neuron**: 
+Single neuron: 
 
 \begin{aligned} z &= wx + b \end{aligned}
 
 This is simply a line equation (y = mx + c from algebra).
 
-**With activation**:
+With activation:
 
 \begin{aligned} h(x) &= \max(0, wx + b) \end{aligned}
 
@@ -549,23 +549,23 @@ Creates a "bent line" - the foundation for approximating any 1D function through
 
 #### 2D Case: Decision Boundaries
 
-**Linear layer**:
+Linear layer:
 
 \begin{aligned} z &= w_1x_1 + w_2x_2 + b \end{aligned}
 
 Defines a **line** that separates the 2D plane into two regions.
 
-**With activation**: The line becomes a "fold" where space gets bent, enabling complex decision boundaries when layers are stacked.
+With activation: The line becomes a "fold" where space gets bent, enabling complex decision boundaries when layers are stacked.
 
 #### n-D Case: High-Dimensional Manifolds
 
-**Linear layer**:
+Linear layer:
 
 \begin{aligned} z &= w_1x_1 + w_2x_2 + ... + w_nx_n + b \end{aligned}
 
 Defines a **hyperplane** in n-dimensional space.
 
-**With stacked activations**: Creates arbitrarily complex decision manifolds in high-dimensional space - this is why deep networks are universal function approximators.
+With stacked activations: Creates arbitrarily complex decision manifolds in high-dimensional space - this is why deep networks are universal function approximators.
 
 **Key Insight: Dimensions vs Layers**
 
@@ -604,11 +604,11 @@ Training a neural network means finding the optimal weights and biases that allo
 
 ### The Training Process Overview
 
-1. **Forward Pass**: Feed data through the network to get predictions
-2. **Loss Calculation**: Compare predictions to actual answers
-3. **Backward Pass**: Calculate how to adjust weights to reduce errors
-4. **Weight Update**: Modify weights in the direction that reduces loss
-5. **Repeat**: Continue until the network performs well
+1. Forward Pass: Feed data through the network to get predictions
+2. Loss Calculation: Compare predictions to actual answers
+3. Backward Pass: Calculate how to adjust weights to reduce errors
+4. Weight Update: Modify weights in the direction that reduces loss
+5. Repeat: Continue until the network performs well
 
 ### Loss Functions: The Network's Report Card
 
@@ -714,7 +714,7 @@ $$
 }
 $$
 
-- **Negative sign**: Move opposite to gradient (downhill)
+- Negative sign: Move opposite to gradient (downhill)
 
 #### The Gradient: Direction of Steepest Ascent
 
@@ -730,13 +730,13 @@ Each element answers a simple question: "If I nudge parameter $$\theta_i$$ sligh
 
 #### Step-by-Step Gradient Descent Process
 
-1. **Compute Forward Pass**: $$\text{Input} \xrightarrow{\text{Network}} \text{Predictions}$$
-2. **Compute Loss**: $$\mathcal{L} = \text{LossFunction}(\text{Predictions}, \text{Truth})$$
-3. **Compute Gradients (Backpropagation)**: $$\frac{\partial \mathcal{L}}{\partial W^{(l)}} = \frac{\partial \mathcal{L}}{\partial h^{(l+1)}} \cdot \frac{\partial h^{(l+1)}}{\partial W^{(l)}}$$
+1. Compute Forward Pass: $$\text{Input} \xrightarrow{\text{Network}} \text{Predictions}$$
+2. Compute Loss: $$\mathcal{L} = \text{LossFunction}(\text{Predictions}, \text{Truth})$$
+3. Compute Gradients (Backpropagation): $$\frac{\partial \mathcal{L}}{\partial W^{(l)}} = \frac{\partial \mathcal{L}}{\partial h^{(l+1)}} \cdot \frac{\partial h^{(l+1)}}{\partial W^{(l)}}$$
 
-> 📖 **For detailed backpropagation mechanics**: See [mlp_intro.md Section 6](./mlp_intro.md#6-training-how-mlps-learn) for step-by-step derivations and [pytorch_ref.md Section 3](./pytorch_ref.md#3-autograd-finding-gradients) for implementation details.
+> 📖 For detailed backpropagation mechanics: See [mlp_intro.md Section 6](./mlp_intro.md#6-training-how-mlps-learn) for step-by-step derivations and [pytorch_ref.md Section 3](./pytorch_ref.md#3-autograd-finding-gradients) for implementation details.
 
-4. **Update Parameters**: $$W^{(l)} \leftarrow W^{(l)} - \alpha \frac{\partial \mathcal{L}}{\partial W^{(l)}}$$
+4. Update Parameters: $$W^{(l)} \leftarrow W^{(l)} - \alpha \frac{\partial \mathcal{L}}{\partial W^{(l)}}$$
 
 #### The Learning Rate α: Speed vs. Accuracy Trade-off
 
@@ -797,7 +797,7 @@ v_t &= \beta_2 v_{t-1} + (1-\beta_2) (\nabla \mathcal{L})^2 \quad \text{(varianc
 
 Adam's breakthrough innovation lies in adaptive per-parameter learning rates: parameters with large gradients get smaller effective steps, while those with small gradients get larger ones. This automatic adjustment, combined with excellent handling of sparse gradients and minimal tuning requirements, explains Adam's widespread adoption.
 
-> 📖 **For optimizer comparison**: See [pytorch_ref.md Section 5](./pytorch_ref.md#5-optimization-loop--losses) for practical optimizer selection guide and [transformers_math2.md](./transformers_math2.md) for theoretical analysis.
+> 📖 For optimizer comparison: See [pytorch_ref.md Section 5](./pytorch_ref.md#5-optimization-loop--losses) for practical optimizer selection guide and [transformers_math2.md](./transformers_math2.md) for theoretical analysis.
 
 ### Complete Training Loop in PyTorch
 
@@ -884,7 +884,7 @@ This critical hyperparameter controls our step size through the parameter space.
 #### 4. Overfitting vs Underfitting
 These represent the two failure modes of machine learning: overfitting occurs when models memorize training examples rather than learning generalizable patterns, while underfitting happens when models are too simple to capture the underlying data structure.
 
-> 📖 **For practical solutions**: See [mlp_intro.md Section 8](./mlp_intro.md#8-common-challenges-and-solutions) for detailed strategies including dropout, regularization, and early stopping.
+> 📖 For practical solutions: See [mlp_intro.md Section 8](./mlp_intro.md#8-common-challenges-and-solutions) for detailed strategies including dropout, regularization, and early stopping.
 
 ### Text Embeddings: Bridging Language and Mathematics
 
@@ -910,7 +910,7 @@ $$
 
 - Each row $$E[i]$$ represents one word's embedding vector
 
-> 📖 **For embedding implementation**: See [pytorch_ref.md Section 10](./pytorch_ref.md#10-transformers-in-pytorch) for practical embedding layer usage and [knowledge_store.md](./knowledge_store.md) for how embeddings store semantic knowledge.
+> 📖 For embedding implementation: See [pytorch_ref.md Section 10](./pytorch_ref.md#10-transformers-in-pytorch) for practical embedding layer usage and [knowledge_store.md](./knowledge_store.md) for how embeddings store semantic knowledge.
 
 #### Geometric Intuition: Words as Points in Space
 
@@ -937,7 +937,7 @@ Semantic Space (2D slice):
 
 #### Why Embeddings Work
 
-**Distributional Hypothesis**: "Words appearing in similar contexts have similar meanings"
+Distributional Hypothesis: "Words appearing in similar contexts have similar meanings"
 
 If we see:
 
@@ -976,13 +976,13 @@ The network learns that words in similar positions (contexts) should have simila
 
 \begin{aligned} \mathbf{e}_{\text{king}} - \mathbf{e}_{\text{man}} + \mathbf{e}_{\text{woman}} \approx \mathbf{e}_{\text{queen}} \end{aligned}
 
-> 📖 **For vector operations**: See [math_quick_ref.md](./math_quick_ref.md) for linear algebra fundamentals and [pytorch_ref.md Section 2](./pytorch_ref.md#2-tensors-vectors--matrices-in-pytorch) for tensor operations.
+> 📖 For vector operations: See [math_quick_ref.md](./math_quick_ref.md) for linear algebra fundamentals and [pytorch_ref.md Section 2](./pytorch_ref.md#2-tensors-vectors--matrices-in-pytorch) for tensor operations.
 
 #### How Neural Networks Store Knowledge
 
 This embedding approach reveals something profound: **neural networks store knowledge as geometric relationships in high-dimensional space**. When a model "knows" that cats and dogs are similar, this knowledge is encoded as the spatial proximity of their embedding vectors.
 
-> 📖 **Deep dive into knowledge storage**: See [knowledge_store.md](./knowledge_store.md) for a comprehensive exploration of how Large Language Models store and retrieve knowledge through embeddings vs. external vector databases. Includes hands-on Python examples showing semantic search, similarity computation, and the fundamental differences between internalized neural weights and external knowledge stores.
+> 📖 Deep dive into knowledge storage: See [knowledge_store.md](./knowledge_store.md) for a comprehensive exploration of how Large Language Models store and retrieve knowledge through embeddings vs. external vector databases. Includes hands-on Python examples showing semantic search, similarity computation, and the fundamental differences between internalized neural weights and external knowledge stores.
 
 With the fundamentals of neural network training and text representation under our belt, let's explore how these powerful learning systems excel in practical language applications.
 
@@ -998,12 +998,12 @@ Neural networks are fundamentally **geometric transformation systems** operating
 
 **Component Roles:**
 
-- **Weights**: Feature importance and transformation direction
-- **Bias**: Flexible boundary positioning  
-- **Activation**: Space warping for nonlinearity
-- **Embeddings**: Convert discrete symbols to continuous representations
-- **Loss Functions**: Guide learning toward task objectives
-- **Gradient Descent**: Navigate parameter space to minimize error
+- Weights: Feature importance and transformation direction
+- Bias: Flexible boundary positioning  
+- Activation: Space warping for nonlinearity
+- Embeddings: Convert discrete symbols to continuous representations
+- Loss Functions: Guide learning toward task objectives
+- Gradient Descent: Navigate parameter space to minimize error
 
 Neural networks succeed by **repeatedly bending high-dimensional space** until complex data patterns become linearly separable. Each component plays a crucial role in this geometric dance that transforms raw data into learnable representations.
 
@@ -1060,16 +1060,16 @@ Perhaps the most impressive demonstration of neural language understanding lies 
 
 With neural network fundamentals now in place, you're ready to explore deeper territories. The journey ahead offers multiple paths: diving into how individual neurons combine into powerful multi-layer networks, working through hands-on mathematics with real numbers you can trace by hand, understanding the building blocks used in all advanced architectures, or seeing how these concepts translate to actual code.
 
-> **Continue Learning**: Ready to build networks? 
+> Continue Learning: Ready to build networks? 
 > 
 > **Next Steps by Learning Goal:**
 >
-> - **🏗️ Hands-on Implementation**: [mlp_intro.md](./mlp_intro.md) - Build MLPs step-by-step with worked examples
-> - **🔄 Sequential Processing**: [rnn_intro.md](./rnn_intro.md) - Learn RNNs and understand the path to transformers
-> - **⚡ Modern Architectures**: [transformers_fundamentals.md](./transformers_fundamentals.md) - Complete transformer technical reference
-> - **💻 PyTorch Coding**: [pytorch_ref.md](./pytorch_ref.md) - Practical implementation patterns
-> - **📐 Mathematical Rigor**: [transformers_math1.md](./transformers_math1.md) - Theoretical foundations (Part 1)
-> - **📐 Advanced Mathematics**: [transformers_math2.md](./transformers_math2.md) - Advanced concepts and scaling (Part 2)
+> - 🏗️ Hands-on Implementation: [mlp_intro.md](./mlp_intro.md) - Build MLPs step-by-step with worked examples
+> - 🔄 Sequential Processing: [rnn_intro.md](./rnn_intro.md) - Learn RNNs and understand the path to transformers
+> - ⚡ Modern Architectures: [transformers_fundamentals.md](./transformers_fundamentals.md) - Complete transformer technical reference
+> - 💻 PyTorch Coding: [pytorch_ref.md](./pytorch_ref.md) - Practical implementation patterns
+> - 📐 Mathematical Rigor: [transformers_math1.md](./transformers_math1.md) - Theoretical foundations (Part 1)
+> - 📐 Advanced Mathematics: [transformers_math2.md](./transformers_math2.md) - Advanced concepts and scaling (Part 2)
 
 **Remember:** Neural networks taught us that simple mathematical operations, when combined in layers, can learn to recognize complex patterns in data. This insight revolutionized AI and remains the foundation of every modern architecture - from image recognition to language models.
 
