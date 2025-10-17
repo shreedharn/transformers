@@ -288,10 +288,10 @@ Update: x₁ = x₀ - α(df/dx)   [x,y]₁ = [x,y]₀ - α∇f    θ₁ = θ₀ 
 
 The Big Picture: Whether we're finding the bottom of a simple parabola or training a neural network with millions of parameters, we're doing the same fundamental thing:
 
-1. **Measure the slope** (derivative, gradient, or backpropagated error)
-2. **Take a step in the opposite direction** (negative sign)
-3. **Control step size** (learning rate α)
-4. **Repeat until we reach the bottom**
+1. Measure the slope (derivative, gradient, or backpropagated error)
+2. Take a step in the opposite direction (negative sign)
+3. Control step size (learning rate α)
+4. Repeat until we reach the bottom
 
 This is why understanding the simple case of line slopes gives us insight into the most sophisticated neural network training algorithms.
 
@@ -394,9 +394,9 @@ Softmax converts neural network outputs to probabilities:
 
 Why transformers use this combination:
 
-1. **Neural networks output raw scores** (logits) that can be any real number
-2. **Softmax normalizes these into probabilities** that sum to 1
-3. **Cross-entropy loss measures prediction quality** using these probabilities
+1. Neural networks output raw scores (logits) that can be any real number
+2. Softmax normalizes these into probabilities that sum to 1
+3. Cross-entropy loss measures prediction quality using these probabilities
 
 Cross-Entropy Loss:
 ```math
@@ -1060,11 +1060,11 @@ Check for Understanding: Verify that gradient shapes match parameter shapes and 
 
 This concludes Part 1 of the mathematics tutorial, covering the foundational concepts needed to understand how Transformers work. You now understand:
 
-1. **Mathematical foundations** - from basic calculus to gradient descent
-2. **Attention as similarity search** - how Q/K/V naturally emerge
-3. **Multi-head attention** - parallel specialized attention patterns
-4. **Transformer blocks** - combining attention with feed-forward networks
-5. **Training objectives** - next-token prediction and embeddings
+1. Mathematical foundations - from basic calculus to gradient descent
+2. Attention as similarity search - how Q/K/V naturally emerge
+3. Multi-head attention - parallel specialized attention patterns
+4. Transformer blocks - combining attention with feed-forward networks
+5. Training objectives - next-token prediction and embeddings
 
 Continue to [Part 2: Advanced Concepts and Scaling](./transformers_math2.md) to learn about:
 
