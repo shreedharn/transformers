@@ -455,6 +455,60 @@ class BoldFormattingFixer(FixerStrategy):
         return '\n'.join(result), fixes
 
 
+class MathCodeFenceFixer(FixerStrategy):
+    """Convert ```math code fence blocks to MathJax $$\\begin{aligned} format."""
+
+    @property
+    def name(self) -> str:
+        return "math_code_fence_to_mathjax"
+
+    @property
+    def category(self) -> FixCategory:
+        return FixCategory.MATH_FORMATTING
+
+    def fix(self, content: str) -> Tuple[str, int]:
+        lines = content.split('\n')
+        result = []
+        fixes = 0
+        i = 0
+
+        while i < len(lines):
+            line = lines[i]
+
+            # Check for ```math opening fence
+            if re.match(r'^\s*```math\s*$', line):
+                # Found ```math block
+                fixes += 1
+
+                # Add MathJax opening
+                result.append('$$')
+                result.append('{\\textstyle')
+                result.append('\\begin{aligned}')
+
+                # Process content until closing ```
+                i += 1
+                while i < len(lines):
+                    if re.match(r'^\s*```\s*$', lines[i]):
+                        # Found closing fence
+                        break
+                    # Add the math content
+                    result.append(lines[i])
+                    i += 1
+
+                # Add MathJax closing
+                result.append('\\end{aligned}')
+                result.append('}')
+                result.append('$$')
+
+                self.logger.debug(f"Converted ```math block at line {i+1}")
+            else:
+                result.append(line)
+
+            i += 1
+
+        return '\n'.join(result), fixes
+
+
 # ============================================================================
 # MAIN FIXER ORCHESTRATOR
 # ============================================================================
@@ -475,6 +529,7 @@ class MarkdownFixer:
         # SingleDollarToDoubleFixer,  # DISABLED: Creates invalid inline display math
         EmptyBlockFixer,
         BoldFormattingFixer,
+        MathCodeFenceFixer,
     ]
 
     def __init__(self, logger: Optional[logging.Logger] = None):

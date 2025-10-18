@@ -34,6 +34,11 @@ The fixer script applies **only safe transformations** that have been validated 
 - Context-aware: Respects existing `$$` blocks and ````math` fences
 - **Category**: `math_formatting`
 
+**5. Math Code Fence to MathJax Fixer** (`math_code_fence_to_mathjax`)
+- Converts GitHub-style ````math` code fences to professional MathJax format
+- Wraps content in `$${\textstyle\begin{aligned}...\end{aligned}}$$`
+- **Category**: `math_formatting`
+
 ### ❌ Disabled Fixers (Cause Issues)
 
 **1. Escape Underscores Fixer** (DISABLED)
@@ -266,6 +271,46 @@ Final text.
 
 ---
 
+### Example 6: Math Code Fence Blocks to MathJax
+
+**Before (GitHub-style ```math fence):**
+````markdown
+The Derivative as Slope: For any function $f(x)$, the derivative $\frac{df}{dx}$ tells us the slope at any point:
+
+```math
+\frac{df}{dx} = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
+```
+
+What this equation means: "If I move a tiny amount h to the right, how much does f change?"
+````
+
+**After (Professional MathJax):**
+```markdown
+The Derivative as Slope: For any function $f(x)$, the derivative $\frac{df}{dx}$ tells us the slope at any point:
+
+$$
+{\textstyle
+\begin{aligned}
+\frac{df}{dx} = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
+\end{aligned}
+}
+$$
+
+What this equation means: "If I move a tiny amount h to the right, how much does f change?"
+```
+
+**Fixer used**: `math_code_fence_to_mathjax`
+
+**Benefits:**
+- **Consistent rendering**: MathJax format renders uniformly across platforms
+- **Professional appearance**: Uses industry-standard LaTeX delimiters
+- **Better integration**: Matches the style of other mathematical expressions in the document
+- **Future-proof**: More widely supported than GitHub-specific ````math` syntax
+
+**Note**: After running this fixer, you may want to manually move prose descriptions into `\text{...}` blocks within the aligned environment for better separation of math and prose, as shown in the improve-md examples.
+
+---
+
 ## Recommended Workflow
 
 ### 1. Detection Phase
@@ -379,9 +424,10 @@ The fixer organizes transformations into categories matching the detector:
 
 ### Available Categories
 
-1. **`math_formatting`** (2 enabled fixers)
+1. **`math_formatting`** (3 enabled fixers)
    - `wrap_aligned_blocks`: Adds `$$` wrappers to unwrapped `\begin{aligned}` blocks
    - `remove_empty_blocks`: Removes empty `$$` delimiters
+   - `math_code_fence_to_mathjax`: Converts ````math` blocks to MathJax format
 
 2. **`list_formatting`** (1 enabled fixer)
    - `list_formatting`: Adds blank lines before lists, removes between items

@@ -44,9 +44,13 @@ For the complete journey including **efficient inference**, **scaling laws**, an
 Building Intuition: Slope of a Line
 
 Let's start with something familiar - the equation of a straight line:
-```math
+$$
+{\textstyle
+\begin{aligned}
 y = mx + b
-```
+\end{aligned}
+}
+$$
 
 where:
 
@@ -74,9 +78,13 @@ What this equation means: "If I move a tiny amount h to the right, how much does
 
 Gradient Descent in One Dimension: If we want to minimize $f(x)$, we update $x$ using:
 
-```math
+$$
+{\textstyle
+\begin{aligned}
 x_{\text{new}} = x_{\text{old}} - \alpha \frac{df}{dx}
-```
+\end{aligned}
+}
+$$
 
 where $\alpha$ (alpha) is the learning rate - how big steps we take.
 
@@ -126,15 +134,23 @@ $$
 
 The Gradient Vector: We combine these into a gradient vector:
 
-```math
+$$
+{\textstyle
+\begin{aligned}
 \nabla f = \begin{bmatrix} \frac{\partial f}{\partial x} \\ \frac{\partial f}{\partial y} \end{bmatrix} = \begin{bmatrix} 2x \\ 2y \end{bmatrix}
-```
+\end{aligned}
+}
+$$
 
 Vector Gradient Descent: Now our update rule becomes:
 
-```math
+$$
+{\textstyle
+\begin{aligned}
 \begin{bmatrix} x_{\text{new}} \\ y_{\text{new}} \end{bmatrix} = \begin{bmatrix} x_{\text{old}} \\ y_{\text{old}} \end{bmatrix} - \alpha \begin{bmatrix} 2x_{\text{old}} \\ 2y_{\text{old}} \end{bmatrix}
-```
+\end{aligned}
+}
+$$
 
 Intuition: The gradient vector points in the direction of steepest *ascent*. By moving in the *opposite* direction (negative gradient), we go downhill most quickly.
 
@@ -149,29 +165,49 @@ Setting up the Problem: In machine learning, we have:
 
 Loss Function: We measure how wrong our predictions are using mean squared error:
 
-```math
+$$
+{\textstyle
+\begin{aligned}
 L = \frac{1}{N} \sum_{i=1}^N \|Y_{\text{true}}^{(i)} - Y_{\text{hat}}^{(i)}\|^2
-```
+\end{aligned}
+}
+$$
 
 Matrix Gradients: To minimize the loss, we need gradients with respect to W and b:
 
-```math
+$$
+{\textstyle
+\begin{aligned}
 \frac{\partial L}{\partial W} = \frac{2}{N} X^T (Y_{\text{hat}} - Y_{\text{true}})
-```
+\end{aligned}
+}
+$$
 
-```math
+$$
+{\textstyle
+\begin{aligned}
 \frac{\partial L}{\partial b} = \frac{2}{N} \sum_{i=1}^N (Y_{\text{hat}}^{(i)} - Y_{\text{true}}^{(i)})
-```
+\end{aligned}
+}
+$$
 
 Matrix Gradient Descent Updates:
 
-```math
+$$
+{\textstyle
+\begin{aligned}
 W_{\text{new}} = W_{\text{old}} - \alpha \frac{\partial L}{\partial W}
-```
+\end{aligned}
+}
+$$
 
-```math
+$$
+{\textstyle
+\begin{aligned}
 b_{\text{new}} = b_{\text{old}} - \alpha \frac{\partial L}{\partial b}
-```
+\end{aligned}
+}
+$$
 
 Key Insight: The same learning rate $\alpha$ controls the step size for all parameters, just like in our simple 1D case.
 
@@ -179,62 +215,118 @@ Key Insight: The same learning rate $\alpha$ controls the step size for all para
 
 Forward Pass Equations:
 
-```math
+$$
+{\textstyle
+\begin{aligned}
 Z_1 = X W_1 + b_1 \quad \text{(shape: samples x hidden units)}
-```
-```math
+\end{aligned}
+}
+$$
+$$
+{\textstyle
+\begin{aligned}
 A_1 = \sigma(Z_1) \quad \text{(apply activation function element-wise)}
-```
-```math
+\end{aligned}
+}
+$$
+$$
+{\textstyle
+\begin{aligned}
 Z_2 = A_1 W_2 + b_2 \quad \text{(shape: samples x outputs)}
-```
-```math
+\end{aligned}
+}
+$$
+$$
+{\textstyle
+\begin{aligned}
 Y_{\text{hat}} = Z_2 \quad \text{(final predictions)}
-```
+\end{aligned}
+}
+$$
 
 where $\sigma$ is an activation function like ReLU or sigmoid.
 
 Backward Pass (Backpropagation):
 
 Step 1: Compute the error at the output:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \delta_2 = Y_{\text{hat}} - Y_{\text{true}} \quad \text{(shape: samples × outputs)}
-```
+\end{aligned}
+}
+$$
 
 Step 2: Compute gradients for output layer:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \frac{\partial L}{\partial W_2} = \frac{1}{N} A_1^T \delta_2
-```
-```math
+\end{aligned}
+}
+$$
+$$
+{\textstyle
+\begin{aligned}
 \frac{\partial L}{\partial b_2} = \frac{1}{N} \sum_{i=1}^N \delta_2^{(i)}
-```
+\end{aligned}
+}
+$$
 
 Step 3: Backpropagate error to hidden layer:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \delta_1 = (\delta_2 W_2^T) \odot \sigma'(Z_1) \quad \text{(element-wise multiplication)}
-```
+\end{aligned}
+}
+$$
 
 Step 4: Compute gradients for hidden layer:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \frac{\partial L}{\partial W_1} = \frac{1}{N} X^T \delta_1
-```
-```math
+\end{aligned}
+}
+$$
+$$
+{\textstyle
+\begin{aligned}
 \frac{\partial L}{\partial b_1} = \frac{1}{N} \sum_{i=1}^N \delta_1^{(i)}
-```
+\end{aligned}
+}
+$$
 
 Step 5: Update all parameters using the same learning rate:
-```math
+$$
+{\textstyle
+\begin{aligned}
 W_1 \leftarrow W_1 - \alpha \frac{\partial L}{\partial W_1}
-```
-```math
+\end{aligned}
+}
+$$
+$$
+{\textstyle
+\begin{aligned}
 b_1 \leftarrow b_1 - \alpha \frac{\partial L}{\partial b_1}
-```
-```math
+\end{aligned}
+}
+$$
+$$
+{\textstyle
+\begin{aligned}
 W_2 \leftarrow W_2 - \alpha \frac{\partial L}{\partial W_2}
-```
-```math
+\end{aligned}
+}
+$$
+$$
+{\textstyle
+\begin{aligned}
 b_2 \leftarrow b_2 - \alpha \frac{\partial L}{\partial b_2}
-```
+\end{aligned}
+}
+$$
 
 Understanding the δ terms:
 
@@ -303,9 +395,13 @@ This is why understanding the simple case of line slopes gives us insight into t
 #### 2.1.2 Gradient Fields and Optimization
 
 Gradient Descent as Continuous Flow: Parameter updates $\theta_{t+1} = \theta_t - \eta \nabla_\theta \mathcal{L}$ approximate the ODE:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \frac{d\theta}{dt} = -\nabla_\theta \mathcal{L}(\theta) \quad (3)
-```
+\end{aligned}
+}
+$$
 
 Understanding the symbols:
 
@@ -329,9 +425,13 @@ Why This Matters: Understanding optimization as flow helps explain momentum meth
 #### 2.1.3 Residual Connections as Discretized Dynamics
 
 Residual Block: $\mathbf{h}_{l+1} = \mathbf{h}_l + F(\mathbf{h}_l)$ approximates:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \frac{d\mathbf{h}}{dt} = F(\mathbf{h}) \quad (4)
-```
+\end{aligned}
+}
+$$
 
 What residual connections do intuitively: Think of them as "safety nets" for information. Without residual connections, information would have to successfully pass through every layer to reach the output. With residual connections, information can "skip over" layers that might be learning slowly or poorly.
 
@@ -372,9 +472,13 @@ $$
 $$
 
 Block matrix operations enable parallel processing:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \begin{bmatrix} \mathbf{h}_1 \\ \mathbf{h}_2 \\ \vdots \\ \mathbf{h}_n \end{bmatrix} W = \begin{bmatrix} \mathbf{h}_1 W \\ \mathbf{h}_2 W \\ \vdots \\ \mathbf{h}_n W \end{bmatrix}
-```
+\end{aligned}
+}
+$$
 This processes entire sequences simultaneously instead of word-by-word.
 
 #### 2.2.3 Gradients as Learning Signals
@@ -386,16 +490,24 @@ What gradients mean in neural networks: Gradients tell us "if I adjust this para
 - Zero gradients: Parameter doesn't affect error → don't change it
 
 Chain rule enables credit assignment: In deep networks, we need to know how output errors relate to early layer parameters. The chain rule flows error signals backward through the network:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \frac{\partial \mathcal{L}}{\partial W_1} = \frac{\partial \mathcal{L}}{\partial \mathbf{h}_3} \frac{\partial \mathbf{h}_3}{\partial \mathbf{h}_2} \frac{\partial \mathbf{h}_2}{\partial W_1}
-```
+\end{aligned}
+}
+$$
 
 #### 2.2.4 Softmax and Cross-Entropy: From Scores to Decisions
 
 Softmax converts neural network outputs to probabilities:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \text{softmax}(\mathbf{z})_i = \frac{e^{z_i}}{\sum_{j=1}^n e^{z_j}} \quad (1)
-```
+\end{aligned}
+}
+$$
 
 Why transformers use this combination:
 
@@ -404,9 +516,13 @@ Why transformers use this combination:
 3. Cross-entropy loss measures prediction quality using these probabilities
 
 Cross-Entropy Loss:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \mathcal{L} = -\sum_{i=1}^n y_i \log p_i \quad (2)
-```
+\end{aligned}
+}
+$$
 
 Why cross-entropy is perfect for language modeling:
 
@@ -446,18 +562,26 @@ $$
 ### 3.2 Backpropagation Derivation
 
 Loss Gradient w.r.t. Output:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} = \frac{\partial \mathcal{L}}{\partial \hat{\mathbf{y}}} \quad (16)
-```
+\end{aligned}
+}
+$$
 
 Weight Gradients:
 
-```math
+$$
+{\textstyle
+\begin{aligned}
 \begin{aligned}
 \frac{\partial \mathcal{L}}{\partial W^{(2)}} &= (\mathbf{h}^{(1)})^T \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} \\
 \frac{\partial \mathcal{L}}{\partial W^{(1)}} &= \mathbf{x}^T \left[ \left( \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(2)}} W^{(2)T} \right) \odot \sigma'(\mathbf{z}^{(1)}) \right]
 \end{aligned}
-```
+\end{aligned}
+}
+$$
 
 where $$\odot$$ denotes element-wise multiplication.
 
@@ -475,9 +599,13 @@ $$
 ### 3.3 Advanced Normalization Techniques
 
 LayerNorm: Normalizes across features within each sample:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \text{LayerNorm}(\mathbf{x}) = \gamma \odot \frac{\mathbf{x} - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta \quad (19)
-```
+\end{aligned}
+}
+$$
 
 Shape Analysis: For $\mathbf{x} \in \mathbb{R}^{n \times d}$: $\gamma, \beta \in \mathbb{R}^{d}$ (learnable per-feature parameters)
 
@@ -504,16 +632,24 @@ Why LayerNorm for Sequences: Unlike BatchNorm, it doesn't depend on batch statis
 ### 3.4 Alternative Normalization Methods
 
 RMSNorm (Root Mean Square Norm): Simplifies LayerNorm by removing the mean:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \text{RMSNorm}(\mathbf{x}) = \gamma \odot \frac{\mathbf{x}}{\sqrt{\frac{1}{d}\sum_{i=1}^d x_i^2 + \epsilon}}
-```
+\end{aligned}
+}
+$$
 
 Benefits: Faster computation, similar performance to LayerNorm.
 
 Scaled Residuals: In very deep networks, scale residual connections:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \mathbf{h}_{l+1} = \mathbf{h}_l + \alpha \cdot F(\mathbf{h}_l)
-```
+\end{aligned}
+}
+$$
 where $\alpha < 1$ prevents residual explosion.
 
 Pre-LN vs Post-LN:
@@ -534,14 +670,22 @@ Pre-LN advantages: Better gradient flow, more stable training, enables training 
 ### 4.1 Distance Metrics in High Dimensions
 
 Euclidean Distance: 
-```math
+$$
+{\textstyle
+\begin{aligned}
 d_2(\mathbf{u}, \mathbf{v}) = \|\mathbf{u} - \mathbf{v}\|_2
-```
+\end{aligned}
+}
+$$
 
 Cosine Similarity: 
-```math
+$$
+{\textstyle
+\begin{aligned}
 \cos(\theta) = \frac{\mathbf{u}^T \mathbf{v}}{\|\mathbf{u}\|_2 \|\mathbf{v}\|_2}
-```
+\end{aligned}
+}
+$$
 
 Concentration of Measure: In high dimensions, most random vectors are approximately orthogonal, making cosine similarity more discriminative than Euclidean distance.
 
@@ -555,9 +699,13 @@ Using simple example vectors to illustrate the concepts:
 #### 4.2.1 Cosine Similarity
 
 Formula: 
-```math
+$$
+{\textstyle
+\begin{aligned}
 \cos(\theta) = \frac{\mathbf{A} \cdot \mathbf{B}}{\|\mathbf{A}\| \times \|\mathbf{B}\|}
-```
+\end{aligned}
+}
+$$
 
 Step-by-step calculation:
 
@@ -573,9 +721,13 @@ Interpretation: Values range from -1 (opposite) to 1 (identical). 0.97 indicates
 #### 4.2.2 Euclidean Distance
 
 Formula: 
-```math
+$$
+{\textstyle
+\begin{aligned}
 d = \sqrt{(x_1-x_2)^2 + (y_1-y_2)^2 + (z_1-z_2)^2}
-```
+\end{aligned}
+}
+$$
 
 Step-by-step calculation:
 
@@ -592,9 +744,13 @@ When to use each:
 ### 4.3 Maximum Inner Product Search (MIPS)
 
 Problem: Find 
-```math
+$$
+{\textstyle
+\begin{aligned}
 \mathbf{v}^* = \arg\max_{\mathbf{v} \in \mathcal{V}} \mathbf{q}^T \mathbf{v}
-```
+\end{aligned}
+}
+$$
 
 This is exactly what attention computes when finding relevant keys for a given query!
 
@@ -609,14 +765,22 @@ Connection to Attention: Query-key similarity in attention is inner product sear
 ### 5.1 Deriving Scaled Dot-Product Attention
 
 Step 1: Start with similarity search between query $\mathbf{q}$ and keys $\{\mathbf{k}_i\}$:
-```math
+$$
+{\textstyle
+\begin{aligned}
 s_i = \mathbf{q}^T \mathbf{k}_i \quad (20)
-```
+\end{aligned}
+}
+$$
 
 Step 2: Convert similarities to weights via softmax:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \alpha_i = \frac{e^{s_i}}{\sum_{j=1}^n e^{s_j}} \quad (21)
-```
+\end{aligned}
+}
+$$
 
 Understanding $\alpha$ (alpha): These are the attention weights - they tell us "how much should I pay attention to each word?" The $\alpha_i$ values all add up to 1, like percentages.
 
@@ -631,16 +795,24 @@ Why use softmax instead of just raw similarities?
 Real-world analogy: Like deciding how much attention to give each person in a room - you don't ignore everyone except one person (hard max), but you do focus more on the most interesting people while still being somewhat aware of others.
 
 Step 3: Aggregate values using weights:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \mathbf{o} = \sum_{i=1}^n \alpha_i \mathbf{v}_i \quad (22)
-```
+\end{aligned}
+}
+$$
 
 What this step does: Take a weighted average of all the value vectors. It's like saying "give me 30% of word 1's information, 50% of word 2's information, and 20% of word 3's information."
 
 Matrix Form: For sequences, this becomes:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V \quad (23)
-```
+\end{aligned}
+}
+$$
 
 Shape Analysis: $Q \in \mathbb{R}^{n \times d_k}, K \in \mathbb{R}^{n \times d_k}, V \in \mathbb{R}^{n \times d_v} \Rightarrow \text{Output} \in \mathbb{R}^{n \times d_v}$
 
@@ -662,9 +834,13 @@ Library analogy: Think of attention like a smart librarian. Q is your question (
 ### 5.4 Masked Attention
 
 Causal Masking: For autoregressive models, prevent attention to future tokens:
-```math
+$$
+{\textstyle
+\begin{aligned}
 P = \text{softmax}\left(\frac{QK^T + M}{\sqrt{d_k}}\right) \quad (24)
-```
+\end{aligned}
+}
+$$
 
 where mask $M_{ij} \in \{0, -\infty\}$ with $M_{ij} = -\infty$ if $i < j$ (future positions).
 
@@ -679,9 +855,13 @@ Key Insight: Additive masking (adding $-\infty$) is preferred over multiplicativ
 ### 5.2 Why the $\sqrt{d_k}$ Scaling?
 
 Variance Analysis: If $Q, K$ have i.i.d. entries with variance $\sigma^2$, then:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \text{Var}(QK^T) = d_k \sigma^4 \quad (24)
-```
+\end{aligned}
+}
+$$
 
 Understanding $\sigma$ (sigma): This represents the variance - how spread out the numbers are. Think of it as measuring "how noisy" or "how varied" the data is.
 
@@ -694,9 +874,13 @@ Pitfall: Forgetting this scaling leads to attention collapse - weights become to
 ### 5.3 Backpropagation Through Attention
 
 Softmax Gradient: For $\mathbf{p} = \text{softmax}(\mathbf{z})$:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \frac{\partial p_i}{\partial z_j} = p_i(\delta_{ij} - p_j) \quad (25)
-```
+\end{aligned}
+}
+$$
 
 where $\delta_{ij}$ is the Kronecker delta.
 
@@ -706,14 +890,18 @@ Attention Gradients:
 
 Let $S = QK^T/\sqrt{d_k}$, $P=\mathrm{softmax}(S)$ (row-wise), $O = PV$. Given $G_O=\partial \mathcal{L}/\partial O$:
 
-```math
+$$
+{\textstyle
+\begin{aligned}
 \begin{aligned}
 G_V &= P^T G_O,\quad &&\text{(V same shape as }V\text{)}\\
 G_P &= G_O V^T,\\
 G_{S,r} &= \big(\mathrm{diag}(P_r) - P_r P_r^T\big)\, G_{P,r}\quad &&\text{(row }r\text{; softmax Jacobian)}\\
 G_Q &= G_S K/\sqrt{d_k},\quad G_K = G_S^T Q/\sqrt{d_k}.
 \end{aligned}
-```
+\end{aligned}
+}
+$$
 
 Parameters: $Q,K\in\mathbb{R}^{n\times d_k}$, $V\in\mathbb{R}^{n\times d_v}$.
 Intuition: Backprop splits into (i) linear parts, (ii) softmax Jacobian per row.
@@ -725,14 +913,22 @@ Intuition: Backprop splits into (i) linear parts, (ii) softmax Jacobian per row.
 ### 6.1 Multi-Head as Subspace Projections
 
 Single Head: Projects to subspace of dimension $d_k = d_{\text{model}}/h$:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V) \quad (26)
-```
+\end{aligned}
+}
+$$
 
 Multi-Head Combination:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^O \quad (27)
-```
+\end{aligned}
+}
+$$
 
 Why multiple heads instead of one big head? Different heads can specialize in different types of relationships:
 
@@ -800,12 +996,16 @@ $$
 ### 6.2 Advanced Positional Encodings
 
 Sinusoidal Encoding: Provides absolute position information:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \begin{align}
 PE_{(pos,2i)} &= \sin(pos/10000^{2i/d_{\text{model}}}) \quad (28)\\
 PE_{(pos,2i+1)} &= \cos(pos/10000^{2i/d_{\text{model}}}) \quad (29)
 \end{align}
-```
+\end{aligned}
+}
+$$
 
 Mathematical Properties of Sinusoidal Encoding:
 
@@ -820,20 +1020,28 @@ $$
 $$
 
 RoPE (Rotary Position Embedding): Rotates query-key pairs by position-dependent angles:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \begin{align}
 \mathbf{q}_m^{(i)} &= R_{\Theta,m}^{(i)} \mathbf{q}^{(i)} \quad (30)\\
 \mathbf{k}_n^{(i)} &= R_{\Theta,n}^{(i)} \mathbf{k}^{(i)} \quad (31)
 \end{align}
-```
+\end{aligned}
+}
+$$
 
 RoPE Rotation Matrix:
-```math
+$$
+{\textstyle
+\begin{aligned}
 R_{\Theta,m}^{(i)} = \begin{pmatrix}
 \cos(m\theta_i) & -\sin(m\theta_i) \\
 \sin(m\theta_i) & \cos(m\theta_i)
 \end{pmatrix}
-```
+\end{aligned}
+}
+$$
 
 where $\theta_i = 10000^{-2i/d_{\text{model}}}$ for dimension pairs.
 
@@ -858,9 +1066,13 @@ RoPE Implementation Insight: Instead of rotating the full vectors, RoPE applies 
 ### 6.3 Alternative Position Encodings
 
 ALiBi (Attention with Linear Biases): Adds position-dependent bias to attention scores:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \text{ALiBi-Attention} = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}} + \text{bias}_{ij}\right)V
-```
+\end{aligned}
+}
+$$
 
 where $\text{bias}_{ij} = -m \cdot |i - j|$ and $m$ is a head-specific slope.
 
@@ -877,9 +1089,13 @@ $$
 $$
 
 T5 Relative Position Bias: Learns relative position embeddings:
-```math
+$$
+{\textstyle
+\begin{aligned}
 A_{ij} = \frac{q_i^T k_j}{\sqrt{d_k}} + b_{\text{rel}(i,j)}
-```
+\end{aligned}
+}
+$$
 
 where $b_{\text{rel}(i,j)}$ is a learned bias based on relative distance $\text{rel}(i,j)$.
 
@@ -900,19 +1116,27 @@ $$
 ### 7.1 Complete Block Equations
 
 Pre-LayerNorm Architecture:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \begin{align}
 \mathbf{h}_1 &= \text{LayerNorm}(\mathbf{x}) \quad (32)\\
 \mathbf{h}_2 &= \mathbf{x} + \text{MultiHeadAttn}(\mathbf{h}_1, \mathbf{h}_1, \mathbf{h}_1) \quad (33)\\
 \mathbf{h}_3 &= \text{LayerNorm}(\mathbf{h}_2) \quad (34)\\
 \mathbf{y} &= \mathbf{h}_2 + \text{FFN}(\mathbf{h}_3) \quad (35)
 \end{align}
-```
+\end{aligned}
+}
+$$
 
 Feed-Forward Network:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \text{FFN}(\mathbf{x}) = \text{GELU}(\mathbf{x}W_1 + \mathbf{b}_1)W_2 + \mathbf{b}_2 \quad (36)
-```
+\end{aligned}
+}
+$$
 
 Shape Analysis: $\mathbf{x} \in \mathbb{R}^{n \times d_{\text{model}}}, W_1 \in \mathbb{R}^{d_{\text{model}} \times d_{\text{ffn}}}, W_2 \in \mathbb{R}^{d_{\text{ffn}} \times d_{\text{model}}}$
 
@@ -934,9 +1158,13 @@ $$
 ### 7.2 Why GELU over ReLU?
 
 GELU Definition:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \text{GELU}(x) = x \cdot \Phi(x) \quad (37)
-```
+\end{aligned}
+}
+$$
 
 What GELU does intuitively: GELU is like a "smooth switch." Unlike ReLU which harshly cuts off negative values to zero, GELU gradually transitions from "mostly off" to "mostly on." It asks "how much should I activate this neuron?" and gives a smooth answer between 0 and the input value.
 
@@ -955,9 +1183,13 @@ where $\Phi(x)$ is the standard normal CDF (cumulative distribution function - t
 ### 8.1 Next-Token Prediction
 
 Autoregressive Objective:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \mathcal{L} = -\sum_{t=1}^T \log P(x_t | x_1, ..., x_{t-1}) \quad (38)
-```
+\end{aligned}
+}
+$$
 
 Shape Analysis: For batch size $B$, sequence length $T$: loss computed per sequence, averaged over batch
 
@@ -966,16 +1198,24 @@ Implementation: Use causal mask in attention to prevent information leakage from
 ### 8.2 Embedding Mathematics
 
 Token Embeddings: Map discrete tokens to continuous vectors:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \mathbf{e}_i = E[i] \in \mathbb{R}^{d_{\text{model}}} \quad (39)
-```
+\end{aligned}
+}
+$$
 
 where $E \in \mathbb{R}^{V \times d_{\text{model}}}$ is the embedding matrix.
 
 Weight Tying: Share embedding matrix $E$ with output projection to reduce parameters:
-```math
+$$
+{\textstyle
+\begin{aligned}
 P(w_t | \text{context}) = \text{softmax}(\mathbf{h}_t E^T) \quad (40)
-```
+\end{aligned}
+}
+$$
 
 Shape Analysis: For $\mathbf{h}_t \in \mathbb{R}^{1 \times d_{\text{model}}}$ and $E \in \mathbb{R}^{V \times d_{\text{model}}}$:
 
@@ -990,9 +1230,13 @@ $$
 
 Perplexity: Measures model uncertainty:
 
-```math
+$$
+{\textstyle
+\begin{aligned}
 \mathrm{PPL} = \exp\left(-\frac{1}{T} \sum_{t=1}^{T} \log P\left(x_t \mid x_{<t}\right) \right) \quad (41)
-```
+\end{aligned}
+}
+$$
 
 > Note: This equation may not render correctly in GitHub. Use a Markdown viewer!
 
@@ -1009,14 +1253,22 @@ Q = [[1, 0, 1],    K = [[1, 1, 0],    V = [[2, 0, 1],
 ```
 
 Step 1: Compute raw scores $QK^T$:
-```math
+$$
+{\textstyle
+\begin{aligned}
 QK^T = \begin{bmatrix}1 & 0 & 1\\0 & 1 & 1\end{bmatrix} \begin{bmatrix}1 & 1\\1 & 0\\0 & 1\end{bmatrix} = \begin{bmatrix}1 & 2\\1 & 1\end{bmatrix}
-```
+\end{aligned}
+}
+$$
 
 Step 2: Scale by $1/\sqrt{d_k} = 1/\sqrt{3} \approx 0.577$:
-```math
+$$
+{\textstyle
+\begin{aligned}
 S = \frac{QK^T}{\sqrt{3}} = \begin{bmatrix}0.577 & 1.155\\0.577 & 0.577\end{bmatrix}
-```
+\end{aligned}
+}
+$$
 
 Step 3: Apply softmax (row-wise, rounded to 3 d.p.):
 
@@ -1029,31 +1281,47 @@ $$
 }
 $$
 
-```math
+$$
+{\textstyle
+\begin{aligned}
 A = \begin{bmatrix}
 0.359 & 0.641 \\
 0.500 & 0.500
 \end{bmatrix}
-```
+\end{aligned}
+}
+$$
 
 Step 4: Compute output $O = AV$:
-```math
+$$
+{\textstyle
+\begin{aligned}
 O = \begin{bmatrix}0.359 & 0.641\\0.500 & 0.500\end{bmatrix} \begin{bmatrix}2 & 0 & 1\\1 & 1 & 0\end{bmatrix} = \begin{bmatrix}1.359 & 0.641 & 0.359\\1.500 & 0.500 & 0.500\end{bmatrix}
-```
+\end{aligned}
+}
+$$
 
 💻 Implementation Example: For attention computation verification, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
 
 ### 9.2 Backprop Through Simple Attention
 
 Given: 
-```math
+$$
+{\textstyle
+\begin{aligned}
 \frac{\partial \mathcal{L}}{\partial O} = \begin{bmatrix}1 & 0 & 1\\0 & 1 & 0\end{bmatrix}
-```
+\end{aligned}
+}
+$$
 
 Gradient w.r.t. Values:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \frac{\partial \mathcal{L}}{\partial V} = A^T \frac{\partial \mathcal{L}}{\partial O} = \begin{bmatrix}0.359 & 0.500\\0.641 & 0.500\end{bmatrix}\begin{bmatrix}1 & 0 & 1\\0 & 1 & 0\end{bmatrix} = \begin{bmatrix}0.359 & 0.500 & 0.359\\0.641 & 0.500 & 0.641\end{bmatrix}
-```
+\end{aligned}
+}
+$$
 
 💻 Implementation Example: For gradient verification using finite differences, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
 

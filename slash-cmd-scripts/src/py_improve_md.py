@@ -73,6 +73,7 @@ class IssueType(Enum):
                                      "(should be blocks)")
     CONSECUTIVE_BOLD_WITHOUT_SPACING = "Consecutive bold text lines without proper spacing"
     TEXT_TO_LIST_MISSING_BLANK_LINE = "Missing blank line before list item after text"
+    MATH_CODE_FENCE_BLOCKS = "```math code fence blocks (convert to MathJax)"
 
 
 @dataclass
@@ -146,6 +147,7 @@ PATTERNS = {
     'escaped_underscore_in_code': re.compile(r'\\_'),
     'inline_display_math_in_prose': re.compile(r'^(?!\s*\$\$\s*$).*\$\$[^$]+\$\$.*\S'),
     'consecutive_bold_lines': re.compile(r'^\*\*[^*]+\*\*:?\s*$'),
+    'math_code_fence': re.compile(r'^\s*```math\s*$'),
 }
 
 
@@ -696,6 +698,30 @@ class MarkdownMathDetector:
                 ))
         return issues
 
+    def detect_math_code_fence_blocks(self) -> List[DetectionResult]:
+        """Detect ```math code fence blocks that should be converted to MathJax."""
+        issues = []
+        in_math_fence = False
+        start_line = 0
+
+        for i, line in enumerate(self.lines):
+            if PATTERNS['math_code_fence'].match(line):
+                if not in_math_fence:
+                    # Found opening ```math fence
+                    in_math_fence = True
+                    start_line = i + 1
+                    issues.append(DetectionResult(
+                        line_number=start_line,
+                        issue_type=IssueType.MATH_CODE_FENCE_BLOCKS,
+                        content="```math block should be converted to MathJax $$\\begin{aligned}",
+                        context_lines=self._get_context_lines(start_line)
+                    ))
+                else:
+                    # Found closing ``` fence
+                    in_math_fence = False
+
+        return issues
+
     def run_all_detectors(self) -> Dict[str, List[DetectionResult]]:
         """
         Run all detection methods and return results grouped by detector type.
@@ -747,6 +773,7 @@ class MarkdownMathDetector:
                 (self.detect_unpaired_math_delimiters, "Unpaired math delimiters"),
                 (self.detect_stray_braces_with_math, "Stray braces with math"),
                 (self.detect_bold_markdown_in_math, "Bold Markdown in math"),
+                (self.detect_math_code_fence_blocks, "Math code fence blocks"),
             ],
         }
 
@@ -815,6 +842,7 @@ class MarkdownMathDetector:
                 (self.detect_unpaired_math_delimiters, "Unpaired math delimiters"),
                 (self.detect_stray_braces_with_math, "Stray braces with math"),
                 (self.detect_bold_markdown_in_math, "Bold Markdown in math"),
+                (self.detect_math_code_fence_blocks, "Math code fence blocks"),
             ],
         }
 

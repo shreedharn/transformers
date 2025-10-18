@@ -275,10 +275,11 @@ This provides a comprehensive or targeted report of markdown formatting and LaTe
 - Bold text spacing issues and missing blank lines after headings
 - Escaped underscores in code blocks (breaks syntax highlighting)
 
-**6. Syntax Category (3 detectors):**
+**6. Syntax Category (4 detectors):**
 - Unpaired mathematical delimiters and stray braces
 - Bold markdown mixed within LaTeX expressions
 - Context-specific underscore escaping violations
+- Math code fence blocks (````math` that should be MathJax)
 
 
 ## Quality Verification Checklist
@@ -771,5 +772,37 @@ $$
 ```markdown
 **Input:** $$x\_1 = [0.5, 0.2]$$ **Memory:** $$h\_0 = [0.0, 0.0]$$
 ```
+
+**Edge Case 10: Math Code Fence Blocks (````math`)**
+
+**Before (Incorrect - GitHub-style ```math fence):**
+````markdown
+The Derivative as Slope: For any function $f(x)$, the derivative $\frac{df}{dx}$ tells us the slope at any point:
+
+```math
+\frac{df}{dx} = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
+```
+````
+
+**After (Correct - Professional MathJax with prose in text blocks):**
+```markdown
+The Derivative as Slope:
+
+$$
+{\textstyle
+\begin{aligned}
+\text{For any function } f(x), \text{ the derivative } \frac{df}{dx} \text{ tells us the slope at any point:} \newline
+\frac{df}{dx} = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
+\end{aligned}
+}
+$$
+```
+
+**Why this transformation is important:**
+
+1. **Separates prose from math**: Descriptive text is moved into `\text{...}` blocks within the aligned environment
+2. **Professional LaTeX format**: Uses `$${\textstyle\begin{aligned}...\end{aligned}}$$` instead of GitHub's ````math` fence
+3. **Better rendering**: MathJax renders more consistently across platforms than ````math` blocks
+4. **Unified style**: Maintains consistency with other mathematical expressions in the document
 
 The improve-md command provides comprehensive markdown enhancement by intelligently applying the right formatting approach for each content type while maintaining strict separation between mathematical and descriptive elements. The python detector CLI design with separate `--category` and `--detector` switches enables progressive discovery and targeted analysis of formatting issues.
