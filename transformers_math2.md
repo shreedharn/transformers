@@ -31,9 +31,13 @@ Additional Resources:
 ### 8.1 Initialization Strategies
 
 Xavier/Glorot for Linear Layers:
-```math
+$$
+{\textstyle
+\begin{aligned}
 W \sim \mathcal{N}\left(0, \frac{2}{n_{\text{in}} + n_{\text{out}}}\right) \quad (49)
-```
+\end{aligned}
+}
+$$
 
 Attention-Specific: Initialize query/key projections with smaller variance to prevent attention collapse (overly peaked attention distributions).
 
@@ -53,12 +57,13 @@ Global Norm Clipping: As detailed in equation (11), we clip gradients to prevent
 📚 Quick Reference: See [Adam Optimizer](./math_quick_ref.md#mathematical-quick-reference-for-neural-networks) and [Gradient Descent](./math_quick_ref.md#mathematical-quick-reference-for-neural-networks) in the mathematical reference table.
 
 SGD with Momentum:
-```math
-\begin{align}
+
+$$
+\begin{aligned}
 \mathbf{v}_t &= \beta \mathbf{v}_{t-1} + (1-\beta) \nabla_\theta \mathcal{L} \quad (5)\\
 \theta_t &= \theta_{t-1} - \eta \mathbf{v}_t \quad (6)
-\end{align}
-```
+\end{aligned}
+$$
 
 What momentum does: Like a ball rolling down a hill. Instead of just following the current slope (gradient), momentum keeps some memory of where you were going before. This helps you:
 
@@ -82,15 +87,22 @@ $$
 $$
 
 Adam Optimizer: Combines momentum with adaptive learning rates:
-```math
-\begin{align}
+
+$$
+\begin{aligned}
 \mathbf{m}_t &= \beta_1 \mathbf{m}_{t-1} + (1-\beta_1) \nabla_\theta \mathcal{L} \quad (7)\\
 \mathbf{v}_t &= \beta_2 \mathbf{v}_{t-1} + (1-\beta_2) (\nabla_\theta \mathcal{L})^2 \quad (8)\\
 \theta_t &= \theta_{t-1} - \eta \frac{\hat{\mathbf{m}}_t}{\sqrt{\hat{\mathbf{v}}_t} + \epsilon} \quad (9)
-\end{align}
-```
+\end{aligned}
+$$
 
-where $\hat{\mathbf{m}}_t$, $\hat{\mathbf{v}}_t$ are bias-corrected estimates.
+with bias-corrected estimates defined as:
+
+$$
+\begin{aligned}
+\hat{\mathbf{m}}_t, \hat{\mathbf{v}}_t \quad \text{(bias-corrected first and second moment estimates)}
+\end{aligned}
+$$
 
 What Adam does - explained simply:
 
@@ -120,7 +132,14 @@ $$
 }
 $$
 
-Bias correction intuition: At the beginning, $\mathbf{m}_0 = \mathbf{v}_0 = 0$, so the averages are biased toward zero. We correct for this by dividing by $(1-\beta^t)$, which starts small and approaches 1.
+Bias correction intuition: At the beginning, the moment estimates are initialized to zero, creating a bias. The correction mechanism addresses this:
+
+$$
+\begin{aligned}
+\mathbf{m}_0 = \mathbf{v}_0 &= 0 \quad \text{(initial bias toward zero)} \newline
+\text{Correction factor:} \quad &(1-\beta^t) \quad \text{(starts small and approaches 1)}
+\end{aligned}
+$$
 
 Car analogy: Adam is like cruise control that:
 
@@ -133,18 +152,34 @@ Car analogy: Adam is like cruise control that:
 AdamW vs Adam: AdamW decouples weight decay from gradient-based updates:
 
 Adam with L2 regularization:
-```math
+
+$$
+{\textstyle
+\begin{aligned}
 \theta_t = \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon} - \eta \lambda \theta_{t-1}
-```
+\end{aligned}
+}
+$$
 
 AdamW (decoupled weight decay):
-```math
+$$
+{\textstyle
+\begin{aligned}
 \theta_t = (1 - \eta \lambda) \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}
-```
+\end{aligned}
+}
+$$
 
 Why AdamW is better: Weight decay is applied regardless of gradient magnitude, leading to better generalization.
 
-$\beta_2$ Warmup: Start with high $\beta_2$ (e.g., 0.99) and gradually decrease to final value (e.g., 0.999) over first few thousand steps. Helps with training stability.
+Beta-2 Warmup: Gradually adjust the second moment decay parameter for improved training stability:
+
+$$
+\begin{aligned}
+\beta_2^{\text{initial}} &\approx 0.99 \quad \text{(high initial value)} \newline
+\beta_2^{\text{final}} &\approx 0.999 \quad \text{(gradually decrease over first few thousand steps)}
+\end{aligned}
+$$
 
 Gradient Accumulation: Simulate larger batch sizes:
 💻 Implementation Example: For gradient accumulation implementation, see [Optimization Notebook](./pynb/math_ref/optimization.ipynb)
@@ -154,9 +189,13 @@ Gradient Accumulation: Simulate larger batch sizes:
 Why do we need schedules? Think of learning to drive: you start slow in the parking lot (warmup), drive at normal speed on the highway (main training), then slow down carefully when approaching your destination (decay).
 
 Warmup: Gradually increase learning rate to avoid early instability:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \eta_t = \eta_{\text{max}} \cdot \min\left(\frac{t}{T_{\text{warmup}}}, 1\right) \quad (10)
-```
+\end{aligned}
+}
+$$
 
 Why warmup works:
 
@@ -175,16 +214,24 @@ Why cosine decay?
 - Mathematical smoothness: Cosine provides a natural, smooth curve from 1 to 0
 
 Formula:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \eta_t = \eta_{\text{max}} \cdot 0.5 \left(1 + \cos\left(\pi \cdot \frac{t - T_{\text{warmup}}}{T_{\text{total}} - T_{\text{warmup}}}\right)\right)
-```
+\end{aligned}
+}
+$$
 
 Real-world analogy: Like landing an airplane - you approach fast, then gradually slow down for a smooth landing, not a crash.
 
 Original Transformer Schedule: Combines warmup with inverse square root decay:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \eta_t = d_{\text{model}}^{-0.5} \cdot \min(t^{-0.5}, t \cdot T_{\text{warmup}}^{-1.5})
-```
+\end{aligned}
+}
+$$
 
 When to use cosine vs original: Cosine for fine-tuning and shorter training; original schedule for training from scratch with very large models.
 
@@ -195,9 +242,13 @@ The Problem: Sometimes gradients become extremely large (exploding gradients), c
 The Solution: Clip (limit) the gradients to a maximum norm.
 
 Global Norm Clipping:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \tilde{g} = \min\left(1, \frac{c}{\|\mathbf{g}\|_2}\right) \mathbf{g} \quad (11)
-```
+\end{aligned}
+}
+$$
 
 What this does intuitively:
 
@@ -230,11 +281,21 @@ $$
 ### 9.5 Numerical Stability
 
 Log-Sum-Exp Trick: For numerical stability in softmax:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \log\left(\sum_{i=1}^n e^{x_i}\right) = c + \log\left(\sum_{i=1}^n e^{x_i - c}\right) \quad (12)
-```
+\end{aligned}
+}
+$$
 
-where $c = \max_i x_i$ prevents overflow.
+with the stabilization parameter preventing numerical overflow:
+
+$$
+\begin{aligned}
+c = \max_i x_i \quad \text{(maximum value for numerical stability)}
+\end{aligned}
+$$
 
 ## 10. Efficient Attention & Scaling
 
@@ -251,7 +312,13 @@ $$
 }
 $$
 
-Memory Bottleneck: Attention matrix $A \in \mathbb{R}^{n \times n}$ dominates memory usage for long sequences.
+Memory Bottleneck: The attention matrix dominates memory usage for long sequences:
+
+$$
+\begin{aligned}
+A \in \mathbb{R}^{n \times n} \quad \text{(quadratic memory requirement)}
+\end{aligned}
+$$
 
 Detailed Complexity Breakdown:
 
@@ -274,7 +341,13 @@ Scaling Challenges:
 
 ### 10.2 FlashAttention: Memory-Efficient Attention
 
-Core Idea: Compute attention without materializing the full $n \times n$ attention matrix.
+Core Idea: Compute attention without materializing the full attention matrix:
+
+$$
+\begin{aligned}
+n \times n \text{ attention matrix} \quad \text{(avoided through tiling)}
+\end{aligned}
+$$
 
 Tiling Strategy:
 
@@ -289,7 +362,14 @@ $$
 }
 $$
 
-Memory Reduction: From $O(n^2)$ to $O(n)$ memory complexity for the attention computation.
+Memory Reduction: FlashAttention achieves significant memory savings:
+
+$$
+\begin{aligned}
+\text{Standard:} \quad &O(n^2) \text{ memory} \newline
+\text{FlashAttention:} \quad &O(n) \text{ memory}
+\end{aligned}
+$$
 
 Speed Improvement: Better GPU utilization through reduced memory bandwidth requirements.
 
@@ -340,9 +420,11 @@ Key Insight: During generation, keys and values for previous tokens don't change
 
 Cache Update:
 
-```math
-K_{\text{cache}} \gets \mathrm{concat}(K_{\text{cache}},\ k_{\text{new}}) \tag{42}
-```
+$$
+\begin{aligned}
+K_{\text{cache}} \gets \mathrm{concat}(K_{\text{cache}},\ k_{\text{new}}) \quad (42)
+\end{aligned}
+$$
 
 $$
 {\textstyle
@@ -357,48 +439,106 @@ $$
 
 At each generation step, append the new key and value to the cache, then compute attention using the full cache.
 
-Memory Trade-off: Cache size grows as $O(nd)$ but eliminates $O(n^2)$ recomputation.
+Memory Trade-off: KV caching balances memory and computation:
+
+$$
+\begin{aligned}
+\text{Cache growth:} \quad &O(nd) \text{ memory} \newline
+\text{Recomputation saved:} \quad &O(n^2) \text{ operations eliminated}
+\end{aligned}
+$$
 
 💻 Implementation Example: For KV Cache implementation, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
 
 ### 10.5 Linear Attention Approximations
 
-Kernel Method View: Approximate $\text{softmax}(\mathbf{q}^T\mathbf{k})$ with $\phi(\mathbf{q})^T \phi(\mathbf{k})$ for feature map $\phi$.
+Kernel Method View: Use feature maps to approximate softmax attention:
+
+$$
+\begin{aligned}
+\text{Original:} \quad &\text{softmax}(\mathbf{q}^T\mathbf{k}) \newline
+\text{Approximation:} \quad &\phi(\mathbf{q})^T \phi(\mathbf{k}) \quad \text{(feature map } \phi\text{)}
+\end{aligned}
+$$
 
 Linear Attention:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \text{LinAttn}(Q,K,V) = \frac{\phi(Q)(\phi(K)^T V)}{\phi(Q)(\phi(K)^T \mathbf{1})} \quad (45)
-```
+\end{aligned}
+}
+$$
 
-Complexity Reduction: Reduces from $O(n^2 d)$ to $O(nd^2)$ when $d < n$.
+Complexity Reduction: Linear attention improves computational complexity:
+
+$$
+\begin{aligned}
+\text{Standard:} \quad &O(n^2 d) \newline
+\text{Linear:} \quad &O(nd^2) \quad \text{(beneficial when } d < n\text{)}
+\end{aligned}
+$$
 
 ## 11. Regularization, Generalization, and Calibration
 
 ### 11.1 Dropout in Transformers
 
 Attention Dropout: Applied to attention weights:
-```math
+$$
+{\textstyle
+\begin{aligned}
 A_{\text{dropped}} = \text{Dropout}(\text{softmax}(QK^T/\sqrt{d_k})) \quad (46)
-```
+\end{aligned}
+}
+$$
 
 FFN Dropout: Applied after first linear transformation:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \text{FFN}(\mathbf{x}) = W_2 \cdot \text{Dropout}(\text{GELU}(W_1 \mathbf{x})) \quad (47)
-```
+\end{aligned}
+}
+$$
 
 ### 11.2 Evaluation and Calibration
 
 Expected Calibration Error (ECE): Measures how well predicted probabilities match actual outcomes:
-```math
+$$
+{\textstyle
+\begin{aligned}
 \text{ECE} = \sum_{m=1}^M \frac{|B_m|}{n} |\text{acc}(B_m) - \text{conf}(B_m)|
-```
-where $B_m$ are probability bins, $\text{acc}$ is accuracy, $\text{conf}$ is confidence.
+\end{aligned}
+}
+$$
+
+with the following components:
+
+$$
+\begin{aligned}
+B_m &: \text{Probability bins} \newline
+\text{acc}(B_m) &: \text{Accuracy in bin } m \newline
+\text{conf}(B_m) &: \text{Confidence in bin } m
+\end{aligned}
+$$
 
 Temperature Scaling: Post-training calibration method:
-```math
+$$
+{\textstyle
+\begin{aligned}
 P_{\text{cal}}(y|x) = \text{softmax}(\mathbf{z}/T)
-```
-where $T > 1$ makes predictions less confident, $T < 1$ more confident.
+\end{aligned}
+}
+$$
+
+with temperature parameter controlling confidence:
+
+$$
+\begin{aligned}
+T > 1 &: \text{Less confident predictions (smoother distribution)} \newline
+T < 1 &: \text{More confident predictions (sharper distribution)}
+\end{aligned}
+$$
 
 Perplexity Dependence on Tokenizer: PPL comparisons only valid with same tokenizer. Different tokenizers create different sequence lengths and vocabulary sizes.
 
@@ -436,9 +576,13 @@ $$
 ### 11.4 Label Smoothing
 
 Smooth Labels: Replace one-hot targets with:
-```math
+$$
+{\textstyle
+\begin{aligned}
 y_{\text{smooth}} = (1-\alpha) y_{\text{true}} + \frac{\alpha}{V} \mathbf{1} \quad (48)
-```
+\end{aligned}
+}
+$$
 
 Effect on Gradients: Prevents overconfident predictions and improves calibration.
 
@@ -447,13 +591,29 @@ Effect on Gradients: Prevents overconfident predictions and improves calibration
 ### 14.1 High-Dimensional Distance Misconceptions
 
 Pitfall: Using Euclidean distance instead of cosine similarity in high dimensions.
-Fix: In $d > 100$, most vectors are approximately orthogonal, making cosine similarity more discriminative.
+
+Fix: In high-dimensional spaces, cosine similarity is more discriminative:
+
+$$
+\begin{aligned}
+d > 100 \quad \text{(most vectors are approximately orthogonal)}
+\end{aligned}
+$$
 
 ### 14.2 Attention Scaling Mistakes
 
-Pitfall: Forgetting $1/\sqrt{d_k}$ scaling or using wrong dimension.
+Pitfall: Forgetting the proper scaling factor or using wrong dimension.
+
 Symptom: Attention weights become too peaked, leading to poor gradients.
-Fix: Always scale by $\sqrt{d_k}$ where $d_k$ is the key dimension. Note that $d_k=d_{\text{model}}/h$ under common implementations.
+
+Fix: Always apply the correct scaling:
+
+$$
+\begin{aligned}
+\text{Scaling factor:} \quad &1/\sqrt{d_k} \newline
+\text{Key dimension:} \quad &d_k = d_{\text{model}}/h \quad \text{(common implementation)}
+\end{aligned}
+$$
 
 ### 14.3 LayerNorm Placement
 
@@ -464,7 +624,14 @@ Modern Practice: Apply LayerNorm before attention and FFN blocks.
 ### 14.4 Softmax Temperature Misuse
 
 Pitfall: Applying temperature scaling inconsistently.
-Correct Usage: Temperature $\tau$ in $\text{softmax}(\mathbf{z}/\tau)$ controls sharpness:
+
+Correct Usage: Use temperature parameter to control distribution sharpness:
+
+$$
+\begin{aligned}
+\text{softmax}(\mathbf{z}/\tau) \quad \text{where } \tau \text{ controls sharpness}
+\end{aligned}
+$$
 
 $$
 {\textstyle
@@ -520,22 +687,26 @@ If you haven't already, we highly recommend reading Part 1 first to build the ne
 ## Further Reading
 
 Core Papers:
-[1] Vaswani, A., et al. "Attention is all you need." *Advances in Neural Information Processing Systems*, 2017.
-[2] Devlin, J., et al. "BERT: Pre-training of deep bidirectional transformers for language understanding." *NAACL-HLT*, 2019.
-[3] Brown, T., et al. "Language models are few-shot learners." *Advances in Neural Information Processing Systems*, 2020.
+
+1. Vaswani, A., et al. "Attention is all you need." *Advances in Neural Information Processing Systems*, 2017.
+2. Devlin, J., et al. "BERT: Pre-training of deep bidirectional transformers for language understanding." *NAACL-HLT*, 2019.
+3. Brown, T., et al. "Language models are few-shot learners." *Advances in Neural Information Processing Systems*, 2020.
 
 Mathematical Foundations:
-[4] Kaplan, J., et al. "Scaling laws for neural language models." *arXiv preprint arXiv:2001.08361*, 2020.
-[5] Su, J., et al. "RoFormer: Enhanced transformer with rotary position embedding." *arXiv preprint arXiv:2104.09864*, 2021.
+
+1. Kaplan, J., et al. "Scaling laws for neural language models." *arXiv preprint arXiv:2001.08361*, 2020.
+2. Su, J., et al. "RoFormer: Enhanced transformer with rotary position embedding." *arXiv preprint arXiv:2104.09864*, 2021.
 
 Efficiency & Scaling:
-[6] Dao, T., et al. "FlashAttention: Fast and memory-efficient exact attention with IO-awareness." *Advances in Neural Information Processing Systems*, 2022.
-[7] Shazeer, N. "Fast transformer decoding: One write-head is all you need." *arXiv preprint arXiv:1911.02150*, 2019.
+
+1. Dao, T., et al. "FlashAttention: Fast and memory-efficient exact attention with IO-awareness." *Advances in Neural Information Processing Systems*, 2022.
+2. Shazeer, N. "Fast transformer decoding: One write-head is all you need." *arXiv preprint arXiv:1911.02150*, 2019.
 
 Training & Optimization:
-[8] Loshchilov, I., & Hutter, F. "Decoupled weight decay regularization." *ICLR*, 2019.
-[9] Xiong, R., et al. "On layer normalization in the transformer architecture." *ICML*, 2020.
-[10] Press, O., & Wolf, L. "Using the output embedding to improve language models." *EACL*, 2017.
+
+1. Loshchilov, I., & Hutter, F. "Decoupled weight decay regularization." *ICLR*, 2019.
+2. Xiong, R., et al. "On layer normalization in the transformer architecture." *ICML*, 2020.
+3. Press, O., & Wolf, L. "Using the output embedding to improve language models." *EACL*, 2017.
 
 ---
 
@@ -543,42 +714,69 @@ Training & Optimization:
 
 ### Single-Head Attention Shapes
 | Symbol | Meaning | Typical Shape |
-|--------|---------|---------------|
-| $Q, K, V$ | Query, Key, Value matrices | $[n \times d_k], [n \times d_k], [n \times d_v]$ |
-| $n$ | Sequence length | Scalar |
-| $d_{\text{model}}$ | Model dimension | Scalar (512, 768, 1024, etc.) |
-| $d_k, d_v$ | Key, value dimensions | Usually $d_{\text{model}}/h$ |
-| $h$ | Number of attention heads | Scalar (8, 12, 16, etc.) |
+|:--------|:---------|:---------------|
+| \(Q, K, V\) | Query, Key, Value matrices | \([n \times d_k], [n \times d_k], [n \times d_v]\) |
+| \(n\) | Sequence length | Scalar |
+| \(d_{\text{model}}\) | Model dimension | Scalar (512, 768, 1024, etc.) |
+| \(d_k, d_v\) | Key, value dimensions | Usually \(d_{\text{model}}/h\) |
+| \(h\) | Number of attention heads | Scalar (8, 12, 16, etc.) |
+
+
 
 ### Multi-Head & Batched Shapes
-| Symbol | Meaning | Batched Multi-Head Shape |
-|--------|---------|-------------------------|
-| $Q, K, V$ | Projected queries, keys, values | $[B, H, n, d_k], [B, H, n, d_k], [B, H, n, d_v]$ |
-| $A$ | Attention weights matrix | $[B, H, n, n]$ |
-| $O$ | Attention output (pre-concat) | $[B, H, n, d_v]$ |
-| $O_{\text{proj}}$ | Final output (post-concat) | $[B, n, d_{\text{model}}]$ |
-| $W^Q, W^K, W^V$ | Attention projection matrices | $[d_{\text{model}} \times d_k]$ per head |
-| $W^O$ | Output projection | $[d_{\text{model}} \times d_{\text{model}}]$ |
 
-Convention: $B$ = batch size, $H$ = number of heads, $n$ = sequence length, $d_k = d_v = d_{\text{model}}/H$
+| Symbol | Meaning | Batched Multi-Head Shape |
+|:-------|:---------|:------------------------|
+| \(Q, K, V\) | Projected queries, keys, values | \([B, H, n, d_k], [B, H, n, d_k], [B, H, n, d_v]\) |
+| \(\text{Attn}\) | Attention weights matrix | \([B, H, n, n]\) |
+| \(\text{Output}_{\text{pre}}\) | Attention output (pre-concat) | \([B, H, n, d_v]\) |
+| \(\text{Output}_{\text{proj}}\) | Final output (post-concat) | \([B, n, d_{\text{model}}]\) |
+| \(W^Q, W^K, W^V, W^{\text{proj}}\) | Attention projection matrices | \([d_{\text{model}} \times d_k]\) per head |
+| \(W^O\) | Output projection | \([d_{\text{model}} \times d_{\text{model}}]\) |
+
+
+Convention:
+
+$$
+\begin{aligned}
+B &: \text{Batch size} \newline
+H &: \text{Number of heads} \newline
+n &: \text{Sequence length} \newline
+d_k = d_v &= d_{\text{model}}/H
+\end{aligned}
+$$
 
 ## Appendix B: Key Derivations
 
 ### B.1 Softmax Gradient
 
-For $p_i = \frac{e^{z_i}}{\sum_j e^{z_j}}$:
+For the softmax probability:
 
-```math
+$$
+\begin{aligned}
+p_i = \frac{e^{z_i}}{\sum_j e^{z_j}}
+\end{aligned}
+$$
+
+The gradient is:
+
+$$
+{\textstyle
+\begin{aligned}
 \frac{\partial p_i}{\partial z_j} = \begin{cases}
 p_i(1 - p_i) & \text{if } i = j \\
 -p_i p_j & \text{if } i \neq j
 \end{cases} = p_i(\delta_{ij} - p_j)
-```
+\end{aligned}
+}
+$$
 
 ### B.2 Matrix Calculus Identities
 
-Trace-Vec Identity: $\text{tr}(AB) = \text{vec}(A^T)^T \text{vec}(B)$
-
-Kronecker Product: $\text{vec}(AXB) = (B^T \otimes A)\text{vec}(X)$
-
-Chain Rule for Matrices: $\frac{\partial f}{\partial X} = \sum_Y \frac{\partial f}{\partial Y} \frac{\partial Y}{\partial X}$
+$$
+\begin{aligned}
+\text{Trace-Vec Identity:} \quad &\text{tr}(AB) = \text{vec}(A^T)^T \text{vec}(B) \newline
+\text{Kronecker Product:} \quad &\text{vec}(AXB) = (B^T \otimes A)\text{vec}(X) \newline
+\text{Chain Rule for Matrices:} \quad &\frac{\partial f}{\partial X} = \sum_Y \frac{\partial f}{\partial Y} \frac{\partial Y}{\partial X}
+\end{aligned}
+$$
