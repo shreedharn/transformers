@@ -805,4 +805,163 @@ $$
 3. **Better rendering**: MathJax renders more consistently across platforms than ````math` blocks
 4. **Unified style**: Maintains consistency with other mathematical expressions in the document
 
+## Manual Fixing Guidelines for Math-Prose Separation
+
+The detector identifies "Paragraphs with inline math (promote to block)" violations that **require manual fixing** because they need semantic understanding and sentence restructuring.
+
+### Why Manual Fixing is Required
+
+**Automated fixers cannot:**
+- Understand the semantic meaning of prose
+- Decide which descriptive text belongs in `\text{...}` blocks
+- Rephrase sentences to maintain educational flow
+- Determine the best way to consolidate related mathematical concepts
+
+**The detector provides:**
+- Line numbers of violations
+- Context to understand the issue
+- But fixing requires human judgment
+
+### Step-by-Step Manual Fixing Process
+
+**Step 1: Run the detector to identify violations**
+
+```bash
+python3 slash-cmd-scripts/src/py_improve_md.py --detector paragraphs_with_inline_math yourfile.md
+```
+
+**Step 2: For each violation, apply one of these rephrasing patterns:**
+
+#### Pattern 1: "where X is..." → Dedicated block
+
+**Before:**
+```markdown
+where $$\sigma$$ is an activation function like ReLU or sigmoid.
+```
+
+**After:**
+```markdown
+with the activation function defined as:
+
+$$
+\begin{aligned}
+\sigma \quad \text{(activation function like ReLU or sigmoid)}
+\end{aligned}
+$$
+```
+
+#### Pattern 2: "Key Insight: X controls..." → Extract notation
+
+**Before:**
+```markdown
+Key Insight: The same learning rate $$\alpha$$ controls the step size for all parameters.
+```
+
+**After:**
+```markdown
+Key Insight: The learning rate plays the same role across all parameters:
+
+$$
+\begin{aligned}
+\alpha \quad \text{(controls step size for all parameters)}
+\end{aligned}
+$$
+```
+
+#### Pattern 3: "Understanding X" → Separate definition
+
+**Before:**
+```markdown
+Understanding $$\alpha$$ (alpha): These are the attention weights. The $$\alpha_i$$ values all add up to 1.
+```
+
+**After:**
+```markdown
+Understanding the attention weights: These tell us how much to focus on each element. The weights are defined as:
+
+$$
+\begin{aligned}
+\alpha &\quad \text{(attention weight vector)} \newline
+\alpha_i &\quad \text{(individual weights that sum to 1)}
+\end{aligned}
+$$
+```
+
+#### Pattern 4: Multiple inline expressions → Consolidated block
+
+**Before:**
+```markdown
+Let's minimize $$f(x) = x^2$$ starting from $$x = 3$$:
+
+Step 1: Compute the derivative: $$\frac{df}{dx} = 2x$$
+
+Step 2: Choose learning rate: $$\alpha = 0.1$$
+```
+
+**After:**
+```markdown
+Let's minimize this function with the following setup:
+
+$$
+\begin{aligned}
+f(x) &= x^2 \quad \text{(function to minimize)} \newline
+x_0 &= 3 \quad \text{(starting point)} \newline
+\frac{df}{dx} &= 2x \quad \text{(derivative)} \newline
+\alpha &= 0.1 \quad \text{(learning rate)}
+\end{aligned}
+$$
+```
+
+#### Pattern 5: "Residual Block: X approximates..." → Rephrase
+
+**Before:**
+```markdown
+Residual Block: $$\mathbf{h}_{l+1} = \mathbf{h}_l + F(\mathbf{h}_l)$$ approximates:
+```
+
+**After:**
+```markdown
+Residual Block approximates the following:
+
+$$
+\begin{aligned}
+\mathbf{h}_{l+1} = \mathbf{h}_l + F(\mathbf{h}_l)
+\end{aligned}
+$$
+```
+
+### General Principles
+
+1. **Rephrase to separate**: Rewrite the sentence so math isn't embedded in prose
+2. **Use `\text{...}` for labels**: Put descriptive text inside aligned blocks with `\text{...}`
+3. **Consolidate related math**: Group multiple related expressions into one block
+4. **Maintain educational flow**: Keep the narrative clear and readable
+5. **Preserve meaning**: Ensure the mathematical and pedagogical intent is unchanged
+
+### Common Sentence Patterns to Rephrase
+
+| Original Pattern | Rephrased Pattern |
+|-----------------|-------------------|
+| "If we minimize $$f(x)$$, we..." | "To minimize the function: $$f(x)$$" |
+| "where $$X$$ is..." | "with X defined as: $$X$$" |
+| "The $$\delta$$ terms flow..." | "The error terms flow: $$\delta$$" |
+| "Understanding $$X$$: it means..." | "Understanding X: $$X$$ (definition)" |
+| "For $$X$$: $$Y$$" | "For the parameters: $$X, Y$$" |
+
+### Workflow
+
+1. Run detector to get all violations with line numbers
+2. Review each violation in context
+3. Choose appropriate rephrasing pattern
+4. Apply manual edit to separate math from prose
+5. Re-run detector to verify fix
+6. Continue until all violations resolved
+
+### Important Notes
+
+- **Do not automate this**: Each violation requires semantic understanding
+- **Preserve pedagogy**: Maintain the teaching narrative
+- **Test rendering**: Ensure math blocks render correctly
+- **Check flow**: Read the section aloud to verify it still flows well
+
 The improve-md command provides comprehensive markdown enhancement by intelligently applying the right formatting approach for each content type while maintaining strict separation between mathematical and descriptive elements. The python detector CLI design with separate `--category` and `--detector` switches enables progressive discovery and targeted analysis of formatting issues.

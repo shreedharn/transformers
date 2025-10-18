@@ -39,17 +39,17 @@ The fixer script applies **only safe transformations** that have been validated 
 - Wraps content in `$${\textstyle\begin{aligned}...\end{aligned}}$$`
 - **Category**: `math_formatting`
 
+**6. Single Dollar to Double Dollar Fixer** (`single_to_double_dollar`)
+- Converts single `$...$` to `$$...$$` for all inline math
+- **Re-enabled**: Per improve-md.md guidelines, ALL math should use `$$`
+- **Category**: `math_formatting`
+
 ### ❌ Disabled Fixers (Cause Issues)
 
 **1. Escape Underscores Fixer** (DISABLED)
 - **Why disabled**: Incorrectly escapes underscores inside LaTeX math contexts where they don't need escaping
 - **Issue**: `\delta_2` becomes `\delta\_2` (wrong inside math blocks)
 - **Manual alternative**: Use detector to identify, then manually fix context-aware escaping
-
-**2. Single Dollar to Double Dollar Fixer** (DISABLED)
-- **Why disabled**: Blindly converts `$...$` to `$$...$$` creating invalid inline display math
-- **Issue**: Inline math `$f(x)$` becomes display math `$$f(x)$$` (semantically wrong)
-- **Manual alternative**: Use detector to identify inline math issues, then manually restructure
 
 ## CLI Usage
 
@@ -311,6 +311,44 @@ What this equation means: "If I move a tiny amount h to the right, how much does
 
 ---
 
+### Example 7: Single Dollar to Double Dollar for Inline Math
+
+**Before (Incorrect - Single $ for math):**
+```markdown
+Let's minimize $f(x) = x^2$ starting from $x = 3$:
+
+Step 1: Compute the derivative: $\frac{df}{dx} = 2x$
+
+Step 2: Choose learning rate: $\alpha = 0.1$
+
+where $\sigma$ is an activation function like ReLU or sigmoid.
+
+Residual Block: $\mathbf{h}_{l+1} = \mathbf{h}_l + F(\mathbf{h}_l)$ approximates:
+```
+
+**After (Correct - Double $$ for all math):**
+```markdown
+Let's minimize $$f(x) = x^2$$ starting from $$x = 3$$:
+
+Step 1: Compute the derivative: $$\frac{df}{dx} = 2x$$
+
+Step 2: Choose learning rate: $$\alpha = 0.1$$
+
+where $$\sigma$$ is an activation function like ReLU or sigmoid.
+
+Residual Block: $$\mathbf{h}_{l+1} = \mathbf{h}_l + F(\mathbf{h}_l)$$ approximates:
+```
+
+**Fixer used**: `single_to_double_dollar`
+
+**Why this is important:**
+- **Consistent notation**: All mathematical expressions use the same `$$` delimiter
+- **Better rendering**: Some renderers handle `$$` more reliably than single `$`
+- **Follows best practices**: The improve-md.md guidelines specify ALL math should use `$$`
+- **Prevents ambiguity**: Single `$` can sometimes be mistaken for regular text
+
+---
+
 ## Recommended Workflow
 
 ### 1. Detection Phase
@@ -424,10 +462,11 @@ The fixer organizes transformations into categories matching the detector:
 
 ### Available Categories
 
-1. **`math_formatting`** (3 enabled fixers)
+1. **`math_formatting`** (4 enabled fixers)
    - `wrap_aligned_blocks`: Adds `$$` wrappers to unwrapped `\begin{aligned}` blocks
    - `remove_empty_blocks`: Removes empty `$$` delimiters
    - `math_code_fence_to_mathjax`: Converts ````math` blocks to MathJax format
+   - `single_to_double_dollar`: Converts single `$` to `$$` for all math expressions
 
 2. **`list_formatting`** (1 enabled fixer)
    - `list_formatting`: Adds blank lines before lists, removes between items

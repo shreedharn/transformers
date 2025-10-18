@@ -526,7 +526,7 @@ class MarkdownFixer:
         WrapAlignedBlocksFixer,
         # EscapeUnderscoresFixer,  # DISABLED: Incorrectly escapes underscores in LaTeX math
         ListFormattingFixer,
-        # SingleDollarToDoubleFixer,  # DISABLED: Creates invalid inline display math
+        SingleDollarToDoubleFixer,  # Re-enabled: Per improve-md.md guidelines, ALL math uses $$
         EmptyBlockFixer,
         BoldFormattingFixer,
         MathCodeFenceFixer,
