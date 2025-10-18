@@ -59,11 +59,16 @@ Connecting to Optimization: In machine learning, we want to find the "bottom of 
 
 #### From 2D Slopes to Gradient Descent
 
-The Derivative as Slope: For any function $f(x)$, the derivative $\frac{df}{dx}$ tells us the slope at any point:
+The Derivative as Slope: 
 
-```math
+$$
+{\textstyle
+\begin{aligned}
+\text{For any function } f(x), \text{ the derivative } \frac{df}{dx} \text{ tells us the slope at any point:} \newline
 \frac{df}{dx} = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
-```
+\end{aligned}
+}
+$$
 
 What this equation means: "If I move a tiny amount h to the right, how much does f change?" The derivative is the limit as that tiny amount approaches zero.
 

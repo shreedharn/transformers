@@ -1,7 +1,7 @@
 ---
 argument-hint: [filename]
 description: Automatically fix common markdown and LaTeX formatting issues using safe, validated fixers
-allowed-tools: Read, Edit, Bash
+allowed-tools: Read, Edit, Bash, Python3
 ---
 
 Automatically fix common markdown and LaTeX formatting issues in `$1` using the professional fixer script. This command applies only safe, validated transformations that have been tested to avoid creating new issues.
