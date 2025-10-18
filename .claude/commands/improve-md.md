@@ -159,6 +159,219 @@ d_k &= 512 : \text{Key dimension for computational efficiency} \newline
 $$
 ```
 
+## Automated Fixes vs. Manual Fixes
+
+The improvement workflow uses two complementary tools:
+1. **Automated Fixer** (`py_fix_md.py`) - Applies safe, deterministic transformations
+2. **Manual Intervention** - Required for semantic restructuring and context-aware decisions
+
+### What Can Be Fixed Automatically
+
+The automated fixer (`slash-cmd-scripts/src/py_fix_md.py`) provides **6 safe, enabled fixers**:
+
+#### 1. **WrapAlignedBlocksFixer** - Math Block Structure
+- **Fixes**: Unwrapped `\begin{aligned}...\end{aligned}` blocks
+- **Action**: Adds opening and closing `$$` delimiters
+- **Category**: `math_formatting`
+- **Safe**: ✅ Yes - Only wraps blocks that lack delimiters
+- **Example**:
+  ```markdown
+  # Before
+  \begin{aligned}
+  x = y + z
+  \end{aligned}
+
+  # After
+  $$
+  \begin{aligned}
+  x = y + z
+  \end{aligned}
+  $$
+  ```
+
+#### 2. **ListFormattingFixer** - List Spacing
+- **Fixes**: Missing blank lines before lists, excess blank lines between items
+- **Action**: Adds blank line before list start, removes blank lines between consecutive items
+- **Category**: `list_formatting`
+- **Safe**: ✅ Yes - Preserves indentation levels and nested lists
+- **Example**:
+  ```markdown
+  # Before
+  Here are the features:
+  - Feature one
+
+  - Feature two
+
+  # After
+  Here are the features:
+
+  - Feature one
+  - Feature two
+  ```
+
+#### 3. **SingleDollarToDoubleFixer** - Delimiter Consistency
+- **Fixes**: Single `$` delimiters in inline math
+- **Action**: Converts `$x$` to `$$x$$`
+- **Category**: `math_formatting`
+- **Safe**: ✅ Yes - Skips code blocks and protected contexts
+- **Example**:
+  ```markdown
+  # Before
+  The variable $x_1$ represents input.
+
+  # After
+  The variable $$x_1$$ represents input.
+  ```
+
+#### 4. **EmptyBlockFixer** - Cleanup
+- **Fixes**: Empty `$$` blocks and consecutive `$$` delimiters
+- **Action**: Removes empty blocks, consolidates consecutive delimiters
+- **Category**: `syntax`
+- **Safe**: ✅ Yes - Only removes truly empty blocks
+- **Example**:
+  ```markdown
+  # Before
+  $$
+
+  $$
+  $$
+  $$
+
+  # After
+  $$
+  ```
+
+#### 5. **BoldFormattingFixer** - Structural Bold Removal
+- **Fixes**: Excessive bold in specific patterns
+- **Action**: Removes `**` from labels with colons, list markers, line starts
+- **Category**: `bold_formatting`
+- **Safe**: ⚠️  Partial - Only removes in specific structural patterns
+- **Example**:
+  ```markdown
+  # Before
+  **Section One:**
+  - **Feature**: Description
+
+  # After
+  Section One:
+  - Feature: Description
+  ```
+
+#### 6. **MathCodeFenceFixer** - GitHub Math Conversion
+- **Fixes**: GitHub-style ````math` code fences
+- **Action**: Converts to MathJax `$${\textstyle\begin{aligned}...` format
+- **Category**: `math_formatting`
+- **Safe**: ✅ Yes - Preserves all math content
+- **Example**:
+  ````markdown
+  # Before
+  ```math
+  x = y + z
+  ```
+
+  # After
+  $$
+  {\textstyle
+  \begin{aligned}
+  x = y + z
+  \end{aligned}
+  }
+  $$
+  ````
+
+### What Requires Manual Fixes
+
+The following issues **cannot be safely automated** and require human judgment:
+
+#### 1. **Math-Prose Separation** ⚠️ MANUAL ONLY
+- **Issue**: Mathematical notation embedded in prose sentences
+- **Why Manual**: Requires semantic understanding and sentence restructuring
+- **Detector**: `paragraphs_with_inline_math`
+- **Solution**: See "Manual Fixing Guidelines for Math-Prose Separation" section below
+
+#### 2. **Underscore Escaping** ⚠️ MANUAL ONLY
+- **Issue**: Context-aware underscore escaping (escape in LaTeX, not in code)
+- **Why Manual**: Automated fixer disabled - causes incorrect escaping
+- **Note**: `EscapeUnderscoresFixer` is **DISABLED** in `py_fix_md.py` (line 527)
+- **Solution**: Manually escape `_{subscript}` as `\_{subscript}` only in LaTeX contexts
+
+#### 3. **Missing Opening $$ Before {\textstyle** ⚠️ MANUAL ONLY
+- **Issue**: `{\textstyle` blocks appearing after closing `$$` without opening delimiter
+- **Why Manual**: Requires understanding of block structure and delimiter pairing
+- **Detector**: `textstyle_blocks_missing_opening_delimiter`
+- **Solution**: Add blank line and opening `$$` before `{\textstyle`
+
+#### 4. **Content Classification** ⚠️ MANUAL ONLY
+- **Issue**: Determining if content should be LaTeX or clean Markdown
+- **Why Manual**: Requires understanding of semantic meaning
+- **Solution**: Use LaTeX for mathematical content, Markdown for descriptive content
+
+### Automated Fixer Usage
+
+**Basic Usage:**
+```bash
+# Fix all issues automatically
+python3 slash-cmd-scripts/src/py_fix_md.py yourfile.md
+
+# Preview changes without modifying file
+python3 slash-cmd-scripts/src/py_fix_md.py --dry-run yourfile.md
+
+# Fix only specific category
+python3 slash-cmd-scripts/src/py_fix_md.py --category math_formatting yourfile.md
+python3 slash-cmd-scripts/src/py_fix_md.py --category list_formatting yourfile.md
+
+# Use only specific fixer
+python3 slash-cmd-scripts/src/py_fix_md.py --fixer wrap_aligned_blocks yourfile.md
+python3 slash-cmd-scripts/src/py_fix_md.py --fixer math_code_fence_to_mathjax yourfile.md
+
+# List all available fixers
+python3 slash-cmd-scripts/src/py_fix_md.py --list-fixers
+
+# Verbose output for debugging
+python3 slash-cmd-scripts/src/py_fix_md.py --verbose yourfile.md
+```
+
+**Available Categories:**
+- `math_formatting` - Math delimiters, blocks, conversions
+- `list_formatting` - List spacing rules
+- `bold_formatting` - Structural bold removal
+- `syntax` - Empty blocks and cleanup
+- `all` - Run all fixers (default)
+
+**Available Fixers:**
+- `wrap_aligned_blocks` - Add $$ around \begin{aligned}
+- `list_formatting` - Fix list blank lines
+- `single_to_double_dollar` - Convert $ to $$
+- `remove_empty_blocks` - Clean up empty $$
+- `bold_formatting` - Remove excessive bold
+- `math_code_fence_to_mathjax` - Convert ```math to MathJax
+
+### Recommended Workflow
+
+**Step 1: Run Automated Fixer**
+```bash
+# Apply all safe automatic fixes
+python3 slash-cmd-scripts/src/py_fix_md.py yourfile.md
+```
+
+**Step 2: Run Detector to Find Remaining Issues**
+```bash
+# Identify issues requiring manual intervention
+python3 slash-cmd-scripts/src/py_improve_md.py yourfile.md
+```
+
+**Step 3: Manually Fix Detected Issues**
+- Focus on `paragraphs_with_inline_math` violations
+- Apply manual rephrasing patterns (see guidelines below)
+- Escape underscores in LaTeX contexts only
+- Fix any `textstyle_blocks_missing_opening_delimiter` issues
+
+**Step 4: Verify All Issues Resolved**
+```bash
+# Confirm no violations remain
+python3 slash-cmd-scripts/src/py_improve_md.py yourfile.md
+```
+
 ## Python Detector Usage Instructions
 
 ### Step 1: Discover Available Options
