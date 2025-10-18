@@ -78,10 +78,10 @@ Understanding the formula:
 $$
 {\textstyle
 \begin{aligned}
-\mathbf{v}_t \quad &: \text{ Current "velocity" (combination of current gradient + previous velocity)} \newline
-\beta \approx 0.9 \quad &: \text{ How much previous velocity to keep (90\%)} \newline
-(1-\beta) = 0.1 \quad &: \text{ How much current gradient to use (10\%)} \newline
-\eta \quad &: \text{ Learning rate (step size)}
+\mathbf{v}_t \quad & : \text{ Current "velocity" (combination of current gradient + previous velocity)} \newline
+\beta \approx 0.9 \quad & : \text{ How much previous velocity to keep 90% } \newline
+(1 - \beta) = 0.1 \quad & : \text{ How much current gradient to use 10% } \newline
+\eta \quad & : \text{ Learning rate (step size)}
 \end{aligned}
 }
 $$
@@ -273,7 +273,7 @@ $$
 \begin{aligned}
 &\text{Your gradients total to norm 50, but your clip value is 5} \newline
 &\text{Scaling factor: } \min(1, 5/50) = 0.1 \newline
-&\text{All gradients get multiplied by 0.1 (reduced to 10\% of original size)}
+&\text{All gradients get multiplied by 0.1 reduced to 10% of original size}
 \end{aligned}
 }
 $$
@@ -686,27 +686,22 @@ If you haven't already, we highly recommend reading Part 1 first to build the ne
 
 ## Further Reading
 
-Core Papers:
+For a comprehensive collection of all papers referenced in this tutorial and additional resources, see **[Further Reading](./further.md)**.
 
-1. Vaswani, A., et al. "Attention is all you need." *Advances in Neural Information Processing Systems*, 2017.
-2. Devlin, J., et al. "BERT: Pre-training of deep bidirectional transformers for language understanding." *NAACL-HLT*, 2019.
-3. Brown, T., et al. "Language models are few-shot learners." *Advances in Neural Information Processing Systems*, 2020.
+Key papers referenced in this Part 2:
 
-Mathematical Foundations:
+**Optimization:**
+- Loshchilov & Hutter (2019) - AdamW optimizer
+- Kaplan et al. (2020) - Scaling laws
 
-1. Kaplan, J., et al. "Scaling laws for neural language models." *arXiv preprint arXiv:2001.08361*, 2020.
-2. Su, J., et al. "RoFormer: Enhanced transformer with rotary position embedding." *arXiv preprint arXiv:2104.09864*, 2021.
+**Efficiency:**
+- Dao et al. (2022) - FlashAttention
+- Shazeer (2019) - Multi-query attention
 
-Efficiency & Scaling:
-
-1. Dao, T., et al. "FlashAttention: Fast and memory-efficient exact attention with IO-awareness." *Advances in Neural Information Processing Systems*, 2022.
-2. Shazeer, N. "Fast transformer decoding: One write-head is all you need." *arXiv preprint arXiv:1911.02150*, 2019.
-
-Training & Optimization:
-
-1. Loshchilov, I., & Hutter, F. "Decoupled weight decay regularization." *ICLR*, 2019.
-2. Xiong, R., et al. "On layer normalization in the transformer architecture." *ICML*, 2020.
-3. Press, O., & Wolf, L. "Using the output embedding to improve language models." *EACL*, 2017.
+**Architecture:**
+- Vaswani et al. (2017) - Original transformer
+- Xiong et al. (2020) - LayerNorm placement
+- Press & Wolf (2017) - Weight tying
 
 ---
 

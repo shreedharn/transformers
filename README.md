@@ -25,6 +25,7 @@ This repository provides a comprehensive exploration of transformer architecture
 | [knowledge_store.md](./knowledge_store.md) | LLM weights vs vector stores | Internalized vs external knowledge storage |
 | [pytorch_ref.md](./pytorch_ref.md) | PyTorch implementation guide | Code patterns, practical examples |
 | [glossary.md](./glossary.md) | Comprehensive glossary | Technical terms and definitions |
+| [further.md](./further.md) | Further reading & references | Foundation papers, modern developments |
 
 ## 🚀 Getting Started
 
@@ -65,22 +66,14 @@ After completing this repository, you will understand:
 
 ## 📚 Further Reading
 
-### Foundation Papers
+For a comprehensive collection of foundational papers and modern developments in transformer architectures, optimization, and scaling techniques, see:
 
-- **[Attention Is All You Need](https://arxiv.org/abs/1706.03762)** (Vaswani et al., 2017): Original transformer paper
-- **[BERT: Pre-training of Deep Bidirectional Transformers](https://arxiv.org/abs/1810.04805)** (Devlin et al., 2018): Bidirectional encoder representations
-- **[Improving Language Understanding by Generative Pre-Training](https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf)** (Radford et al., 2018): Original GPT paper
-- **[Language Models are Unsupervised Multitask Learners](https://d4mucfpksywv.cloudfront.net/better-language-models/language_models_are_unsupervised_multitask_learners.pdf)** (Radford et al., 2019): GPT-2
-- **[T5: Exploring the Limits of Transfer Learning](https://arxiv.org/abs/1910.10683)** (Raffel et al., 2019): Text-to-text transfer transformer
-
-### Modern Developments
-
-- **[Scaling Laws for Neural Language Models](https://arxiv.org/abs/2001.08361)** (Kaplan et al., 2020): Optimal compute allocation strategies
-- **[FlashAttention: Fast and Memory-Efficient Exact Attention](https://arxiv.org/abs/2205.14135)** (Dao et al., 2022): Memory-efficient attention computation
-- **[LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685)** (Hu et al., 2021): Parameter-efficient fine-tuning
-- **[RoFormer: Enhanced Transformer with Rotary Position Embedding](https://arxiv.org/abs/2104.09864)** (Su et al., 2021): RoPE position encoding
-- **[LLaMA: Open and Efficient Foundation Language Models](https://arxiv.org/abs/2302.13971)** (Touvron et al., 2023): Modern decoder-only architectures
-- **[Mamba: Linear-Time Sequence Modeling with Selective State Spaces](https://arxiv.org/abs/2312.00752)** (Gu et al., 2023): Alternative to transformer attention
+**[Further Reading](./further.md)** - Curated references including:
+- Foundation papers (Attention Is All You Need, BERT, GPT series, T5)
+- Mathematical foundations (Scaling laws, RoPE)
+- Efficiency & scaling (FlashAttention, LoRA, LLaMA)
+- Training & optimization (AdamW, LayerNorm)
+- Alternative architectures (Mamba)
 
 ## 🤝 Contributing
 
