@@ -617,6 +617,17 @@ The loss function $\mathcal{L}\_{CLM}$ uses subscripts $x\_{t+1}$ and $x\_t$.
 
 ### Critical Edge Cases (Common Missed Issues):
 
+**Thematic Organization:**
+
+| Theme | Edge Cases | Description |
+|-------|-----------|-------------|
+| **A. LaTeX Structure & Syntax** | 1, 10, 11 | Proper `\begin{aligned}` wrappers, avoiding ````math` fences, delimiter pairing |
+| **B. Delimiter Consistency** | 2, 5 | Using `$$` instead of single `$` for all math expressions |
+| **C. Underscore Escaping** | 3, 4 | Context-aware escaping (escape in LaTeX, not in code blocks) |
+| **D. Content Formatting** | 6, 7, 8, 9 | Blank lines, display blocks, proper wrapping, spacing |
+
+---
+
 **Edge Case 1: Single-Line LaTeX Without Aligned Wrapper**
 
 **Before (Incorrect - Missing professional structure):**
