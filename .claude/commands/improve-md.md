@@ -172,7 +172,7 @@ python3 slash-cmd-scripts/src/py_improve_md.py --help
 # List all 6 detector categories
 python3 slash-cmd-scripts/src/py_improve_md.py --list-categories
 
-# List all 26 individual detector names
+# List all 27 individual detector names
 python3 slash-cmd-scripts/src/py_improve_md.py --list-detectors
 
 # Get detailed examples for categories
@@ -230,7 +230,7 @@ This provides a comprehensive or targeted report of markdown formatting and LaTe
 **Getting Started:**
 - **First-time analysis**: Use `--help` to see main usage patterns and available options
 - **Explore categories**: Use `--list-categories` to see 6 main detector groups
-- **Explore detectors**: Use `--list-detectors` to see all 26 individual detector names
+- **Explore detectors**: Use `--list-detectors` to see all 27 individual detector names
 - **Get examples**: Add `--help` to any `--list-*`, `--category`, or `--detector` command for detailed examples
 - **Debugging**: Use `--verbose` flag when troubleshooting detection issues
 
@@ -275,11 +275,12 @@ This provides a comprehensive or targeted report of markdown formatting and LaTe
 - Bold text spacing issues and missing blank lines after headings
 - Escaped underscores in code blocks (breaks syntax highlighting)
 
-**6. Syntax Category (4 detectors):**
+**6. Syntax Category (5 detectors):**
 - Unpaired mathematical delimiters and stray braces
 - Bold markdown mixed within LaTeX expressions
 - Context-specific underscore escaping violations
 - Math code fence blocks (````math` that should be MathJax)
+- Missing opening `$$` delimiters before `{\textstyle` blocks
 
 
 ## Quality Verification Checklist
@@ -804,6 +805,58 @@ $$
 2. **Professional LaTeX format**: Uses `$${\textstyle\begin{aligned}...\end{aligned}}$$` instead of GitHub's ````math` fence
 3. **Better rendering**: MathJax renders more consistently across platforms than ````math` blocks
 4. **Unified style**: Maintains consistency with other mathematical expressions in the document
+
+**Edge Case 11: Missing Opening $$ Delimiter Before {\textstyle**
+
+**Before (Incorrect - Missing opening delimiter):**
+```markdown
+$$
+{\textstyle
+\begin{aligned}
+W_1 \leftarrow W_1 - \alpha \frac{\partial L}{\partial W_1}
+\end{aligned}
+}
+$$
+{\textstyle
+\begin{aligned}
+b_1 \leftarrow b_1 - \alpha \frac{\partial L}{\partial b_1}
+\end{aligned}
+}
+$$
+```
+
+**After (Correct - Proper delimiter pairing):**
+```markdown
+$$
+{\textstyle
+\begin{aligned}
+W_1 \leftarrow W_1 - \alpha \frac{\partial L}{\partial W_1}
+\end{aligned}
+}
+$$
+
+$$
+{\textstyle
+\begin{aligned}
+b_1 \leftarrow b_1 - \alpha \frac{\partial L}{\partial b_1}
+\end{aligned}
+}
+$$
+```
+
+**Why this is critical:**
+
+1. **Delimiter balance**: Every `{\textstyle` block MUST be wrapped in a complete `$$...$$` pair
+2. **Rendering failure**: Missing opening `$$` causes MathJax to fail silently or render incorrectly
+3. **Pattern detection**: The detector identifies `}` + `$$` (closing) followed by `{\textstyle` (should open new block)
+4. **Common mistake**: Often occurs when splitting consolidated math blocks without adding proper delimiters
+
+**Detection pattern:**
+```
+}             ← Closing brace from previous block
+$$            ← Closing delimiter
+{\textstyle   ← ERROR: Missing opening $$ before this
+```
 
 ## Manual Fixing Guidelines for Math-Prose Separation
 

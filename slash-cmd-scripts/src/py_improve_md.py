@@ -74,6 +74,7 @@ class IssueType(Enum):
     CONSECUTIVE_BOLD_WITHOUT_SPACING = "Consecutive bold text lines without proper spacing"
     TEXT_TO_LIST_MISSING_BLANK_LINE = "Missing blank line before list item after text"
     MATH_CODE_FENCE_BLOCKS = "```math code fence blocks (convert to MathJax)"
+    TEXTSTYLE_MISSING_OPENING_DELIMITER = "{\textstyle without opening $$ delimiter"
 
 
 @dataclass
@@ -722,6 +723,56 @@ class MarkdownMathDetector:
 
         return issues
 
+    def detect_textstyle_missing_opening_delimiter(self) -> List[DetectionResult]:
+        """
+        Detect {\textstyle blocks that appear after a closing $$ without an opening $$.
+
+        Pattern detected:
+        }            <-- Closing brace from previous block
+        $$           <-- Closing delimiter (end of math block)
+        {\textstyle  <-- ERROR: Missing opening $$ before this
+        \begin{aligned}
+        ...
+
+        Correct pattern should be:
+        }            <-- Closing brace
+        $$           <-- Closing delimiter
+
+        $$           <-- Opening delimiter for new block
+        {\textstyle  <-- OK: Inside math block
+        """
+        issues = []
+
+        for i in range(len(self.lines) - 1):
+            line = self.lines[i].strip()
+
+            # Check for closing $$ delimiter (preceded by })
+            if line == '$$':
+                # Look backward to find previous non-empty line
+                prev_idx = i - 1
+                while prev_idx >= 0 and not self.lines[prev_idx].strip():
+                    prev_idx -= 1
+
+                # If previous non-empty line is }, this $$ is CLOSING a block
+                if prev_idx >= 0 and self.lines[prev_idx].strip() == '}':
+                    # Look ahead to find the next non-empty line
+                    j = i + 1
+                    while j < len(self.lines) and not self.lines[j].strip():
+                        j += 1
+
+                    # Check if next non-empty line starts with {\textstyle
+                    if j < len(self.lines):
+                        next_line = self.lines[j].strip()
+                        if next_line.startswith('{\textstyle') or next_line.startswith('{\\textstyle'):
+                            issues.append(DetectionResult(
+                                line_number=j + 1,
+                                issue_type=IssueType.TEXTSTYLE_MISSING_OPENING_DELIMITER,
+                                content="{\\textstyle appears after closing $$ without opening $$",
+                                context_lines=self._get_context_lines(j + 1)
+                            ))
+
+        return issues
+
     def run_all_detectors(self) -> Dict[str, List[DetectionResult]]:
         """
         Run all detection methods and return results grouped by detector type.
@@ -774,6 +825,8 @@ class MarkdownMathDetector:
                 (self.detect_stray_braces_with_math, "Stray braces with math"),
                 (self.detect_bold_markdown_in_math, "Bold Markdown in math"),
                 (self.detect_math_code_fence_blocks, "Math code fence blocks"),
+                (self.detect_textstyle_missing_opening_delimiter,
+                 "Textstyle blocks missing opening delimiter"),
             ],
         }
 
@@ -843,6 +896,8 @@ class MarkdownMathDetector:
                 (self.detect_stray_braces_with_math, "Stray braces with math"),
                 (self.detect_bold_markdown_in_math, "Bold Markdown in math"),
                 (self.detect_math_code_fence_blocks, "Math code fence blocks"),
+                (self.detect_textstyle_missing_opening_delimiter,
+                 "Textstyle blocks missing opening delimiter"),
             ],
         }
 
