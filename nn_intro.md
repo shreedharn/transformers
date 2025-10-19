@@ -562,9 +562,13 @@ Original space:         After ReLU folding:
 
 #### Step 3: Output Layer Finds Linear Separation
 
-In the folded space, a simple line (e.g.,
-$$h\_1 + h\_1 = 0.5$$
-) perfectly separates the classes.
+In the folded space, a simple line perfectly separates the classes:
+
+$$
+\begin{aligned}
+h_1 + h_1 = 0.5
+\end{aligned}
+$$
 
 This elegant solution showcases why every component matters: weights oriented the folding lines correctly, bias positioned the folds away from the origin at exactly x=0.5, and activation functions created the nonlinear folding that transformed an impossible linear problem into a simple one.
 
@@ -719,15 +723,14 @@ $$
 Where:
 
 $$
-{\textstyle
 \begin{aligned}
 \mathbf{y}\_{\text{true}} &: \text{true labels/target values} \newline
 \mathbf{y}\_{\text{pred}} &: \text{model's predictions} \newline
 \mathcal{L} &: \text{loss function} \newline
 \text{Output} &: \text{Single positive number (the "badness score")}
 \end{aligned}
-}
 $$
+
 
 Without this translation, neural networks would have no way to measure progress during training, compute the gradients essential for backpropagation, or objectively compare different models' performance.
 
@@ -743,14 +746,13 @@ $$
 Where:
 
 $$
-{\textstyle
 \begin{aligned}
 y\_i &: \text{True label (1 for correct class, 0 for others)} \newline
 p\_i &: \text{Predicted probability for class i} \newline
 C &: \text{Number of classes}
 \end{aligned}
-}
 $$
+
 
 Cross-entropy elegantly captures the concept of "surprise" - it heavily penalizes confident wrong predictions while rewarding confident correct ones. Being uncertain but right yields medium loss, while being uncertain and wrong still incurs high penalty.
 
@@ -813,57 +815,63 @@ $$
 
 Where:
 
+
 $$
-{\textstyle
 \begin{aligned}
 \theta &: \text{Parameters (weights and biases)} \newline
 \alpha &: \text{Learning rate (step size)} \newline
 \nabla\_{\mathbf{\theta}} \mathcal{L} &: \text{Gradient (direction of steepest ascent)} \newline
 \text{Negative sign} &: \text{Move opposite to gradient (downhill)}
 \end{aligned}
-}
 $$
+
 
 #### The Gradient: Direction of Steepest Ascent
 
-The gradient symbol $$\nabla$$ (nabla) might look mysterious, but it represents something intuitive:
+The gradient symbol (nabla) represents something intuitive:
 
 $$
 \begin{aligned}
 \nabla\_{\mathbf{\theta}} \mathcal{L} = \begin{bmatrix}
-\frac{\partial \mathcal{L}}{\partial \theta\_1} \\
-\frac{\partial \mathcal{L}}{\partial \theta\_2} \\
-\vdots \\
+\frac{\partial \mathcal{L}}{\partial \theta\_1} \newline
+\frac{\partial \mathcal{L}}{\partial \theta\_2} \newline
+\vdots \newline
 \frac{\partial \mathcal{L}}{\partial \theta\_n}
 \end{bmatrix}
 \end{aligned}
 $$
 
-Each element answers a simple question: "If I nudge parameter $$
-\theta\_i
-$$ slightly upward, how much does my loss increase?"
+Each element answers a simple question: "If I nudge a parameter slightly upward, how much does my loss increase?"
+
+For any parameter in the model:
+
+$$
+\begin{aligned}
+\frac{\partial \mathcal{L}}{\partial \theta_i} \quad \text{(rate of loss change with respect to parameter } \theta_i \text{)}
+\end{aligned}
+$$
 
 #### Step-by-Step Gradient Descent Process
 
-1. **Compute Forward Pass:** Pass input through network to get predictions
+**Compute Forward Pass:** Pass input through network to get predictions
 
-   $$
+$$
 \begin{aligned}
 \text{Input} \xrightarrow{\text{Network}} \text{Predictions}
 \end{aligned}
 $$
 
-2. **Compute Loss:** Measure prediction error
+**Compute Loss:** Measure prediction error
 
-   $$
+$$
 \begin{aligned}
 \mathcal{L} = \text{LossFunction}(\text{Predictions}, \text{Truth})
 \end{aligned}
 $$
 
-3. **Compute Gradients (Backpropagation):** Calculate how to adjust weights
+**Compute Gradients (Backpropagation):** Calculate how to adjust weights
 
-   $$
+$$
 \begin{aligned}
 \frac{\partial \mathcal{L}}{\partial W^{(l)}} = \frac{\partial \mathcal{L}}{\partial h^{(l+1)}} \cdot \frac{\partial h^{(l+1)}}{\partial W^{(l)}}
 \end{aligned}
@@ -871,9 +879,9 @@ $$
 
    > 📖 For detailed backpropagation mechanics: See [mlp_intro.md Section 6](./mlp_intro.md#6-training-how-mlps-learn) for step-by-step derivations and [pytorch_ref.md Section 3](./pytorch_ref.md#3-autograd-finding-gradients) for implementation details.
 
-4. **Update Parameters:** Adjust weights in direction that reduces loss
+**Update Parameters:** Adjust weights in direction that reduces loss
 
-   $$
+$$
 \begin{aligned}
 W^{(l)} \leftarrow W^{(l)} - \alpha \frac{\partial \mathcal{L}}{\partial W^{(l)}}
 \end{aligned}
@@ -927,21 +935,25 @@ While elegant in its simplicity, plain gradient descent suffers from several lim
 
 #### SGD with Momentum
 
-$$\begin{align}
+$$
+\begin{align}
 v_t &= \beta v_{t-1} + (1-\beta) \nabla \mathcal{L} \\
 \theta_t &= \theta_{t-1} - \alpha v_t
-\end{align}$$
+\end{align}
+$$
 
 
 Momentum transforms gradient descent into a "rolling ball" that builds velocity over time, smoothing updates and helping escape shallow local minima.
 
 #### Adam: Adaptive Moments
 
-$$\begin{align}
+$$
+\begin{align}
 m_t &= \beta_1 m_{t-1} + (1-\beta_1) \nabla \mathcal{L} \quad \text{(momentum)}\\
 v_t &= \beta_2 v_{t-1} + (1-\beta_2) (\nabla \mathcal{L})^2 \quad \text{(variance)}\\
 \theta_t &= \theta_{t-1} - \alpha \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}
-\end{align}$$
+\end{align}
+$$
 
 
 Adam's breakthrough innovation lies in adaptive per-parameter learning rates: parameters with large gradients get smaller effective steps, while those with small gradients get larger ones. This automatic adjustment, combined with excellent handling of sparse gradients and minimal tuning requirements, explains Adam's widespread adoption.
@@ -1052,14 +1064,12 @@ $$
 Where:
 
 $$
-{\textstyle
 \begin{aligned}
 E \in \mathbb{R}^{V \times d\_{\text{model}}} &: \text{Embedding matrix} \newline
 V &: \text{vocabulary size (number of unique words/tokens)} \newline
 d\_{\text{model}} &: \text{embedding dimension} \newline
 E[i] &: \text{Each row represents one word's embedding vector}
 \end{aligned}
-}
 $$
 
 > 📖 For embedding implementation: See [pytorch_ref.md Section 10](./pytorch_ref.md#10-transformers-in-pytorch) for practical embedding layer usage and [knowledge_store.md](./knowledge_store.md) for how embeddings store semantic knowledge.
@@ -1169,7 +1179,7 @@ Neural networks succeed by **repeatedly bending high-dimensional space** until c
 
 ---
 
-## 6. Where Neural Networks Shine in NLP
+## Where Neural Networks Shine in NLP
 
 Neural networks have transformed our relationship with language technology, solving problems that seemed intractable for decades and opening doors to applications we barely imagined possible.
 
@@ -1219,17 +1229,6 @@ Perhaps the most impressive demonstration of neural language understanding lies 
 ## Next Steps
 
 With neural network fundamentals now in place, you're ready to explore deeper territories. The journey ahead offers multiple paths: diving into how individual neurons combine into powerful multi-layer networks, working through hands-on mathematics with real numbers you can trace by hand, understanding the building blocks used in all advanced architectures, or seeing how these concepts translate to actual code.
-
-> Continue Learning: Ready to build networks? 
-> 
-> **Next Steps by Learning Goal:**
->
-> - 🏗️ Hands-on Implementation: [mlp_intro.md](./mlp_intro.md) - Build MLPs step-by-step with worked examples
-> - 🔄 Sequential Processing: [rnn_intro.md](./rnn_intro.md) - Learn RNNs and understand the path to transformers
-> - ⚡ Modern Architectures: [transformers_fundamentals.md](./transformers_fundamentals.md) - Complete transformer technical reference
-> - 💻 PyTorch Coding: [pytorch_ref.md](./pytorch_ref.md) - Practical implementation patterns
-> - 📐 Mathematical Rigor: [transformers_math1.md](./transformers_math1.md) - Theoretical foundations (Part 1)
-> - 📐 Advanced Mathematics: [transformers_math2.md](./transformers_math2.md) - Advanced concepts and scaling (Part 2)
 
 **Remember:** Neural networks taught us that simple mathematical operations, when combined in layers, can learn to recognize complex patterns in data. This insight revolutionized AI and remains the foundation of every modern architecture - from image recognition to language models.
 
