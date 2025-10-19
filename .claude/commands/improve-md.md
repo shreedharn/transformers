@@ -50,8 +50,11 @@ Comprehensively improve the markdown document `$1` by applying content-appropria
 * **Bold mathematics:** Use `\mathbf{expression}` (Latin) and `\boldsymbol{expression}` (Greek/symbols)
 * **Spacing:** Use `\,`, `\;`, `\quad`, `\qquad` for mathematical spacing
 * **Alignment:** Use `&` characters for consistent positioning across lines
-* **Underscore escaping:** Transform `_{subscript}` to `\_{subscript}` for Markdown compatibility
-* **Context-aware escaping:** Escape underscores ONLY in LaTeX contexts (`\_`), NEVER in code blocks, ASCII art, or Python code where normal underscores (`_`) must be preserved
+* **Underscore escaping rules (CRITICAL):**
+  - **Inside `\begin{aligned}...\end{aligned}` blocks:** Do NOT escape underscores - use `_` directly (e.g., `x_1`, `h_{t-1}`, `W_{ij}`)
+  - **In inline math outside aligned blocks:** MUST escape - use `\_` (e.g., `$$x\_1$$`, `$$h\_{t-1}$$`)
+  - **In code blocks, ASCII art, Python code:** NEVER escape - use `_` directly to preserve syntax
+  - **Rationale:** MathJax processes `\begin{aligned}` blocks as native LaTeX where `_` is the subscript operator, but inline `$$` in Markdown requires escaping to prevent italic interpretation
 
 ### 4. List Formatting and Separation Rules
 
@@ -290,10 +293,15 @@ The following issues **cannot be safely automated** and require human judgment:
 - **Solution**: See "Manual Fixing Guidelines for Math-Prose Separation" section below
 
 #### 2. **Underscore Escaping** ⚠️ MANUAL ONLY
-- **Issue**: Context-aware underscore escaping (escape in LaTeX, not in code)
-- **Why Manual**: Automated fixer disabled - causes incorrect escaping
+- **Issue**: Context-aware underscore escaping with different rules for different contexts
+- **Why Manual**: Automated fixer disabled - causes incorrect escaping across contexts
 - **Note**: `EscapeUnderscoresFixer` is **DISABLED** in `py_fix_md.py` (line 527)
-- **Solution**: Manually escape `_{subscript}` as `\_{subscript}` only in LaTeX contexts
+- **Critical Rules**:
+  - **Inside `\begin{aligned}...\end{aligned}` blocks**: Use `_` directly (unescaped)
+  - **In inline math (`$$...$$`)**: Use `\_` (escaped)
+  - **In code blocks/ASCII art**: Use `_` directly (unescaped)
+- **Detector**: `escaped_underscores_in_aligned_blocks` (detects incorrect `\_` inside aligned blocks)
+- **Solution**: Review each context and apply appropriate escaping rule
 
 #### 3. **Missing Opening $$ Before {\textstyle** ⚠️ MANUAL ONLY
 - **Issue**: `{\textstyle` blocks appearing after closing `$$` without opening delimiter
@@ -488,10 +496,11 @@ This provides a comprehensive or targeted report of markdown formatting and LaTe
 - Bold text spacing issues and missing blank lines after headings
 - Escaped underscores in code blocks (breaks syntax highlighting)
 
-**6. Syntax Category (5 detectors):**
+**6. Syntax Category (6 detectors):**
 - Unpaired mathematical delimiters and stray braces
 - Bold markdown mixed within LaTeX expressions
 - Context-specific underscore escaping violations
+- Escaped underscores inside `\begin{aligned}` blocks (should be unescaped)
 - Math code fence blocks (````math` that should be MathJax)
 - Missing opening `$$` delimiters before `{\textstyle` blocks
 
@@ -519,8 +528,8 @@ After running the improvement detector:
 - [ ] **Use `$$` for ALL mathematical expressions, never single `$`**
 - [ ] **Tables use `$$` for all math notation**
 - [ ] **Mathematical content uses consistent LaTeX typography**
-- [ ] **All underscores properly escaped** in LaTeX expressions (`\_{subscript}`)
-- [ ] **All underscores properly escaped** in all math (`$$x\_1$$`, `$$h\_{t-1}$$`)
+- [ ] **Underscores UNESCAPED inside `\begin{aligned}` blocks** (use `_` directly: `x_1`, `h_{t-1}`)
+- [ ] **Underscores ESCAPED in inline math outside aligned blocks** (use `\_`: `$$x\_1$$`, `$$h\_{t-1}$$`)
 - [ ] **No escaped underscores in code blocks, ASCII art, or Python code** (preserve normal `_` syntax)
 - [ ] **Proper mathematical formatting** (`\mathbf{}`, `\text{}`, spacing)
 
@@ -836,7 +845,7 @@ The loss function $\mathcal{L}\_{CLM}$ uses subscripts $x\_{t+1}$ and $x\_t$.
 |-------|-----------|-------------|
 | **A. LaTeX Structure & Syntax** | 1, 10, 11 | Proper `\begin{aligned}` wrappers, avoiding ````math` fences, delimiter pairing |
 | **B. Delimiter Consistency** | 2, 5 | Using `$$` instead of single `$` for all math expressions |
-| **C. Underscore Escaping** | 3, 4 | Context-aware escaping (escape in LaTeX, not in code blocks) |
+| **C. Underscore Escaping** | 3, 4, 12 | Context-aware escaping (escape in inline math, not in aligned blocks or code) |
 | **D. Content Formatting** | 6, 7, 8, 9 | Blank lines, display blocks, proper wrapping, spacing |
 
 ---
@@ -1081,6 +1090,68 @@ $$
 $$            ← Closing delimiter
 {\textstyle   ← ERROR: Missing opening $$ before this
 ```
+
+**Edge Case 12: Escaped Underscores Inside \begin{aligned} Blocks**
+
+**Before (Incorrect - Escaped underscores break MathJax rendering):**
+```markdown
+$$
+\begin{aligned}
+z &= w\_1x\_1 + w\_2x\_2 + b
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\mathbf{y}\_{\text{true}} &: \text{true labels} \newline
+\mathbf{y}\_{\text{pred}} &: \text{model predictions}
+\end{aligned}
+$$
+```
+
+**After (Correct - Unescaped underscores for native LaTeX):**
+```markdown
+$$
+\begin{aligned}
+z &= w_1x_1 + w_2x_2 + b
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\mathbf{y}_{\text{true}} &: \text{true labels} \newline
+\mathbf{y}_{\text{pred}} &: \text{model predictions}
+\end{aligned}
+$$
+```
+
+**Why this is critical:**
+
+1. **Native LaTeX processing**: Inside `\begin{aligned}...\end{aligned}`, MathJax processes content as pure LaTeX where `_` is the subscript operator
+2. **Rendering failure**: Escaped `\_` inside aligned blocks can cause incorrect rendering or display literal backslashes
+3. **Consistency**: Aligns with standard LaTeX conventions used in academic papers and mathematical typesetting
+4. **Common mistake**: Applying blanket escaping rules without considering the aligned block context
+
+**Comparison with inline math:**
+```markdown
+# CORRECT - Different rules for different contexts
+
+# Inline math (outside aligned blocks) - MUST escape:
+The variable $$x\_1$$ and parameter $$\theta\_{t-1}$$ are used.
+
+# Inside aligned blocks - do NOT escape:
+$$
+\begin{aligned}
+x_1 &= \text{input vector} \newline
+\theta_{t-1} &= \text{previous parameter}
+\end{aligned}
+$$
+```
+
+**Detection pattern:**
+- Look for `\_` (backslash + underscore) inside `\begin{aligned}...\end{aligned}` blocks
+- Pattern: `\begin{aligned}.*\\_.*\end{aligned}` across multiple lines
+- Common locations: Variable names (`w\_1`), subscripts (`y\_i`), nested subscripts (`h\_{t-1}`)
 
 ## Manual Fixing Guidelines for Math-Prose Separation
 
