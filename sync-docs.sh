@@ -9,6 +9,7 @@ rsync -a --include='*.md' \
         
 rsync -a \
   --include='javascripts/' \
-  --include='javascripts/mathjax.js' \
+  --include='javascripts/mathjax-init.js' \
+  --include='javascripts/mathjax-refresh.js' \
   --exclude='*' \
   ./ docs/
