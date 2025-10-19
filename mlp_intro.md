@@ -72,35 +72,14 @@ $$
 Let's break this down term by term:
 
 | Term | Size | Meaning |
-|------|------|---------|
-| $$
-x
-$$ | $$
-[1, D\_{in}]
-$$ | Input vector - features coming into this layer |
-| $$
-W
-$$ | $$
-[D\_{in}, D\_{out}]
-$$ | Weight matrix - learned transformation |
-| $$
-b
-$$ | $$
-[1, D\_{out}]
-$$ | Bias vector - learned offset |
-| $$
-x W + b
-$$ | $$
-[1, D\_{out}]
-$$ | Linear combination - weighted sum of inputs |
-| $$
-\sigma(\cdot)
-$$ | - | Activation function - introduces non-linearity |
-| $$
-h
-$$ | $$
-[1, D\_{out}]
-$$ | Output vector - transformed features |
+|------|------|----------|
+| \\(x\\) | \\([1, D_{in}]\\) | Input vector – features coming into this layer |
+| \\(W\\) | \\([D_{in}, D_{out}]\\) | Weight matrix – learned transformation |
+| \\(b\\) | \\([1, D_{out}]\\) | Bias vector – learned offset |
+| \\(xW + b\\) | \\([1, D_{out}]\\) | Linear combination – weighted sum of inputs |
+| \\(\\sigma(\\cdot)\\) | - | Activation function – introduces non-linearity |
+| \\(h\\) | \\([1, D_{out}]\\) | Output vector – transformed features |
+
 
 ### Visual Breakdown
 
@@ -212,15 +191,15 @@ Rule of Thumb: Start shallow, go deeper only if needed.
 
 ### Parameter Counting
 
-For a layer with input size $$
-D\_{in}
-$$ and output size $$
-D\_{out}
+For a layer with input size and output size, the parameter count is calculated as follows:
+
 $$
 \begin{aligned}
-\text{Weights:} \quad &D\_{in} \times D\_{out} \text{ parameters} \newline
-\text{Biases:} \quad &D\_{out} \text{ parameters} \newline
-\text{Total:} \quad &D\_{in} \times D\_{out} + D\_{out} = D\_{out}(D\_{in} + 1)
+D\_{\text{in}} &: \text{Input dimension} \newline
+D\_{\text{out}} &: \text{Output dimension} \newline
+\text{Weights:} \quad &D\_{\text{in}} \times D\_{\text{out}} \text{ parameters} \newline
+\text{Biases:} \quad &D\_{\text{out}} \text{ parameters} \newline
+\text{Total:} \quad &D\_{\text{in}} \times D\_{\text{out}} + D\_{\text{out}} = D\_{\text{out}}(D\_{\text{in}} + 1)
 \end{aligned}
 $$
 
@@ -284,9 +263,13 @@ What each neuron learned to detect:
 
 ### Step 1: Forward Pass Through Hidden Layer
 
-Input: $$
+Input (our sophisticated spam example):
+
+$$
+\begin{aligned}
 x = [3, 0, 15]
-$$ (our sophisticated spam example)
+\end{aligned}
+$$
 
 Compute linear combination:
 The operation is `x @ W¹ + b¹` where `x` is a row vector.
@@ -323,9 +306,13 @@ Pattern Detection Results:
 
 ### Step 2: Forward Pass Through Output Layer
 
-Input: $$
+Input (urgency detected, no legitimacy):
+
+$$
+\begin{aligned}
 h^{(1)} = [3.7, 0]
-$$ (urgency detected, no legitimacy)
+\end{aligned}
+$$
 
 Compute linear combination:
 ```
@@ -450,13 +437,7 @@ For each batch of training examples:
 
 | Aspect | Linear Regression | MLP |
 |------------|---------------------|---------|
-| Equation | $$
-y = x W + b
-$$ | $$
-y = h^{(L-1)} W^L + b^L
-$$ where $$
-h = \sigma(x W + b)
-$$ |
+| Equation | $$y = x W + b$$ | $$y = h^{(L-1)} W^L + b^L$$ where $$h = \sigma(x W + b)$$ |
 | Decision Boundary | Straight line/plane | Curved, complex shapes |
 | Expressiveness | Limited to linear patterns | Can learn any continuous function |
 | Training | Closed-form solution | Iterative optimization |
@@ -738,15 +719,15 @@ Input Features → Layer 1 → Layer 2 → ... → Output
 Where each layer applies: Linear Transformation → Non-linear Activation
 ```
 
-Weight Matrices ($$
-W
-$$): "How should features be combined?"
-Bias Vectors ($$
-b
-$$): "What are the default activation thresholds?"  
-Activations ($$
-\sigma
-$$): "How should we introduce non-linearity?"
+Key components and their roles:
+
+$$
+\begin{aligned}
+W \quad &: \text{Weight matrices - "How should features be combined?"} \newline
+b \quad &: \text{Bias vectors - "What are the default activation thresholds?"} \newline
+\sigma \quad &: \text{Activations - "How should we introduce non-linearity?"}
+\end{aligned}
+$$
 
 ### Capacity Control
 
@@ -771,13 +752,13 @@ Key Insight: MLPs are the "universal building block" - understanding them deeply
 
 ```
 Email: "Congratulations winner!!!"
-Features: [3, 0, 15]  # [exclamations, no\_\1ree, capitals]
+Features: [3, 0, 15]  # [exclamations, no_free, capitals]
                 ↓
 Hidden Layer 1: xW¹ + b¹ = [3.7, -4.2]
-                ↓  
+                ↓
 After ReLU:     h¹ = [3.7, 0]  # Urgency detected, no legitimacy
                 ↓
-Output Layer:   h¹W² + b² = [5.75] 
+Output Layer:   h¹W² + b² = [5.75]
                 ↓
 After Sigmoid:  y = 0.997  # 99.7% spam probability
 ```

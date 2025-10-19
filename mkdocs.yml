@@ -46,9 +46,6 @@ extra_javascript:
   - javascripts/mathjax-init.js
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
   - javascripts/mathjax-refresh.js
-extra:
-  arithmatex:
-    generic: true
 extra_css:
   - styles.css
 docs_dir: docs
@@ -69,6 +66,6 @@ nav:
   - README: README.md
   - LICENSE: LICENSE.md
   - Further: further.md
-  
+
 
 
