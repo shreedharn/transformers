@@ -234,7 +234,7 @@ The perceptron's mathematical operation can be expressed as:
 
 $$
 \begin{aligned}
-y &= f\left(\sum\_{i=1}^{n} w\_i x\_i + b\right)
+y &= f\left(\sum_{i=1}^{n} w_i x_i + b\right)
 \end{aligned}
 $$
 
@@ -245,8 +245,8 @@ $$
 \begin{aligned}
 y &: \text{output} \newline
 f &: \text{activation function} \newline
-w\_i &: \text{weight for i-th input} \newline
-x\_i &: \text{i-th input value} \newline
+w_i &: \text{weight for i-th input} \newline
+x_i &: \text{i-th input value} \newline
 b &: \text{bias} \newline
 n &: \text{number of inputs}
 \end{aligned}
@@ -264,7 +264,7 @@ Weights determine how input features are combined and transformed:
 
 $$
 \begin{aligned}
-z &= w\_1x\_1 + w\_2x\_2 + ... + w\_nx\_n
+z &= w_1x_1 + w_2x_2 + ... + w_nx_n
 \end{aligned}
 $$
 
@@ -328,7 +328,7 @@ Activation functions solve a fundamental limitation: without them, stacking laye
 
 $$
 \begin{aligned}
-h(x) &= W\_3(W\_2(W\_1x)) = (W\_3W\_2W\_1)x
+h(x) &= W_3(W_2(W_1x)) = (W_3W_2W_1)x
 \end{aligned}
 $$
 
@@ -347,9 +347,9 @@ Features:
 $$
 {\textstyle
 \begin{aligned}
-x\_1 &: \text{Number of exclamation marks} \newline
-x\_2 &: \text{Contains word "free" (1 if yes, 0 if no)} \newline
-x\_3 &: \text{Number of capital letters}
+x_1 &: \text{Number of exclamation marks} \newline
+x_2 &: \text{Contains word "free" (1 if yes, 0 if no)} \newline
+x_3 &: \text{Number of capital letters}
 \end{aligned}
 }
 $$
@@ -359,9 +359,9 @@ Example Email: "FREE VACATION!!! Click now!!!"
 $$
 {\textstyle
 \begin{aligned}
-x\_1 &= 6 \quad \text{(6 exclamation marks)} \newline
-x\_2 &= 1 \quad \text{(contains "FREE")} \newline
-x\_3 &= 13 \quad \text{(13 capital letters)}
+x_1 &= 6 \quad \text{(6 exclamation marks)} \newline
+x_2 &= 1 \quad \text{(contains "FREE")} \newline
+x_3 &= 13 \quad \text{(13 capital letters)}
 \end{aligned}
 }
 $$
@@ -371,9 +371,9 @@ Learned Weights (after training):
 $$
 {\textstyle
 \begin{aligned}
-w\_1 &= 0.3 \quad \text{(exclamation marks moderately important)} \newline
-w\_2 &= 0.8 \quad \text{("free" is highly indicative)} \newline
-w\_3 &= 0.1 \quad \text{(capitals less important)} \newline
+w_1 &= 0.3 \quad \text{(exclamation marks moderately important)} \newline
+w_2 &= 0.8 \quad \text{("free" is highly indicative)} \newline
+w_3 &= 0.1 \quad \text{(capitals less important)} \newline
 b &= -2.0 \quad \text{(bias term)}
 \end{aligned}
 }
@@ -547,7 +547,7 @@ Note: Bias (-0.5) shifts decision boundaries away from origin.
 
 $$
 \begin{aligned}
-h\_A &= \max(0, x\_1 - 0.5), \quad h\_B = \max(0, x\_2 - 0.5)
+h_A &= \max(0, x_1 - 0.5), \quad h_B = \max(0, x_2 - 0.5)
 \end{aligned}
 $$
 
@@ -631,7 +631,7 @@ Linear layer:
 
 $$
 \begin{aligned}
-z &= w\_1x\_1 + w\_2x\_2 + b
+z &= w_1x_1 + w_2x_2 + b
 \end{aligned}
 $$
 
@@ -645,7 +645,7 @@ Linear layer:
 
 $$
 \begin{aligned}
-z &= w\_1x\_1 + w\_2x\_2 + ... + w\_nx\_n + b
+z &= w_1x_1 + w_2x_2 + ... + w_nx_n + b
 \end{aligned}
 $$
 
@@ -662,7 +662,7 @@ Each layer can change the dimensionality:
 
 $$
 \begin{aligned}
-x \in \mathbb{R}^{784} \xrightarrow{\text{Layer 1}} h\_1 \in \mathbb{R}^{512} \xrightarrow{\text{Layer 2}} h\_2 \in \mathbb{R}^{256} \xrightarrow{\text{Output}} y \in \mathbb{R}^{10}
+x \in \mathbb{R}^{784} \xrightarrow{\text{Layer 1}} h_1 \in \mathbb{R}^{512} \xrightarrow{\text{Layer 2}} h_2 \in \mathbb{R}^{256} \xrightarrow{\text{Output}} y \in \mathbb{R}^{10}
 \end{aligned}
 $$
 
@@ -688,7 +688,7 @@ Stacking layers composes these operations:
 
 $$
 \begin{aligned}
-\text{Network}: \mathbb{R}^{n\_0} \rightarrow \mathbb{R}^{n\_1} \rightarrow \mathbb{R}^{n\_2} \rightarrow ... \rightarrow \mathbb{R}^{n\_L}
+\text{Network}: \mathbb{R}^{n_0} \rightarrow \mathbb{R}^{n_1} \rightarrow \mathbb{R}^{n_2} \rightarrow ... \rightarrow \mathbb{R}^{n_L}
 \end{aligned}
 $$
 
@@ -716,7 +716,7 @@ Mathematical Foundation:
 
 $$
 \begin{aligned}
-\mathcal{L}(\mathbf{y}\_{\text{true}}, \mathbf{y}\_{\text{pred}}) \rightarrow \mathbb{R}^+
+\mathcal{L}(\mathbf{y}_{\text{true}}, \mathbf{y}_{\text{pred}}) \rightarrow \mathbb{R}^+
 \end{aligned}
 $$
 
@@ -724,8 +724,8 @@ Where:
 
 $$
 \begin{aligned}
-\mathbf{y}\_{\text{true}} &: \text{true labels/target values} \newline
-\mathbf{y}\_{\text{pred}} &: \text{model's predictions} \newline
+\mathbf{y}_{\text{true}} &: \text{true labels/target values} \newline
+\mathbf{y}_{\text{pred}} &: \text{model's predictions} \newline
 \mathcal{L} &: \text{loss function} \newline
 \text{Output} &: \text{Single positive number (the "badness score")}
 \end{aligned}
@@ -747,8 +747,8 @@ Where:
 
 $$
 \begin{aligned}
-y\_i &: \text{True label (1 for correct class, 0 for others)} \newline
-p\_i &: \text{Predicted probability for class i} \newline
+y_i &: \text{True label (1 for correct class, 0 for others)} \newline
+p_i &: \text{Predicted probability for class i} \newline
 C &: \text{Number of classes}
 \end{aligned}
 $$
@@ -780,7 +780,7 @@ When predicting continuous values like house prices or temperatures, Mean Square
 
 
 $$
-\begin{aligned} \mathcal{L} &= \frac{1}{N} \sum\_{i=1}^N (y\_i - \hat{y}\_i)^2 \end{aligned}
+\begin{aligned} \mathcal{L} &= \frac{1}{N} \sum_{i=1}^N (y_i - \hat{y}_i)^2 \end{aligned}
 $$
 
 MSE measures the squared distance between predictions and targets, creating a penalty structure where small errors receive proportional punishment, but large errors face disproportionately severe consequences. This symmetric approach treats overestimation and underestimation equally.
@@ -801,7 +801,7 @@ Single Variable (1D case):
 
 $$
 \begin{aligned}
-x\_{\text{new}} &= x\_{\text{old}} - \alpha \frac{df}{dx}
+x_{\text{new}} &= x_{\text{old}} - \alpha \frac{df}{dx}
 \end{aligned}
 $$
 
@@ -809,7 +809,7 @@ Multiple Variables (Vector case):
 
 $$
 \begin{aligned}
-\mathbf{\theta}\_{\text{new}} &= \mathbf{\theta}\_{\text{old}} - \alpha \nabla\_{\mathbf{\theta}} \mathcal{L}
+\mathbf{\theta}_{\text{new}} &= \mathbf{\theta}_{\text{old}} - \alpha \nabla_{\mathbf{\theta}} \mathcal{L}
 \end{aligned}
 $$
 
@@ -820,7 +820,7 @@ $$
 \begin{aligned}
 \theta &: \text{Parameters (weights and biases)} \newline
 \alpha &: \text{Learning rate (step size)} \newline
-\nabla\_{\mathbf{\theta}} \mathcal{L} &: \text{Gradient (direction of steepest ascent)} \newline
+\nabla_{\mathbf{\theta}} \mathcal{L} &: \text{Gradient (direction of steepest ascent)} \newline
 \text{Negative sign} &: \text{Move opposite to gradient (downhill)}
 \end{aligned}
 $$
@@ -832,11 +832,11 @@ The gradient symbol (nabla) represents something intuitive:
 
 $$
 \begin{aligned}
-\nabla\_{\mathbf{\theta}} \mathcal{L} = \begin{bmatrix}
-\frac{\partial \mathcal{L}}{\partial \theta\_1} \newline
-\frac{\partial \mathcal{L}}{\partial \theta\_2} \newline
+\nabla_{\mathbf{\theta}} \mathcal{L} = \begin{bmatrix}
+\frac{\partial \mathcal{L}}{\partial \theta_1} \newline
+\frac{\partial \mathcal{L}}{\partial \theta_2} \newline
 \vdots \newline
-\frac{\partial \mathcal{L}}{\partial \theta\_n}
+\frac{\partial \mathcal{L}}{\partial \theta_n}
 \end{bmatrix}
 \end{aligned}
 $$
@@ -927,7 +927,7 @@ Loss
 
 $$
 \begin{aligned}
-\theta\_t &= \theta\_{t-1} - \alpha \nabla \mathcal{L}
+\theta_t &= \theta_{t-1} - \alpha \nabla \mathcal{L}
 \end{aligned}
 $$
 
@@ -1057,7 +1057,7 @@ Before we explore how neural networks excel in language applications, we need to
 
 $$
 \begin{aligned}
-\mathbf{e}\_i &= E[i] \in \mathbb{R}^{d\_{\text{model}}}
+\mathbf{e}_i &= E[i] \in \mathbb{R}^{d_{\text{model}}}
 \end{aligned}
 $$
 
@@ -1065,9 +1065,9 @@ Where:
 
 $$
 \begin{aligned}
-E \in \mathbb{R}^{V \times d\_{\text{model}}} &: \text{Embedding matrix} \newline
+E \in \mathbb{R}^{V \times d_{\text{model}}} &: \text{Embedding matrix} \newline
 V &: \text{vocabulary size (number of unique words/tokens)} \newline
-d\_{\text{model}} &: \text{embedding dimension} \newline
+d_{\text{model}} &: \text{embedding dimension} \newline
 E[i] &: \text{Each row represents one word's embedding vector}
 \end{aligned}
 $$
@@ -1138,7 +1138,7 @@ The network learns that words in similar positions (contexts) should have simila
 
 $$
 \begin{aligned}
-\mathbf{e}\_{\text{king}} - \mathbf{e}\_{\text{man}} + \mathbf{e}\_{\text{woman}} \approx \mathbf{e}\_{\text{queen}}
+\mathbf{e}_{\text{king}} - \mathbf{e}_{\text{man}} + \mathbf{e}_{\text{woman}} \approx \mathbf{e}_{\text{queen}}
 \end{aligned}
 $$
 
