@@ -46,7 +46,7 @@ class IssueType(Enum):
     """Categories of markdown and MathJax formatting issues."""
     LIST_WITH_DISPLAY_MATH = "List-marker lines contain display math (forbidden)"
     HEADING_WITH_MATH = "Heading lines contain math (forbidden)"
-    TABLE_WITH_DISPLAY_MATH = "Table rows contain display math (forbidden)"
+    TABLE_WITH_DISPLAY_MATH = "Table rows contain $$ or $ delimiters (use \\(...\\) instead)"
     INLINE_MATH_IN_PARAGRAPHS = "Paragraphs with inline math (promote to block)"
     DISPLAY_MATH_WITH_LIST_MARKER = "Display math on same line as list marker"
     OVER_INDENTED_DISPLAY_MATH = "Display math indented 4+ spaces (code block)"
@@ -130,7 +130,7 @@ PATTERNS = {
     'heading_with_math': re.compile(
         r'^\s*#{1,6}\s.*(\$\$|\\begin\{aligned\}|\\\(|\\\))'
     ),
-    'table_with_display_math': re.compile(r'^\s*\|.*\$\$.*\|.*$'),
+    'table_with_display_math': re.compile(r'^\s*\|.*(?:\$\$|\$).*\|.*$'),  # Catch $$ or $ in tables (should use \(...\))
     'display_math_with_list': re.compile(r'^\s*([-*+]|[0-9]+\.)\s*\$\$'),
     'over_indented_math': re.compile(rf'^\s{{{MIN_INDENTATION_FOR_CODE_BLOCK},}}\$\$'),
     'math_tokens_in_prose': re.compile(

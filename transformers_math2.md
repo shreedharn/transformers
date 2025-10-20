@@ -31,12 +31,11 @@ Additional Resources:
 ### 8.1 Initialization Strategies
 
 Xavier/Glorot for Linear Layers:
+
 $$
-{\textstyle
 \begin{aligned}
 W \sim \mathcal{N}\left(0, \frac{2}{n_{\text{in}} + n_{\text{out}}}\right) \quad (49)
 \end{aligned}
-}
 $$
 
 Attention-Specific: Initialize query/key projections with smaller variance to prevent attention collapse (overly peaked attention distributions).
@@ -60,7 +59,7 @@ SGD with Momentum:
 
 $$
 \begin{aligned}
-\mathbf{v}_t &= \beta \mathbf{v}_{t-1} + (1-\beta) \nabla_\theta \mathcal{L} \quad (5)\\
+\mathbf{v}_t &= \beta \mathbf{v}_{t-1} + (1-\beta) \nabla_\theta \mathcal{L} \quad (5) \newline
 \theta_t &= \theta_{t-1} - \eta \mathbf{v}_t \quad (6)
 \end{aligned}
 $$

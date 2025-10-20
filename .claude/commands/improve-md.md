@@ -31,11 +31,11 @@ Comprehensively improve the markdown document `$1` by applying content-appropria
 
 ### 2. Math-Prose Separation Rules
 
-* **Never inline math with Markdown structures.** No `$$`/`\begin{aligned}` on the same line as list markers, headings, table cells, or paragraph sentences.
-* **Extract and promote.** Move any math found in bullets, numbered items, tables, or paragraphs into dedicated `$$ \begin{aligned} … \end{aligned} $$` blocks.
+* **Never inline math with Markdown structures.** No `$$`/`\begin{aligned}` on the same line as list markers, headings, or paragraph sentences.
+* **Extract and promote.** Move any math found in bullets, numbered items, or paragraphs into dedicated `$$ \begin{aligned} … \end{aligned} $$` blocks.
 * **One concept → one block.** Use consolidated LaTeX blocks with `\newline` for line breaks.
 * **List safety.** Bullet/number → blank line → indented (2–3 spaces) display block; don't indent 4+ spaces.
-* **Tables stay inline.** Use `\(...\)` in tables; no display math.
+* **Tables stay inline.** Use `\(...\)` for all math in tables; never use `$$...$$` or display math in table cells. Underscores are NOT escaped in `\(...\)`.
 * **Rewrite when necessary.** Rephrase sentences that mix mathematical notation with prose.
 
 ### 3. Professional LaTeX Typography Standards
@@ -43,8 +43,8 @@ Comprehensively improve the markdown document `$1` by applying content-appropria
 * **Display format:** Use `$$ \begin{aligned} … \end{aligned} $$` for all mathematical content
 * **Single-line equations:** Always wrap in `\begin{aligned}` blocks, never use standalone `$$equation$$`
 * **Mathematical notation:** Use `$$` for ALL mathematical expressions (variables, equations, subscripts), never single `$`
-* **Table math notation:** Use `$$` for all mathematical expressions in tables
-* **Inline math:** Use `$$` even for simple variables like `$$x\_1$$`, `$$h\_t$$`
+* **Inline math in prose:** Use `$$` even for simple variables like `$$x\_1$$`, `$$h\_t$$`
+* **Table math notation:** Use `\(...\)` for all mathematical expressions in tables (NOT `$$`)
 * **Line breaks:** Use `\newline` (not `\\`) for line separation within blocks
 * **Text labels:** Use `\text{description}` for descriptive text within math blocks
 * **Bold mathematics:** Use `\mathbf{expression}` (Latin) and `\boldsymbol{expression}` (Greek/symbols)
@@ -52,9 +52,10 @@ Comprehensively improve the markdown document `$1` by applying content-appropria
 * **Alignment:** Use `&` characters for consistent positioning across lines
 * **Underscore escaping rules (CRITICAL):**
   - **Inside `\begin{aligned}...\end{aligned}` blocks:** Do NOT escape underscores - use `_` directly (e.g., `x_1`, `h_{t-1}`, `W_{ij}`)
-  - **In inline math outside aligned blocks:** MUST escape - use `\_` (e.g., `$$x\_1$$`, `$$h\_{t-1}$$`)
+  - **Inside `\(...\)` inline math (tables):** Do NOT escape underscores - use `_` directly (e.g., `\(x_1\)`, `\(h_{t-1}\)`)
+  - **In inline math with `$$...$$` (prose):** MUST escape - use `\_` (e.g., `$$x\_1$$`, `$$h\_{t-1}$$`)
   - **In code blocks, ASCII art, Python code:** NEVER escape - use `_` directly to preserve syntax
-  - **Rationale:** MathJax processes `\begin{aligned}` blocks as native LaTeX where `_` is the subscript operator, but inline `$$` in Markdown requires escaping to prevent italic interpretation
+  - **Rationale:** MathJax processes `\begin{aligned}` and `\(...\)` blocks as native LaTeX where `_` is the subscript operator, but inline `$$` in Markdown requires escaping to prevent italic interpretation
 
 ### 4. List Formatting and Separation Rules
 
@@ -477,6 +478,7 @@ This provides a comprehensive or targeted report of markdown formatting and LaTe
 
 **2. Display Math Category (8 detectors):**
 - Mathematical expressions in wrong locations (lists, headings, tables)
+- `$$...$$` delimiters used in table cells (should be `\(...\)`)
 - Math blocks with incorrect positioning and indentation
 - Adjacent math blocks that need consolidation
 - Over-indented display math and improper alignment
@@ -525,11 +527,12 @@ After running the improvement detector:
 **LaTeX Typography:**
 - [ ] **All equations use professional `$$ \begin{aligned} … \end{aligned} $$` blocks**
 - [ ] **No single-line `$$equation$$` without aligned wrapper**
-- [ ] **Use `$$` for ALL mathematical expressions, never single `$`**
-- [ ] **Tables use `$$` for all math notation**
+- [ ] **Use `$$` for mathematical expressions in prose, never single `$`**
+- [ ] **Tables use `\(...\)` for all math notation** (never `$$` or `$`)
 - [ ] **Mathematical content uses consistent LaTeX typography**
 - [ ] **Underscores UNESCAPED inside `\begin{aligned}` blocks** (use `_` directly: `x_1`, `h_{t-1}`)
-- [ ] **Underscores ESCAPED in inline math outside aligned blocks** (use `\_`: `$$x\_1$$`, `$$h\_{t-1}$$`)
+- [ ] **Underscores UNESCAPED inside `\(...\)` inline math (tables)** (use `_` directly: `\(x_1\)`, `\(D_{in}\)`)
+- [ ] **Underscores ESCAPED in `$$...$$` inline math (prose)** (use `\_`: `$$x\_1$$`, `$$h\_{t-1}$$`)
 - [ ] **No escaped underscores in code blocks, ASCII art, or Python code** (preserve normal `_` syntax)
 - [ ] **Proper mathematical formatting** (`\mathbf{}`, `\text{}`, spacing)
 
@@ -624,6 +627,36 @@ $$
 **Training**: Various objectives (span corruption, translation, etc.)
 **Use cases**: Translation, summarization, structured tasks
 ```
+
+### Table Formatting Examples:
+
+**Before (Incorrect - `$$` breaks table formatting):**
+```markdown
+| Term | Size | Meaning |
+|------|------|---------|
+| $$
+x
+$$ | $$
+[1, D\_{in}]
+$$ | Input vector |
+| $$
+W
+$$ | $$
+[D\_{in}, D\_{out}]
+$$ | Weight matrix |
+```
+
+**After (Correct - `\(...\)` keeps tables intact):**
+```markdown
+| Term | Size | Meaning |
+|------|------|---------|
+| \(x\) | \([1, D_{in}]\) | Input vector |
+| \(W\) | \([D_{in}, D_{out}]\) | Weight matrix |
+```
+
+**Key Rules:**
+- Use `\(...\)` in tables (NOT `$$` or `$`)
+- Underscores NOT escaped: `\(D_{in}\)` not `\(D\_{in}\)`
 
 ### Extended List Formatting Examples:
 
@@ -866,23 +899,30 @@ h\_t = \tanh(x\_t W\_{xh} + h\_{t-1} W\_{hh} + b\_h)
 $$
 ```
 
-**Edge Case 2: Single $ in Tables (Should be $$)**
+**Edge Case 2: Wrong Delimiters in Tables (Should be `\(...\)`)**
 
-**Before (Incorrect - Single $ in table):**
+**Before (Incorrect - `$$` or `$` in table cells):**
 ```markdown
 | Term | Size | Meaning |
 |------|------|---------|
 | $x_t$ | $[1, E]$ | Current input |
+| $$x_t$$ | $$[1, E]$$ | Current input |
 | $h_{t-1}$ | $[1, H]$ | Past memory |
 ```
 
-**After (Correct - $$ for proper display math):**
+**After (Correct - `\(...\)` inline math with unescaped underscores):**
 ```markdown
 | Term | Size | Meaning |
 |------|------|---------|
-| $$x\_t$$ | $$[1, E]$$ | Current input |
-| $$h\_{t-1}$$ | $$[1, H]$$ | Past memory |
+| \(x_t\) | \([1, E]\) | Current input |
+| \(h_{t-1}\) | \([1, H]\) | Past memory |
 ```
+
+**Why `\(...\)` in tables:**
+- Table cells require inline math that stays on the same line
+- `$$...$$` creates display math blocks that break table formatting
+- Underscores in `\(...\)` do NOT need escaping (like `\begin{aligned}` blocks)
+- `\(D_{in}\)` not `\(D\_{in}\)` — native LaTeX subscript syntax
 
 **Edge Case 3: Escaped Underscores in Non-LaTeX Context**
 
