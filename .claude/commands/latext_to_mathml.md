@@ -6,7 +6,8 @@ allowed-tools: Read, Edit, MultiEdit, Bash, Bash(grep:*), Bash(sed:*), Bash(awk:
 ---
 
 
-Comprehensively improve the markdown document `$1` by applying **semantic separation** between prose and mathematical content, converting all equations and notation to **MathML**, and ensuring professional, accessible, and standards-compliant mathematical presentation.
+Comprehensively improve the markdown document `$1` by applying **semantic separation** between prose and mathematical content, converting all equations and notation to **MathML**, and ensuring professional, accessible, and standards-compliant mathematical presentation and polished Markdown formatting for descriptive content.
+
 
 ---
 
@@ -19,19 +20,28 @@ All formulas, expressions, and mathematical variables must exist **only inside p
 
 ## 1. Content Classification and Separation
 
+**BEFORE applying any transformations, classify content and separate elements:**
+
 ### A. Mathematical Content → MathML Blocks
 
-* All content containing formulas, symbols, equations, variables, or fractions.
-* Any section containing LaTeX remnants (`$$`, `\begin{aligned}`, `\frac{}`, etc.) must be **converted to valid MathML**.
-* Parameter tables, model equations, and numerical definitions are converted to `<math>` markup.
+* Content with mathematical symbols, equations, variables, formulas
+* Expressions using LaTeX remnants (`$$`, `\begin{aligned}`, `\frac{}`, etc.) that must be **converted to valid MathML**
+* Parameter descriptions with dimensions or calculations
+* Any content mixing mathematical variables with descriptive text
+* Parameter tables, model equations, and numerical definitions are converted to `<math>` markup
 
 ### B. Descriptive Content → Clean Markdown
 
-* Narrative sections, architecture explanations, design reasoning.
-* Lists and bullets describing text, not math.
-* Tables that define terms, shapes, or meanings — keep as Markdown tables with inline MathML.
+* Architecture descriptions, use cases, training objectives
+* Feature lists, capabilities, or narrative explanations
+* Simple structured information without mathematical elements
+* Plain text descriptions about functionality or characteristics
+* Narrative sections, design reasoning
+* Tables that define terms, shapes, or meanings — keep as Markdown tables with inline MathML
 
-### ⚠️ Critical Rule:
+### ⚠️ Critical Separation Rule:
+
+**Do not include mathematical symbols, variables, or notation (e.g., `x`, `W`, `α`, `O(n)`, `→`, fractions) inside Markdown sentences, bullets, headings, or captions. Promote them to dedicated MathML display blocks (or use plain words).**
 
 Never mix MathML inside sentences. Instead, separate prose and math visually and semantically.
 
@@ -141,13 +151,66 @@ $$
 
 ---
 
-## 4. List Formatting Rules (Unchanged)
+## 4. List Formatting and Separation Rules
 
-Keep all Markdown list conventions identical to the LaTeX version:
+* **Blank line requirement:** Ensure blank lines before every markdown list (bulleted and numbered)
+* **NO blank lines between list items:** Only add blank lines before the start of lists, never between individual list items
+* **List safety:** Never place mathematical content directly in list markers. Never embed `<math>` tags within list markers.
+* **Proper separation:** Lists after any content type require blank line separation:
+  - After prose paragraphs, colons, bold/italic text
+  - After parenthetical statements, inline code/math expressions
+  - After blockquotes, table rows, HTML blocks, code fences
+  - After MathML display blocks or other structural elements
+* **Consistent markers:** Use consistent bullet markers throughout document (avoid mixing -, *, +)
+* **Nested lists:** Maintain proper indentation and blank line structure
 
-* Blank line before every list.
-* No blank lines between list items.
-* Never embed `<math>` tags within list markers.
+### List Formatting Examples:
+
+**Before (Incorrect):**
+```markdown
+Implementation details:
+- Parallel computation enabled
+- Memory optimization active
+
+**Features:**
+1. Fast processing
+2. Low memory usage
+```
+
+**After (Correct):**
+```markdown
+Implementation details:
+
+- Parallel computation enabled
+- Memory optimization active
+
+**Features:**
+
+1. Fast processing
+2. Low memory usage
+```
+
+**CRITICAL: Avoid These Common Mistakes:**
+
+❌ **Wrong - Blank lines between list items:**
+```markdown
+**Features:**
+
+- Item one
+
+- Item two
+
+- Item three
+```
+
+✅ **Correct - No blank lines between items:**
+```markdown
+**Features:**
+
+- Item one
+- Item two
+- Item three
+```
 
 ---
 
@@ -178,27 +241,219 @@ Inside tables, **never use block math**. Use inline `<math>` elements to preserv
 
 ---
 
-## 6. Automation and Fixers
+## 5a. Content-Specific Formatting Rules
 
-### Automated Fixes
+### Keep as Clean Markdown:
 
-| Fixer                       | Description                                                        | Safe | Converts To                                         |
-| --------------------------- | ------------------------------------------------------------------ | ---- | --------------------------------------------------- |
-| `latex_to_mathml`           | Converts `$$...$$` block LaTeX → MathML using latex2mathml library | ✅    | `<math display="block">...</math>` |
-| `inline_math_to_mathml`     | Converts `$x$` inline LaTeX → MathML | ✅    | `<math display="inline">...</math>` |
-| `paren_math_to_mathml`      | Converts `\(...\)` inline LaTeX (tables) → MathML | ✅    | `<math display="inline">...</math>` |
-| `math_code_fence_to_mathml` | Converts ````math` fences → MathML | ✅    | `<math display="block">...</math>` |
-| `list_formatting`           | Adds blank lines before lists, removes between items | ✅    | Formatting only |
-| `bold_formatting`           | Removes excessive bold markers | ✅    | Formatting only |
-| `remove_empty_mathml`       | Removes empty `<math>` tags | ✅    | Cleanup only |
+```markdown
+### Encoder-Decoder: T5 Family
+
+**Structure**: Encoder (bidirectional) + Decoder (causal) with cross-attention
+**Training**: Various objectives (span corruption, translation, etc.)
+**Use cases**: Translation, summarization, structured tasks
+```
+
+### Convert to Professional MathML:
+
+```markdown
+The attention mechanism computes query, key, and value matrices with specific dimensions:
+
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable>
+    <mtr>
+      <mtd><mi>Q</mi><mo>,</mo><mi>K</mi><mo>,</mo><mi>V</mi></mtd>
+      <mtd><mo>:</mo></mtd>
+      <mtd><mtext>Query, key, and value matrices</mtext></mtd>
+    </mtr>
+    <mtr>
+      <mtd><msub><mi>d</mi><mi>k</mi></msub><mo>=</mo><mn>512</mn></mtd>
+      <mtd><mo>:</mo></mtd>
+      <mtd><mtext>Key dimension for computational efficiency</mtext></mtd>
+    </mtr>
+    <mtr>
+      <mtd colspan="3">
+        <mtext>Attention</mtext><mo>(</mo><mi>Q</mi><mo>,</mo><mi>K</mi><mo>,</mo><mi>V</mi><mo>)</mo>
+        <mo>=</mo>
+        <mtext>softmax</mtext>
+        <mfenced>
+          <mfrac>
+            <mrow><mi>Q</mi><msup><mi>K</mi><mi>T</mi></msup></mrow>
+            <msqrt><msub><mi>d</mi><mi>k</mi></msub></msqrt>
+          </mfrac>
+        </mfenced>
+        <mi>V</mi>
+      </mtd>
+    </mtr>
+  </mtable>
+</math>
+```
 
 ---
 
-### Manual Fixes Required
+## 6. Automation and Fixers
 
-1. **Math-Prose Separation** — must manually extract and move text out of `<math>`.
-2. **Semantic conversion** — replace ambiguous LaTeX commands (`\text`, `\frac`) with proper MathML equivalents.
-3. **Content Classification** — decide whether a block is textual or mathematical.
+The improvement workflow uses two complementary tools:
+1. **Automated Fixer** (`py_latex_to_mathml.py`) - Applies safe, deterministic LaTeX→MathML transformations
+2. **Manual Intervention** - Required for semantic restructuring and context-aware decisions
+
+### What Can Be Fixed Automatically
+
+The automated fixer (`slash-cmd-scripts/src/py_latex_to_mathml.py`) provides **7 safe, enabled fixers**:
+
+#### 1. **LaTeXToMathMLFixer** - Block Math Conversion
+- **Fixes**: `$$...$$` block LaTeX expressions
+- **Action**: Converts to `<math display="block">...</math>` using latex2mathml library
+- **Category**: `math_formatting`
+- **Safe**: ✅ Yes - Uses robust external library with fallback error handling
+- **Example**:
+  ```markdown
+  # Before
+  $$
+  \frac{1}{1 + e^{-z}}
+  $$
+
+  # After
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+    <mfrac>
+      <mn>1</mn>
+      <mrow><mn>1</mn><mo>+</mo><msup><mi>e</mi><mrow><mo>-</mo><mi>z</mi></mrow></msup></mrow>
+    </mfrac>
+  </math>
+  ```
+
+#### 2. **InlineMathToMathMLFixer** - Inline Math Conversion
+- **Fixes**: `$x$` inline LaTeX expressions (avoids code blocks)
+- **Action**: Converts to `<math display="inline">...</math>`
+- **Category**: `math_formatting`
+- **Safe**: ✅ Yes - Skips code blocks and protected contexts
+- **Example**:
+  ```markdown
+  # Before
+  The variable $x_1$ represents input.
+
+  # After
+  The variable <math display="inline"><msub><mi>x</mi><mn>1</mn></msub></math> represents input.
+  ```
+
+#### 3. **ParenMathToMathMLFixer** - Table Math Conversion
+- **Fixes**: `\(...\)` inline LaTeX (commonly used in tables)
+- **Action**: Converts to `<math display="inline">...</math>`
+- **Category**: `math_formatting`
+- **Safe**: ✅ Yes - Specifically designed for table contexts
+- **Example**:
+  ```markdown
+  # Before
+  | \(x_t\) | \([1, D_{in}]\) | Input vector |
+
+  # After
+  | <math display="inline"><msub><mi>x</mi><mi>t</mi></msub></math> | <math display="inline"><mfenced><mn>1</mn><mo>,</mo><msub><mi>D</mi><mtext>in</mtext></msub></mfenced></math> | Input vector |
+  ```
+
+#### 4. **MathCodeFenceToMathMLFixer** - GitHub Math Fence Conversion
+- **Fixes**: GitHub-style ````math` code fences
+- **Action**: Converts to `<math display="block">...</math>` with alignment support
+- **Category**: `math_formatting`
+- **Safe**: ✅ Yes - Preserves all math content
+- **Example**:
+  ````markdown
+  # Before
+  ```math
+  x = y + z
+  ```
+
+  # After
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+    <mi>x</mi><mo>=</mo><mi>y</mi><mo>+</mo><mi>z</mi>
+  </math>
+  ````
+
+#### 5. **ListFormattingFixer** - List Spacing
+- **Fixes**: Missing blank lines before lists, excess blank lines between items
+- **Action**: Adds blank line before list start, removes blank lines between consecutive items
+- **Category**: `list_formatting`
+- **Safe**: ✅ Yes - Preserves indentation levels and nested lists
+- **Example**:
+  ```markdown
+  # Before
+  Here are the features:
+  - Feature one
+
+  - Feature two
+
+  # After
+  Here are the features:
+
+  - Feature one
+  - Feature two
+  ```
+
+#### 6. **BoldFormattingFixer** - Structural Bold Removal
+- **Fixes**: Excessive bold in specific patterns
+- **Action**: Removes `**` from labels with colons, list markers, line starts
+- **Category**: `bold_formatting`
+- **Safe**: ⚠️  Partial - Only removes in specific structural patterns
+- **Example**:
+  ```markdown
+  # Before
+  **Section One:**
+  - **Feature**: Description
+
+  # After
+  Section One:
+  - Feature: Description
+  ```
+
+#### 7. **EmptyMathMLBlockFixer** - Cleanup
+- **Fixes**: Empty `<math>` blocks and malformed tags
+- **Action**: Removes empty blocks, cleans up conversion artifacts
+- **Category**: `syntax`
+- **Safe**: ✅ Yes - Only removes truly empty blocks
+- **Example**:
+  ```markdown
+  # Before
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  </math>
+
+  # After
+  (removed)
+  ```
+
+### What Requires Manual Fixes
+
+The following issues **cannot be safely automated** and require human judgment:
+
+#### 1. **Math-Prose Separation** ⚠️ MANUAL ONLY
+- **Issue**: Mathematical notation embedded in prose sentences
+- **Why Manual**: Requires semantic understanding and sentence restructuring
+- **Solution**: Extract math from prose and promote to dedicated `<math display="block">` blocks
+
+#### 2. **Content Classification** ⚠️ MANUAL ONLY
+- **Issue**: Determining if content should be MathML or clean Markdown
+- **Why Manual**: Requires understanding of semantic meaning
+- **Solution**: Use MathML for mathematical content, Markdown for descriptive content
+
+#### 3. **Semantic MathML Quality** ⚠️ MANUAL ONLY
+- **Issue**: Automated conversion may produce valid but non-optimal MathML
+- **Why Manual**: Library may not choose the best semantic tags for all contexts
+- **Solution**: Review converted MathML for proper use of `<mtext>`, `<mi>`, `<mo>`, `<mn>`
+
+### Automated Fixer Usage
+
+**Basic Usage:**
+```bash
+# Fix all issues automatically
+python3 slash-cmd-scripts/src/py_latex_to_mathml.py yourfile.md
+
+# Preview changes without modifying file
+python3 slash-cmd-scripts/src/py_latex_to_mathml.py --dry-run yourfile.md
+
+# Use only specific fixer
+python3 slash-cmd-scripts/src/py_latex_to_mathml.py --fixer latex_to_mathml yourfile.md
+python3 slash-cmd-scripts/src/py_latex_to_mathml.py --fixer inline_math_to_mathml yourfile.md
+
+# List all available fixers
+python3 slash-cmd-scripts/src/py_latex_to_mathml.py --list-fixers
+```
 
 ---
 
@@ -249,8 +504,8 @@ git checkout yourfile.md
 # Apply targeted fixes
 python3 slash-cmd-scripts/src/py_latex_to_mathml.py --fixer <specific-fixer> yourfile.md
 
-# Or manual edit
-code yourfile.md
+# Or edit with AI
+
 ```
 
 ### Step 5: Validate Final Output
