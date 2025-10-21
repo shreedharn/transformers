@@ -20,6 +20,6 @@ window.MathJax = {
     skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"],
   },
   startup: {
-    typeset: false 
+    typeset: true 
   }
 };

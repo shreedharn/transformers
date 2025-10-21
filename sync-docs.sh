@@ -11,5 +11,6 @@ rsync -a \
   --include='javascripts/' \
   --include='javascripts/mathjax-init.js' \
   --include='javascripts/mathjax-refresh.js' \
+  --include='javascripts/mathml-refresh.js' \
   --exclude='*' \
   ./ docs/

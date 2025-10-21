@@ -97,3 +97,105 @@ mjx-container::-webkit-scrollbar-thumb {
   margin: 0.5em 0;
   text-align: left;
 }
+
+/* ===== Native MathML Styling  ===== */
+
+/* Block-level MathML (display equations) */
+.md-typeset math[display="block"] {
+  font-size: 85%;
+  display: block;
+  margin: 0.8em 0;
+  padding: 0.3em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  text-align: left;
+  word-wrap: normal;
+}
+
+/* Inline MathML (within text) */
+.md-typeset math[display="inline"],
+.md-typeset math:not([display]) {
+  font-size: 85%;
+  display: inline;
+  vertical-align: middle;
+  margin: 0 0.15em;
+}
+
+/* MathML tables (aligned equations) - ensure proper spacing */
+.md-typeset math mtable {
+  margin: 0 auto;
+  display: table;
+}
+
+.md-typeset math mtr {
+  display: table-row;
+}
+
+.md-typeset math mtd {
+  display: table-cell;
+  padding: 0.2em 0.5em;
+  text-align: inherit;
+}
+
+/* MathML fractions - ensure readability */
+.md-typeset math mfrac {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* MathML text elements - proper spacing and wrapping */
+.md-typeset math mtext {
+  font-family: var(--md-text-font-family, Inter);
+  font-style: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Prevent MathML overflow in narrow viewports */
+@media (max-width: 800px) {
+  .md-typeset math[display="block"] {
+    overflow-x: auto;
+    padding-bottom: 0.3em;
+    font-size: 80%;
+  }
+}
+
+/* Custom scrollbar for wide MathML equations */
+.md-typeset math[display="block"]::-webkit-scrollbar {
+  height: 6px;
+}
+
+.md-typeset math[display="block"]::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 3px;
+}
+
+/* Fix for MathML in table cells */
+.md-typeset td math,
+.md-typeset th math {
+  font-size: 90%;
+  display: inline;
+}
+
+/* Ensure proper line height for math-heavy paragraphs */
+.md-typeset p:has(math) {
+  line-height: 1.6;
+  margin: 0.5em 0;
+}
+
+/* Add spacing before/after math blocks within content */
+.md-typeset math[display="block"] + p,
+.md-typeset math[display="block"] + ul,
+.md-typeset math[display="block"] + ol {
+  margin-top: 0.8em;
+}
+
+.md-typeset p + math[display="block"],
+.md-typeset ul + math[display="block"],
+.md-typeset ol + math[display="block"],
+.md-typeset h3 + math[display="block"],
+.md-typeset h4 + math[display="block"] {
+  margin-top: 0.6em;
+}

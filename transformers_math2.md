@@ -32,11 +32,29 @@ Additional Resources:
 
 Xavier/Glorot for Linear Layers:
 
-$$
-\begin{aligned}
-W \sim \mathcal{N}\left(0, \frac{2}{n_{\text{in}} + n_{\text{out}}}\right) \quad (49)
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mi>W</mi>
+  <mo>∼</mo>
+  <mi mathvariant="script">N</mi>
+  <mrow>
+    <mo stretchy="false">(</mo>
+    <mn>0</mn>
+    <mo>,</mo>
+    <mfrac>
+      <mn>2</mn>
+      <mrow>
+        <msub><mi>n</mi><mtext>in</mtext></msub>
+        <mo>+</mo>
+        <msub><mi>n</mi><mtext>out</mtext></msub>
+      </mrow>
+    </mfrac>
+    <mo stretchy="false">)</mo>
+  </mrow>
+  <mspace width="1em"/>
+  <mo stretchy="false">(</mo>
+  <mn>49</mn>
+  <mo stretchy="false">)</mo>
+</math>
 
 Attention-Specific: Initialize query/key projections with smaller variance to prevent attention collapse (overly peaked attention distributions).
 
@@ -57,12 +75,52 @@ Global Norm Clipping: As detailed in equation (11), we clip gradients to prevent
 
 SGD with Momentum:
 
-$$
-\begin{aligned}
-\mathbf{v}_t &= \beta \mathbf{v}_{t-1} + (1-\beta) \nabla_\theta \mathcal{L} \quad (5) \newline
-\theta_t &= \theta_{t-1} - \eta \mathbf{v}_t \quad (6)
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable>
+    <mtr>
+      <mtd columnalign="right">
+        <msub><mi mathvariant="bold">v</mi><mi>t</mi></msub>
+      </mtd>
+      <mtd>
+        <mo>=</mo>
+      </mtd>
+      <mtd columnalign="left">
+        <mi>β</mi>
+        <msub><mi mathvariant="bold">v</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub>
+        <mo>+</mo>
+        <mo stretchy="false">(</mo>
+        <mn>1</mn>
+        <mo>−</mo>
+        <mi>β</mi>
+        <mo stretchy="false">)</mo>
+        <msub><mo>∇</mo><mi>θ</mi></msub>
+        <mi mathvariant="script">L</mi>
+        <mspace width="1em"/>
+        <mo stretchy="false">(</mo>
+        <mn>5</mn>
+        <mo stretchy="false">)</mo>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd columnalign="right">
+        <msub><mi>θ</mi><mi>t</mi></msub>
+      </mtd>
+      <mtd>
+        <mo>=</mo>
+      </mtd>
+      <mtd columnalign="left">
+        <msub><mi>θ</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub>
+        <mo>−</mo>
+        <mi>η</mi>
+        <msub><mi mathvariant="bold">v</mi><mi>t</mi></msub>
+        <mspace width="1em"/>
+        <mo stretchy="false">(</mo>
+        <mn>6</mn>
+        <mo stretchy="false">)</mo>
+      </mtd>
+    </mtr>
+  </mtable>
+</math>
 
 What momentum does: Like a ball rolling down a hill. Instead of just following the current slope (gradient), momentum keeps some memory of where you were going before. This helps you:
 
@@ -74,71 +132,278 @@ Bowling ball analogy: A heavy bowling ball doesn't stop immediately when it hits
 
 Understanding the formula:
 
-$$
-{\textstyle
-\begin{aligned}
-\mathbf{v}_t \quad & : \text{ Current "velocity" (combination of current gradient + previous velocity)} \newline
-\beta \approx 0.9 \quad & : \text{ How much previous velocity to keep 90% } \newline
-(1 - \beta) = 0.1 \quad & : \text{ How much current gradient to use 10% } \newline
-\eta \quad & : \text{ Learning rate (step size)}
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="right left">
+    <mtr>
+      <mtd>
+        <msub><mi mathvariant="bold">v</mi><mi>t</mi></msub>
+      </mtd>
+      <mtd>
+        <mo>:</mo>
+        <mspace width="0.5em"/>
+        <mtext>Current "velocity" (combination of current gradient + previous velocity)</mtext>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <mi>β</mi>
+        <mo>≈</mo>
+        <mn>0.9</mn>
+      </mtd>
+      <mtd>
+        <mo>:</mo>
+        <mspace width="0.5em"/>
+        <mtext>How much previous velocity to keep (90%)</mtext>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <mo stretchy="false">(</mo>
+        <mn>1</mn>
+        <mo>−</mo>
+        <mi>β</mi>
+        <mo stretchy="false">)</mo>
+        <mo>=</mo>
+        <mn>0.1</mn>
+      </mtd>
+      <mtd>
+        <mo>:</mo>
+        <mspace width="0.5em"/>
+        <mtext>How much current gradient to use (10%)</mtext>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <mi>η</mi>
+      </mtd>
+      <mtd>
+        <mo>:</mo>
+        <mspace width="0.5em"/>
+        <mtext>Learning rate (step size)</mtext>
+      </mtd>
+    </mtr>
+  </mtable>
+</math>
 
 Adam Optimizer: Combines momentum with adaptive learning rates:
 
-$$
-\begin{aligned}
-\mathbf{m}_t &= \beta_1 \mathbf{m}_{t-1} + (1-\beta_1) \nabla_\theta \mathcal{L} \quad (7)\\
-\mathbf{v}_t &= \beta_2 \mathbf{v}_{t-1} + (1-\beta_2) (\nabla_\theta \mathcal{L})^2 \quad (8)\\
-\theta_t &= \theta_{t-1} - \eta \frac{\hat{\mathbf{m}}_t}{\sqrt{\hat{\mathbf{v}}_t} + \epsilon} \quad (9)
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable>
+    <mtr>
+      <mtd columnalign="right">
+        <msub><mi mathvariant="bold">m</mi><mi>t</mi></msub>
+      </mtd>
+      <mtd>
+        <mo>=</mo>
+      </mtd>
+      <mtd columnalign="left">
+        <msub><mi>β</mi><mn>1</mn></msub>
+        <msub><mi mathvariant="bold">m</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub>
+        <mo>+</mo>
+        <mo stretchy="false">(</mo>
+        <mn>1</mn>
+        <mo>−</mo>
+        <msub><mi>β</mi><mn>1</mn></msub>
+        <mo stretchy="false">)</mo>
+        <msub><mo>∇</mo><mi>θ</mi></msub>
+        <mi mathvariant="script">L</mi>
+        <mspace width="1em"/>
+        <mo stretchy="false">(</mo>
+        <mn>7</mn>
+        <mo stretchy="false">)</mo>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd columnalign="right">
+        <msub><mi mathvariant="bold">v</mi><mi>t</mi></msub>
+      </mtd>
+      <mtd>
+        <mo>=</mo>
+      </mtd>
+      <mtd columnalign="left">
+        <msub><mi>β</mi><mn>2</mn></msub>
+        <msub><mi mathvariant="bold">v</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub>
+        <mo>+</mo>
+        <mo stretchy="false">(</mo>
+        <mn>1</mn>
+        <mo>−</mo>
+        <msub><mi>β</mi><mn>2</mn></msub>
+        <mo stretchy="false">)</mo>
+        <msup>
+          <mrow>
+            <mo stretchy="false">(</mo>
+            <msub><mo>∇</mo><mi>θ</mi></msub>
+            <mi mathvariant="script">L</mi>
+            <mo stretchy="false">)</mo>
+          </mrow>
+          <mn>2</mn>
+        </msup>
+        <mspace width="1em"/>
+        <mo stretchy="false">(</mo>
+        <mn>8</mn>
+        <mo stretchy="false">)</mo>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd columnalign="right">
+        <msub><mi>θ</mi><mi>t</mi></msub>
+      </mtd>
+      <mtd>
+        <mo>=</mo>
+      </mtd>
+      <mtd columnalign="left">
+        <msub><mi>θ</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub>
+        <mo>−</mo>
+        <mi>η</mi>
+        <mfrac>
+          <msub><mover><mi mathvariant="bold">m</mi><mo>^</mo></mover><mi>t</mi></msub>
+          <mrow>
+            <msqrt>
+              <msub><mover><mi mathvariant="bold">v</mi><mo>^</mo></mover><mi>t</mi></msub>
+            </msqrt>
+            <mo>+</mo>
+            <mi>ε</mi>
+          </mrow>
+        </mfrac>
+        <mspace width="1em"/>
+        <mo stretchy="false">(</mo>
+        <mn>9</mn>
+        <mo stretchy="false">)</mo>
+      </mtd>
+    </mtr>
+  </mtable>
+</math>
 
 with bias-corrected estimates defined as:
 
-$$
-\begin{aligned}
-\hat{\mathbf{m}}_t, \hat{\mathbf{v}}_t \quad \text{(bias-corrected first and second moment estimates)}
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub><mover><mi mathvariant="bold">m</mi><mo>^</mo></mover><mi>t</mi></msub>
+  <mo>,</mo>
+  <msub><mover><mi mathvariant="bold">v</mi><mo>^</mo></mover><mi>t</mi></msub>
+  <mspace width="1em"/>
+  <mtext>(bias-corrected first and second moment estimates)</mtext>
+</math>
 
 What Adam does - explained simply:
 
 Adam is like having a smart GPS that adjusts your driving based on two things:
 
-$$
-{\textstyle
-\begin{aligned}
-\text{1. } \mathbf{m}_t \text{ (momentum):} \quad &\text{"Which direction have we been going lately?" - Like momentum, but with exponential averaging} \newline
-\text{2. } \mathbf{v}_t \text{ (second moment):} \quad &\text{"How bumpy has the road been?" - Tracks how much the gradients have been changing}
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="left">
+    <mtr>
+      <mtd>
+        <mtext>1. </mtext>
+        <msub><mi mathvariant="bold">m</mi><mi>t</mi></msub>
+        <mtext> (momentum):</mtext>
+        <mspace width="1em"/>
+        <mtext>"Which direction have we been going lately?" - Like momentum, but with exponential averaging</mtext>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <mtext>2. </mtext>
+        <msub><mi mathvariant="bold">v</mi><mi>t</mi></msub>
+        <mtext> (second moment):</mtext>
+        <mspace width="1em"/>
+        <mtext>"How bumpy has the road been?" - Tracks how much the gradients have been changing</mtext>
+      </mtd>
+    </mtr>
+  </mtable>
+</math>
 
 The key insight: If the road has been very bumpy (high variance in gradients), take smaller steps. If it's been smooth and consistent, you can take bigger steps.
 
 Breaking down the symbols:
 
-$$
-{\textstyle
-\begin{aligned}
-\beta_1 \approx 0.9 \quad &: \text{ How much to remember from previous direction (90\%)} \newline
-\beta_2 \approx 0.999 \quad &: \text{ How much to remember from previous bumpiness (99.9\%)} \newline
-\epsilon \approx 10^{-8} \quad &: \text{ Tiny number to prevent division by zero} \newline
-\hat{\mathbf{m}}_t, \hat{\mathbf{v}}_t \quad &: \text{ Bias-corrected estimates (explained below)}
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="right left">
+    <mtr>
+      <mtd>
+        <msub><mi>β</mi><mn>1</mn></msub>
+        <mo>≈</mo>
+        <mn>0.9</mn>
+      </mtd>
+      <mtd>
+        <mo>:</mo>
+        <mspace width="0.5em"/>
+        <mtext>How much to remember from previous direction (90%)</mtext>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <msub><mi>β</mi><mn>2</mn></msub>
+        <mo>≈</mo>
+        <mn>0.999</mn>
+      </mtd>
+      <mtd>
+        <mo>:</mo>
+        <mspace width="0.5em"/>
+        <mtext>How much to remember from previous bumpiness (99.9%)</mtext>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <mi>ε</mi>
+        <mo>≈</mo>
+        <msup><mn>10</mn><mrow><mo>−</mo><mn>8</mn></mrow></msup>
+      </mtd>
+      <mtd>
+        <mo>:</mo>
+        <mspace width="0.5em"/>
+        <mtext>Tiny number to prevent division by zero</mtext>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <msub><mover><mi mathvariant="bold">m</mi><mo>^</mo></mover><mi>t</mi></msub>
+        <mo>,</mo>
+        <msub><mover><mi mathvariant="bold">v</mi><mo>^</mo></mover><mi>t</mi></msub>
+      </mtd>
+      <mtd>
+        <mo>:</mo>
+        <mspace width="0.5em"/>
+        <mtext>Bias-corrected estimates (explained below)</mtext>
+      </mtd>
+    </mtr>
+  </mtable>
+</math>
 
 Bias correction intuition: At the beginning, the moment estimates are initialized to zero, creating a bias. The correction mechanism addresses this:
 
-$$
-\begin{aligned}
-\mathbf{m}_0 = \mathbf{v}_0 &= 0 \quad \text{(initial bias toward zero)} \newline
-\text{Correction factor:} \quad &(1-\beta^t) \quad \text{(starts small and approaches 1)}
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable>
+    <mtr>
+      <mtd columnalign="right">
+        <msub><mi mathvariant="bold">m</mi><mn>0</mn></msub>
+        <mo>=</mo>
+        <msub><mi mathvariant="bold">v</mi><mn>0</mn></msub>
+      </mtd>
+      <mtd>
+        <mo>=</mo>
+      </mtd>
+      <mtd columnalign="left">
+        <mn>0</mn>
+        <mspace width="1em"/>
+        <mtext>(initial bias toward zero)</mtext>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd columnalign="right">
+        <mtext>Correction factor:</mtext>
+      </mtd>
+      <mtd></mtd>
+      <mtd columnalign="left">
+        <mo stretchy="false">(</mo>
+        <mn>1</mn>
+        <mo>−</mo>
+        <msup><mi>β</mi><mi>t</mi></msup>
+        <mo stretchy="false">)</mo>
+        <mspace width="1em"/>
+        <mtext>(starts small and approaches 1)</mtext>
+      </mtd>
+    </mtr>
+  </mtable>
+</math>
 
 Car analogy: Adam is like cruise control that:
 
@@ -152,33 +417,80 @@ AdamW vs Adam: AdamW decouples weight decay from gradient-based updates:
 
 Adam with L2 regularization:
 
-$$
-{\textstyle
-\begin{aligned}
-\theta_t = \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon} - \eta \lambda \theta_{t-1}
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub><mi>θ</mi><mi>t</mi></msub>
+  <mo>=</mo>
+  <msub><mi>θ</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub>
+  <mo>−</mo>
+  <mi>η</mi>
+  <mfrac>
+    <msub><mover><mi>m</mi><mo>^</mo></mover><mi>t</mi></msub>
+    <mrow>
+      <msqrt>
+        <msub><mover><mi>v</mi><mo>^</mo></mover><mi>t</mi></msub>
+      </msqrt>
+      <mo>+</mo>
+      <mi>ε</mi>
+    </mrow>
+  </mfrac>
+  <mo>−</mo>
+  <mi>η</mi>
+  <mi>λ</mi>
+  <msub><mi>θ</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub>
+</math>
 
 AdamW (decoupled weight decay):
-$$
-{\textstyle
-\begin{aligned}
-\theta_t = (1 - \eta \lambda) \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}
-\end{aligned}
-}
-$$
+
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub><mi>θ</mi><mi>t</mi></msub>
+  <mo>=</mo>
+  <mo stretchy="false">(</mo>
+  <mn>1</mn>
+  <mo>−</mo>
+  <mi>η</mi>
+  <mi>λ</mi>
+  <mo stretchy="false">)</mo>
+  <msub><mi>θ</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub>
+  <mo>−</mo>
+  <mi>η</mi>
+  <mfrac>
+    <msub><mover><mi>m</mi><mo>^</mo></mover><mi>t</mi></msub>
+    <mrow>
+      <msqrt>
+        <msub><mover><mi>v</mi><mo>^</mo></mover><mi>t</mi></msub>
+      </msqrt>
+      <mo>+</mo>
+      <mi>ε</mi>
+    </mrow>
+  </mfrac>
+</math>
 
 Why AdamW is better: Weight decay is applied regardless of gradient magnitude, leading to better generalization.
 
 Beta-2 Warmup: Gradually adjust the second moment decay parameter for improved training stability:
 
-$$
-\begin{aligned}
-\beta_2^{\text{initial}} &\approx 0.99 \quad \text{(high initial value)} \newline
-\beta_2^{\text{final}} &\approx 0.999 \quad \text{(gradually decrease over first few thousand steps)}
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="left">
+    <mtr>
+      <mtd>
+        <msubsup><mi>β</mi><mn>2</mn><mtext>initial</mtext></msubsup>
+        <mo>≈</mo>
+        <mn>0.99</mn>
+        <mspace width="1em"/>
+        <mtext>(high initial value)</mtext>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <msubsup><mi>β</mi><mn>2</mn><mtext>final</mtext></msubsup>
+        <mo>≈</mo>
+        <mn>0.999</mn>
+        <mspace width="1em"/>
+        <mtext>(gradually decrease over first few thousand steps)</mtext>
+      </mtd>
+    </mtr>
+  </mtable>
+</math>
 
 Gradient Accumulation: Simulate larger batch sizes:
 💻 Implementation Example: For gradient accumulation implementation, see [Optimization Notebook](./pynb/math_ref/optimization.ipynb)
@@ -188,13 +500,28 @@ Gradient Accumulation: Simulate larger batch sizes:
 Why do we need schedules? Think of learning to drive: you start slow in the parking lot (warmup), drive at normal speed on the highway (main training), then slow down carefully when approaching your destination (decay).
 
 Warmup: Gradually increase learning rate to avoid early instability:
-$$
-{\textstyle
-\begin{aligned}
-\eta_t = \eta_{\text{max}} \cdot \min\left(\frac{t}{T_{\text{warmup}}}, 1\right) \quad (10)
-\end{aligned}
-}
-$$
+
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub><mi>η</mi><mi>t</mi></msub>
+  <mo>=</mo>
+  <msub><mi>η</mi><mtext>max</mtext></msub>
+  <mo>·</mo>
+  <mi>min</mi>
+  <mrow>
+    <mo stretchy="false">(</mo>
+    <mfrac>
+      <mi>t</mi>
+      <msub><mi>T</mi><mtext>warmup</mtext></msub>
+    </mfrac>
+    <mo>,</mo>
+    <mn>1</mn>
+    <mo stretchy="false">)</mo>
+  </mrow>
+  <mspace width="1em"/>
+  <mo stretchy="false">(</mo>
+  <mn>10</mn>
+  <mo stretchy="false">)</mo>
+</math>
 
 Why warmup works:
 
@@ -213,24 +540,44 @@ Why cosine decay?
 - Mathematical smoothness: Cosine provides a natural, smooth curve from 1 to 0
 
 Formula:
-$$
-{\textstyle
-\begin{aligned}
-\eta_t = \eta_{\text{max}} \cdot 0.5 \left(1 + \cos\left(\pi \cdot \frac{t - T_{\text{warmup}}}{T_{\text{total}} - T_{\text{warmup}}}\right)\right)
-\end{aligned}
-}
-$$
+
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub><mi>η</mi><mi>t</mi></msub>
+  <mo>=</mo>
+  <msub><mi>η</mi><mtext>max</mtext></msub>
+  <mo>·</mo>
+  <mn>0.5</mn>
+  <mrow>
+    <mo stretchy="false">(</mo>
+    <mn>1</mn>
+    <mo>+</mo>
+    <mi>cos</mi>
+    <mrow>
+      <mo stretchy="false">(</mo>
+      <mi>π</mi>
+      <mo>·</mo>
+      <mfrac>
+        <mrow>
+          <mi>t</mi>
+          <mo>−</mo>
+          <msub><mi>T</mi><mtext>warmup</mtext></msub>
+        </mrow>
+        <mrow>
+          <msub><mi>T</mi><mtext>total</mtext></msub>
+          <mo>−</mo>
+          <msub><mi>T</mi><mtext>warmup</mtext></msub>
+        </mrow>
+      </mfrac>
+      <mo stretchy="false">)</mo>
+    </mrow>
+    <mo stretchy="false">)</mo>
+  </mrow>
+</math>
 
 Real-world analogy: Like landing an airplane - you approach fast, then gradually slow down for a smooth landing, not a crash.
 
 Original Transformer Schedule: Combines warmup with inverse square root decay:
-$$
-{\textstyle
-\begin{aligned}
-\eta_t = d_{\text{model}}^{-0.5} \cdot \min(t^{-0.5}, t \cdot T_{\text{warmup}}^{-1.5})
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mstyle displaystyle="false" scriptlevel="0"><mrow><msub><mi>&#x003B7;</mi><mi>t</mi></msub><mo>&#x0003D;</mo><msubsup><mi>d</mi><mrow><mtext>model</mtext></mrow><mrow><mo>&#x02212;</mo><mn>0.5</mn></mrow></msubsup><mi>&#x000B7;</mi><mo>min</mo><mo stretchy="false">&#x00028;</mo><msup><mi>t</mi><mrow><mo>&#x02212;</mo><mn>0.5</mn></mrow></msup><mo>&#x0002C;</mo><mi>t</mi><mi>&#x000B7;</mi><msubsup><mi>T</mi><mrow><mtext>warmup</mtext></mrow><mrow><mo>&#x02212;</mo><mn>1.5</mn></mrow></msubsup><mo stretchy="false">&#x00029;</mo></mrow></mstyle></mrow></mrow></math>
 
 When to use cosine vs original: Cosine for fine-tuning and shorter training; original schedule for training from scratch with very large models.
 
@@ -241,25 +588,34 @@ The Problem: Sometimes gradients become extremely large (exploding gradients), c
 The Solution: Clip (limit) the gradients to a maximum norm.
 
 Global Norm Clipping:
-$$
-{\textstyle
-\begin{aligned}
-\tilde{g} = \min\left(1, \frac{c}{\|\mathbf{g}\|_2}\right) \mathbf{g} \quad (11)
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mstyle displaystyle="false" scriptlevel="0"><mrow><mover><mrow><mi>g</mi></mrow><mo stretchy="false">&#x0007E;</mo></mover><mo>&#x0003D;</mo><mo>min</mo><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mn>1</mn><mo>&#x0002C;</mo><mfrac><mrow><mi>c</mi></mrow><mrow><mo fence="false" stretchy="false">&#x02016;</mo><mi>&#x1D420;</mi><msub><mo fence="false" stretchy="false">&#x02016;</mo><mn>2</mn></msub></mrow></mfrac><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mi>&#x1D420;</mi><mspace width="1em" /><mo stretchy="false">&#x00028;</mo><mn>11</mn><mo stretchy="false">&#x00029;</mo></mrow></mstyle></mrow></mrow></math>
 
 What this does intuitively:
 
-$$
-{\textstyle
-\begin{aligned}
-&\text{Calculate the total "size" of all gradients combined: } \|\mathbf{g}\|_2 \newline
-&\text{If this size exceeds our limit } c\text{, scale all gradients down proportionally} \newline
-&\text{If it's within the limit, leave gradients unchanged}
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="left">
+    <mtr>
+      <mtd>
+        <mtext>Calculate the total "size" of all gradients combined: </mtext>
+        <mo fence="false" stretchy="false">‖</mo>
+        <mi mathvariant="bold">g</mi>
+        <msub><mo fence="false" stretchy="false">‖</mo><mn>2</mn></msub>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <mtext>If this size exceeds our limit </mtext>
+        <mi>c</mi>
+        <mtext>, scale all gradients down proportionally</mtext>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <mtext>If it's within the limit, leave gradients unchanged</mtext>
+      </mtd>
+    </mtr>
+  </mtable>
+</math>
 
 Speedometer analogy: Like a speed limiter in a car. If you try to go 120 mph but the limit is 65 mph, it scales your speed down to 65 mph while keeping you in the same direction.
 
@@ -267,34 +623,44 @@ Why proportional scaling? We want to keep the relative direction of updates the 
 
 Example:
 
-$$
-{\textstyle
-\begin{aligned}
-&\text{Your gradients total to norm 50, but your clip value is 5} \newline
-&\text{Scaling factor: } \min(1, 5/50) = 0.1 \newline
-&\text{All gradients get multiplied by 0.1 reduced to 10% of original size}
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="left">
+    <mtr>
+      <mtd>
+        <mtext>Your gradients total to norm 50, but your clip value is 5</mtext>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <mtext>Scaling factor: </mtext>
+        <mo>min</mo>
+        <mo stretchy="false">(</mo>
+        <mn>1</mn>
+        <mo>,</mo>
+        <mn>5</mn>
+        <mo>/</mo>
+        <mn>50</mn>
+        <mo stretchy="false">)</mo>
+        <mo>=</mo>
+        <mn>0.1</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <mtext>All gradients get multiplied by 0.1 – reduced to 10% of original size</mtext>
+      </mtd>
+    </mtr>
+  </mtable>
+</math>
 
 ### 9.5 Numerical Stability
 
 Log-Sum-Exp Trick: For numerical stability in softmax:
-$$
-{\textstyle
-\begin{aligned}
-\log\left(\sum_{i=1}^n e^{x_i}\right) = c + \log\left(\sum_{i=1}^n e^{x_i - c}\right) \quad (12)
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mstyle displaystyle="false" scriptlevel="0"><mrow><mi>log</mi><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><msubsup><mo>&#x02211;</mo><mrow><mi>i</mi><mo>&#x0003D;</mo><mn>1</mn></mrow><mi>n</mi></msubsup><msup><mi>e</mi><mrow><msub><mi>x</mi><mi>i</mi></msub></mrow></msup><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mo>&#x0003D;</mo><mi>c</mi><mo>&#x0002B;</mo><mi>log</mi><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><msubsup><mo>&#x02211;</mo><mrow><mi>i</mi><mo>&#x0003D;</mo><mn>1</mn></mrow><mi>n</mi></msubsup><msup><mi>e</mi><mrow><msub><mi>x</mi><mi>i</mi></msub><mo>&#x02212;</mo><mi>c</mi></mrow></msup><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mspace width="1em" /><mo stretchy="false">&#x00028;</mo><mn>12</mn><mo stretchy="false">&#x00029;</mo></mrow></mstyle></mrow></mrow></math>
 
 with the stabilization parameter preventing numerical overflow:
 
-$$
-\begin{aligned}
-c = \max_i x_i \quad \text{(maximum value for numerical stability)}
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mi>c</mi><mo>&#x0003D;</mo><msub><mo>max</mo><mi>i</mi></msub><msub><mi>x</mi><mi>i</mi></msub><mspace width="1em" /><mtext>(maximum&#x000A0;value&#x000A0;for&#x000A0;numerical&#x000A0;stability)</mtext></mrow></mrow></math>
 
 ## 10. Efficient Attention & Scaling
 
@@ -302,35 +668,31 @@ $$
 
 Standard Attention Complexity:
 
-$$
-{\textstyle
-\begin{aligned}
-\text{Time:} \quad &O(n^2 d) \text{ for sequence length } n, \text{ model dimension } d \newline
-\text{Space:} \quad &O(n^2 + nd) \text{ for attention matrix and activations}
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable>
+    <mtr>
+      <mtd columnalign="right"><mtext>Time:</mtext></mtd>
+      <mtd><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mi>d</mi><mo stretchy="false">)</mo></mtd>
+      <mtd><mtext>for sequence length </mtext><mi>n</mi><mtext>, model dimension </mtext><mi>d</mi></mtd>
+    </mtr>
+    <mtr>
+      <mtd columnalign="right"><mtext>Space:</mtext></mtd>
+      <mtd><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>+</mo><mi>n</mi><mi>d</mi><mo stretchy="false">)</mo></mtd>
+      <mtd><mtext>for attention matrix and activations</mtext></mtd>
+    </mtr>
+  </mtable>
+</math>
 
 Memory Bottleneck: The attention matrix dominates memory usage for long sequences:
 
-$$
-\begin{aligned}
-A \in \mathbb{R}^{n \times n} \quad \text{(quadratic memory requirement)}
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mi>A</mi><mo>&#x02208;</mo><msup><mi>&#x0211D;</mi><mrow><mi>n</mi><mi>&#x000D7;</mi><mi>n</mi></mrow></msup><mspace width="1em" /><mtext>(quadratic&#x000A0;memory&#x000A0;requirement)</mtext></mrow></mrow></math>
 
 Detailed Complexity Breakdown:
 
-$$
-{\textstyle
-\begin{aligned}
-\text{1. QK}^T \text{ computation:} \quad &O(n^2 d) \text{ time, } O(n^2) \text{ space} \newline
-\text{2. Softmax normalization:} \quad &O(n^2) \text{ time and space} \newline
-\text{3. Attention-Value multiplication:} \quad &O(n^2 d) \text{ time, } O(nd) \text{ space} \newline
-\text{4. Total:} \quad &O(n^2 d) \text{ time, } O(n^2 + nd) \text{ space}
-\end{aligned}
-}
-$$
+1. QK<sup>T</sup> computation: <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mi>O</mi><mo>(</mo><msup><mi>n</mi><mn>2</mn></msup><mi>d</mi><mo>)</mo></math> time, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mi>O</mi><mo>(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>)</mo></math> space
+2. Softmax normalization: <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mi>O</mi><mo>(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>)</mo></math> time and space
+3. Attention-Value multiplication: <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mi>O</mi><mo>(</mo><msup><mi>n</mi><mn>2</mn></msup><mi>d</mi><mo>)</mo></math> time, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mi>O</mi><mo>(</mo><mi>n</mi><mi>d</mi><mo>)</mo></math> space
+4. Total: <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mi>O</mi><mo>(</mo><msup><mi>n</mi><mn>2</mn></msup><mi>d</mi><mo>)</mo></math> time, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mi>O</mi><mo>(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>+</mo><mi>n</mi><mi>d</mi><mo>)</mo></math> space
 
 Scaling Challenges:
 
@@ -342,33 +704,29 @@ Scaling Challenges:
 
 Core Idea: Compute attention without materializing the full attention matrix:
 
-$$
-\begin{aligned}
-n \times n \text{ attention matrix} \quad \text{(avoided through tiling)}
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mi>n</mi><mi>&#x000D7;</mi><mi>n</mi><mtext>&#x000A0;attention&#x000A0;matrix</mtext><mspace width="1em" /><mtext>(avoided&#x000A0;through&#x000A0;tiling)</mtext></mrow></mrow></math>
 
 Tiling Strategy:
 
-$$
-{\textstyle
-\begin{aligned}
-\text{1. Divide } Q, K, V \text{ into blocks} \newline
-\text{2. Compute attention scores block by block} \newline
-\text{3. Use online softmax to maintain numerical stability} \newline
-\text{4. Accumulate results without storing intermediate attention weights}
-\end{aligned}
-}
-$$
+1. Divide <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mi>Q</mi><mo>,</mo><mi>K</mi><mo>,</mo><mi>V</mi></math> into blocks
+2. Compute attention scores block by block
+3. Use online softmax to maintain numerical stability
+4. Accumulate results without storing intermediate attention weights
 
 Memory Reduction: FlashAttention achieves significant memory savings:
 
-$$
-\begin{aligned}
-\text{Standard:} \quad &O(n^2) \text{ memory} \newline
-\text{FlashAttention:} \quad &O(n) \text{ memory}
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable>
+    <mtr>
+      <mtd columnalign="right"><mtext>Standard:</mtext></mtd>
+      <mtd><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo><mtext> memory</mtext></mtd>
+    </mtr>
+    <mtr>
+      <mtd columnalign="right"><mtext>FlashAttention:</mtext></mtd>
+      <mtd><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mtext> memory</mtext></mtd>
+    </mtr>
+  </mtable>
+</math>
 
 Speed Improvement: Better GPU utilization through reduced memory bandwidth requirements.
 
@@ -378,38 +736,45 @@ Key Insight: Trade computational redundancy for memory efficiency - recompute ra
 
 Multi-Query Attention (MQA): Share key and value projections across heads:
 
-$$
-{\textstyle
-\begin{aligned}
-\text{Queries:} \quad &Q \in \mathbb{R}^{B \times H \times n \times d_k} \text{ (per-head)} \newline
-\text{Keys/Values:} \quad &K, V \in \mathbb{R}^{B \times 1 \times n \times d_k} \text{ (shared)}
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable>
+    <mtr>
+      <mtd columnalign="right"><mtext>Queries:</mtext></mtd>
+      <mtd><mi>Q</mi><mo>∈</mo><msup><mi>ℝ</mi><mrow><mi>B</mi><mo>×</mo><mi>H</mi><mo>×</mo><mi>n</mi><mo>×</mo><msub><mi>d</mi><mi>k</mi></msub></mrow></msup></mtd>
+      <mtd><mtext>(per-head)</mtext></mtd>
+    </mtr>
+    <mtr>
+      <mtd columnalign="right"><mtext>Keys/Values:</mtext></mtd>
+      <mtd><mi>K</mi><mo>,</mo><mi>V</mi><mo>∈</mo><msup><mi>ℝ</mi><mrow><mi>B</mi><mo>×</mo><mn>1</mn><mo>×</mo><mi>n</mi><mo>×</mo><msub><mi>d</mi><mi>k</mi></msub></mrow></msup></mtd>
+      <mtd><mtext>(shared)</mtext></mtd>
+    </mtr>
+  </mtable>
+</math>
 
 Grouped-Query Attention (GQA): Intermediate approach - group heads:
 
-$$
-{\textstyle
-\begin{aligned}
-&\text{Divide } H \text{ heads into } G \text{ groups} \newline
-&\text{Each group shares K, V projections} \newline
-&\text{Reduces KV cache size by factor } H/G
-\end{aligned}
-}
-$$
+- Divide <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mi>H</mi></math> heads into <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mi>G</mi></math> groups
+- Each group shares K, V projections
+- Reduces KV cache size by factor <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mi>H</mi><mo>/</mo><mi>G</mi></math>
 
 KV Cache Memory Analysis:
 
-$$
-{\textstyle
-\begin{aligned}
-\text{Standard MHA:} \quad &2 \cdot B \cdot H \cdot n \cdot d_k \text{ parameters} \newline
-\text{MQA:} \quad &2 \cdot B \cdot 1 \cdot n \cdot d_k \text{ parameters (H× reduction)} \newline
-\text{GQA:} \quad &2 \cdot B \cdot G \cdot n \cdot d_k \text{ parameters}
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable>
+    <mtr>
+      <mtd columnalign="right"><mtext>Standard MHA:</mtext></mtd>
+      <mtd><mn>2</mn><mo>·</mo><mi>B</mi><mo>·</mo><mi>H</mi><mo>·</mo><mi>n</mi><mo>·</mo><msub><mi>d</mi><mi>k</mi></msub><mtext> parameters</mtext></mtd>
+    </mtr>
+    <mtr>
+      <mtd columnalign="right"><mtext>MQA:</mtext></mtd>
+      <mtd><mn>2</mn><mo>·</mo><mi>B</mi><mo>·</mo><mn>1</mn><mo>·</mo><mi>n</mi><mo>·</mo><msub><mi>d</mi><mi>k</mi></msub><mtext> parameters (H× reduction)</mtext></mtd>
+    </mtr>
+    <mtr>
+      <mtd columnalign="right"><mtext>GQA:</mtext></mtd>
+      <mtd><mn>2</mn><mo>·</mo><mi>B</mi><mo>·</mo><mi>G</mi><mo>·</mo><mi>n</mi><mo>·</mo><msub><mi>d</mi><mi>k</mi></msub><mtext> parameters</mtext></mtd>
+    </mtr>
+  </mtable>
+</math>
 
 Quantization: Reduce memory further with int8/fp16 KV cache storage.
 
@@ -419,33 +784,38 @@ Key Insight: During generation, keys and values for previous tokens don't change
 
 Cache Update:
 
-$$
-\begin{aligned}
-K_{\text{cache}} \gets \mathrm{concat}(K_{\text{cache}},\ k_{\text{new}}) \quad (42)
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><msub><mi>K</mi><mrow><mtext>cache</mtext></mrow></msub><mo>&#x02190;</mo><mrow><mi mathvariant="normal">c</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">t</mi></mrow><mo stretchy="false">&#x00028;</mo><msub><mi>K</mi><mrow><mtext>cache</mtext></mrow></msub><mo>&#x0002C;</mo><mtext>&#x000A0;</mtext><msub><mi>k</mi><mrow><mtext>new</mtext></mrow></msub><mo stretchy="false">&#x00029;</mo><mspace width="1em" /><mo stretchy="false">&#x00028;</mo><mn>42</mn><mo stretchy="false">&#x00029;</mo></mrow></mrow></math>
 
-$$
-{\textstyle
-\begin{aligned}
-K_{\text{cache}} \quad &: \text{ Cached keys from previous tokens.} \newline
-V_{\text{cache}} \quad &: \text{ Cached values from previous tokens.} \newline
-k_{\text{new}}, v_{\text{new}} \quad &: \text{ Key and value for the new token.} \newline
-q_{\text{new}} \quad &: \text{ Query for the new token.}
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable>
+    <mtr>
+      <mtd columnalign="right"><msub><mi>K</mi><mtext>cache</mtext></msub></mtd>
+      <mtd><mo>:</mo></mtd>
+      <mtd columnalign="left"><mtext>Cached keys from previous tokens</mtext></mtd>
+    </mtr>
+    <mtr>
+      <mtd columnalign="right"><msub><mi>V</mi><mtext>cache</mtext></msub></mtd>
+      <mtd><mo>:</mo></mtd>
+      <mtd columnalign="left"><mtext>Cached values from previous tokens</mtext></mtd>
+    </mtr>
+    <mtr>
+      <mtd columnalign="right"><msub><mi>k</mi><mtext>new</mtext></msub><mo>,</mo><msub><mi>v</mi><mtext>new</mtext></msub></mtd>
+      <mtd><mo>:</mo></mtd>
+      <mtd columnalign="left"><mtext>Key and value for the new token</mtext></mtd>
+    </mtr>
+    <mtr>
+      <mtd columnalign="right"><msub><mi>q</mi><mtext>new</mtext></msub></mtd>
+      <mtd><mo>:</mo></mtd>
+      <mtd columnalign="left"><mtext>Query for the new token</mtext></mtd>
+    </mtr>
+  </mtable>
+</math>
 
 At each generation step, append the new key and value to the cache, then compute attention using the full cache.
 
 Memory Trade-off: KV caching balances memory and computation:
 
-$$
-\begin{aligned}
-\text{Cache growth:} \quad &O(nd) \text{ memory} \newline
-\text{Recomputation saved:} \quad &O(n^2) \text{ operations eliminated}
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mtext>Cache&#x000A0;growth:</mtext><mspace width="1em" /><mi>O</mi><mo stretchy="false">&#x00028;</mo><mi>n</mi><mi>d</mi><mo stretchy="false">&#x00029;</mo><mtext>&#x000A0;memory</mtext><mtext>Recomputation&#x000A0;saved:</mtext><mspace width="1em" /><mi>O</mi><mo stretchy="false">&#x00028;</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">&#x00029;</mo><mtext>&#x000A0;operations&#x000A0;eliminated</mtext></mrow></mrow></math>
 
 💻 Implementation Example: For KV Cache implementation, see [Advanced Concepts Notebook](./pynb/math_ref/advanced_concepts.ipynb)
 
@@ -453,91 +823,40 @@ $$
 
 Kernel Method View: Use feature maps to approximate softmax attention:
 
-$$
-\begin{aligned}
-\text{Original:} \quad &\text{softmax}(\mathbf{q}^T\mathbf{k}) \newline
-\text{Approximation:} \quad &\phi(\mathbf{q})^T \phi(\mathbf{k}) \quad \text{(feature map } \phi\text{)}
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mtext>Original:</mtext><mspace width="1em" /><mtext>softmax</mtext><mo stretchy="false">&#x00028;</mo><msup><mi>&#x1D42A;</mi><mi>T</mi></msup><mi>&#x1D424;</mi><mo stretchy="false">&#x00029;</mo><mtext>Approximation:</mtext><mspace width="1em" /><mi>&#x003D5;</mi><mo stretchy="false">&#x00028;</mo><mi>&#x1D42A;</mi><msup><mo stretchy="false">&#x00029;</mo><mi>T</mi></msup><mi>&#x003D5;</mi><mo stretchy="false">&#x00028;</mo><mi>&#x1D424;</mi><mo stretchy="false">&#x00029;</mo><mspace width="1em" /><mtext>(feature&#x000A0;map&#x000A0;</mtext><mi>&#x003D5;</mi><mtext>)</mtext></mrow></mrow></math>
 
 Linear Attention:
-$$
-{\textstyle
-\begin{aligned}
-\text{LinAttn}(Q,K,V) = \frac{\phi(Q)(\phi(K)^T V)}{\phi(Q)(\phi(K)^T \mathbf{1})} \quad (45)
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mstyle displaystyle="false" scriptlevel="0"><mrow><mtext>LinAttn</mtext><mo stretchy="false">&#x00028;</mo><mi>Q</mi><mo>&#x0002C;</mo><mi>K</mi><mo>&#x0002C;</mo><mi>V</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><mfrac><mrow><mi>&#x003D5;</mi><mo stretchy="false">&#x00028;</mo><mi>Q</mi><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x00028;</mo><mi>&#x003D5;</mi><mo stretchy="false">&#x00028;</mo><mi>K</mi><msup><mo stretchy="false">&#x00029;</mo><mi>T</mi></msup><mi>V</mi><mo stretchy="false">&#x00029;</mo></mrow><mrow><mi>&#x003D5;</mi><mo stretchy="false">&#x00028;</mo><mi>Q</mi><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x00028;</mo><mi>&#x003D5;</mi><mo stretchy="false">&#x00028;</mo><mi>K</mi><msup><mo stretchy="false">&#x00029;</mo><mi>T</mi></msup><mrow><mn mathvariant="bold">1</mn></mrow><mo stretchy="false">&#x00029;</mo></mrow></mfrac><mspace width="1em" /><mo stretchy="false">&#x00028;</mo><mn>45</mn><mo stretchy="false">&#x00029;</mo></mrow></mstyle></mrow></mrow></math>
 
 Complexity Reduction: Linear attention improves computational complexity:
 
-$$
-\begin{aligned}
-\text{Standard:} \quad &O(n^2 d) \newline
-\text{Linear:} \quad &O(nd^2) \quad \text{(beneficial when } d < n\text{)}
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mtext>Standard:</mtext><mspace width="1em" /><mi>O</mi><mo stretchy="false">&#x00028;</mo><msup><mi>n</mi><mn>2</mn></msup><mi>d</mi><mo stretchy="false">&#x00029;</mo><mtext>Linear:</mtext><mspace width="1em" /><mi>O</mi><mo stretchy="false">&#x00028;</mo><mi>n</mi><msup><mi>d</mi><mn>2</mn></msup><mo stretchy="false">&#x00029;</mo><mspace width="1em" /><mtext>(beneficial&#x000A0;when&#x000A0;</mtext><mi>d</mi><mo>&#x0003C;</mo><mi>n</mi><mtext>)</mtext></mrow></mrow></math>
 
 ## 11. Regularization, Generalization, and Calibration
 
 ### 11.1 Dropout in Transformers
 
 Attention Dropout: Applied to attention weights:
-$$
-{\textstyle
-\begin{aligned}
-A_{\text{dropped}} = \text{Dropout}(\text{softmax}(QK^T/\sqrt{d_k})) \quad (46)
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mstyle displaystyle="false" scriptlevel="0"><mrow><msub><mi>A</mi><mrow><mtext>dropped</mtext></mrow></msub><mo>&#x0003D;</mo><mtext>Dropout</mtext><mo stretchy="false">&#x00028;</mo><mtext>softmax</mtext><mo stretchy="false">&#x00028;</mo><mi>Q</mi><msup><mi>K</mi><mi>T</mi></msup><mo>&#x0002F;</mo><msqrt><mrow><msub><mi>d</mi><mi>k</mi></msub></mrow></msqrt><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x00029;</mo><mspace width="1em" /><mo stretchy="false">&#x00028;</mo><mn>46</mn><mo stretchy="false">&#x00029;</mo></mrow></mstyle></mrow></mrow></math>
 
 FFN Dropout: Applied after first linear transformation:
-$$
-{\textstyle
-\begin{aligned}
-\text{FFN}(\mathbf{x}) = W_2 \cdot \text{Dropout}(\text{GELU}(W_1 \mathbf{x})) \quad (47)
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mstyle displaystyle="false" scriptlevel="0"><mrow><mtext>FFN</mtext><mo stretchy="false">&#x00028;</mo><mi>&#x1D431;</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><msub><mi>W</mi><mn>2</mn></msub><mi>&#x000B7;</mi><mtext>Dropout</mtext><mo stretchy="false">&#x00028;</mo><mtext>GELU</mtext><mo stretchy="false">&#x00028;</mo><msub><mi>W</mi><mn>1</mn></msub><mi>&#x1D431;</mi><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x00029;</mo><mspace width="1em" /><mo stretchy="false">&#x00028;</mo><mn>47</mn><mo stretchy="false">&#x00029;</mo></mrow></mstyle></mrow></mrow></math>
 
 ### 11.2 Evaluation and Calibration
 
 Expected Calibration Error (ECE): Measures how well predicted probabilities match actual outcomes:
-$$
-{\textstyle
-\begin{aligned}
-\text{ECE} = \sum_{m=1}^M \frac{|B_m|}{n} |\text{acc}(B_m) - \text{conf}(B_m)|
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mstyle displaystyle="false" scriptlevel="0"><mrow><mtext>ECE</mtext><mo>&#x0003D;</mo><msubsup><mo>&#x02211;</mo><mrow><mi>m</mi><mo>&#x0003D;</mo><mn>1</mn></mrow><mi>M</mi></msubsup><mfrac><mrow><mo stretchy="false">&#x0007C;</mo><msub><mi>B</mi><mi>m</mi></msub><mo stretchy="false">&#x0007C;</mo></mrow><mrow><mi>n</mi></mrow></mfrac><mo stretchy="false">&#x0007C;</mo><mtext>acc</mtext><mo stretchy="false">&#x00028;</mo><msub><mi>B</mi><mi>m</mi></msub><mo stretchy="false">&#x00029;</mo><mo>&#x02212;</mo><mtext>conf</mtext><mo stretchy="false">&#x00028;</mo><msub><mi>B</mi><mi>m</mi></msub><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x0007C;</mo></mrow></mstyle></mrow></mrow></math>
 
 with the following components:
 
-$$
-\begin{aligned}
-B_m &: \text{Probability bins} \newline
-\text{acc}(B_m) &: \text{Accuracy in bin } m \newline
-\text{conf}(B_m) &: \text{Confidence in bin } m
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><msub><mi>B</mi><mi>m</mi></msub><mi>:</mi><mtext>Probability&#x000A0;bins</mtext><mtext>acc</mtext><mo stretchy="false">&#x00028;</mo><msub><mi>B</mi><mi>m</mi></msub><mo stretchy="false">&#x00029;</mo><mi>:</mi><mtext>Accuracy&#x000A0;in&#x000A0;bin&#x000A0;</mtext><mi>m</mi><mtext>conf</mtext><mo stretchy="false">&#x00028;</mo><msub><mi>B</mi><mi>m</mi></msub><mo stretchy="false">&#x00029;</mo><mi>:</mi><mtext>Confidence&#x000A0;in&#x000A0;bin&#x000A0;</mtext><mi>m</mi></mrow></mrow></math>
 
 Temperature Scaling: Post-training calibration method:
-$$
-{\textstyle
-\begin{aligned}
-P_{\text{cal}}(y|x) = \text{softmax}(\mathbf{z}/T)
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mstyle displaystyle="false" scriptlevel="0"><mrow><msub><mi>P</mi><mrow><mtext>cal</mtext></mrow></msub><mo stretchy="false">&#x00028;</mo><mi>y</mi><mo stretchy="false">&#x0007C;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><mtext>softmax</mtext><mo stretchy="false">&#x00028;</mo><mi>&#x1D433;</mi><mo>&#x0002F;</mo><mi>T</mi><mo stretchy="false">&#x00029;</mo></mrow></mstyle></mrow></mrow></math>
 
 with temperature parameter controlling confidence:
 
-$$
-\begin{aligned}
-T > 1 &: \text{Less confident predictions (smoother distribution)} \newline
-T < 1 &: \text{More confident predictions (sharper distribution)}
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mi>T</mi><mo>&#x0003E;</mo><mn>1</mn><mi>:</mi><mtext>Less&#x000A0;confident&#x000A0;predictions&#x000A0;(smoother&#x000A0;distribution)</mtext><mi>T</mi><mo>&#x0003C;</mo><mn>1</mn><mi>:</mi><mtext>More&#x000A0;confident&#x000A0;predictions&#x000A0;(sharper&#x000A0;distribution)</mtext></mrow></mrow></math>
 
 Perplexity Dependence on Tokenizer: PPL comparisons only valid with same tokenizer. Different tokenizers create different sequence lengths and vocabulary sizes.
 
@@ -560,28 +879,55 @@ Special Token Handling:
 - PAD: For batching variable-length sequences
 
 Embedding/LM-Head Tying Caveats:
+
 When sharing weights, ensure shape compatibility:
 
-$$
-{\textstyle
-\begin{aligned}
-\text{Embedding:} \quad &E \in \mathbb{R}^{V \times d_{\text{model}}} \newline
-\text{LM head: needs} \quad &\mathbb{R}^{d_{\text{model}} \times V} \newline
-\text{Solution: Use } E^T \text{ for output projection (as shown in equation 40)}
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="left">
+    <mtr>
+      <mtd>
+        <mtext>Embedding:</mtext>
+        <mspace width="1em"/>
+        <mi>E</mi>
+        <mo>∈</mo>
+        <msup>
+          <mi>ℝ</mi>
+          <mrow>
+            <mi>V</mi>
+            <mo>×</mo>
+            <msub><mi>d</mi><mtext>model</mtext></msub>
+          </mrow>
+        </msup>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <mtext>LM head: needs</mtext>
+        <mspace width="1em"/>
+        <msup>
+          <mi>ℝ</mi>
+          <mrow>
+            <msub><mi>d</mi><mtext>model</mtext></msub>
+            <mo>×</mo>
+            <mi>V</mi>
+          </mrow>
+        </msup>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <mtext>Solution: Use </mtext>
+        <msup><mi>E</mi><mi>T</mi></msup>
+        <mtext> for output projection (as shown in equation 40)</mtext>
+      </mtd>
+    </mtr>
+  </mtable>
+</math>
 
 ### 11.4 Label Smoothing
 
 Smooth Labels: Replace one-hot targets with:
-$$
-{\textstyle
-\begin{aligned}
-y_{\text{smooth}} = (1-\alpha) y_{\text{true}} + \frac{\alpha}{V} \mathbf{1} \quad (48)
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mstyle displaystyle="false" scriptlevel="0"><mrow><msub><mi>y</mi><mrow><mtext>smooth</mtext></mrow></msub><mo>&#x0003D;</mo><mo stretchy="false">&#x00028;</mo><mn>1</mn><mo>&#x02212;</mo><mi>&#x003B1;</mi><mo stretchy="false">&#x00029;</mo><msub><mi>y</mi><mrow><mtext>true</mtext></mrow></msub><mo>&#x0002B;</mo><mfrac><mrow><mi>&#x003B1;</mi></mrow><mrow><mi>V</mi></mrow></mfrac><mrow><mn mathvariant="bold">1</mn></mrow><mspace width="1em" /><mo stretchy="false">&#x00028;</mo><mn>48</mn><mo stretchy="false">&#x00029;</mo></mrow></mstyle></mrow></mrow></math>
 
 Effect on Gradients: Prevents overconfident predictions and improves calibration.
 
@@ -593,11 +939,7 @@ Pitfall: Using Euclidean distance instead of cosine similarity in high dimension
 
 Fix: In high-dimensional spaces, cosine similarity is more discriminative:
 
-$$
-\begin{aligned}
-d > 100 \quad \text{(most vectors are approximately orthogonal)}
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mi>d</mi><mo>&#x0003E;</mo><mn>100</mn><mspace width="1em" /><mtext>(most&#x000A0;vectors&#x000A0;are&#x000A0;approximately&#x000A0;orthogonal)</mtext></mrow></mrow></math>
 
 ### 14.2 Attention Scaling Mistakes
 
@@ -607,12 +949,7 @@ Symptom: Attention weights become too peaked, leading to poor gradients.
 
 Fix: Always apply the correct scaling:
 
-$$
-\begin{aligned}
-\text{Scaling factor:} \quad &1/\sqrt{d_k} \newline
-\text{Key dimension:} \quad &d_k = d_{\text{model}}/h \quad \text{(common implementation)}
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mtext>Scaling&#x000A0;factor:</mtext><mspace width="1em" /><mn>1</mn><mo>&#x0002F;</mo><msqrt><mrow><msub><mi>d</mi><mi>k</mi></msub></mrow></msqrt><mtext>Key&#x000A0;dimension:</mtext><mspace width="1em" /><msub><mi>d</mi><mi>k</mi></msub><mo>&#x0003D;</mo><msub><mi>d</mi><mrow><mtext>model</mtext></mrow></msub><mo>&#x0002F;</mo><mi>h</mi><mspace width="1em" /><mtext>(common&#x000A0;implementation)</mtext></mrow></mrow></math>
 
 ### 14.3 LayerNorm Placement
 
@@ -626,35 +963,31 @@ Pitfall: Applying temperature scaling inconsistently.
 
 Correct Usage: Use temperature parameter to control distribution sharpness:
 
-$$
-\begin{aligned}
-\text{softmax}(\mathbf{z}/\tau) \quad \text{where } \tau \text{ controls sharpness}
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mtext>softmax</mtext><mo stretchy="false">&#x00028;</mo><mi>&#x1D433;</mi><mo>&#x0002F;</mo><mi>&#x003C4;</mi><mo stretchy="false">&#x00029;</mo><mspace width="1em" /><mtext>where&#x000A0;</mtext><mi>&#x003C4;</mi><mtext>&#x000A0;controls&#x000A0;sharpness</mtext></mrow></mrow></math>
 
-$$
-{\textstyle
-\begin{aligned}
-\tau > 1 \quad &: \text{ Smoother distribution} \newline
-\tau < 1 \quad &: \text{ Sharper distribution}
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable>
+    <mtr>
+      <mtd><mi>τ</mi><mo>></mo><mn>1</mn></mtd>
+      <mtd><mo>:</mo></mtd>
+      <mtd><mtext>Smoother distribution</mtext></mtd>
+    </mtr>
+    <mtr>
+      <mtd><mi>τ</mi><mo><</mo><mn>1</mn></mtd>
+      <mtd><mo>:</mo></mtd>
+      <mtd><mtext>Sharper distribution</mtext></mtd>
+    </mtr>
+  </mtable>
+</math>
 
 ## 15. Summary & What to Learn Next
 
 ### 15.1 Key Mathematical Insights
 
-$$
-{\textstyle
-\begin{aligned}
-\text{1. Attention as Similarity Search:} \quad &\text{Q/K/V framework emerges naturally from maximum inner product search} \newline
-\text{2. Scaling Laws:} \quad &1/\sqrt{d_k} \text{ scaling prevents attention collapse (overly peaked distributions) in high dimensions} \newline
-\text{3. Residual Connections:} \quad &\text{Enable gradient flow through deep networks via skip connections} \newline
-\text{4. Multi-Head Architecture:} \quad &\text{Parallel subspace projections enable diverse attention patterns}
-\end{aligned}
-}
-$$
+1. **Attention as Similarity Search**: Q/K/V framework emerges naturally from maximum inner product search
+2. **Scaling Laws**: <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mfrac><mn>1</mn><msqrt><msub><mi>d</mi><mi>k</mi></msub></msqrt></mfrac></math> scaling prevents attention collapse (overly peaked distributions) in high dimensions
+3. **Residual Connections**: Enable gradient flow through deep networks via skip connections
+4. **Multi-Head Architecture**: Parallel subspace projections enable diverse attention patterns
 
 ### 15.2 Advanced Techniques Covered
 
@@ -690,14 +1023,17 @@ For a comprehensive collection of all papers referenced in this tutorial and add
 Key papers referenced in this Part 2:
 
 **Optimization:**
+
 - Loshchilov & Hutter (2019) - AdamW optimizer
 - Kaplan et al. (2020) - Scaling laws
 
 **Efficiency:**
+
 - Dao et al. (2022) - FlashAttention
 - Shazeer (2019) - Multi-query attention
 
 **Architecture:**
+
 - Vaswani et al. (2017) - Original transformer
 - Xiong et al. (2020) - LayerNorm placement
 - Press & Wolf (2017) - Weight tying
@@ -709,11 +1045,11 @@ Key papers referenced in this Part 2:
 ### Single-Head Attention Shapes
 | Symbol | Meaning | Typical Shape |
 |:--------|:---------|:---------------|
-| \(Q, K, V\) | Query, Key, Value matrices | \([n \times d_k], [n \times d_k], [n \times d_v]\) |
-| \(n\) | Sequence length | Scalar |
-| \(d_{\text{model}}\) | Model dimension | Scalar (512, 768, 1024, etc.) |
-| \(d_k, d_v\) | Key, value dimensions | Usually \(d_{\text{model}}/h\) |
-| \(h\) | Number of attention heads | Scalar (8, 12, 16, etc.) |
+| <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>Q</mi><mo>&#x0002C;</mo><mi>K</mi><mo>&#x0002C;</mo><mi>V</mi></mrow></math> | Query, Key, Value matrices | <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo stretchy="false">[</mo><mi>n</mi><mi>&#x000D7;</mi><msub><mi>d</mi><mi>k</mi></msub><mo stretchy="false">]</mo><mo>&#x0002C;</mo><mo stretchy="false">[</mo><mi>n</mi><mi>&#x000D7;</mi><msub><mi>d</mi><mi>k</mi></msub><mo stretchy="false">]</mo><mo>&#x0002C;</mo><mo stretchy="false">[</mo><mi>n</mi><mi>&#x000D7;</mi><msub><mi>d</mi><mi>v</mi></msub><mo stretchy="false">]</mo></mrow></math> |
+| <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>n</mi></mrow></math> | Sequence length | Scalar |
+| <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>d</mi><mrow><mtext>model</mtext></mrow></msub></mrow></math> | Model dimension | Scalar (512, 768, 1024, etc.) |
+| <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>d</mi><mi>k</mi></msub><mo>&#x0002C;</mo><msub><mi>d</mi><mi>v</mi></msub></mrow></math> | Key, value dimensions | Usually <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>d</mi><mrow><mtext>model</mtext></mrow></msub><mo>&#x0002F;</mo><mi>h</mi></mrow></math> |
+| <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>h</mi></mrow></math> | Number of attention heads | Scalar (8, 12, 16, etc.) |
 
 
 
@@ -721,24 +1057,58 @@ Key papers referenced in this Part 2:
 
 | Symbol | Meaning | Batched Multi-Head Shape |
 |:-------|:---------|:------------------------|
-| \(Q, K, V\) | Projected queries, keys, values | \([B, H, n, d_k], [B, H, n, d_k], [B, H, n, d_v]\) |
-| \(\text{Attn}\) | Attention weights matrix | \([B, H, n, n]\) |
-| \(\text{Output}_{\text{pre}}\) | Attention output (pre-concat) | \([B, H, n, d_v]\) |
-| \(\text{Output}_{\text{proj}}\) | Final output (post-concat) | \([B, n, d_{\text{model}}]\) |
-| \(W^Q, W^K, W^V, W^{\text{proj}}\) | Attention projection matrices | \([d_{\text{model}} \times d_k]\) per head |
-| \(W^O\) | Output projection | \([d_{\text{model}} \times d_{\text{model}}]\) |
+| <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>Q</mi><mo>&#x0002C;</mo><mi>K</mi><mo>&#x0002C;</mo><mi>V</mi></mrow></math> | Projected queries, keys, values | <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo stretchy="false">[</mo><mi>B</mi><mo>&#x0002C;</mo><mi>H</mi><mo>&#x0002C;</mo><mi>n</mi><mo>&#x0002C;</mo><msub><mi>d</mi><mi>k</mi></msub><mo stretchy="false">]</mo><mo>&#x0002C;</mo><mo stretchy="false">[</mo><mi>B</mi><mo>&#x0002C;</mo><mi>H</mi><mo>&#x0002C;</mo><mi>n</mi><mo>&#x0002C;</mo><msub><mi>d</mi><mi>k</mi></msub><mo stretchy="false">]</mo><mo>&#x0002C;</mo><mo stretchy="false">[</mo><mi>B</mi><mo>&#x0002C;</mo><mi>H</mi><mo>&#x0002C;</mo><mi>n</mi><mo>&#x0002C;</mo><msub><mi>d</mi><mi>v</mi></msub><mo stretchy="false">]</mo></mrow></math> |
+| <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mtext>Attn</mtext></mrow></math> | Attention weights matrix | <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo stretchy="false">[</mo><mi>B</mi><mo>&#x0002C;</mo><mi>H</mi><mo>&#x0002C;</mo><mi>n</mi><mo>&#x0002C;</mo><mi>n</mi><mo stretchy="false">]</mo></mrow></math> |
+| <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mtext>Output</mtext><mrow><mtext>pre</mtext></mrow></msub></mrow></math> | Attention output (pre-concat) | <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo stretchy="false">[</mo><mi>B</mi><mo>&#x0002C;</mo><mi>H</mi><mo>&#x0002C;</mo><mi>n</mi><mo>&#x0002C;</mo><msub><mi>d</mi><mi>v</mi></msub><mo stretchy="false">]</mo></mrow></math> |
+| <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mtext>Output</mtext><mrow><mtext>proj</mtext></mrow></msub></mrow></math> | Final output (post-concat) | <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo stretchy="false">[</mo><mi>B</mi><mo>&#x0002C;</mo><mi>n</mi><mo>&#x0002C;</mo><msub><mi>d</mi><mrow><mtext>model</mtext></mrow></msub><mo stretchy="false">]</mo></mrow></math> |
+| <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mi>W</mi><mi>Q</mi></msup><mo>&#x0002C;</mo><msup><mi>W</mi><mi>K</mi></msup><mo>&#x0002C;</mo><msup><mi>W</mi><mi>V</mi></msup><mo>&#x0002C;</mo><msup><mi>W</mi><mrow><mtext>proj</mtext></mrow></msup></mrow></math> | Attention projection matrices | <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo stretchy="false">[</mo><msub><mi>d</mi><mrow><mtext>model</mtext></mrow></msub><mi>&#x000D7;</mi><msub><mi>d</mi><mi>k</mi></msub><mo stretchy="false">]</mo></mrow></math> per head |
+| <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mi>W</mi><mi>O</mi></msup></mrow></math> | Output projection | <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo stretchy="false">[</mo><msub><mi>d</mi><mrow><mtext>model</mtext></mrow></msub><mi>&#x000D7;</mi><msub><mi>d</mi><mrow><mtext>model</mtext></mrow></msub><mo stretchy="false">]</mo></mrow></math> |
 
 
 Convention:
 
-$$
-\begin{aligned}
-B &: \text{Batch size} \newline
-H &: \text{Number of heads} \newline
-n &: \text{Sequence length} \newline
-d_k = d_v &= d_{\text{model}}/H
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="right left" columnspacing="0.5em">
+    <mtr>
+      <mtd><mi>B</mi></mtd>
+      <mtd>
+        <mo>:</mo>
+        <mspace width="0.5em"/>
+        <mtext>Batch size</mtext>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd><mi>H</mi></mtd>
+      <mtd>
+        <mo>:</mo>
+        <mspace width="0.5em"/>
+        <mtext>Number of heads</mtext>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd><mi>n</mi></mtd>
+      <mtd>
+        <mo>:</mo>
+        <mspace width="0.5em"/>
+        <mtext>Sequence length</mtext>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <msub><mi>d</mi><mi>k</mi></msub>
+        <mo>=</mo>
+        <msub><mi>d</mi><mi>v</mi></msub>
+      </mtd>
+      <mtd>
+        <mo>=</mo>
+        <mspace width="0.5em"/>
+        <msub><mi>d</mi><mtext>model</mtext></msub>
+        <mo>/</mo>
+        <mi>H</mi>
+      </mtd>
+    </mtr>
+  </mtable>
+</math>
 
 ## Appendix B: Key Derivations
 
@@ -746,31 +1116,12 @@ $$
 
 For the softmax probability:
 
-$$
-\begin{aligned}
-p_i = \frac{e^{z_i}}{\sum_j e^{z_j}}
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><msub><mi>p</mi><mi>i</mi></msub><mo>&#x0003D;</mo><mfrac><mrow><msup><mi>e</mi><mrow><msub><mi>z</mi><mi>i</mi></msub></mrow></msup></mrow><mrow><msub><mo>&#x02211;</mo><mi>j</mi></msub><msup><mi>e</mi><mrow><msub><mi>z</mi><mi>j</mi></msub></mrow></msup></mrow></mfrac></mrow></mrow></math>
 
 The gradient is:
 
-$$
-{\textstyle
-\begin{aligned}
-\frac{\partial p_i}{\partial z_j} = \begin{cases}
-p_i(1 - p_i) & \text{if } i = j \\
--p_i p_j & \text{if } i \neq j
-\end{cases} = p_i(\delta_{ij} - p_j)
-\end{aligned}
-}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mstyle displaystyle="false" scriptlevel="0"><mrow><mfrac><mrow><mo>&#x02202;</mo><msub><mi>p</mi><mi>i</mi></msub></mrow><mrow><mo>&#x02202;</mo><msub><mi>z</mi><mi>j</mi></msub></mrow></mfrac><mo>&#x0003D;</mo><mrow><mo stretchy="true" fence="true" form="prefix">&#x0007B;</mo><mtable><mtr><mtd columnalign="left"><msub><mi>p</mi><mi>i</mi></msub><mo stretchy="false">&#x00028;</mo><mn>1</mn><mo>&#x02212;</mo><msub><mi>p</mi><mi>i</mi></msub><mo stretchy="false">&#x00029;</mo></mtd><mtd columnalign="left"><mtext>if&#x000A0;</mtext><mi>i</mi><mo>&#x0003D;</mo><mi>j</mi></mtd></mtr><mtr><mtd columnalign="left"><mo>&#x02212;</mo><msub><mi>p</mi><mi>i</mi></msub><msub><mi>p</mi><mi>j</mi></msub></mtd><mtd columnalign="left"><mtext>if&#x000A0;</mtext><mi>i</mi><mo>&#x02260;</mo><mi>j</mi></mtd></mtr></mtable></mrow><mo>&#x0003D;</mo><msub><mi>p</mi><mi>i</mi></msub><mo stretchy="false">&#x00028;</mo><msub><mi>&#x003B4;</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&#x02212;</mo><msub><mi>p</mi><mi>j</mi></msub><mo stretchy="false">&#x00029;</mo></mrow></mstyle></mrow></mrow></math>
 
 ### B.2 Matrix Calculus Identities
 
-$$
-\begin{aligned}
-\text{Trace-Vec Identity:} \quad &\text{tr}(AB) = \text{vec}(A^T)^T \text{vec}(B) \newline
-\text{Kronecker Product:} \quad &\text{vec}(AXB) = (B^T \otimes A)\text{vec}(X) \newline
-\text{Chain Rule for Matrices:} \quad &\frac{\partial f}{\partial X} = \sum_Y \frac{\partial f}{\partial Y} \frac{\partial Y}{\partial X}
-\end{aligned}
-$$
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mtext>Trace-Vec&#x000A0;Identity:</mtext><mspace width="1em" /><mtext>tr</mtext><mo stretchy="false">&#x00028;</mo><mi>A</mi><mi>B</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><mtext>vec</mtext><mo stretchy="false">&#x00028;</mo><msup><mi>A</mi><mi>T</mi></msup><msup><mo stretchy="false">&#x00029;</mo><mi>T</mi></msup><mtext>vec</mtext><mo stretchy="false">&#x00028;</mo><mi>B</mi><mo stretchy="false">&#x00029;</mo><mtext>Kronecker&#x000A0;Product:</mtext><mspace width="1em" /><mtext>vec</mtext><mo stretchy="false">&#x00028;</mo><mi>A</mi><mi>X</mi><mi>B</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><mo stretchy="false">&#x00028;</mo><msup><mi>B</mi><mi>T</mi></msup><mo>&#x02297;</mo><mi>A</mi><mo stretchy="false">&#x00029;</mo><mtext>vec</mtext><mo stretchy="false">&#x00028;</mo><mi>X</mi><mo stretchy="false">&#x00029;</mo><mtext>Chain&#x000A0;Rule&#x000A0;for&#x000A0;Matrices:</mtext><mspace width="1em" /><mfrac><mrow><mo>&#x02202;</mo><mi>f</mi></mrow><mrow><mo>&#x02202;</mo><mi>X</mi></mrow></mfrac><mo>&#x0003D;</mo><msub><mo>&#x02211;</mo><mi>Y</mi></msub><mfrac><mrow><mo>&#x02202;</mo><mi>f</mi></mrow><mrow><mo>&#x02202;</mo><mi>Y</mi></mrow></mfrac><mfrac><mrow><mo>&#x02202;</mo><mi>Y</mi></mrow><mrow><mo>&#x02202;</mo><mi>X</mi></mrow></mfrac></mrow></mrow></math>

@@ -287,6 +287,36 @@ class EmptyMathMLBlockFixer(FixerStrategy):
         return content, 1 if content != original else 0
 
 
+class AlignmentArtifactFixer(FixerStrategy):
+    """Fix alignment artifacts from latex2mathml conversion.
+
+    Removes <mi>&</mi> (alignment markers) and <mi>\\newline</mi> artifacts
+    that should not appear in final MathML. These come from LaTeX aligned
+    environments where & was used for alignment and \\newline for line breaks.
+    """
+    @property
+    def name(self): return "fix_alignment_artifacts"
+    @property
+    def category(self): return FixCategory.SYNTAX
+
+    def fix(self, content: str) -> Tuple[str, int]:
+        fixes = 0
+        original = content
+
+        # Remove ampersand artifacts (LaTeX alignment markers)
+        content, amp_fixes = re.subn(r'<mi>&</mi>', '', content)
+        fixes += amp_fixes
+
+        # Remove \newline artifacts (should be proper line breaks)
+        content, newline_fixes = re.subn(r'<mi>\\newline</mi>', '', content)
+        fixes += newline_fixes
+
+        # Clean up extra whitespace that may result
+        content = re.sub(r'(<mtext>[^<]*?)\s{2,}([^<]*?</mtext>)', r'\1 \2', content)
+
+        return content, fixes
+
+
 # ============================================================================
 # MAIN FIXER ORCHESTRATOR
 # ============================================================================
@@ -300,6 +330,7 @@ class MarkdownFixer:
         ListFormattingFixer,
         BoldFormattingFixer,
         EmptyMathMLBlockFixer,
+        AlignmentArtifactFixer,       # Clean up & and \newline artifacts
     ]
 
     def __init__(self, logger=None):
