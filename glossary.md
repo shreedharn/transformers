@@ -167,11 +167,11 @@ Epoch: One complete pass through the entire training dataset during neural netwo
 Feed-Forward Network: A neural network component where information flows in one direction, typically used within transformer blocks.
 
 - In transformers: [transformers_fundamentals.md Section 11](./transformers_fundamentals.md#11-stage-6-feed-forward-networks) for detailed explanation
-- Implementation: Two linear transformations with activation:
+- Implementation: Two linear transformations with an activation function in between. Common activations include ReLU and GELU.
 
   $$
 \begin{aligned}
-\text{FFN}(x) = \max(0, xW\_1 + b\_1)W\_2 + b\_2
+\text{FFN}(x) = \sigma(xW\_1 + b\_1)W\_2 + b\_2
 \end{aligned}
 $$
 

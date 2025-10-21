@@ -24,7 +24,7 @@ Causal Language Modeling (CLM):
   $$
 \begin{aligned}
 p(x\_{t+1} | x\_1, \ldots, x\_t) &: \text{Autoregressive prediction probability} \newline
-  \mathcal{L}\_{CLM} &= -\sum\_{t=1}^{n-1} \log P(x\_{t+1} | x\_1, \ldots, x\_t)
+  \mathcal{L}\_{CLM} &= -\sum\_{t=1}^{n} \log P(x\_{t} | x\_{<t})
 \end{aligned}
 $$
 
@@ -257,18 +257,14 @@ dH1 = dH2 ⊙ φ'(W1 @ x + b1)
 
 Attention Backward:
 
-$$
-\begin{aligned}
-S &= QK^T/\sqrt{d\_k}, \quad P=\mathrm{softmax}(S) \text{ (row-wise)}, \quad O = PV \newline
-&\text{Given } G\_O=\partial \mathcal{L}/\partial O\text{:} \newline
-G\_V &= P^T G\_O \quad \text{(V same shape as }V\text{)} \newline
-G\_P &= G\_O V^T \newline
-G\_{S,r} &= \big(\mathrm{diag}(P\_r) - P\_r P\_r^T\big)\, G\_{P,r} \quad \text{(row }r\text{; softmax Jacobian)} \newline
-G\_Q &= G\_S K/\sqrt{d\_k}, \quad G\_K = G\_S^T Q/\sqrt{d\_k}
-\end{aligned}
-$$
+Intuitively, the gradients flow backward from the output to adjust the Q, K, and V matrices. Here's a simplified breakdown of what the model learns:
 
-The complete derivation is detailed in **[transformers_math1.md](./transformers_math1.md#53-backpropagation-through-attention)**.
+1.  **Gradient w.r.t. Values (V):** If a certain Value vector `V_j` was attended to and contributed to an error, its gradient `∂L/∂V_j` will signal how to change `V_j` to reduce the error. This updates the "content" of a word.
+2.  **Gradient w.r.t. Attention Weights (P):** The gradient `∂L/∂P_ij` tells the model whether the attention weight between word `i` and word `j` should have been higher or lower.
+3.  **Gradient w.r.t. Scores (S):** This flows from the attention weights. It tells the model how the "compatibility score" between a Query and a Key should change.
+4.  **Gradient w.r.t. Queries (Q) and Keys (K):** Flowing from the scores, these gradients update the Q and K representations. For example, if the score `S_ij` needed to be higher, the gradients `∂L/∂Q_i` and `∂L/∂K_j` will adjust the Query of word `i` and the Key of word `j` to be more similar.
+
+This process allows the model to learn which words should attend to each other and what information they should share. The complete mathematical derivation is detailed in **[transformers_math1.md](./transformers_math1.md#53-backpropagation-through-attention)**.
 
 LayerNorm Backward:
 ```
@@ -407,10 +403,19 @@ class LoRALinear(nn.Module):
         nn.init.zeros_(self.lora_B.weight)
 
     def forward(self, x):
-        # Frozen base computation + low-rank adaptation
+        # 1. The original, frozen layer computes its output
         base_output = self.base_layer(x)
-        lora_output = self.lora_B(self.lora_A(x)) * (self.alpha / self.r)
-        return base_output + lora_output
+
+        # 2. The LoRA adapter computes its low-rank update
+        #    - x is projected down to rank r by lora_A
+        #    - The result is projected back up to the output dimension by lora_B
+        lora_update = self.lora_B(self.lora_A(x))
+
+        # 3. The update is scaled by alpha/r
+        scaled_lora_update = lora_update * (self.alpha / self.r)
+
+        # 4. The base output and the scaled LoRA update are combined
+        return base_output + scaled_lora_update
 ```
 
 Key Parameters:

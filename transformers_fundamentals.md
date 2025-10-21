@@ -60,7 +60,15 @@ All positions computed in parallel using attention
 
 ### Self-Attention: The Core Mechanism
 
-Self-Attention Concept: Instead of attending from decoder to encoder, have each position in a sequence attend to all positions in the same sequence (including itself).
+Self-Attention Concept: Instead of attending from decoder to encoder, have each position in a sequence attend to all positions in the same sequence (including itself). This is like a "reading comprehension" task where, for each word, the model asks: "Which other words in this sentence are most relevant to understanding this specific word?"
+
+To do this, the model creates three special versions of each word's embedding:
+
+- **Query (Q):** A representation of the current word, used to "ask" for relevant information. Think of it as a question: "What parts of the sentence are important for me?"
+- **Key (K):** A representation of a word used for being "looked up" by other words. It acts like a label or a signpost, saying "Here is the information I contain."
+- **Value (V):** The actual information or "meaning" of a word. Once a word is identified as important (via its Key), the Value is what gets passed along.
+
+This Q, K, V system is inspired by information retrieval systems. Imagine searching for a video online: your search term is the **Query**, the video titles are the **Keys**, and the video content itself is the **Value**. The search engine matches your Query to the most relevant Keys to show you the best Values.
 
 Mathematical Foundation:
 Given input sequence:
@@ -68,10 +76,8 @@ Given input sequence:
 $$
 \begin{aligned}
 X &= [x\_1, x\_2, \ldots, x\_n] \newline
-\text{Step 1:} \quad Q &= XW^Q \newline
-\text{Step 1:} \quad K &= XW^K \newline
-\text{Step 1:} \quad V &= XW^V \newline
-\text{Step 2:} \quad \text{Attention}(Q, K, V) &= \text{softmax}\left(\frac{QK^T}{\sqrt{d\_k}}\right)V
+\text{Step 1: Create Q, K, V} \quad Q &= XW^Q, \quad K = XW^K, \quad V = XW^V \newline
+\text{Step 2: Calculate Attention} \quad \text{Attention}(Q, K, V) &= \text{softmax}\left(\frac{QK^T}{\sqrt{d\_k}}\right)V
 \end{aligned}
 $$
 
@@ -398,6 +404,8 @@ PE[\text{pos}, 2i+1] &= \cos\left(\frac{\text{pos}}{10000^{2i/d\_{\text{model}}}
 \end{aligned}
 $$
 
+**Why this formula?** This clever design uses sine and cosine functions at different frequencies for each dimension of the embedding. This has a crucial property: for any fixed offset `k`, the positional encoding at `pos+k` can be represented as a linear transformation of the positional encoding at `pos`. This means the model can easily learn to understand relative positions, which is vital for language. It also has the advantage of being able to generalize to sequence lengths longer than the ones seen during training.
+
 Combined Representation:
 
 $$
@@ -511,6 +519,8 @@ Final Hidden States [4, 768] ← Deeply processed word meanings
 ### Single Layer Mathematical Flow
 
 Transformer Block Architecture (Pre-LayerNorm):
+
+*Note: The architecture described here uses "Pre-LayerNorm," where normalization is applied before the attention and feed-forward sublayers. This is a common and effective variant found in many modern transformers (like GPT-2, BERT, and LLaMA). The original "Attention Is All You Need" paper used "Post-LayerNorm," where normalization is applied after the residual connection. Pre-LayerNorm generally leads to more stable training.*
 
 Given layer input:
 
@@ -889,15 +899,16 @@ $$
 
 Time Complexity:
 
-- Linear projections: Quadratic in model dimension
-- Attention computation: Quadratic in sequence length
-- Total per layer: Combined complexity
+- Linear projections: The creation of Q, K, and V involves matrix multiplications of shape `[n, d_model]` with `[d_model, d_model]`, resulting in a complexity of $O(n \cdot d_{\text{model}}^2)$.
+- Attention computation: The multiplication of Q and K matrices of shape `[n, d_k]` has a complexity of $O(n^2 \cdot d_k)$ per head. For all H heads, this is $O(H \cdot n^2 \cdot d_k) = O(n^2 \cdot d_{\text{model}})$.
+- Total per layer: For a typical transformer where `d_model` > `n`, the linear projections are often the most computationally expensive part. The combined complexity is $O(n \cdot d_{\text{model}}^2 + n^2 \cdot d_{\text{model}})$.
 
   $$
 \begin{aligned}
-\text{Linear projections} &: O(n \cdot d\_{\text{model}}^2) \newline
-  \text{Attention computation} &: O(H \cdot n^2 \cdot d\_k) = O(n^2 \cdot d\_{\text{model}}) \newline
-  \text{Total per layer} &: O(n^2 \cdot d\_{\text{model}} + n \cdot d\_{\text{model}}^2)
+\text{Linear projections (Q, K, V)} &: O(n \cdot d_{\text{model}}^2) \newline
+  \text{Attention scores (QK^T)} &: O(n^2 \cdot d_{\text{model}}) \newline
+  \text{Value aggregation (AV)} &: O(n^2 \cdot d_{\text{model}}) \newline
+  \text{Total per layer} &: O(n \cdot d_{\text{model}}^2 + n^2 \cdot d_{\text{model}})
 \end{aligned}
 $$
 
@@ -1176,16 +1187,28 @@ SwiGLU Variant (Gated FFN):
 
 $$
 \begin{aligned}
-\text{SwiGLU}(x) = (W\_1 x + b\_1) \odot \text{SiLU}(W\_2 x + b\_2)
+\text{SwiGLU}(x, W, V) = \text{Swish}(xW) \odot (xV)
 \end{aligned}
 $$
 \begin{aligned}
 \odot &: \text{Element-wise (Hadamard) product} \newline
-\text{SiLU}(x) &= x \cdot \sigma(x) \text{ where } \sigma \text{ is sigmoid} \newline
-d\_{\text{ffn}} &= \frac{8}{3} d\_{\text{model}} \text{ (parameter count matching)} \newline
-\text{Note:} &\text{ Requires two parallel linear transformations}
+\text{Swish}(x) &= x \cdot \text{sigmoid}(x) \quad \text{(also known as SiLU)} \newline
+W, V &: \text{Two separate weight matrices}
 \end{aligned}
 $$
+
+Modern implementations like in the LLaMA architecture often use a more efficient formulation:
+$$
+\begin{aligned}
+\text{FFN}_{\text{SwiGLU}}(x) = ( \text{Swish}(x W_1) \odot (x W_2) ) W_3
+\end{aligned}
+$$
+
+- $W_1$ and $W_2$ project the input $x$ into an expanded intermediate dimension.
+- The $\odot$ operation acts as a "gate," controlling which information flows through.
+- $W_3$ projects the gated representation back to the model dimension.
+
+To maintain a similar parameter count to the standard FFN, the intermediate dimension is typically set to $\frac{2}{3}$ of the standard FFN's `d_ffn`, which is why you often see an intermediate size of $\frac{2}{3} \times 4 d_{\text{model}} = \frac{8}{3} d_{\text{model}}$. This gated design has been shown to improve performance in many modern LLMs.
 
 Parameter Analysis:
 

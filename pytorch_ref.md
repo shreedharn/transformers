@@ -533,10 +533,17 @@ lstm = model.lstm
 input_size, hidden_size = lstm.input_size, lstm.hidden_size
 num_layers = lstm.num_layers
 
-# LSTM formula: 4 gates * (input_weights + hidden_weights + bias) * num_layers
+# An LSTM cell has 4 gates (input, forget, cell, output).
+# Each gate has:
+#  - A weight matrix for the input (input_size x hidden_size)
+#  - A weight matrix for the hidden state (hidden_size x hidden_size)
+#  - A bias term (hidden_size)
+# So, for one layer, the total parameters are:
+# 4 * ((input_size * hidden_size) + (hidden_size * hidden_size) + hidden_size)
+# This is then multiplied by the number of layers.
 lstm_params = 4 * (input_size * hidden_size + hidden_size * hidden_size + hidden_size) * num_layers
 print(f"LSTM parameters: {lstm_params}")
-print(f"Expected: {4 * (64 * 128 + 128 * 128 + 128) * 1} = {4 * (64 * 128 + 128 * 128 + 128) * 1}")
+print(f"Expected: {4 * (64 * 128 + 128 * 128 + 128) * 1} = {4 * (64 * 128 + 128 * 128 + 128)}")
 ```
 
 ### Variable Length Sequence Handling

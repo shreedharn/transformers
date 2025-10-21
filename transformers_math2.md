@@ -149,7 +149,7 @@ Car analogy: Adam is like cruise control that:
 
 ### 9.2 Advanced Optimizers
 
-AdamW vs Adam: AdamW decouples weight decay from gradient-based updates:
+AdamW vs Adam: AdamW ("Adam with Weight Decay") decouples weight decay from the gradient-based updates, which has been shown to improve generalization.
 
 Adam with L2 regularization:
 

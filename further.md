@@ -33,7 +33,7 @@ A curated collection of foundational papers and modern developments in transform
 - Unified framework for NLP tasks
 - Comprehensive study of transfer learning approaches
 
-**[Language Models are Few-Shot Learners](https://arxiv.org/abs/2006.14165)** (Brown et al., 2020)
+**[Language Models are Few-Shot Learners](https://arxiv.org/abs/2005.14165)** (Brown et al., 2020)
 - GPT-3: Demonstrated in-context learning at scale
 - Few-shot learning without gradient updates
 - Showed scaling trends in model capabilities

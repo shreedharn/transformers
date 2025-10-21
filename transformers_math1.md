@@ -993,23 +993,19 @@ $$
 
 ### 5.2 Why the $$\sqrt{d_k}$$ Scaling?
 
-Variance Analysis: For query and key matrices with independent identically distributed entries:
+Variance Analysis: For query and key matrices where entries are independent random variables with mean 0 and variance $\sigma^2$:
 
+The dot product of a query vector $q$ and a key vector $k$ is $s = \sum_{i=1}^{d_k} q_i k_i$.
+The variance of this sum is:
 $$
 \begin{aligned}
-Q, K &\quad \text{(matrices with i.i.d. entries)} \newline
-\text{variance} &= \sigma^2
+\text{Var}(s) &= \sum_{i=1}^{d_k} \text{Var}(q_i k_i) \\
+&= \sum_{i=1}^{d_k} (\mathbb{E}[q_i^2 k_i^2] - (\mathbb{E}[q_i k_i])^2) \\
+&= \sum_{i=1}^{d_k} (\mathbb{E}[q_i^2]\mathbb{E}[k_i^2] - (\mathbb{E}[q_i]\mathbb{E}[k_i])^2) \\
+&= \sum_{i=1}^{d_k} (\sigma^2 \cdot \sigma^2 - 0) = d_k \sigma^4
 \end{aligned}
 $$
-
-Then:
-$$
-{\textstyle
-\begin{aligned}
-\text{Var}(QK^T) = d_k \sigma^4 \quad (24)
-\end{aligned}
-}
-$$
+So, the variance of the dot product scores is proportional to the key dimension $d_k$.
 
 Understanding the variance parameter: This measures how spread out the numbers are - think of it as measuring "how noisy" or "how varied" the data is:
 
