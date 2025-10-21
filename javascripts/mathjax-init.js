@@ -10,6 +10,7 @@ window.MathJax = {
     displayAlign: "left",
     displayIndent: "0",
     linebreaks: { automatic: true, width: "container" },
+    adaptiveCSS: false,
   },
   svg: {
     displayAlign: "left",
