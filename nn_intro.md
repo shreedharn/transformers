@@ -46,9 +46,9 @@ Think of these as nested boxes, where each inner box is a subset of the outer on
 ```
 
 ### Artificial Intelligence (AI)
-Definition: Systems that can perform tasks that typically require human intelligence.
+**Definition:** Systems that can perform tasks that typically require human intelligence.
 
-Examples:
+**Examples:**
 
 - Chatbots: Like Siri or Alexa responding to voice commands
 - Self-driving cars: Navigating roads and making driving decisions
@@ -56,16 +56,16 @@ Examples:
 - Recommendation systems: Netflix suggesting movies you might like
 
 ### Machine Learning (ML)
-Definition: A subset of AI where systems learn patterns from data without being explicitly programmed for every scenario.
+**Definition:** A subset of AI where systems learn patterns from data without being explicitly programmed for every scenario.
 
-Examples:
+**Examples:**
 
 - Email spam detection: Learning to identify spam based on patterns in previous emails
 - Credit scoring: Determining loan approval based on historical financial data
 - Image recognition: Identifying objects in photos after training on thousands of labeled images
 - Stock price prediction: Using historical market data to forecast trends
 
-Traditional ML Techniques:
+**Traditional ML Techniques:**
 
 - Logistic Regression: For binary classification (spam/not spam)
 - Decision Trees: For rule-based decision making
@@ -73,16 +73,16 @@ Traditional ML Techniques:
 - Random Forest: Combining multiple decision trees for better predictions
 
 ### Deep Learning (DL)
-Definition: A subset of ML that uses neural networks with multiple layers to learn increasingly complex patterns.
+**Definition:** A subset of ML that uses neural networks with multiple layers to learn increasingly complex patterns.
 
-Examples:
+**Examples:**
 
 - Large Language Models: ChatGPT, GPT-4, BERT understanding and generating human-like text
 - Computer Vision: Self-driving cars recognizing pedestrians, traffic signs, and other vehicles
 - Speech Recognition: Converting spoken words to text with high accuracy
 - Machine Translation: Google Translate converting between languages
 
-Key Difference: Deep learning can automatically discover the features it needs to learn from raw data, while traditional ML often requires humans to manually engineer these features.
+**Key Difference:** Deep learning can automatically discover the features it needs to learn from raw data, while traditional ML often requires humans to manually engineer these features.
 
 Now that we understand where deep learning fits in the AI landscape, let's explore why it has become the dominant approach for natural language processing tasks.
 
@@ -97,7 +97,7 @@ Natural Language Processing (NLP) involves teaching computers to understand, int
 #### 1. Feature Engineering Complexity
 Traditional ML requires humans to manually design features that represent text data.
 
-Example: Email Spam Detection with Traditional ML
+**Example: Email Spam Detection with Traditional ML**
 ```
 Original Email: "Congratulations! You've won $1000! Click here now!"
 
@@ -111,7 +111,7 @@ Manual Feature Engineering:
 - Contains "won": Yes
 ```
 
-Problems:
+**Problems:**
 
 - Requires domain expertise to know which features matter
 - Misses subtle patterns that humans didn't think to encode
@@ -121,7 +121,7 @@ Problems:
 #### 2. Bag of Words Limitations
 Traditional approaches often use "Bag of Words" - treating text as an unordered collection of words.
 
-Example:
+**Example:**
 ```
 Sentence 1: "The cat sat on the mat"
 Sentence 2: "The mat sat on the cat"
@@ -130,12 +130,12 @@ Bag of Words representation (same for both):
 {the: 2, cat: 1, sat: 1, on: 1, mat: 1}
 ```
 
-Problem: Both sentences have identical representations despite completely different meanings!
+**Problem:** Both sentences have identical representations despite completely different meanings!
 
 #### 3. Long-Range Dependencies
 Traditional ML struggles to capture relationships between words that are far apart in a sentence.
 
-Example:
+**Example:**
 ```
 "The book that I bought yesterday at the store was interesting."
 ```
@@ -147,7 +147,7 @@ Traditional ML has difficulty connecting "book" with "interesting" because they'
 #### 1. Automatic Feature Learning
 Neural networks automatically learn useful features from raw text data.
 
-Word Embeddings: Neural networks learn to represent words as vectors that capture semantic meaning.
+**Word Embeddings:** Neural networks learn to represent words as vectors that capture semantic meaning.
 
 ```
 king - man + woman ≈ queen
@@ -157,7 +157,7 @@ king - man + woman ≈ queen
 #### 2. Context Awareness
 Deep learning models can understand that the same word means different things in different contexts.
 
-Example:
+**Example:**
 
 - "I went to the bank" (financial institution)
 - "I sat by the river bank" (edge of water)
@@ -167,7 +167,7 @@ A deep learning model learns different representations for "bank" based on surro
 #### 3. Sequence Understanding
 Models like RNNs and Transformers can process text sequentially and understand word order and long-range dependencies.
 
-Evolution of Sequence Models:
+**Evolution of Sequence Models:**
 
 1. RNNs: Process text word by word, maintaining memory of previous words
 2. LSTMs: Improved RNNs that better handle long sequences
@@ -212,23 +212,21 @@ $$
 Where:
 
 $$
-{\textstyle
 \begin{aligned}
 \text{Weights } (W) &: \text{Control feature importance and geometric transformations} \newline
 \text{Bias } (b) &: \text{Provide flexible positioning of decision boundaries} \newline
 \text{Activation } (f) &: \text{Introduce nonlinearity through space warping}
 \end{aligned}
-}
 $$
 
 Each component serves a distinct geometric purpose that becomes clear when we visualize how neural networks transform data through high-dimensional space.
 
 #### Components of a Perceptron
 
-1. Inputs (x₁, x₂, ..., xₙ): The data features fed into the neuron
-2. Weights (w₁, w₂, ..., wₙ): Numbers that determine the importance of each input
-3. Bias (b): An additional parameter that allows the neuron to shift its output
-4. Activation Function (f): A function that determines the final output
+1. **Inputs (x₁, x₂, ..., xₙ):** The data features fed into the neuron
+2. **Weights (w₁, w₂, ..., wₙ):** Numbers that determine the importance of each input
+3. **Bias (b):** An additional parameter that allows the neuron to shift its output
+4. **Activation Function (f):** A function that determines the final output
 
 The perceptron's mathematical operation can be expressed as:
 
@@ -241,7 +239,6 @@ $$
 Where:
 
 $$
-{\textstyle
 \begin{aligned}
 y &: \text{output} \newline
 f &: \text{activation function} \newline
@@ -250,7 +247,6 @@ x_i &: \text{i-th input value} \newline
 b &: \text{bias} \newline
 n &: \text{number of inputs}
 \end{aligned}
-}
 $$
 
 ### Understanding Each Component Geometrically
@@ -259,7 +255,7 @@ To build true intuition about neural networks, we need to understand how each co
 
 #### The Role of Weights: Feature Importance and Direction
 
-Mathematical Foundation:
+**Mathematical Foundation:**
 Weights determine how input features are combined and transformed:
 
 $$
@@ -268,13 +264,13 @@ z &= w_1x_1 + w_2x_2 + ... + w_nx_n
 \end{aligned}
 $$
 
-Geometric Interpretation:
+**Geometric Interpretation:**
 
 - Direction: Weights define the orientation of decision boundaries (lines in 2D, hyperplanes in higher dimensions)
 - Importance: Larger weights amplify the influence of corresponding features
 - Scaling: Weights stretch or compress space along different dimensions
 
-Intuitive Analogy:
+**Intuitive Analogy:**
 Think of weights as **feature importance multipliers**. If you're predicting house prices:
 
 - High weight on location → location strongly influences the prediction
@@ -282,7 +278,7 @@ Think of weights as **feature importance multipliers**. If you're predicting hou
 
 #### The Role of Bias: Flexible Positioning
 
-Mathematical Foundation:
+**Mathematical Foundation:**
 The bias term shifts the decision boundary away from the origin:
 
 $$
@@ -313,13 +309,13 @@ Decision boundary positioned optimally:
 
 This freedom to position boundaries anywhere in space is crucial for fitting real-world data patterns.
 
-Geometric Intuition:
+**Geometric Intuition:**
 
 - 1D: Bias shifts the intercept (like the 'c' in y = mx + c)
 - 2D: Bias moves the separating line parallel to itself
 - n-D: Bias translates the hyperplane to the optimal position
 
-Practical Analogy:
+**Practical Analogy:**
 Bias is like the default activation level. Even with zero input, a neuron can still fire due to its bias, similar to how a light switch might have a default "dim" setting.
 
 #### The Role of Activation Functions: Space Warping
@@ -342,53 +338,47 @@ $$
 
 Let's see how these components work together in a concrete example. Consider detecting spam emails using a single perceptron with three key features:
 
-Features:
+**Features:**
 
 $$
-{\textstyle
 \begin{aligned}
 x_1 &: \text{Number of exclamation marks} \newline
 x_2 &: \text{Contains word "free" (1 if yes, 0 if no)} \newline
 x_3 &: \text{Number of capital letters}
 \end{aligned}
-}
 $$
 
-Example Email: "FREE VACATION!!! Click now!!!"
+**Example Email:** "FREE VACATION!!! Click now!!!"
 
 $$
-{\textstyle
 \begin{aligned}
 x_1 &= 6 \quad \text{(6 exclamation marks)} \newline
 x_2 &= 1 \quad \text{(contains "FREE")} \newline
 x_3 &= 13 \quad \text{(13 capital letters)}
 \end{aligned}
-}
 $$
 
-Learned Weights (after training):
+**Learned Weights (after training):**
 
 $$
-{\textstyle
 \begin{aligned}
 w_1 &= 0.3 \quad \text{(exclamation marks moderately important)} \newline
 w_2 &= 0.8 \quad \text{("free" is highly indicative)} \newline
 w_3 &= 0.1 \quad \text{(capitals less important)} \newline
 b &= -2.0 \quad \text{(bias term)}
 \end{aligned}
-}
 $$
 
-Calculation:
+**Calculation:**
 
 $$
 \begin{aligned}
-\text{weighted sum} &= 0.3 \times 6 + 0.8 \times 1 + 0.1 \times 13 + (-2.0) \\
+\text{weighted sum} &= 0.3 \times 6 + 0.8 \times 1 + 0.1 \times 13 + (-2.0) \newline
 &= 1.8 + 0.8 + 1.3 - 2.0 = 1.9
 \end{aligned}
 $$
 
-Activation Function (Sigmoid):
+**Activation Function (Sigmoid):**
 
 $$
 \begin{aligned}
@@ -396,11 +386,11 @@ f(1.9) &= \frac{1}{1 + e^{-1.9}} = 0.87
 \end{aligned}
 $$
 
-Result: 0.87 (87% probability it's spam)
+**Result:** 0.87 (87% probability it's spam)
 
 #### Common Activation Functions
 
-ReLU (Rectified Linear Unit) is the most widely used activation function:
+**ReLU (Rectified Linear Unit)** is the most widely used activation function:
 
 $$
 \begin{aligned}
@@ -418,7 +408,7 @@ This simple operation proves remarkably effective, preventing vanishing gradient
 
 > 📖 For vanishing gradients deep dive: See [pytorch_ref.md Section 6](./pytorch_ref.md#6-vanishingexploding-gradients) for causes, detection, and solutions, plus [rnn_intro.md Section 9](./rnn_intro.md#9-the-vanishing-gradient-problem-rnns-fatal-flaw) for RNN-specific analysis.
 
-Sigmoid compresses any real number into probability-like values:
+**Sigmoid** compresses any real number into probability-like values:
 
 $$
 \begin{aligned}
@@ -433,7 +423,7 @@ Output:  0 -------- 0.5 ------ 1
 
 While perfect for output probabilities, sigmoid can cause vanishing gradients in deep networks.
 
-Tanh provides symmetric squashing around zero:
+**Tanh** provides symmetric squashing around zero:
 
 $$
 \begin{aligned}
@@ -452,9 +442,9 @@ Its zero-centered nature makes it preferable to sigmoid for hidden layers in man
 
 Each activation function warps the geometric space:
 
-- ReLU: Folds space along hyperplanes (creates piecewise linear regions)
-- Sigmoid/Tanh: Smoothly compress distant regions toward boundaries
-- Stacked layers: Compose multiple warps to create arbitrarily complex decision surfaces
+- **ReLU:** Folds space along hyperplanes (creates piecewise linear regions)
+- **Sigmoid/Tanh:** Smoothly compress distant regions toward boundaries
+- **Stacked layers:** Compose multiple warps to create arbitrarily complex decision surfaces
 
 #### PyTorch Implementation
 
@@ -496,7 +486,7 @@ A single perceptron can only learn simple patterns and make linear decisions. To
 
 A single perceptron faces a fundamental geometric constraint: it can only draw straight lines (or hyperplanes in higher dimensions) to separate data. This limitation becomes apparent when we encounter problems that aren't "linearly separable."
 
-Example: XOR Problem
+**Example: XOR Problem**
 ```
 Input A | Input B | Output (A XOR B)
    0    |    0    |       0
@@ -519,7 +509,7 @@ No single straight line can separate the 1s from the 0s in this case! Classes ar
 
 The XOR problem beautifully demonstrates why neural networks need all three components working together. Here's how a simple 2-layer network transforms the impossible into the trivial:
 
-Network Architecture: Input(2) → Hidden(2, ReLU) → Output(1, sigmoid)
+**Network Architecture:** Input(2) → Hidden(2, ReLU) → Output(1, sigmoid)
 
 > 📖 For complete worked examples: See [mlp_intro.md Section 5](./mlp_intro.md#5-worked-example-advanced-spam-detection) for detailed forward pass calculations with real numbers you can trace by hand.
 
@@ -528,6 +518,7 @@ Network Architecture: Input(2) → Hidden(2, ReLU) → Output(1, sigmoid)
 Hidden neurons learn:
 
 - Neuron A:
+
   $$
   \begin{aligned}
   z_A &= x_1 - 0.5  \text{ (detects "x₁ > 0.5")}
@@ -535,6 +526,7 @@ Hidden neurons learn:
   $$
 
 - Neuron B:
+
   $$
   \begin{aligned}
   z_B &= x_2 - 0.5  \text{ (detects "x₂ > 0.5")}
@@ -588,12 +580,12 @@ Input Layer → Hidden Layer(s) → Output Layer
 
 These components orchestrate a sophisticated geometric transformation system: weights control orientation and scaling, bias ensures optimal positioning, and activation functions bend space nonlinearly. When repeated across layers, this process builds arbitrarily complex decision manifolds.
 
-Unified Intuition: Think of neural networks as high-dimensional sculptors:
+**Unified Intuition:** Think of neural networks as high-dimensional sculptors:
 
-- Weights: Control the direction and strength of each sculpting tool
-- Bias: Position each tool at the optimal location  
-- Activation: Apply nonlinear bending/folding operations
-- Depth: Compose many sculpting operations to create arbitrarily complex shapes
+- **Weights:** Control the direction and strength of each sculpting tool
+- **Bias:** Position each tool at the optimal location
+- **Activation:** Apply nonlinear bending/folding operations
+- **Depth:** Compose many sculpting operations to create arbitrarily complex shapes
 
 Multiple layers create a natural hierarchy of abstraction. Early layers learn simple patterns and features, middle layers combine these into complex patterns, and the output layer makes final decisions. In text processing, this might progress from detecting individual words and punctuation, to recognizing phrases and local context, and finally to understanding complete sentence meaning and intent.
 
@@ -605,7 +597,7 @@ Understanding how neural networks operate geometrically helps build intuition fo
 
 #### 1D Case: Function Approximation
 
-Single neuron: 
+**Single neuron:**
 
 $$
 \begin{aligned}
@@ -615,7 +607,7 @@ $$
 
 This is simply a line equation (y = mx + c from algebra).
 
-With activation:
+**With activation:**
 
 $$
 \begin{aligned}
@@ -627,7 +619,7 @@ Creates a "bent line" - the foundation for approximating any 1D function through
 
 #### 2D Case: Decision Boundaries
 
-Linear layer:
+**Linear layer:**
 
 $$
 \begin{aligned}
@@ -637,11 +629,11 @@ $$
 
 Defines a line that separates the 2D plane into two regions.
 
-With activation: The line becomes a "fold" where space gets bent, enabling complex decision boundaries when layers are stacked.
+**With activation:** The line becomes a "fold" where space gets bent, enabling complex decision boundaries when layers are stacked.
 
 #### n-D Case: High-Dimensional Manifolds
 
-Linear layer:
+**Linear layer:**
 
 $$
 \begin{aligned}
@@ -651,12 +643,12 @@ $$
 
 Defines a hyperplane in n-dimensional space.
 
-With stacked activations: Creates arbitrarily complex decision manifolds in high-dimensional space - this is why deep networks are universal function approximators.
+**With stacked activations:** Creates arbitrarily complex decision manifolds in high-dimensional space - this is why deep networks are universal function approximators.
 
-Key Insight: Dimensions vs Layers
+**Key Insight: Dimensions vs Layers**
 
-- Dimension = number of features (components of input vector)
-- Layers = sequence of transformations between different feature spaces
+- **Dimension** = number of features (components of input vector)
+- **Layers** = sequence of transformations between different feature spaces
 
 Each layer can change the dimensionality:
 
@@ -670,13 +662,13 @@ $$
 
 "Deep" in deep learning refers to having many layers (typically 3 or more hidden layers).
 
-Depth brings distinct advantages: hierarchical learning allows each layer to build increasingly abstract features, parameter efficiency means complex functions can be learned with fewer total parameters than wide shallow networks, and better generalization helps deep networks perform well on unseen data.
+Depth brings distinct advantages: **hierarchical learning** allows each layer to build increasingly abstract features, **parameter efficiency** means complex functions can be learned with fewer total parameters than wide shallow networks, and **better generalization** helps deep networks perform well on unseen data.
 
 In image recognition, this hierarchy progresses naturally from edges and simple shapes, to textures and patterns, to object parts like eyes and wheels, to complete objects like faces and cars, and finally to full scene understanding distinguishing offices from outdoor environments.
 
 ### Mathematical Perspective
 
-Each layer performs an **affine transformation** followed by **nonlinear warping**:
+Each layer performs an **affine transformation** followed by nonlinear warping:
 
 $$
 \begin{aligned}
@@ -702,17 +694,17 @@ Training a neural network means finding the optimal weights and biases that allo
 
 ### The Training Process Overview
 
-1. Forward Pass: Feed data through the network to get predictions
-2. Loss Calculation: Compare predictions to actual answers
-3. Backward Pass: Calculate how to adjust weights to reduce errors
-4. Weight Update: Modify weights in the direction that reduces loss
-5. Repeat: Continue until the network performs well
+1. **Forward Pass:** Feed data through the network to get predictions
+2. **Loss Calculation:** Compare predictions to actual answers
+3. **Backward Pass:** Calculate how to adjust weights to reduce errors
+4. **Weight Update:** Modify weights in the direction that reduces loss
+5. **Repeat:** Continue until the network performs well
 
 ### Loss Functions: The Network's Report Card
 
 Every learning system needs a way to measure progress, and neural networks are no exception. Loss functions bridge the gap between our human goals ("I want this model to translate accurately") and the mathematical precision computers require ("minimize this specific number").
 
-Mathematical Foundation:
+**Mathematical Foundation:**
 
 $$
 \begin{aligned}
@@ -736,11 +728,13 @@ Without this translation, neural networks would have no way to measure progress 
 
 #### For Classification Problems
 
-When predicting categories like spam detection or sentiment analysis, cross-entropy loss provides the mathematical foundation:
+When predicting categories like spam detection or sentiment analysis, **cross-entropy loss** provides the mathematical foundation:
 
 
 $$
-\begin{aligned} \mathcal{L} &= -\sum_{i=1}^{C} y_i \log(p_i) \end{aligned}
+\begin{aligned}
+\mathcal{L} &= -\sum_{i=1}^{C} y_i \log(p_i)
+\end{aligned}
 $$
 
 Where:
@@ -756,7 +750,7 @@ $$
 
 Cross-entropy elegantly captures the concept of "surprise" - it heavily penalizes confident wrong predictions while rewarding confident correct ones. Being uncertain but right yields medium loss, while being uncertain and wrong still incurs high penalty.
 
-Example: Next Word Prediction
+**Example: Next Word Prediction**
 ```
 Context: "The cat sat on the"
 True next word: "mat" (token 1847)
@@ -776,18 +770,20 @@ The logarithmic scale creates this penalty structure naturally: predicting just 
 
 #### For Regression Problems
 
-When predicting continuous values like house prices or temperatures, Mean Squared Error (MSE) becomes our guide:
+When predicting continuous values like house prices or temperatures, **Mean Squared Error (MSE)** becomes our guide:
 
 
 $$
-\begin{aligned} \mathcal{L} &= \frac{1}{N} \sum_{i=1}^N (y_i - \hat{y}_i)^2 \end{aligned}
+\begin{aligned}
+\mathcal{L} &= \frac{1}{N} \sum_{i=1}^N (y_i - \hat{y}_i)^2
+\end{aligned}
 $$
 
 MSE measures the squared distance between predictions and targets, creating a penalty structure where small errors receive proportional punishment, but large errors face disproportionately severe consequences. This symmetric approach treats overestimation and underestimation equally.
 
 ### Gradient Descent: The Universal Learning Algorithm
 
-At the heart of every neural network's learning process lies gradient descent - the elegant answer to a deceptively simple question: "Given that my current predictions are wrong, how should I adjust my parameters to make them better?"
+At the heart of every neural network's learning process lies **gradient descent** - the elegant answer to a deceptively simple question: "Given that my current predictions are wrong, how should I adjust my parameters to make them better?"
 
 #### The Core Idea: Following the Slope Downhill
 
@@ -795,7 +791,7 @@ Imagine standing blindfolded on a mountainside, seeking the valley that represen
 
 #### Mathematical Foundation
 
-From Calculus to Machine Learning:
+**From Calculus to Machine Learning:**
 
 Single Variable (1D case):
 
@@ -936,10 +932,10 @@ While elegant in its simplicity, plain gradient descent suffers from several lim
 #### SGD with Momentum
 
 $$
-\begin{align}
-v_t &= \beta v_{t-1} + (1-\beta) \nabla \mathcal{L} \\
+\begin{aligned}
+v_t &= \beta v_{t-1} + (1-\beta) \nabla \mathcal{L} \newline
 \theta_t &= \theta_{t-1} - \alpha v_t
-\end{align}
+\end{aligned}
 $$
 
 
@@ -948,11 +944,11 @@ Momentum transforms gradient descent into a "rolling ball" that builds velocity 
 #### Adam: Adaptive Moments
 
 $$
-\begin{align}
-m_t &= \beta_1 m_{t-1} + (1-\beta_1) \nabla \mathcal{L} \quad \text{(momentum)}\\
-v_t &= \beta_2 v_{t-1} + (1-\beta_2) (\nabla \mathcal{L})^2 \quad \text{(variance)}\\
+\begin{aligned}
+m_t &= \beta_1 m_{t-1} + (1-\beta_1) \nabla \mathcal{L} \quad \text{(momentum)}\newline
+v_t &= \beta_2 v_{t-1} + (1-\beta_2) (\nabla \mathcal{L})^2 \quad \text{(variance)}\newline
 \theta_t &= \theta_{t-1} - \alpha \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}
-\end{align}
+\end{aligned}
 $$
 
 
@@ -1034,7 +1030,7 @@ for epoch in range(num_epochs):
 ### Key Training Concepts
 
 #### 1. Epochs
-An epoch represents one complete journey through the entire training dataset.
+An **epoch** represents one complete journey through the entire training dataset.
 
 #### 2. Batch Size
 This determines how many examples we process before updating weights. Small batches provide frequent, noisy updates that can help escape local minima, while large batches offer more stable updates at the cost of memory requirements.
@@ -1043,7 +1039,7 @@ This determines how many examples we process before updating weights. Small batc
 This critical hyperparameter controls our step size through the parameter space. Set it too high and we'll overshoot optimal solutions, bouncing around chaotically; too low and training crawls at an impractical pace.
 
 #### 4. Overfitting vs Underfitting
-These represent the two failure modes of machine learning: overfitting occurs when models memorize training examples rather than learning generalizable patterns, while underfitting happens when models are too simple to capture the underlying data structure.
+These represent the two failure modes of machine learning: **overfitting** occurs when models memorize training examples rather than learning generalizable patterns, while **underfitting** happens when models are too simple to capture the underlying data structure.
 
 > 📖 For practical solutions: See [mlp_intro.md Section 8](./mlp_intro.md#8-common-challenges-and-solutions) for detailed strategies including dropout, regularization, and early stopping.
 
@@ -1079,8 +1075,8 @@ $$
 Think of embeddings as a **high-dimensional map** where:
 
 - Each word becomes a **point** in space
-- **Similar words cluster together** (near each other)
-- **Different meanings spread apart**
+- Similar words cluster together (near each other)
+- Different meanings spread apart
 
 **2D Visualization (actual embeddings use 100s-1000s of dimensions):**
 ```
@@ -1099,7 +1095,7 @@ Semantic Space (2D slice):
 
 #### Why Embeddings Work
 
-Distributional Hypothesis: "Words appearing in similar contexts have similar meanings"
+**Distributional Hypothesis:** "Words appearing in similar contexts have similar meanings"
 
 If we see:
 
@@ -1121,8 +1117,8 @@ The network learns that words in similar positions (contexts) should have simila
 ```
 
 - All words are **equally distant** (orthogonal)
-- **Sparse vectors** (mostly zeros)
-- **No semantic relationships** captured
+- Sparse vectors (mostly zeros)
+- No semantic relationships captured
 
 **Embeddings Solution:**
 ```
@@ -1130,11 +1126,11 @@ The network learns that words in similar positions (contexts) should have simila
 "dog" → [0.3, 0.7, -0.2, 0.4, ...]  (similar to "cat")
 ```
 
-- **Dense representations** (all dimensions used)
-- **Semantic similarity** through vector proximity
-- **Learnable relationships**
+- Dense representations (all dimensions used)
+- Semantic similarity through vector proximity
+- Learnable relationships
 
-**Vector arithmetic captures relationships:**
+Vector arithmetic captures relationships:
 
 $$
 \begin{aligned}
@@ -1168,12 +1164,12 @@ $$
 
 **Component Roles:**
 
-- Weights: Feature importance and transformation direction
-- Bias: Flexible boundary positioning  
-- Activation: Space warping for nonlinearity
-- Embeddings: Convert discrete symbols to continuous representations
-- Loss Functions: Guide learning toward task objectives
-- Gradient Descent: Navigate parameter space to minimize error
+- **Weights:** Feature importance and transformation direction
+- **Bias:** Flexible boundary positioning
+- **Activation:** Space warping for nonlinearity
+- **Embeddings:** Convert discrete symbols to continuous representations
+- **Loss Functions:** Guide learning toward task objectives
+- **Gradient Descent:** Navigate parameter space to minimize error
 
 Neural networks succeed by **repeatedly bending high-dimensional space** until complex data patterns become linearly separable. Each component plays a crucial role in this geometric dance that transforms raw data into learnable representations.
 
@@ -1230,5 +1226,4 @@ Perhaps the most impressive demonstration of neural language understanding lies 
 
 With neural network fundamentals now in place, you're ready to explore deeper territories. The journey ahead offers multiple paths: diving into how individual neurons combine into powerful multi-layer networks, working through hands-on mathematics with real numbers you can trace by hand, understanding the building blocks used in all advanced architectures, or seeing how these concepts translate to actual code.
 
-**Remember:** Neural networks taught us that simple mathematical operations, when combined in layers, can learn to recognize complex patterns in data. This insight revolutionized AI and remains the foundation of every modern architecture - from image recognition to language models.
-
+Remember: Neural networks taught us that simple mathematical operations, when combined in layers, can learn to recognize complex patterns in data. This insight revolutionized AI and remains the foundation of every modern architecture - from image recognition to language models.

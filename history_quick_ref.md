@@ -118,53 +118,43 @@ Emerging Paradigms:
 ### Evolution of Core Equations
 
 1. MLP (Fixed Input):
-
 $$
 \begin{aligned}
 y &= \sigma(Wx + b)
 \end{aligned}
 $$
-
 - Limitation: Fixed input size
 - Innovation: Learned nonlinear transformations
 2. Vanilla RNN (Sequential Processing):
-
 $$
 \begin{aligned}
 h\_t &= \tanh(W\_{hh}h\_{t-1} + W\_{xh}x\_t + b)
 \end{aligned}
 $$
-
 - Innovation: Sequential state, variable length
 - Limitation: Vanishing gradients
 3. LSTM (Gated Memory):
-
 $$
 \begin{aligned}
 C\_t &= f\_t \odot C\_{t-1} + i\_t \odot \tilde{C}\_t
 \end{aligned}
 $$
-
 - Innovation: Selective information flow
 - Limitation: Sequential processing
 4. Attention (Selective Access):
-
 $$
 \begin{aligned}
 c\_t &= \sum\_{i=1}^{T} \alpha\_{t,i} h\_i^{enc}
 \end{aligned}
 $$
-
 - Innovation: Direct access to all encoder states
 - Limitation: Still sequential in encoder/decoder
 5. Self-Attention (Parallel Processing):
-
 $$
 \begin{aligned}
 \text{Attention}(Q, K, V) &= \text{softmax}\left(\frac{QK^T}{\sqrt{d\_k}}\right)V
 \end{aligned}
 $$
-
 - Innovation: Parallel processing, direct all-to-all connections
 - Achievement: Scalable, efficient, powerful
 
@@ -196,4 +186,3 @@ The evolution from MLPs to Transformers represents one of the most significant p
 This progression demonstrates how incremental mathematical innovations, combined with computational insights, can lead to revolutionary breakthroughs. The transformer architecture continues to drive advances across AI applications, from language understanding to scientific discovery.
 
 Understanding this historical progression provides crucial context for appreciating why transformers work so well and hints at future directions for sequence modeling research.
-

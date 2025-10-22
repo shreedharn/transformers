@@ -86,15 +86,15 @@ During Training Phase:
 
    - `cat=[0.8, 0.2, 0.1]` and `dog=[0.7, 0.3, 0.2]` are close (similar animals)
    - `cat=[0.8, 0.2, 0.1]` and `house=[0.1, 0.8, 0.3]` are distant (different concepts)
-2. **Attention Weight Computation: The Communication Protocol**
+2. Attention Weight Computation: The Communication Protocol
 
-   **The Database Join Analogy: Understanding query, key, and value**
+   **The Database Join Analogy: Understanding Query, Key, and Value**
 
    Consider a distributed database system performing content-based joins. For each information request:
 
-   - query (Q): The search criteria or predicate (the current token's information requirements)
-   - key (K): The indexed attributes or metadata (how other tokens advertise their content)
-   - value (V): The actual data payload (the semantic information other tokens provide)
+   - Query (Q): The search criteria or predicate (the current token's information requirements)
+   - Key (K): The indexed attributes or metadata (how other tokens advertise their content)
+   - Value (V): The actual data payload (the semantic information other tokens provide)
 
    The attention mechanism compares the query to all keys to decide which values (information) are most relevant to the current word.
 
@@ -105,8 +105,8 @@ During Training Phase:
 
    Starting point: h_cat = [0.8, 0.2, 0.1] (3D embedding from previous layer)
 ```
-   Step 1: Create the Question (query Formation)
-   query creation: Q_cat = h_cat · W_q
+   Step 1: Create the Question (Query Formation)
+   Query creation: Q_cat = h_cat · W_q
 
    W_q = [[0.9, 0.1, 0.2],   ← learned "question-forming" weights
          [0.2, 0.8, 0.3],    ← each column learns different question patterns  
@@ -142,7 +142,7 @@ During Training Phase:
 
    ```
 
-   Step 2: Create Advertisements (key Formation)
+   Step 2: Create Advertisements (Key Formation)
    
    For word "animal": K_animal = h_animal · W_k
    
@@ -196,7 +196,7 @@ During Training Phase:
    - 20% to "the" (lowest compatibility)
    ```
 
-3. **Feed-Forward Weight Computation: Pattern Recognition and Refinement**
+3. Feed-Forward Weight Computation: Pattern Recognition and Refinement
 
    What happens after attention?
    After attention, "cat" now has a rich, context-aware representation that knows it's "big" and related to "animal". The feed-forward network (FFN) acts like a pattern recognition system that extracts and refines higher-level concepts.
@@ -361,7 +361,7 @@ At this stage, each word has its basic dictionary meaning, with no context.
 
 ```
 Layer 1 (After Self-Attention - Words Start Talking):
-`h_cat'` is the output of the attention mechanism for the token "cat". This is calculated as a weighted sum of the **value (V)** vectors of all tokens in the sequence.
+`h_cat'` is the output of the attention mechanism for the token "cat". This is calculated as a weighted sum of the **Value (V)** vectors of all tokens in the sequence.
 ```
 How it's computed:
 
@@ -589,7 +589,7 @@ Core Intuition: Think of vector stores like:
 - An approximate nearest neighbor engine: Find documents with high cosine similarity to query vectors in sublinear time
 - Explicit knowledge representation: Unlike LLMs, knowledge is stored as retrievable dense vectors rather than distributed weight patterns
 
-key Difference from LLMs: While LLMs encode knowledge implicitly in weight patterns, vector stores maintain explicit, searchable representations of facts and documents.
+Key Difference from LLMs: While LLMs encode knowledge implicitly in weight patterns, vector stores maintain explicit, searchable representations of facts and documents.
 
 #### How Vector Search Works: From Simple to Sophisticated
 
@@ -709,7 +709,7 @@ Mathematical Foundation:
 
 Search Process:
 
-1. query: "What animals are pets?" → [0.72, 0.31, 0.18]
+1. Query: "What animals are pets?" → [0.72, 0.31, 0.18]
 2. Find closest cluster centroid → Cluster 1 (animals)
 3. Search only within Cluster 1 → much faster!
 4. Reduced search: 3 documents instead of 5 total
@@ -826,7 +826,7 @@ Why Vector Search in OpenSearch Matters:
 
 Mathematical Summary:
 
-| Method | Time Complexity | Space Complexity | key Parameters |
+| Method | Time Complexity | Space Complexity | Key Parameters |
 |--------|----------------|------------------|----------------|
 | Brute Force | O(n·d) | O(n·d) | None |
 | HNSW | O(log n) | O(n·M) | M=connections, ef=search width |
@@ -866,7 +866,7 @@ Different indexes optimize for different priorities:
 
 Index Performance Characteristics:
 
-| Index Type | Build Time | query Time | Memory Usage | Recall |
+| Index Type | Build Time | Query Time | Memory Usage | Recall |
 |------------|------------|------------|--------------|--------|
 | IVF_FLAT | O(n) | O(√n) | High (exact vectors) | High |
 | IVF_PQ | O(n) | O(√n) | Low (compressed) | Medium |
@@ -1180,7 +1180,7 @@ Quick lookup for:
 
 ### Mathematical Foundations Summary
 
-The mathematical concepts underlying both LLM weights and vector stores share common foundations in high-dimensional linear algebra and optimization theory. key mathematical principles include:
+The mathematical concepts underlying both LLM weights and vector stores share common foundations in high-dimensional linear algebra and optimization theory. Key mathematical principles include:
 
 ---
 
@@ -1225,9 +1225,9 @@ During Inference:
 
 Explicit similarity search for retrieval:
 
-Unified Example - query: "What animals make good pets?"
+Unified Example - Query: "What animals make good pets?"
 ```
-Step 1: query → Embedding
+Step 1: Query → Embedding
 "What animals make good pets?" → [0.72, 0.31, 0.18]
 
 Step 2: Compare Against All Documents
@@ -1245,7 +1245,7 @@ threshold = 0.5 → docs 1&2 pass, doc3 filtered out
 Final ranking: doc2 (0.96), doc1 (0.94)
 ```
 
-key Distinction:
+Key Distinction:
 
 - LLMs: Internal similarity for attention → generates new content
 - Vector Stores: External similarity for retrieval → finds existing content
@@ -1254,11 +1254,11 @@ key Distinction:
 Here’s a visual representation of the complete RAG workflow:
 
 ```
-User query: "What do cats eat in the wild?"
+User Query: "What do cats eat in the wild?"
      │
      └─ RAG System
          │
-         ├─ 1. Encode query ───→ query Vector: [0.75, 0.25, ...]
+         ├─ 1. Encode Query ───→ Query Vector: [0.75, 0.25, ...]
          │      (Uses an embedding model)
          │
          ├─ 2. Search Vector Store ───→ Retrieved Documents:
@@ -1279,7 +1279,7 @@ User query: "What do cats eat in the wild?"
                  hunt small mammals..."
 ```
 
-key Benefits:
+Key Benefits:
 
 - Current information: Vector store provides up-to-date facts
 - Source attribution: Clear traceability to retrieved documents  
@@ -1316,18 +1316,18 @@ In LLM Weights:
 In Vector Store:
 
 - Document: "Small pets love spending time in parks" → Vector: [0.45, 0.67, 0.22]
-- query: "pet activities" → Vector: [0.43, 0.65, 0.24]
+- Query: "pet activities" → Vector: [0.43, 0.65, 0.24]
 - Cosine similarity: 0.98 → Document retrieved
 - Knowledge accessed through explicit search
 
-key Difference: LLM generates the relationship through learned patterns, while vector store retrieves pre-existing representations.
+Key Difference: LLM generates the relationship through learned patterns, while vector store retrieves pre-existing representations.
 
 #### System Limitations and Considerations
 
-| System | key Limitations | Mitigation Strategies |
+| System | Key Limitations | Mitigation Strategies |
 |--------|----------------|----------------------|
 | LLM Weights | • Hallucinations and confabulation<br>• Outdated information (training cutoff)<br>• Expensive retraining for updates<br>• Fixed knowledge capacity | • Use confidence scoring<br>• Combine with retrieval systems<br>• Regular model updates<br>• Parameter-efficient fine-tuning |
-| Vector Stores | • Dependent on embedding quality<br>• Potential stale/outdated data<br>• Limited semantic understanding<br>• Retrieval relevance challenges | • High-quality embedding models<br>• Regular data refreshing<br>• Hybrid search (semantic + keyword)<br>• query expansion techniques |
+| Vector Stores | • Dependent on embedding quality<br>• Potential stale/outdated data<br>• Limited semantic understanding<br>• Retrieval relevance challenges | • High-quality embedding models<br>• Regular data refreshing<br>• Hybrid search (semantic + keyword)<br>• Query expansion techniques |
 
 ---
 
@@ -1339,7 +1339,7 @@ key Difference: LLM generates the relationship through learned patterns, while v
 
 This comprehensive exploration reveals that LLM weights and vector stores represent **fundamentally different yet complementary approaches** to knowledge storage and retrieval:
 
-### key Distinctions
+### Key Distinctions
 
 LLM weights store knowledge as:
 

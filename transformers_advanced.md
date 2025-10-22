@@ -23,8 +23,8 @@ Causal Language Modeling (CLM):
 
   $$
 \begin{aligned}
-p(x\_{t+1} | x\_1, \ldots, x\_t) &: \text{Autoregressive prediction probability} \newline
-  \mathcal{L}\_{CLM} &= -\sum\_{t=1}^{n} \log P(x\_{t} | x\_{<t})
+p(x_{t+1} | x_1, \ldots, x_t) &: \text{Autoregressive prediction probability} \newline
+  \mathcal{L}_{\text{CLM}} &= -\sum_{t=1}^{n} \log P(x_{t} | x_{<t})
 \end{aligned}
 $$
 
@@ -37,7 +37,7 @@ Masked Language Modeling (MLM):
 
   $$
 \begin{aligned}
-\mathcal{L}\_{MLM} &= -\sum\_{i \in \text{masked}} \log P(x\_i | x\_{\setminus i})
+\mathcal{L}_{\text{MLM}} &= -\sum_{i \in \text{masked}} \log P(x_i | x_{\setminus i})
 \end{aligned}
 $$
 
@@ -50,7 +50,7 @@ Span Corruption (T5-style):
 
   $$
 \begin{aligned}
-\mathcal{L}\_{span} &= -\sum\_{s \in \text{spans}} \sum\_{t \in s} \log P(x\_t | \text{prefix}, \text{context})
+\mathcal{L}_{\text{span}} &= -\sum_{s \in \text{spans}} \sum_{t \in s} \log P(x_t | \text{prefix}, \text{context})
 \end{aligned}
 $$
 
@@ -69,7 +69,7 @@ Mathematical Formulation:
 
 $$
 \begin{aligned}
-\mathcal{L}\_{instruction} &= -\sum\_{(I,R) \in \mathcal{D}} \sum\_{t=1}^{|R|} \log P(r\_t | I, r\_{<t}) \newline
+\mathcal{L}_{\text{instruction}} &= -\sum_{(I,R) \in \mathcal{D}} \sum_{t=1}^{|R|} \log P(r_t | I, r_{<t}) \newline
 I &: \text{Instruction} \newline
 R &: \text{Response} \newline
 \mathcal{D} &: \text{Instruction dataset}
@@ -93,10 +93,10 @@ Reinforcement Learning from Human Feedback (RLHF):
 
   $$
 \begin{aligned}
-\mathcal{L}\_{reward} &= -\mathbb{E}\_{(x,y\_w,y\_l)} [\log \sigma(r(x,y\_w) - r(x,y\_l))] \newline
-  &\text{where } y\_w \text{ is preferred over } y\_l \text{ by humans} \newline
-  \mathcal{L}\_{RLHF} &= \mathbb{E}\_x [r(x, \pi(x))] - \beta \cdot \mathbb{KL}[\pi(x) || \pi\_{ref}(x)] \newline
-  &\text{where } \pi\_{ref} \text{ is the reference model and } \beta \text{ controls KL divergence}
+\mathcal{L}_{\text{reward}} &= -\mathbb{E}_{(x,y_w,y_l)} [\log \sigma(r(x,y_w) - r(x,y_l))] \newline
+  &\text{where } y_w \text{ is preferred over } y_l \text{ by humans} \newline
+  \mathcal{L}_{\text{RLHF}} &= \mathbb{E}_x [r(x, \pi(x))] - \beta \cdot \mathbb{KL}[\pi(x) || \pi_{\text{ref}}(x)] \newline
+  &\text{where } \pi_{\text{ref}} \text{ is the reference model and } \beta \text{ controls KL divergence}
 \end{aligned}
 $$
 
@@ -109,7 +109,7 @@ Direct Preference Optimization (DPO):
 
   $$
 \begin{aligned}
-\mathcal{L}\_{DPO} &= -\mathbb{E}\_{(x,y\_w,y\_l)} \left[\log \sigma\left(\beta \log \frac{\pi(y\_w|x)}{\pi\_{ref}(y\_w|x)} - \beta \log \frac{\pi(y\_l|x)}{\pi\_{ref}(y\_l|x)}\right)\right]
+\mathcal{L}_{\text{DPO}} &= -\mathbb{E}_{(x,y_w,y_l)} \left[\log \sigma\left(\beta \log \frac{\pi(y_w|x)}{\pi_{\text{ref}}(y_w|x)} - \beta \log \frac{\pi(y_l|x)}{\pi_{\text{ref}}(y_l|x)}\right)\right]
 \end{aligned}
 $$
 
@@ -377,8 +377,8 @@ Mathematical Formulation:
 
 $$
 \begin{aligned}
-W' &= W\_0 + \Delta W = W\_0 + BA \newline
-W\_0 &\in \mathbb{R}^{d \times d} : \text{Original frozen pre-trained weights} \newline
+W' &= W_0 + \Delta W = W_0 + BA \newline
+W_0 &\in \mathbb{R}^{d \times d} : \text{Original frozen pre-trained weights} \newline
 B &\in \mathbb{R}^{d \times r}, \quad A \in \mathbb{R}^{r \times d} : \text{Low-rank adaptation matrices} \newline
 r &\ll d : \text{Adaptation rank (typically 16-128)} \newline
 &\text{Only } A \text{ and } B \text{ are trained during fine-tuning}
@@ -458,8 +458,8 @@ Mathematical Framework:
 
 $$
 \begin{aligned}
-y &= W\_{4bit} x + \frac{\alpha}{r} B A x \newline
-&\text{where } W\_{4bit} \text{ represents the quantized base weights} \newline
+y &= W_{\text{4bit}} x + \frac{\alpha}{r} B A x \newline
+&\text{where } W_{\text{4bit}} \text{ represents the quantized base weights} \newline
 &\text{and } BA \text{ represents the full-precision LoRA adaptation}
 \end{aligned}
 $$
@@ -479,8 +479,8 @@ Prefix Tuning:
 
   $$
 \begin{aligned}
-h\_0 &= [P\_{\text{prefix}}; E\_{\text{input}}] \newline
-  &\text{where } P\_{\text{prefix}} \text{ are learned virtual tokens}
+h_0 &= [P_{\text{prefix}}; E_{\text{input}}] \newline
+  &\text{where } P_{\text{prefix}} \text{ are learned virtual tokens}
 \end{aligned}
 $$
 
@@ -502,7 +502,7 @@ Adapter Layers:
 
   $$
 \begin{aligned}
-\text{Adapter}(x) &= x + \text{MLP}\_{\text{down,up}}(\text{LayerNorm}(x))
+\text{Adapter}(x) &= x + \text{MLP}_{\text{down,up}}(\text{LayerNorm}(x))
 \end{aligned}
 $$
 
@@ -512,8 +512,8 @@ IA³ (Infused Adapter by Inhibiting and Amplifying Inner Activations):
 
   $$
 \begin{aligned}
-y &= x \odot \ell\_v \newline
-  &\text{where } \ell\_v \text{ are learned scaling vectors}
+y &= x \odot \ell_v \newline
+  &\text{where } \ell_v \text{ are learned scaling vectors}
 \end{aligned}
 $$
 
@@ -606,10 +606,10 @@ Mathematical Formulation:
 
 $$
 \begin{aligned}
-x\_{\text{quantized}} &= \text{round}\left(\frac{x\_{\text{float}}}{s}\right) + z \newline
+x_{\text{quantized}} &= \text{round}\left(\frac{x_{\text{float}}}{s}\right) + z \newline
 s &: \text{Scale factor (determines quantization resolution)} \newline
 z &: \text{Zero-point offset (handles asymmetric ranges)} \newline
-x\_{\text{float}} &= s \cdot (x\_{\text{quantized}} - z) \quad \text{(Dequantization)}
+x_{\text{float}} &= s \cdot (x_{\text{quantized}} - z) \quad \text{(Dequantization)}
 \end{aligned}
 $$
 
@@ -627,7 +627,7 @@ GPTQ (Gradual Post-Training Quantization):
 
   $$
 \begin{aligned}
-\min\_{\hat{W}} \|WX - \hat{W}X\|\_{F}^2 \quad \text{where } \hat{W} \text{ is quantized}
+\min_{\hat{W}} \|WX - \hat{W}X\|_{F}^2 \quad \text{where } \hat{W} \text{ is quantized}
 \end{aligned}
 $$
 
@@ -724,7 +724,7 @@ Perplexity: Measures how well model predicts next tokens
 
 $$
 \begin{aligned}
-\text{PPL} &= \exp\left(-\frac{1}{N}\sum\_{i=1}^{N} \log p(x\_i | x\_{<i})\right)
+\text{PPL} &= \exp\left(-\frac{1}{N}\sum_{i=1}^{N} \log p(x_i | x_{<i})\right)
 \end{aligned}
 $$
 
@@ -802,7 +802,7 @@ Attention Collapse:
 
   $$
 \begin{aligned}
-H &= -\sum\_j A\_{ij} \log A\_{ij} \quad \text{(Attention entropy for diagnosis)}
+H &= -\sum_j A_{ij} \log A_{ij} \quad \text{(Attention entropy for diagnosis)}
 \end{aligned}
 $$
 

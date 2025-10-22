@@ -72,13 +72,13 @@ $$
 Let's break this down term by term:
 
 | Term | Size | Meaning |
-|------|------|----------|
-| \\(x\\) | \\([1, D_{in}]\\) | Input vector – features coming into this layer |
-| \\(W\\) | \\([D_{in}, D_{out}]\\) | Weight matrix – learned transformation |
-| \\(b\\) | \\([1, D_{out}]\\) | Bias vector – learned offset |
-| \\(xW + b\\) | \\([1, D_{out}]\\) | Linear combination – weighted sum of inputs |
-| \\(\\sigma(\\cdot)\\) | - | Activation function – introduces non-linearity |
-| \\(h\\) | \\([1, D_{out}]\\) | Output vector – transformed features |
+|---|---|---|
+| $$x$$ | $$[1, D\_{in}]$$ | Input vector – features coming into this layer |
+| $$W$$ | $$[D\_{in}, D\_{out}]$$ | Weight matrix – learned transformation |
+| $$b$$ | $$[1, D\_{out}]$$ | Bias vector – learned offset |
+| $$xW + b$$ | $$[1, D\_{out}]$$ | Linear combination – weighted sum of inputs |
+| $$\sigma(\cdot)$$ | - | Activation function – introduces non-linearity |
+| $$h$$ | $$[1, D\_{out}]$$ | Output vector – transformed features |
 
 
 ### Visual Breakdown
@@ -195,11 +195,11 @@ For a layer with input size and output size, the parameter count is calculated a
 
 $$
 \begin{aligned}
-D\_{\text{in}} &: \text{Input dimension} \newline
-D\_{\text{out}} &: \text{Output dimension} \newline
-\text{Weights:} \quad &D\_{\text{in}} \times D\_{\text{out}} \text{ parameters} \newline
-\text{Biases:} \quad &D\_{\text{out}} \text{ parameters} \newline
-\text{Total:} \quad &D\_{\text{in}} \times D\_{\text{out}} + D\_{\text{out}} = D\_{\text{out}}(D\_{\text{in}} + 1)
+D_{\text{in}} &: \text{Input dimension} \newline
+D_{\text{out}} &: \text{Output dimension} \newline
+\text{Weights:} \quad &D_{\text{in}} \times D_{\text{out}} \text{ parameters} \newline
+\text{Biases:} \quad &D_{\text{out}} \text{ parameters} \newline
+\text{Total:} \quad &D_{\text{in}} \times D_{\text{out}} + D_{\text{out}} = D_{\text{out}}(D_{\text{in}} + 1)
 \end{aligned}
 $$
 
@@ -222,7 +222,7 @@ $$
 Let's trace through a complex example that shows why MLPs are necessary. We'll use the problematic case from Section 1:
 
 The Challenge: Detect sophisticated spam that fools single perceptrons  
-Input features: [num\_\1xclamations, has\_\1ord\_\1ree, num\_\1apitals]  
+Input features: [num_exclamations, has_word_free, num_capitals]
 Hidden layer size: 2 neurons (for pattern detection)  
 Output: spam probability
 
@@ -370,7 +370,7 @@ MLPs learn through supervised learning:
 3. Backward Pass: Compute gradients using backpropagation
 4. Weight Update: Adjust weights to reduce the loss
 
-> 📚 Mathematical Deep Dive: For a complete step-by-step mathematical explanation of how gradient descent works from line slopes to neural network training, see **[transformers\_\1ath1.md Section 2.1.1](./transformers\_\1ath1.md#211-from-line-slopes-to-neural-network-training)** - includes worked examples and the connection between simple derivatives and MLP backpropagation.
+> 📚 Mathematical Deep Dive: For a complete step-by-step mathematical explanation of how gradient descent works from line slopes to neural network training, see **[transformers_math1.md Section 2.1.1](./transformers_math1.md#211-from-line-slopes-to-neural-network-training)** - includes worked examples and the connection between simple derivatives and MLP backpropagation.
 
 ### Loss Functions
 
@@ -415,7 +415,7 @@ b² = b² - α × ∂L/∂b²
 b¹ = b¹ - α × ∂L/∂b¹
 ```
 
-> 🔗 Mathematical Connection: The backpropagation equations above are derived step-by-step in **[transformers\_\1ath1.md Section 2.1.1](./transformers\_\1ath1.md#211-from-line-slopes-to-neural-network-training)**. See the "Single Hidden Layer MLP" subsection for the complete mathematical derivation including the δ terms and chain rule applications.
+> 🔗 Mathematical Connection: The backpropagation equations above are derived step-by-step in **[transformers_math1.md Section 2.1.1](./transformers_math1.md#211-from-line-slopes-to-neural-network-training)**. See the "Single Hidden Layer MLP" subsection for the complete mathematical derivation including the δ terms and chain rule applications.
 
 ### Training Loop Example
 
@@ -436,7 +436,7 @@ For each batch of training examples:
 ### MLP vs Linear Regression
 
 | Aspect | Linear Regression | MLP |
-|------------|---------------------|---------|
+|---|---|---|
 | Equation | $$y = x W + b$$ | $$y = h^{(L-1)} W^L + b^L$$ where $$h = \sigma(x W + b)$$ |
 | Decision Boundary | Straight line/plane | Curved, complex shapes |
 | Expressiveness | Limited to linear patterns | Can learn any continuous function |
@@ -542,7 +542,7 @@ Solutions:
 - Better weight initialization
 ```
 
-> 🎯 Gradient Flow Mathematics: To understand the mathematical foundations of why gradients vanish or explode, and how gradient descent fundamentally works, see **[transformers\_\1ath1.md Section 2.1.1](./transformers\_\1ath1.md#211-from-line-slopes-to-neural-network-training)**. The section builds intuition from simple 1D slopes to complex neural network training.
+> 🎯 Gradient Flow Mathematics: To understand the mathematical foundations of why gradients vanish or explode, and how gradient descent fundamentally works, see **[transformers_math1.md Section 2.1.1](./transformers_math1.md#211-from-line-slopes-to-neural-network-training)**. The section builds intuition from simple 1D slopes to complex neural network training.
 
 ---
 
@@ -669,7 +669,7 @@ Too low:  Very slow convergence
 Sweet spot: Usually 0.001 - 0.01
 ```
 
-> 📊 Learning Rate Intuition: For a visual and mathematical explanation of why learning rate choice matters, see the worked example with f(x) = x² in **[transformers\_\1ath1.md Section 2.1.1](./transformers\_\1ath1.md#211-from-line-slopes-to-neural-network-training)** - shows exactly how different learning rates affect convergence behavior.
+> 📊 Learning Rate Intuition: For a visual and mathematical explanation of why learning rate choice matters, see the worked example with f(x) = x² in **[transformers_math1.md Section 2.1.1](./transformers_math1.md#211-from-line-slopes-to-neural-network-training)** - shows exactly how different learning rates affect convergence behavior.
 
 Batch Size:
 ```
@@ -784,6 +784,6 @@ Now that you understand MLPs:
 3. Modern Context: MLPs are components in Transformers and other architectures
 4. Implementation: Try building an MLP in PyTorch or TensorFlow
 
-> Continue Learning: Ready for sequences? See **[rnn\_\1ntro.md](./rnn\_\1ntro.md)** to learn how RNNs add memory to the MLP foundation.
+> Continue Learning: Ready for sequences? See **[rnn_intro.md](./rnn_intro.md)** to learn how RNNs add memory to the MLP foundation.
 
 Remember: MLPs taught us that neural networks could learn complex, non-linear patterns through simple transformations. Every modern architecture builds on these core principles - making MLPs essential foundational knowledge.

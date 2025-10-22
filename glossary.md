@@ -7,8 +7,7 @@ A comprehensive dictionary of key terms, concepts, and technical vocabulary used
 Activation Function: A mathematical function applied to the output of a neuron to introduce non-linearity. Without activation functions, neural networks would only be able to learn linear relationships.
 
 - Common types:
-
-  $$
+$$
 \begin{aligned}
 \text{ReLU:} \quad &f(x) = \max(0, x) \newline
   \text{Sigmoid:} \quad &\sigma(x) = \frac{1}{1+e^{-x}} \newline
@@ -24,8 +23,7 @@ Attention Collapse: Phenomenon where attention weights become too peaked (concen
 Adam Optimizer: An adaptive optimization algorithm that combines momentum with per-parameter learning rate adaptation.
 
 - Formula:
-
-  $$
+$$
 \begin{aligned}
 \theta\_t = \theta\_{t-1} - \alpha \frac{\hat{m}\_t}{\sqrt{\hat{v}\_t} + \epsilon} \quad \text{where } \hat{m}\_t, \hat{v}\_t \text{ are bias-corrected moment estimates}
 \end{aligned}
@@ -44,8 +42,7 @@ Attention Head: A specialized component of multi-head attention that focuses on 
 Attention Mechanism: A technique that allows models to focus on relevant parts of the input sequence when making predictions.
 
 - Formula:
-
-  $$
+$$
 \begin{aligned}
 \text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d\_k}}\right)V
 \end{aligned}
@@ -59,8 +56,7 @@ $$
 Backpropagation: The algorithm used to train neural networks by calculating gradients and propagating errors backward through the network layers.
 
 - Mathematical foundation: Uses chain rule to compute gradients:
-
-  $$
+$$
 \begin{aligned}
 \frac{\partial \mathcal{L}}{\partial W^{(l)}} = \frac{\partial \mathcal{L}}{\partial h^{(l+1)}} \cdot \frac{\partial h^{(l+1)}}{\partial W^{(l)}}
 \end{aligned}
@@ -71,8 +67,7 @@ $$
 Batch Normalization: A technique that normalizes layer inputs to stabilize training and accelerate convergence.
 
 - Formula:
-
-  $$
+$$
 \begin{aligned}
 \hat{x} = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} \quad \text{followed by learned scaling and shifting}
 \end{aligned}
@@ -87,8 +82,7 @@ BERT (Bidirectional Encoder Representations from Transformers): A transformer-ba
 Bias: An additional parameter in a neuron that allows the activation function to shift, providing flexibility in the decision boundary.
 
 - Mathematical role: Shifts hyperplane:
-
-  $$
+$$
 \begin{aligned}
 z = Wx + b
 \end{aligned}
@@ -111,8 +105,7 @@ Centroid: The center point of a cluster in vector space, representing the averag
 Cross-Entropy Loss: The standard loss function for classification tasks that measures the difference between predicted and true probability distributions.
 
 - Formula:
-
-  $$
+$$
 \begin{aligned}
 \mathcal{L} = -\sum\_{i=1}^{C} y\_i \log(p\_i) \quad \text{where } y\_i \text{ is true label and } p\_i \text{ is predicted probability}
 \end{aligned}
@@ -141,8 +134,7 @@ Dropout: A regularization technique that randomly sets some neurons to zero duri
 Embedding: A dense numerical vector representation of text, images, or other data that captures semantic meaning in high-dimensional space.
 
 - Mathematical foundation:
-
-  $$
+$$
 \begin{aligned}
 \mathbf{e}\_i = E[i] \in \mathbb{R}^{d\_{\text{model}}} \quad \text{where } E \text{ is the embedding matrix}
 \end{aligned}
@@ -168,8 +160,7 @@ Feed-Forward Network: A neural network component where information flows in one 
 
 - In transformers: [transformers_fundamentals.md Section 11](./transformers_fundamentals.md#11-stage-6-feed-forward-networks) for detailed explanation
 - Implementation: Two linear transformations with an activation function in between. Common activations include ReLU and GELU.
-
-  $$
+$$
 \begin{aligned}
 \text{FFN}(x) = \sigma(xW\_1 + b\_1)W\_2 + b\_2
 \end{aligned}
@@ -187,8 +178,7 @@ GPT (Generative Pre-trained Transformer): A family of decoder-only transformer m
 Gradient Descent: An optimization algorithm that finds the minimum of a function by iteratively moving in the direction of steepest descent.
 
 - Mathematical foundation:
-
-  $$
+$$
 \begin{aligned}
 \theta\_{\text{new}} = \theta\_{\text{old}} - \alpha \nabla\_{\theta} \mathcal{L}
 \end{aligned}
@@ -213,8 +203,7 @@ Hidden Layer: Layers in a neural network between the input and output layers tha
 Hidden State: The internal representation vector that flows through a neural network at a specific processing step.
 
 - Mathematical definition:
-
-  $$
+$$
 \begin{aligned}
 h^{(l)} = f(W^{(l)}h^{(l-1)} + b^{(l)}) \quad \text{for layer } l
 \end{aligned}
@@ -287,8 +276,7 @@ Masked Language Modeling (MLM): A training objective where some tokens are maske
 Multi-Head Attention: An extension of attention that runs multiple attention mechanisms in parallel to capture different types of relationships.
 
 - Formula:
-
-  $$
+$$
 \begin{aligned}
 \text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}\_1, ..., \text{head}\_h)W^O
 \end{aligned}
@@ -339,8 +327,7 @@ Overfitting: When a model performs well on training data but poorly on new, unse
 Perceptron: The basic building block of neural networks, consisting of inputs, weights, a bias, and an activation function.
 
 - Formula:
-
-  $$
+$$
 \begin{aligned}
 y = f\left(\sum\_{i=1}^{n} w\_i x\_i + b\right)
 \end{aligned}
@@ -377,8 +364,7 @@ RAG (Retrieval-Augmented Generation): A system that combines vector store retrie
 ReLU (Rectified Linear Unit): An activation function that outputs the input if positive, zero otherwise.
 
 - Formula:
-
-  $$
+$$
 \begin{aligned}
 f(x) = \max(0, x)
 \end{aligned}
@@ -389,8 +375,7 @@ $$
 RNN (Recurrent Neural Network): A neural network designed for sequential data that maintains hidden states across time steps.
 
 - Core equation:
-
-  $$
+$$
 \begin{aligned}
 h\_t = f(W\_x x\_t + W\_h h\_{t-1} + b)
 \end{aligned}
@@ -408,7 +393,6 @@ Regularization: Techniques to prevent overfitting by constraining model complexi
 ## S
 
 Scaled Dot-Product Attention: Core attention mechanism with the following formula:
-
 $$
 \begin{aligned}
 \text{softmax}(QK^T/\sqrt{d\_k})V
@@ -420,8 +404,7 @@ $$
 Self-Attention: An attention mechanism where queries, keys, and values all come from the same sequence, allowing positions to attend to each other.
 
 - Formula:
-
-  $$
+$$
 \begin{aligned}
 \text{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d\_k}}\right)V
 \end{aligned}
@@ -432,8 +415,7 @@ $$
 Sigmoid: An activation function that maps any input to a value between 0 and 1.
 
 - Formula:
-
-  $$
+$$
 \begin{aligned}
 \sigma(x) = \frac{1}{1 + e^{-x}}
 \end{aligned}
@@ -448,8 +430,7 @@ Similarity Threshold: A minimum similarity score required for a document to be c
 Softmax: A function that converts a vector of real numbers into a probability distribution.
 
 - Formula:
-
-  $$
+$$
 \begin{aligned}
 \text{softmax}(x\_i) = \frac{e^{x\_i}}{\sum\_{j=1}^{K} e^{x\_j}}
 \end{aligned}
@@ -467,8 +448,7 @@ Stochastic Gradient Descent (SGD): A variant of gradient descent that uses rando
 Tanh (Hyperbolic Tangent): An activation function that maps inputs to values between -1 and 1.
 
 - Formula:
-
-  $$
+$$
 \begin{aligned}
 \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
 \end{aligned}
@@ -483,8 +463,7 @@ Teacher Forcing: Training technique using ground truth tokens as inputs instead 
 Temperature: A parameter controlling randomness in text generation; lower values make outputs more focused, higher values more creative.
 
 - Text generation: Used in softmax:
-
-  $$
+$$
 \begin{aligned}
 p\_i = \frac{e^{x\_i/T}}{\sum\_j e^{x\_j/T}}
 \end{aligned}
@@ -549,8 +528,7 @@ Vocabulary: The complete set of unique tokens (words, subwords, characters) that
 Weight: Parameters in a neural network that determine the strength of connections between neurons and are learned during training.
 
 - Mathematical role:
-
-  $$
+$$
 \begin{aligned}
 z = w\_1x\_1 + w\_2x\_2 + ... + w\_nx\_n + b
 \end{aligned}
@@ -561,8 +539,7 @@ $$
 Word Embedding: A dense vector representation of words that captures semantic relationships.
 
 - Mathematical foundation: Words mapped to high-dimensional space:
-
-  $$
+$$
 \begin{aligned}
 \text{Words} \rightarrow \mathbb{R}^{d} \quad \text{where similar words have similar vectors}
 \end{aligned}

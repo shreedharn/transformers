@@ -32,11 +32,9 @@ Additional Resources:
 
 Xavier/Glorot for Linear Layers:
 $$
-{\textstyle
 \begin{aligned}
 W \sim \mathcal{N}\left(0, \frac{2}{n_{\text{in}} + n_{\text{out}}}\right) \quad (49)
 \end{aligned}
-}
 $$
 
 Attention-Specific: Initialize query/key projections with smaller variance to prevent attention collapse (overly peaked attention distributions).
@@ -60,7 +58,7 @@ SGD with Momentum:
 
 $$
 \begin{aligned}
-\mathbf{v}_t &= \beta \mathbf{v}_{t-1} + (1-\beta) \nabla_\theta \mathcal{L} \quad (5)\\
+\mathbf{v}_t &= \beta \mathbf{v}_{t-1} + (1-\beta) \nabla_\theta \mathcal{L} \quad (5)\newline
 \theta_t &= \theta_{t-1} - \eta \mathbf{v}_t \quad (6)
 \end{aligned}
 $$
@@ -76,22 +74,20 @@ Bowling ball analogy: A heavy bowling ball doesn't stop immediately when it hits
 Understanding the formula:
 
 $$
-{\textstyle
 \begin{aligned}
 \mathbf{v}_t \quad & : \text{ Current "velocity" (combination of current gradient + previous velocity)} \newline
 \beta \approx 0.9 \quad & : \text{ How much previous velocity to keep 90% } \newline
 (1 - \beta) = 0.1 \quad & : \text{ How much current gradient to use 10% } \newline
 \eta \quad & : \text{ Learning rate (step size)}
 \end{aligned}
-}
 $$
 
 Adam Optimizer: Combines momentum with adaptive learning rates:
 
 $$
 \begin{aligned}
-\mathbf{m}_t &= \beta_1 \mathbf{m}_{t-1} + (1-\beta_1) \nabla_\theta \mathcal{L} \quad (7)\\
-\mathbf{v}_t &= \beta_2 \mathbf{v}_{t-1} + (1-\beta_2) (\nabla_\theta \mathcal{L})^2 \quad (8)\\
+\mathbf{m}_t &= \beta_1 \mathbf{m}_{t-1} + (1-\beta_1) \nabla_\theta \mathcal{L} \quad (7)\newline
+\mathbf{v}_t &= \beta_2 \mathbf{v}_{t-1} + (1-\beta_2) (\nabla_\theta \mathcal{L})^2 \quad (8)\newline
 \theta_t &= \theta_{t-1} - \eta \frac{\hat{\mathbf{m}}_t}{\sqrt{\hat{\mathbf{v}}_t} + \epsilon} \quad (9)
 \end{aligned}
 $$
@@ -109,12 +105,10 @@ What Adam does - explained simply:
 Adam is like having a smart GPS that adjusts your driving based on two things:
 
 $$
-{\textstyle
 \begin{aligned}
 \text{1. } \mathbf{m}_t \text{ (momentum):} \quad &\text{"Which direction have we been going lately?" - Like momentum, but with exponential averaging} \newline
 \text{2. } \mathbf{v}_t \text{ (second moment):} \quad &\text{"How bumpy has the road been?" - Tracks how much the gradients have been changing}
 \end{aligned}
-}
 $$
 
 The key insight: If the road has been very bumpy (high variance in gradients), take smaller steps. If it's been smooth and consistent, you can take bigger steps.
@@ -122,14 +116,12 @@ The key insight: If the road has been very bumpy (high variance in gradients), t
 Breaking down the symbols:
 
 $$
-{\textstyle
 \begin{aligned}
 \beta_1 \approx 0.9 \quad &: \text{ How much to remember from previous direction (90\%)} \newline
 \beta_2 \approx 0.999 \quad &: \text{ How much to remember from previous bumpiness (99.9\%)} \newline
 \epsilon \approx 10^{-8} \quad &: \text{ Tiny number to prevent division by zero} \newline
 \hat{\mathbf{m}}_t, \hat{\mathbf{v}}_t \quad &: \text{ Bias-corrected estimates (explained below)}
 \end{aligned}
-}
 $$
 
 Bias correction intuition: At the beginning, the moment estimates are initialized to zero, creating a bias. The correction mechanism addresses this:
@@ -154,20 +146,16 @@ AdamW vs Adam: AdamW ("Adam with Weight Decay") decouples weight decay from the 
 Adam with L2 regularization:
 
 $$
-{\textstyle
 \begin{aligned}
 \theta_t = \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon} - \eta \lambda \theta_{t-1}
 \end{aligned}
-}
 $$
 
 AdamW (decoupled weight decay):
 $$
-{\textstyle
 \begin{aligned}
 \theta_t = (1 - \eta \lambda) \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}
 \end{aligned}
-}
 $$
 
 Why AdamW is better: Weight decay is applied regardless of gradient magnitude, leading to better generalization.
@@ -190,11 +178,9 @@ Why do we need schedules? Think of learning to drive: you start slow in the park
 
 Warmup: Gradually increase learning rate to avoid early instability:
 $$
-{\textstyle
 \begin{aligned}
 \eta_t = \eta_{\text{max}} \cdot \min\left(\frac{t}{T_{\text{warmup}}}, 1\right) \quad (10)
 \end{aligned}
-}
 $$
 
 Why warmup works:
@@ -215,22 +201,18 @@ Why cosine decay?
 
 Formula:
 $$
-{\textstyle
 \begin{aligned}
 \eta_t = \eta_{\text{max}} \cdot 0.5 \left(1 + \cos\left(\pi \cdot \frac{t - T_{\text{warmup}}}{T_{\text{total}} - T_{\text{warmup}}}\right)\right)
 \end{aligned}
-}
 $$
 
 Real-world analogy: Like landing an airplane - you approach fast, then gradually slow down for a smooth landing, not a crash.
 
 Original Transformer Schedule: Combines warmup with inverse square root decay:
 $$
-{\textstyle
 \begin{aligned}
 \eta_t = d_{\text{model}}^{-0.5} \cdot \min(t^{-0.5}, t \cdot T_{\text{warmup}}^{-1.5})
 \end{aligned}
-}
 $$
 
 When to use cosine vs original: Cosine for fine-tuning and shorter training; original schedule for training from scratch with very large models.
@@ -243,23 +225,19 @@ The Solution: Clip (limit) the gradients to a maximum norm.
 
 Global Norm Clipping:
 $$
-{\textstyle
 \begin{aligned}
 \tilde{g} = \min\left(1, \frac{c}{\|\mathbf{g}\|_2}\right) \mathbf{g} \quad (11)
 \end{aligned}
-}
 $$
 
 What this does intuitively:
 
 $$
-{\textstyle
 \begin{aligned}
 &\text{Calculate the total "size" of all gradients combined: } \|\mathbf{g}\|_2 \newline
 &\text{If this size exceeds our limit } c\text{, scale all gradients down proportionally} \newline
 &\text{If it's within the limit, leave gradients unchanged}
 \end{aligned}
-}
 $$
 
 Speedometer analogy: Like a speed limiter in a car. If you try to go 120 mph but the limit is 65 mph, it scales your speed down to 65 mph while keeping you in the same direction.
@@ -269,24 +247,20 @@ Why proportional scaling? We want to keep the relative direction of updates the 
 Example:
 
 $$
-{\textstyle
 \begin{aligned}
 &\text{Your gradients total to norm 50, but your clip value is 5} \newline
 &\text{Scaling factor: } \min(1, 5/50) = 0.1 \newline
 &\text{All gradients get multiplied by 0.1 reduced to 10% of original size}
 \end{aligned}
-}
 $$
 
 ### 9.5 Numerical Stability
 
 Log-Sum-Exp Trick: For numerical stability in softmax:
 $$
-{\textstyle
 \begin{aligned}
 \log\left(\sum_{i=1}^n e^{x_i}\right) = c + \log\left(\sum_{i=1}^n e^{x_i - c}\right) \quad (12)
 \end{aligned}
-}
 $$
 
 with the stabilization parameter preventing numerical overflow:
@@ -304,12 +278,10 @@ $$
 Standard Attention Complexity:
 
 $$
-{\textstyle
 \begin{aligned}
 \text{Time:} \quad &O(n^2 d) \text{ for sequence length } n, \text{ model dimension } d \newline
 \text{Space:} \quad &O(n^2 + nd) \text{ for attention matrix and activations}
 \end{aligned}
-}
 $$
 
 Memory Bottleneck: The attention matrix dominates memory usage for long sequences:
@@ -323,14 +295,12 @@ $$
 Detailed Complexity Breakdown:
 
 $$
-{\textstyle
 \begin{aligned}
 \text{1. QK}^T \text{ computation:} \quad &O(n^2 d) \text{ time, } O(n^2) \text{ space} \newline
 \text{2. Softmax normalization:} \quad &O(n^2) \text{ time and space} \newline
 \text{3. Attention-Value multiplication:} \quad &O(n^2 d) \text{ time, } O(nd) \text{ space} \newline
 \text{4. Total:} \quad &O(n^2 d) \text{ time, } O(n^2 + nd) \text{ space}
 \end{aligned}
-}
 $$
 
 Scaling Challenges:
@@ -352,14 +322,12 @@ $$
 Tiling Strategy:
 
 $$
-{\textstyle
 \begin{aligned}
 \text{1. Divide } Q, K, V \text{ into blocks} \newline
 \text{2. Compute attention scores block by block} \newline
 \text{3. Use online softmax to maintain numerical stability} \newline
 \text{4. Accumulate results without storing intermediate attention weights}
 \end{aligned}
-}
 $$
 
 Memory Reduction: FlashAttention achieves significant memory savings:
@@ -380,36 +348,30 @@ Key Insight: Trade computational redundancy for memory efficiency - recompute ra
 Multi-Query Attention (MQA): Share key and value projections across heads:
 
 $$
-{\textstyle
 \begin{aligned}
 \text{Queries:} \quad &Q \in \mathbb{R}^{B \times H \times n \times d_k} \text{ (per-head)} \newline
 \text{Keys/Values:} \quad &K, V \in \mathbb{R}^{B \times 1 \times n \times d_k} \text{ (shared)}
 \end{aligned}
-}
 $$
 
 Grouped-Query Attention (GQA): Intermediate approach - group heads:
 
 $$
-{\textstyle
 \begin{aligned}
 &\text{Divide } H \text{ heads into } G \text{ groups} \newline
 &\text{Each group shares K, V projections} \newline
 &\text{Reduces KV cache size by factor } H/G
 \end{aligned}
-}
 $$
 
 KV Cache Memory Analysis:
 
 $$
-{\textstyle
 \begin{aligned}
 \text{Standard MHA:} \quad &2 \cdot B \cdot H \cdot n \cdot d_k \text{ parameters} \newline
 \text{MQA:} \quad &2 \cdot B \cdot 1 \cdot n \cdot d_k \text{ parameters (H× reduction)} \newline
 \text{GQA:} \quad &2 \cdot B \cdot G \cdot n \cdot d_k \text{ parameters}
 \end{aligned}
-}
 $$
 
 Quantization: Reduce memory further with int8/fp16 KV cache storage.
@@ -427,14 +389,12 @@ K_{\text{cache}} \gets \mathrm{concat}(K_{\text{cache}},\ k_{\text{new}}) \quad 
 $$
 
 $$
-{\textstyle
 \begin{aligned}
 K_{\text{cache}} \quad &: \text{ Cached keys from previous tokens.} \newline
 V_{\text{cache}} \quad &: \text{ Cached values from previous tokens.} \newline
 k_{\text{new}}, v_{\text{new}} \quad &: \text{ Key and value for the new token.} \newline
 q_{\text{new}} \quad &: \text{ Query for the new token.}
 \end{aligned}
-}
 $$
 
 At each generation step, append the new key and value to the cache, then compute attention using the full cache.
@@ -463,11 +423,9 @@ $$
 
 Linear Attention:
 $$
-{\textstyle
 \begin{aligned}
 \text{LinAttn}(Q,K,V) = \frac{\phi(Q)(\phi(K)^T V)}{\phi(Q)(\phi(K)^T \mathbf{1})} \quad (45)
 \end{aligned}
-}
 $$
 
 Complexity Reduction: Linear attention improves computational complexity:
@@ -485,31 +443,25 @@ $$
 
 Attention Dropout: Applied to attention weights:
 $$
-{\textstyle
 \begin{aligned}
 A_{\text{dropped}} = \text{Dropout}(\text{softmax}(QK^T/\sqrt{d_k})) \quad (46)
 \end{aligned}
-}
 $$
 
 FFN Dropout: Applied after first linear transformation:
 $$
-{\textstyle
 \begin{aligned}
 \text{FFN}(\mathbf{x}) = W_2 \cdot \text{Dropout}(\text{GELU}(W_1 \mathbf{x})) \quad (47)
 \end{aligned}
-}
 $$
 
 ### 11.2 Evaluation and Calibration
 
 Expected Calibration Error (ECE): Measures how well predicted probabilities match actual outcomes:
 $$
-{\textstyle
 \begin{aligned}
 \text{ECE} = \sum_{m=1}^M \frac{|B_m|}{n} |\text{acc}(B_m) - \text{conf}(B_m)|
 \end{aligned}
-}
 $$
 
 with the following components:
@@ -524,11 +476,9 @@ $$
 
 Temperature Scaling: Post-training calibration method:
 $$
-{\textstyle
 \begin{aligned}
 P_{\text{cal}}(y|x) = \text{softmax}(\mathbf{z}/T)
 \end{aligned}
-}
 $$
 
 with temperature parameter controlling confidence:
@@ -564,24 +514,20 @@ Embedding/LM-Head Tying Caveats:
 When sharing weights, ensure shape compatibility:
 
 $$
-{\textstyle
 \begin{aligned}
 \text{Embedding:} \quad &E \in \mathbb{R}^{V \times d_{\text{model}}} \newline
 \text{LM head: needs} \quad &\mathbb{R}^{d_{\text{model}} \times V} \newline
 \text{Solution: Use } E^T \text{ for output projection (as shown in equation 40)}
 \end{aligned}
-}
 $$
 
 ### 11.4 Label Smoothing
 
 Smooth Labels: Replace one-hot targets with:
 $$
-{\textstyle
 \begin{aligned}
 y_{\text{smooth}} = (1-\alpha) y_{\text{true}} + \frac{\alpha}{V} \mathbf{1} \quad (48)
 \end{aligned}
-}
 $$
 
 Effect on Gradients: Prevents overconfident predictions and improves calibration.
@@ -634,12 +580,10 @@ $$
 $$
 
 $$
-{\textstyle
 \begin{aligned}
 \tau > 1 \quad &: \text{ Smoother distribution} \newline
 \tau < 1 \quad &: \text{ Sharper distribution}
 \end{aligned}
-}
 $$
 
 ## 15. Summary & What to Learn Next
@@ -647,14 +591,12 @@ $$
 ### 15.1 Key Mathematical Insights
 
 $$
-{\textstyle
 \begin{aligned}
 \text{1. Attention as Similarity Search:} \quad &\text{Q/K/V framework emerges naturally from maximum inner product search} \newline
 \text{2. Scaling Laws:} \quad &1/\sqrt{d_k} \text{ scaling prevents attention collapse (overly peaked distributions) in high dimensions} \newline
 \text{3. Residual Connections:} \quad &\text{Enable gradient flow through deep networks via skip connections} \newline
 \text{4. Multi-Head Architecture:} \quad &\text{Parallel subspace projections enable diverse attention patterns}
 \end{aligned}
-}
 $$
 
 ### 15.2 Advanced Techniques Covered
@@ -709,25 +651,25 @@ Key papers referenced in this Part 2:
 
 ### Single-Head Attention Shapes
 | Symbol | Meaning | Typical Shape |
-|:--------|:---------|:---------------|
-| \(Q, K, V\) | Query, Key, Value matrices | \([n \times d_k], [n \times d_k], [n \times d_v]\) |
-| \(n\) | Sequence length | Scalar |
-| \(d_{\text{model}}\) | Model dimension | Scalar (512, 768, 1024, etc.) |
-| \(d_k, d_v\) | Key, value dimensions | Usually \(d_{\text{model}}/h\) |
-| \(h\) | Number of attention heads | Scalar (8, 12, 16, etc.) |
+|:---|:---|:---|
+| $$Q, K, V$$ | Query, Key, Value matrices | $$[n \times d_k], [n \times d_k], [n \times d_v]$$ |
+| $$n$$ | Sequence length | Scalar |
+| $$d_{\text{model}}$$ | Model dimension | Scalar (512, 768, 1024, etc.) |
+| $$d_k, d_v$$ | Key, value dimensions | Usually $$d_{\text{model}}/h$$ |
+| $$h$$ | Number of attention heads | Scalar (8, 12, 16, etc.) |
 
 
 
 ### Multi-Head & Batched Shapes
 
 | Symbol | Meaning | Batched Multi-Head Shape |
-|:-------|:---------|:------------------------|
-| \(Q, K, V\) | Projected queries, keys, values | \([B, H, n, d_k], [B, H, n, d_k], [B, H, n, d_v]\) |
-| \(\text{Attn}\) | Attention weights matrix | \([B, H, n, n]\) |
-| \(\text{Output}_{\text{pre}}\) | Attention output (pre-concat) | \([B, H, n, d_v]\) |
-| \(\text{Output}_{\text{proj}}\) | Final output (post-concat) | \([B, n, d_{\text{model}}]\) |
-| \(W^Q, W^K, W^V, W^{\text{proj}}\) | Attention projection matrices | \([d_{\text{model}} \times d_k]\) per head |
-| \(W^O\) | Output projection | \([d_{\text{model}} \times d_{\text{model}}]\) |
+|:---|:---|:---|
+| $$Q, K, V$$ | Projected queries, keys, values | $$[B, H, n, d_k], [B, H, n, d_k], [B, H, n, d_v]$$ |
+| $$\text{Attn}$$ | Attention weights matrix | $$[B, H, n, n]$$ |
+| $$\text{Output}_{\text{pre}}$$ | Attention output (pre-concat) | $$[B, H, n, d_v]$$ |
+| $$\text{Output}_{\text{proj}}$$ | Final output (post-concat) | $$[B, n, d_{\text{model}}]$$ |
+| $$W^Q, W^K, W^V, W^{\text{proj}}$$ | Attention projection matrices | $$[d_{\text{model}} \times d_k]$$ per head |
+| $$W^O$$ | Output projection | $$[d_{\text{model}} \times d_{\text{model}}]$$ |
 
 
 Convention:
@@ -756,14 +698,12 @@ $$
 The gradient is:
 
 $$
-{\textstyle
 \begin{aligned}
 \frac{\partial p_i}{\partial z_j} = \begin{cases}
-p_i(1 - p_i) & \text{if } i = j \\
+p_i(1 - p_i) & \text{if } i = j \newline
 -p_i p_j & \text{if } i \neq j
 \end{cases} = p_i(\delta_{ij} - p_j)
 \end{aligned}
-}
 $$
 
 ### B.2 Matrix Calculus Identities
