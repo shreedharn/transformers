@@ -212,13 +212,11 @@ $$
 Where:
 
 $$
-{\textstyle
 \begin{aligned}
 \text{Weights } (W) &: \text{Control feature importance and geometric transformations} \newline
 \text{Bias } (b) &: \text{Provide flexible positioning of decision boundaries} \newline
 \text{Activation } (f) &: \text{Introduce nonlinearity through space warping}
 \end{aligned}
-}
 $$
 
 Each component serves a distinct geometric purpose that becomes clear when we visualize how neural networks transform data through high-dimensional space.
@@ -241,7 +239,6 @@ $$
 Where:
 
 $$
-{\textstyle
 \begin{aligned}
 y &: \text{output} \newline
 f &: \text{activation function} \newline
@@ -250,7 +247,6 @@ x_i &: \text{i-th input value} \newline
 b &: \text{bias} \newline
 n &: \text{number of inputs}
 \end{aligned}
-}
 $$
 
 ### Understanding Each Component Geometrically
@@ -259,7 +255,7 @@ To build true intuition about neural networks, we need to understand how each co
 
 #### The Role of Weights: Feature Importance and Direction
 
-Mathematical Foundation:
+**Mathematical Foundation:**
 Weights determine how input features are combined and transformed:
 
 $$
@@ -345,38 +341,32 @@ Let's see how these components work together in a concrete example. Consider det
 Features:
 
 $$
-{\textstyle
 \begin{aligned}
 x_1 &: \text{Number of exclamation marks} \newline
 x_2 &: \text{Contains word "free" (1 if yes, 0 if no)} \newline
 x_3 &: \text{Number of capital letters}
 \end{aligned}
-}
 $$
 
 Example Email: "FREE VACATION!!! Click now!!!"
 
 $$
-{\textstyle
 \begin{aligned}
 x_1 &= 6 \quad \text{(6 exclamation marks)} \newline
 x_2 &= 1 \quad \text{(contains "FREE")} \newline
 x_3 &= 13 \quad \text{(13 capital letters)}
 \end{aligned}
-}
 $$
 
 Learned Weights (after training):
 
 $$
-{\textstyle
 \begin{aligned}
 w_1 &= 0.3 \quad \text{(exclamation marks moderately important)} \newline
 w_2 &= 0.8 \quad \text{("free" is highly indicative)} \newline
 w_3 &= 0.1 \quad \text{(capitals less important)} \newline
 b &= -2.0 \quad \text{(bias term)}
 \end{aligned}
-}
 $$
 
 Calculation:
@@ -519,7 +509,7 @@ No single straight line can separate the 1s from the 0s in this case! Classes ar
 
 The XOR problem beautifully demonstrates why neural networks need all three components working together. Here's how a simple 2-layer network transforms the impossible into the trivial:
 
-Network Architecture: Input(2) → Hidden(2, ReLU) → Output(1, sigmoid)
+**Network Architecture:** Input(2) → Hidden(2, ReLU) → Output(1, sigmoid)
 
 > 📖 For complete worked examples: See [mlp_intro.md Section 5](./mlp_intro.md#5-worked-example-advanced-spam-detection) for detailed forward pass calculations with real numbers you can trace by hand.
 
@@ -528,6 +518,7 @@ Network Architecture: Input(2) → Hidden(2, ReLU) → Output(1, sigmoid)
 Hidden neurons learn:
 
 - Neuron A:
+
   $$
   \begin{aligned}
   z_A &= x_1 - 0.5  \text{ (detects "x₁ > 0.5")}
@@ -535,6 +526,7 @@ Hidden neurons learn:
   $$
 
 - Neuron B:
+
   $$
   \begin{aligned}
   z_B &= x_2 - 0.5  \text{ (detects "x₂ > 0.5")}
@@ -588,7 +580,7 @@ Input Layer → Hidden Layer(s) → Output Layer
 
 These components orchestrate a sophisticated geometric transformation system: weights control orientation and scaling, bias ensures optimal positioning, and activation functions bend space nonlinearly. When repeated across layers, this process builds arbitrarily complex decision manifolds.
 
-Unified Intuition: Think of neural networks as high-dimensional sculptors:
+**Unified Intuition:** Think of neural networks as high-dimensional sculptors:
 
 - Weights: Control the direction and strength of each sculpting tool
 - Bias: Position each tool at the optimal location  
@@ -740,7 +732,9 @@ When predicting categories like spam detection or sentiment analysis, cross-entr
 
 
 $$
-\begin{aligned} \mathcal{L} &= -\sum_{i=1}^{C} y_i \log(p_i) \end{aligned}
+\begin{aligned}
+\mathcal{L} &= -\sum_{i=1}^{C} y_i \log(p_i)
+\end{aligned}
 $$
 
 Where:
@@ -780,7 +774,9 @@ When predicting continuous values like house prices or temperatures, Mean Square
 
 
 $$
-\begin{aligned} \mathcal{L} &= \frac{1}{N} \sum_{i=1}^N (y_i - \hat{y}_i)^2 \end{aligned}
+\begin{aligned}
+\mathcal{L} &= \frac{1}{N} \sum_{i=1}^N (y_i - \hat{y}_i)^2
+\end{aligned}
 $$
 
 MSE measures the squared distance between predictions and targets, creating a penalty structure where small errors receive proportional punishment, but large errors face disproportionately severe consequences. This symmetric approach treats overestimation and underestimation equally.
@@ -936,10 +932,10 @@ While elegant in its simplicity, plain gradient descent suffers from several lim
 #### SGD with Momentum
 
 $$
-\begin{align}
-v_t &= \beta v_{t-1} + (1-\beta) \nabla \mathcal{L} \\
+\begin{aligned}
+v_t &= \beta v_{t-1} + (1-\beta) \nabla \mathcal{L} \newline
 \theta_t &= \theta_{t-1} - \alpha v_t
-\end{align}
+\end{aligned}
 $$
 
 
@@ -948,11 +944,11 @@ Momentum transforms gradient descent into a "rolling ball" that builds velocity 
 #### Adam: Adaptive Moments
 
 $$
-\begin{align}
-m_t &= \beta_1 m_{t-1} + (1-\beta_1) \nabla \mathcal{L} \quad \text{(momentum)}\\
-v_t &= \beta_2 v_{t-1} + (1-\beta_2) (\nabla \mathcal{L})^2 \quad \text{(variance)}\\
+\begin{aligned}
+m_t &= \beta_1 m_{t-1} + (1-\beta_1) \nabla \mathcal{L} \quad \text{(momentum)}\newline
+v_t &= \beta_2 v_{t-1} + (1-\beta_2) (\nabla \mathcal{L})^2 \quad \text{(variance)}\newline
 \theta_t &= \theta_{t-1} - \alpha \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}
-\end{align}
+\end{aligned}
 $$
 
 
@@ -1079,8 +1075,8 @@ $$
 Think of embeddings as a **high-dimensional map** where:
 
 - Each word becomes a **point** in space
-- **Similar words cluster together** (near each other)
-- **Different meanings spread apart**
+- Similar words cluster together (near each other)
+- Different meanings spread apart
 
 **2D Visualization (actual embeddings use 100s-1000s of dimensions):**
 ```
@@ -1130,11 +1126,11 @@ The network learns that words in similar positions (contexts) should have simila
 "dog" → [0.3, 0.7, -0.2, 0.4, ...]  (similar to "cat")
 ```
 
-- **Dense representations** (all dimensions used)
-- **Semantic similarity** through vector proximity
-- **Learnable relationships**
+- Dense representations (all dimensions used)
+- Semantic similarity through vector proximity
+- Learnable relationships
 
-**Vector arithmetic captures relationships:**
+Vector arithmetic captures relationships:
 
 $$
 \begin{aligned}

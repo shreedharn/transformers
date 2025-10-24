@@ -118,48 +118,21 @@ Key Insight: An RNN is like having a single neural network that processes a sequ
 
 The heart of every RNN is this update rule:
 
-$$
-\begin{aligned}
-h\_t = \tanh(x\_t W\_{xh} + h\_{t-1} W\_{hh} + b\_h)
-\end{aligned}
-$$
+\[
+h_t = \tanh(x_t W_{xh} + h_{t-1} W_{hh} + b_h)
+\]
 
 Let's break this down term by term:
 
 | Term | Size | Meaning |
-|------|------|---------|
-| $$
-x\_t
-$$ | $$
-[1, E]
-$$ | Current input - word embedding at time $$
-t
-$$ |
-| $$
-h\_{t-1}
-$$ | $$
-[1, H]
-$$ | Past memory - hidden state from previous step |
-| $$
-W\_{xh}
-$$ | $$
-[E, H]
-$$ | Input weights - transform current input |
-| $$
-W\_{hh}
-$$ | $$
-[H, H]
-$$ | Hidden weights - transform past memory |
-| $$
-b\_h
-$$ | $$
-(H,)
-$$ | Bias - learned offset |
-| $$
-h\_t
-$$ | $$
-(H,)
-$$ | New memory - updated hidden state |
+|------|------|----------|
+| \(x_t\) | \([1, E]\) | Current input – word embedding at time \(t\) |
+| \(h_{t-1}\) | \([1, H]\) | Past memory – hidden state from previous step |
+| \(W_{xh}\) | \([E, H]\) | Input weights – transform current input |
+| \(W_{hh}\) | \([H, H]\) | Hidden weights – transform past memory |
+| \(b_h\) | \((H,)\) | Bias – learned offset |
+| \(h_t\) | \((H,)\) | New memory – updated hidden state |
+
 
 ### Visual Breakdown
 
@@ -223,7 +196,9 @@ Hidden Layer: The architectural component (collection of neurons) that produces 
 In our RNN equation, we can identify the architectural versus dynamic components:
 
 $$
+\begin{aligned}
 h\_t = \tanh(x\_t W\_{xh} + h\_{t-1} W\_{hh} + b\_h)
+\end{aligned}
 $$
 
 Hidden Layer (Architecture): The fixed computational structure
@@ -287,27 +262,37 @@ Think of it like a **notebook and note-taking process**:
 ### Common Confusions Clarified
 
 #### Confusion 1: "Hidden layers store memory"
-❌ Wrong: Layers are architectural blueprints—they don't store anything
 
-✅ Correct: Hidden states carry information/memory from one time step to the next
+Wrong: Layers are architectural blueprints—they don't store anything. 
+Correct: Hidden states carry information/memory from one time step to the next. 
 
-RNN Context: The hidden state $$
+RNN Context: The hidden state carries memory forward, not the layer itself.
+
+$$
+\begin{aligned}
 h\_{t-1}
-$$ carries memory forward, not the layer itself.
+\end{aligned}
+$$ 
+
+
 
 #### Confusion 2: "RNNs have one hidden state"  
-❌ Wrong: RNNs have one type of recurrent layer architecture
 
-✅ Correct: RNNs produce a sequence of hidden states over time ($$
+Wrong: RNNs have one type of recurrent layer architecture. 
+Correct: RNNs produce a sequence of hidden states over time. 
+
+$$
+\begin{aligned}
 h\_1, h\_2, h\_3, ..., h\_T
-$$)
+\end{aligned}
+$$
 
 RNN Context: Each time step produces a new hidden state that encodes the sequence history.
 
 #### Confusion 3: "Adding more hidden layers gives more memory"
-❌ Wrong: More layers do not equal longer memory
 
-✅ Correct: Layer depth affects transformation complexity; sequence length affects memory span
+Wrong: More layers do not equal longer memory. 
+Correct: Layer depth affects transformation complexity; sequence length affects memory span. 
 
 RNN Context: Memory span depends on sequence length and gradient flow, not layer count.
 
@@ -367,7 +352,7 @@ Understanding this distinction is crucial for grasping how RNNs maintain memory 
 ## 5. Where These Weights Come From
 
 ### Weight Initialization
-Initially, the following parameters are **random numbers**:
+Initially, the following parameters are random numbers:
 
 $$
 \begin{aligned}
@@ -389,9 +374,9 @@ Compute Loss:
 loss = compare(predictions, true_labels)
 
 Backward Pass (compute gradients):
-loss/W_xh flows back through ALL time steps
-loss/W_hh flows back through ALL time steps
-loss/b_h  flows back through ALL time steps
+ loss/ W_xh flows back through ALL time steps
+ loss/ W_hh flows back through ALL time steps
+ loss/ b_h  flows back through ALL time steps
 ```
 
 **Key Point:** The same weights are used at every time step, but gradients flow back through the entire sequence:
@@ -404,23 +389,11 @@ $$
 
 ### Weight Sharing vs MLPs
 
-| **MLP** | **RNN** |
-|---------|---------|
-| Layer 1 has weights $$
-W\_1
-$$ | Time step 1 uses weights $$
-W\_{xh}, W\_{hh}
-$$ |
-| Layer 2 has weights $$
-W\_2
-$$ | Time step 2 uses **same** weights $$
-W\_{xh}, W\_{hh}
-$$ |
-| Layer 3 has weights $$
-W\_3
-$$ | Time step 3 uses **same** weights $$
-W\_{xh}, W\_{hh}
-$$ |
+| MLP | RNN |
+|---|---|
+| Layer 1 has weights \(W_1\) | Time step 1 uses weights \(W_{xh}, W_{hh}\) |
+| Layer 2 has weights \(W_2\) | Time step 2 uses the same weights \(W_{xh}, W_{hh}\) |
+| Layer 3 has weights \(W_3\) | Time step 3 uses the same weights \(W_{xh}, W_{hh}\) |
 | Each layer learns different transformations | All time steps share the same transformation |
 
 ---
@@ -460,22 +433,11 @@ Large memory (H=100): h_t = [0.3, -0.7, 0.1, ..., 0.9]  # Like a large notebook
 The dimensions determine the weight matrix shapes:
 
 | Weight | Shape | Purpose |
-|--------|-------|---------|
-| $$
-W\_{xh}
-$$ | $$
-(E \times H)
-$$ | Maps input dimension to hidden dimension |
-| $$
-W\_{hh}
-$$ | $$
-(H \times H)
-$$ | Maps hidden dimension to itself (recurrence) |
-| $$
-b\_h
-$$ | $$
-(H,)
-$$ | Bias for each hidden unit |
+|---|---|---|
+| \(W_{xh}\) | \((E \times H)\) | Maps input dimension to hidden dimension |
+| \(W_{hh}\) | \((H \times H)\) | Maps hidden dimension to itself (recurrence) |
+| \(b_h\) | \((H,)\) | Bias for each hidden unit |
+
 
 **Example:** For word embeddings and hidden size dimensions:
 
@@ -530,9 +492,15 @@ $$
 
 ### Step 1: Process "cat"
 
-**Input:** $$
+**Input:** 
+
+$$
 x\_1 = [0.5, 0.2]
-$$ **Memory:** $$
+$$ 
+
+**Memory:** 
+
+$$
 h\_0 = [0.0, 0.0]
 $$
 
@@ -557,7 +525,9 @@ $$
 
 ### Step 2: Process "sat" 
 
-**Input:** $$
+**Input:** 
+
+$$
 x\_2 = [0.1, 0.9]
 $$ **Memory:** $$
 h\_1 = [0.32, 0.53]
@@ -584,9 +554,15 @@ $$
 
 ### Step 3: Process "here"
 
-**Input:** $$
+**Input:** 
+
+$$
 x\_3 = [0.8, 0.3]
-$$ **Memory:** $$
+$$ 
+
+**Memory:** 
+
+$$
 h\_2 = [0.69, 0.65]
 $$
 
@@ -620,11 +596,9 @@ $$
 \end{aligned}
 $$
 
-**Key Insight:** Each hidden state $$
-h\_t
-$$ encodes information about the entire sequence up to time $$
-t
-$$. The RNN builds up contextual understanding step by step.
+**Key Insight:** 
+
+Each hidden state encodes information about the entire sequence up to time t. The RNN builds up contextual understanding step by step.
 
 ---
 
@@ -644,9 +618,9 @@ $$
 
 **Characteristics:**
 
-- Each layer has **different weights**
-- Gradients flow **backward through layers**
-- Training is **straightforward** - standard backprop
+- Each layer has different weights
+- Gradients flow backward through layers
+- Training is straightforward - standard backprop
 
 ### RNN Training: Backpropagation Through Time (BPTT)
 
@@ -720,11 +694,15 @@ $$
 
 **Why This Causes Problems:**
 
-1. Tanh Derivative Range: $$
+1. Tanh Derivative Range: 
+
+$$
 \tanh'(x) \in (0, 1]
-$$, typically around 0.1-0.5
+$$
+Typically around 0.1-0.5
 
 2. Repeated Multiplication: Product of many small numbers approaches zero exponentially
+
 3. Weight Matrix Effects: If eigenvalues are small, this compounds the decay
 
 $$
