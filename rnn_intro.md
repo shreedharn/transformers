@@ -58,12 +58,12 @@ Problems:
 
 Mathematical Constraint: If we have sequences of different lengths, there's no natural way to feed both into the same MLP architecture:
 
-$$
+\[
 \begin{aligned}
 \text{Sequence lengths:} \quad &n \neq m \newline
 \text{Problem:} \quad &\text{Weight matrix } W^{(1)} \text{ requires fixed input dimension}
 \end{aligned}
-$$
+\]
 
 Missing Piece: MLPs have no mechanism to handle variable-length inputs or model temporal dependencies. Each input dimension is treated independently, with no understanding of sequential structure.
 
@@ -134,18 +134,20 @@ Let's break this down term by term:
 | \(h_t\) | \((H,)\) | New memory – updated hidden state |
 
 
-### Visual Breakdown
+### Visual Breakdown (Mermaid)
+
+```mermaid
+graph TD
+  A["h<sub>t−1</sub> (Past Memory)"] -->|W<sub>hh</sub>| C["h<sub>t−1</sub> W<sub>hh</sub>"]
+  B["x<sub>t</sub> (Current Input)"] -->|W<sub>xh</sub>| D["x<sub>t</sub> W<sub>xh</sub>"]
+  C --> E["+ b<sub>h</sub>"]
+  D --> E
+  E --> F["tanh( … )"]
+  F --> G["h<sub>t</sub> (New Memory)"]
+
 
 ```
-Past Memory    Current Input
-    h_{t-1}  +      x_t
-       ↓              ↓
-   h_{t-1} W_{hh} + x_t W_{xh} + b_h
-                      ↓
-                   tanh(...)
-                      ↓
-                New Memory h_t
-```
+
 
 Why `tanh`?
 
@@ -155,13 +157,18 @@ Why `tanh`?
 
 The Magic: At each step, the RNN combines three components:
 
-$$
-\begin{aligned}
-\text{Current Input:} \quad &x\_t W\_{xh} \quad \text{(What's happening now)} \newline
-\text{Past Memory:} \quad &h\_{t-1} W\_{hh} \quad \text{(What it remembers)} \newline
-\text{Learned Bias:} \quad &b\_h \quad \text{(Model's learned offset)}
-\end{aligned}
-$$
+\[
+\text{Current input: } x_t W_{xh} \quad \text{(what's happening now)}
+\]
+
+\[
+\text{Past memory: } h_{t-1} W_{hh} \quad \text{(what it remembers)}
+\]
+
+\[
+\text{Learned bias: } b_h \quad \text{(model's learned offset)}
+\]
+
 
 ---
 
@@ -195,21 +202,21 @@ Hidden Layer: The architectural component (collection of neurons) that produces 
 #### The Architecture (Hidden Layer)
 In our RNN equation, we can identify the architectural versus dynamic components:
 
-$$
+\[
 \begin{aligned}
 h\_t = \tanh(x\_t W\_{xh} + h\_{t-1} W\_{hh} + b\_h)
 \end{aligned}
-$$
+\]
 
 Hidden Layer (Architecture): The fixed computational structure
 
-$$
+\[
 \begin{aligned}
 \text{Weight matrices:} \quad &W\_{xh}, W\_{hh} \text{ and bias } b\_h \newline
 \text{Layer size:} \quad &\text{Fixed at } H \text{ neurons (e.g., } H = 128\text{)} \newline
 \text{Parameters:} \quad &\text{Same weights used at every time step}
 \end{aligned}
-$$
+\]
 
 #### The Dynamic States (Hidden States)
 ```
@@ -227,21 +234,21 @@ Key Insight: The **same layer** produces different **states** over time. The RNN
 
 For RNNs, the relationship is:
 
-$$
+\[
 \begin{aligned}
 \text{Hidden Layer:} \quad &\mathbb{R}^{E} \times \mathbb{R}^{H} \rightarrow \mathbb{R}^{H} \newline
 \text{Hidden State:} \quad &h\_t = \tanh(x\_t W\_{xh} + h\_{t-1} W\_{hh} + b\_h)
 \end{aligned}
-$$
+\]
 
 Where the mathematical relationship is defined by:
 
-$$
+\[
 \begin{aligned}
 \text{Layer parameters:} \quad &W\_{xh} \in \mathbb{R}^{E \times H}, \; W\_{hh} \in \mathbb{R}^{H \times H}, \; b\_h \in \mathbb{R}^H \newline
 \text{State evolution:} \quad &h\_t \text{ depends on current input } x\_t \text{ and previous state } h\_{t-1}
 \end{aligned}
-$$
+\]
 
 ### Memory vs Structure Analogy
 
@@ -261,40 +268,12 @@ Think of it like a **notebook and note-taking process**:
 
 ### Common Confusions Clarified
 
-#### Confusion 1: "Hidden layers store memory"
+| Confusion | Wrong | Correct | RNN Context | Math |
+|------------|--------|----------|--------------|-------|
+| **Hidden layers store memory** | Layers are architectural blueprints — they don't store anything. | Hidden states carry information (memory) from one time step to the next. | The hidden state carries memory forward, not the layer itself. | \(h_{t-1}\) |
+| **RNNs have one hidden state** | RNNs have one type of recurrent layer architecture. | RNNs produce a sequence of hidden states over time. | Each time step produces a new hidden state that encodes the sequence history. |\(h_{1},\; h_{2},\; h_{3},\; \ldots,\; h_{T}\) |
+| **Adding more hidden layers gives more memory** | More layers do not equal longer memory. | Layer depth affects transformation complexity; sequence length affects memory span. | Memory span depends on sequence length and gradient flow, not layer count. | — |
 
-Wrong: Layers are architectural blueprints—they don't store anything. 
-Correct: Hidden states carry information/memory from one time step to the next. 
-
-RNN Context: The hidden state carries memory forward, not the layer itself.
-
-$$
-\begin{aligned}
-h\_{t-1}
-\end{aligned}
-$$ 
-
-
-
-#### Confusion 2: "RNNs have one hidden state"  
-
-Wrong: RNNs have one type of recurrent layer architecture. 
-Correct: RNNs produce a sequence of hidden states over time. 
-
-$$
-\begin{aligned}
-h\_1, h\_2, h\_3, ..., h\_T
-\end{aligned}
-$$
-
-RNN Context: Each time step produces a new hidden state that encodes the sequence history.
-
-#### Confusion 3: "Adding more hidden layers gives more memory"
-
-Wrong: More layers do not equal longer memory. 
-Correct: Layer depth affects transformation complexity; sequence length affects memory span. 
-
-RNN Context: Memory span depends on sequence length and gradient flow, not layer count.
 
 ### Practical Implications for RNNs
 
@@ -304,13 +283,13 @@ RNN Context: Memory span depends on sequence length and gradient flow, not layer
 - State initialization: Decide how to initialize initial state (usually zeros)
 - Layer stacking: Multiple RNN layers create deeper transformations
 
-$$
+\[
 \begin{aligned}
 \text{Hidden size:} \quad &H \text{ (memory capacity)} \newline
 \text{Initial state:} \quad &h\_0 \text{ (typically zeros)} \newline
 \text{Layer depth:} \quad &L \text{ (transformation complexity)}
 \end{aligned}
-$$
+\]
 
 #### For Debugging
 
@@ -318,11 +297,11 @@ $$
 - Analyze states: Monitor hidden state evolution, detect vanishing/exploding patterns
 - Memory tracking: Watch how information flows between time steps
 
-$$
+\[
 \begin{aligned}
 \text{Information flow:} \quad h\_{t-1} \xrightarrow{\text{carries memory}} h\_t
 \end{aligned}
-$$
+\]
 
 #### For Training
 
@@ -339,11 +318,11 @@ In RNNs specifically:
 - **Different states** result from each processing step
 - **Memory continuity** comes from passing previous states to compute new states
 
-$$
+\[
 \begin{aligned}
 \text{Memory flow:} \quad h\_{t-1} \rightarrow h\_t \quad \text{(Previous state influences current state)}
 \end{aligned}
-$$
+\]
 
 Understanding this distinction is crucial for grasping how RNNs maintain memory across time while using a fixed computational structure.
 
@@ -354,11 +333,11 @@ Understanding this distinction is crucial for grasping how RNNs maintain memory 
 ### Weight Initialization
 Initially, the following parameters are random numbers:
 
-$$
+\[
 \begin{aligned}
 W\_{xh}, W\_{hh}, b\_h \quad \text{(Input weights, hidden weights, and bias)}
 \end{aligned}
-$$
+\]
 
 The RNN learns by adjusting these weights through training.
 
@@ -381,11 +360,11 @@ Backward Pass (compute gradients):
 
 **Key Point:** The same weights are used at every time step, but gradients flow back through the entire sequence:
 
-$$
+\[
 \begin{aligned}
 \text{Shared weights:} \quad W\_{xh}, W\_{hh} \quad \text{(reused at each time step)}
 \end{aligned}
-$$
+\]
 
 ### Weight Sharing vs MLPs
 
@@ -441,7 +420,7 @@ The dimensions determine the weight matrix shapes:
 
 **Example:** For word embeddings and hidden size dimensions:
 
-$$
+\[
 \begin{aligned}
 \text{Given:} \quad &E = 50 \text{ (word embedding size), } H = 128 \text{ (hidden size)} \newline
 \text{Parameters:} \quad &W\_{xh}: (50 \times 128) \text{ matrix with 6,400 parameters} \newline
@@ -449,7 +428,7 @@ $$
 &b\_h: (128,) \text{ vector with 128 parameters} \newline
 \textbf{Total:} \quad &\textbf{22,912 parameters}
 \end{aligned}
-$$
+\]
 
 ---
 
@@ -457,14 +436,14 @@ $$
 
 Let's trace through a tiny example step by step. We'll use:
 
-$$
+\[
 \begin{aligned}
 \text{Vocabulary:} \quad &\{\text{"cat"}: 0, \text{"sat"}: 1, \text{"here"}: 2\} \newline
 \text{Embedding size:} \quad &E = 2 \newline
 \text{Hidden size:} \quad &H = 2 \newline
 \text{Sequence:} \quad &\text{"cat sat here"}
 \end{aligned}
-$$
+\]
 
 ### Step 0: Initialize
 
@@ -482,119 +461,123 @@ h₀ = [0.0, 0.0]  # Start with no memory
 
 **Learned weights (after training):**
 
-$$
+\[
 \begin{aligned}
 W\_{xh} &= \begin{bmatrix} 0.3 & 0.7 \\\\ 0.4 & 0.2 \end{bmatrix} \quad \text{(2×2 matrix: input-to-hidden)} \newline
 W\_{hh} &= \begin{bmatrix} 0.1 & 0.5 \\\\ 0.6 & 0.3 \end{bmatrix} \quad \text{(2×2 matrix: hidden-to-hidden)} \newline
 b\_h &= \begin{bmatrix} 0.1 \\\\ 0.2 \end{bmatrix} \quad \text{(2-element bias vector)}
 \end{aligned}
-$$
+\]
 
 ### Step 1: Process "cat"
 
-**Input:** 
+**Input:**
 
-$$
+\[
 x\_1 = [0.5, 0.2]
-$$ 
+\]
 
-**Memory:** 
+**Memory:**
 
-$$
+\[
 h\_0 = [0.0, 0.0]
-$$
+\]
 
 **Compute contributions:**
 
-$$
+\[
 \begin{aligned}
 x\_1 W\_{xh} &= [0.5, 0.2] \cdot \begin{bmatrix} 0.3 & 0.7 \\\\ 0.4 & 0.2 \end{bmatrix} = [0.23, 0.39] \newline
 h\_0 W\_{hh} &= [0.0, 0.0] \cdot \begin{bmatrix} 0.1 & 0.5 \\\\ 0.6 & 0.3 \end{bmatrix} = [0.0, 0.0]
 \end{aligned}
-$$
+\]
 
 **Combine and activate:**
 
-$$
+\[
 \begin{aligned}
 x\_1 W\_{xh} + h\_0 W\_{hh} + b\_h &= [0.23, 0.39] + [0.0, 0.0] + [0.1, 0.2] \newline
 &= [0.33, 0.59] \newline
 h\_1 &= \tanh([0.33, 0.59]) = [0.32, 0.53]
 \end{aligned}
-$$
+\]
 
 ### Step 2: Process "sat" 
 
-**Input:** 
+**Input:**
 
-$$
+\[
 x\_2 = [0.1, 0.9]
-$$ **Memory:** $$
+\]
+
+**Memory:**
+
+\[
 h\_1 = [0.32, 0.53]
-$$
+\]
 
 **Compute contributions:**
 
-$$
+\[
 \begin{aligned}
 x\_2 W\_{xh} &= [0.1, 0.9] \cdot \begin{bmatrix} 0.3 & 0.7 \\\\ 0.4 & 0.2 \end{bmatrix} = [0.39, 0.25] \newline
 h\_1 W\_{hh} &= [0.32, 0.53] \cdot \begin{bmatrix} 0.1 & 0.5 \\\\ 0.6 & 0.3 \end{bmatrix} = [0.35, 0.32]
 \end{aligned}
-$$
+\]
 
 **Combine and activate:**
 
-$$
+\[
 \begin{aligned}
 x\_2 W\_{xh} + h\_1 W\_{hh} + b\_h &= [0.39, 0.25] + [0.35, 0.32] + [0.1, 0.2] \newline
 &= [0.84, 0.77] \newline
 h\_2 &= \tanh([0.84, 0.77]) = [0.69, 0.65]
 \end{aligned}
-$$
+\]
 
 ### Step 3: Process "here"
 
-**Input:** 
+**Input:**
 
-$$
+\[
 x\_3 = [0.8, 0.3]
-$$ 
+\]
 
-**Memory:** 
+**Memory:**
 
-$$
+\[
 h\_2 = [0.69, 0.65]
-$$
+\]
 
 **Compute contributions:**
 
-$$
+\[
 \begin{aligned}
 x\_3 W\_{xh} &= [0.8, 0.3] \cdot \begin{bmatrix} 0.3 & 0.7 \\\\ 0.4 & 0.2 \end{bmatrix} = [0.36, 0.62] \newline
 h\_2 W\_{hh} &= [0.69, 0.65] \cdot \begin{bmatrix} 0.1 & 0.5 \\\\ 0.6 & 0.3 \end{bmatrix} = [0.46, 0.54]
 \end{aligned}
-$$
+\]
 
 **Combine and activate:**
 
-$$
+\[
 \begin{aligned}
 x\_3 W\_{xh} + h\_2 W\_{hh} + b\_h &= [0.36, 0.62] + [0.46, 0.54] + [0.1, 0.2] \newline
 &= [0.92, 1.36] \newline
 h\_3 &= \tanh([0.92, 1.36]) = [0.73, 0.88]
 \end{aligned}
-$$
+\]
 
 ### Summary: Memory Evolution
 
-$$
+\[
 \begin{aligned}
 \text{Start:} \quad &h\_0 = [0.00, 0.00] \quad \text{(No memory)} \newline
 \text{"cat":} \quad &h\_1 = [0.37, 0.41] \quad \text{(Remembers "cat")} \newline
 \text{"sat":} \quad &h\_2 = [0.76, 0.65] \quad \text{(Remembers "cat sat")} \newline
 \text{"here":} \quad &h\_3 = [0.74, 0.84] \quad \text{(Remembers "cat sat here")}
 \end{aligned}
-$$
+\]
 
 **Key Insight:** 
 
@@ -606,7 +589,7 @@ Each hidden state encodes information about the entire sequence up to time t. Th
 
 ### MLP Training: Layer-by-Layer
 
-$$
+\[
 \begin{aligned}
 \text{Architecture:} \quad &\text{Input} \rightarrow \text{Layer 1} \rightarrow \text{Layer 2} \rightarrow \text{Layer 3} \rightarrow \text{Output} \newline
 &x \rightarrow W\_1 \rightarrow W\_2 \rightarrow W\_3 \rightarrow y \newline
@@ -614,7 +597,7 @@ $$
 &\frac{\partial \text{loss}}{\partial W\_2} \leftarrow \text{flows back one layer} \newline
 &\frac{\partial \text{loss}}{\partial W\_1} \leftarrow \text{flows back two layers}
 \end{aligned}
-$$
+\]
 
 **Characteristics:**
 
@@ -624,7 +607,7 @@ $$
 
 ### RNN Training: Backpropagation Through Time (BPTT)
 
-$$
+\[
 \begin{aligned}
 \text{Time steps:} \quad &x\_1 \rightarrow \text{RNN} \rightarrow h\_1 \rightarrow y\_1 \newline
 &x\_2 \rightarrow \text{RNN} \rightarrow h\_2 \rightarrow y\_2 \quad \text{(same weights!)} \newline
@@ -633,7 +616,7 @@ $$
 &\frac{\partial \text{loss}}{\partial W\_{hh}} \leftarrow \text{sum of gradients from ALL time steps} \newline
 &\frac{\partial \text{loss}}{\partial b\_h} \leftarrow \text{sum of gradients from ALL time steps}
 \end{aligned}
-$$
+\]
 
 **Characteristics:**
 
@@ -649,24 +632,24 @@ In deep RNNs or long sequences, gradients can:
 
 **Vanish (become too small):**
 
-$$
+\[
 \begin{aligned}
 \text{Gradient flow:} \quad &\text{Step 50} \rightarrow \text{Step 49} \rightarrow \ldots \rightarrow \text{Step 2} \rightarrow \text{Step 1} \newline
 \text{Magnitude:} \quad &0.001 \rightarrow 0.0001 \rightarrow \ldots \rightarrow 0.000\ldots001 \rightarrow H\_0
 \end{aligned}
-$$
+\]
 
 - Early time steps receive almost no learning signal
 - RNN forgets long-term dependencies
 
 **Explode (become too large):**
 
-$$
+\[
 \begin{aligned}
 \text{Gradient flow:} \quad &\text{Step 1} \rightarrow \text{Step 2} \rightarrow \ldots \rightarrow \text{Step 49} \rightarrow \text{Step 50} \newline
 \text{Magnitude:} \quad &1.5 \rightarrow 2.25 \rightarrow \ldots \rightarrow \text{[overflow]} \rightarrow \text{NaN}
 \end{aligned}
-$$
+\]
 
 - Gradients grow exponentially
 - Training becomes unstable
@@ -685,41 +668,41 @@ The Mathematical Problem: When training RNNs using Backpropagation Through Time 
 
 Gradient Chain: For an RNN, the gradient flowing from time T to time 1 involves:
 
-$$
+\[
 \begin{aligned}
 \text{RNN equation:} \quad &h\_t = \tanh(x\_t W\_{xh} + h\_{t-1} W\_{hh} + b\_h) \newline
 \text{Gradient chain:} \quad &\frac{\partial h\_T}{\partial h\_1} = \prod\_{t=2}^{T} \frac{\partial h\_t}{\partial h\_{t-1}} = \prod\_{t=2}^{T} W\_{hh} \odot \tanh'(\cdot)
 \end{aligned}
-$$
+\]
 
 **Why This Causes Problems:**
 
-1. Tanh Derivative Range: 
+1. Tanh Derivative Range:
 
-$$
+\[
 \tanh'(x) \in (0, 1]
-$$
+\]
 Typically around 0.1-0.5
 
 2. Repeated Multiplication: Product of many small numbers approaches zero exponentially
 
 3. Weight Matrix Effects: If eigenvalues are small, this compounds the decay
 
-$$
+\[
 \begin{aligned}
 \text{Condition:} \quad \text{eigenvalues of } W\_{hh} < 1 \quad \text{(compounds the decay)}
 \end{aligned}
-$$
+\]
 
 Example: For a sequence of length 50:
 
-$$
+\[
 \begin{aligned}
 \text{Given:} \quad &\tanh'(\cdot) \approx 0.3 \text{ and } \|W\_{hh}\| \approx 0.8 \newline
 \text{Gradient magnitude:} \quad &(0.3 \times 0.8)^{49} \approx 10^{-20} \newline
 \text{Result:} \quad &\text{Effectively zero gradient!}
 \end{aligned}
-$$
+\]
 
 ### Impact on Learning
 
@@ -786,39 +769,39 @@ Output: "Hola mundo"
 
 Encoder Process:
 
-$$
+\[
 \begin{aligned}
 h\_t^{enc} &= f\_{enc}(x\_t, h\_{t-1}^{enc}) \newline
 c &= h\_T^{enc} \quad \text{(Final hidden state becomes context)}
 \end{aligned}
-$$
+\]
 
 Decoder Process:
 
-$$
+\[
 \begin{aligned}
 h\_t^{dec} &= f\_{dec}(y\_{t-1}, h\_{t-1}^{dec}, c) \newline
 p(y\_t | y\_{<t}, x) &= \text{softmax}(h\_t^{dec} W\_o + b\_o)
 \end{aligned}
-$$
+\]
 
 Where:
 
-$$
+\[
 \begin{aligned}
 c \quad &: \text{Context vector (compressed representation of entire input)} \newline
 y\_{t-1} \quad &: \text{Previous output token} \newline
 h\_t^{dec} \quad &: \text{Decoder hidden state}
 \end{aligned}
-$$
+\]
 
 #### Training with Teacher Forcing
 
 Smart Training Trick: During training, use ground truth previous tokens rather than model predictions:
 
-$$
+\[
 y\_{t-1} = y\_{t-1}^{truth} \quad \text{(not model prediction)}
-$$
+\]
 
 This speeds up training and improves stability.
 
@@ -833,13 +816,13 @@ Seq2Seq enabled entirely new AI capabilities:
 
 #### The Information Bottleneck Problem
 
-Critical Discovery: Despite its success, Seq2Seq had a fundamental limitation—all information about the input sequence must pass through a single fixed-size context vector $$c$$.
+Critical Discovery: Despite its success, Seq2Seq had a fundamental limitation—all information about the input sequence must pass through a single fixed-size context vector \(c\).
 
 Mathematical Constraint: Regardless of input length, encoder must compress everything into:
 
-$$
+\[
 c \in \mathbb{R}^h \quad \text{(fixed hidden size)}
-$$
+\]
 
 Problems This Created:
 
@@ -925,7 +908,7 @@ Applications: RNNs proved neural networks could handle:
 
 ## 12. Final Visualization: "cat sat here" Through Time
 
-$$
+\[
 \begin{aligned}
 \text{Time Step 1: "cat"} \quad &\text{Input: } [0.5, 0.2] \newline
 &\text{Memory: } [0.0, 0.0] \rightarrow \tanh([0.39, 0.44]) \rightarrow h\_1 = [0.37, 0.41] \newline
@@ -935,7 +918,7 @@ $$
 &\text{Memory: } [0.76, 0.65] \rightarrow \tanh([0.95, 1.23]) \rightarrow h\_3 = [0.74, 0.84] \newline
 \textbf{Final Memory:} \quad &[0.74, 0.84] \text{ encodes "cat sat here"}
 \end{aligned}
-$$
+\]
 
 **The Journey:** From no memory to rich contextual understanding, one step at a time. The RNN learns to compress the entire sequence history into a fixed-size hidden state vector.
 

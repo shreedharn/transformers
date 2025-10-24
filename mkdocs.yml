@@ -8,6 +8,9 @@ theme:
     - content.code.copy
     - content.tabs.link
     - toc.follow
+    - content.code.annotate
+    - content.diagrams
+    - content.mermaid
   palette:
     - scheme: default
       primary: indigo
@@ -17,6 +20,7 @@ theme:
     code: JetBrains Mono
 plugins:
   - search
+  - mermaid2
   - awesome-pages
   - roamlinks         # keep if you use [[Wiki Links]]; safe to leave on
 markdown_extensions:
@@ -36,6 +40,12 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.tabbed:
       alternate_style: true
+  - pymdownx.superfences:
+      # make exceptions to highlighting of code:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid_custom
   - toc:
       permalink: true
       slugify: !!python/object/apply:pymdownx.slugs.slugify
@@ -46,6 +56,8 @@ extra_javascript:
   - javascripts/mathjax-init.js
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
   - javascripts/mathjax-refresh.js
+  - https://unpkg.com/mermaid@10.2.4/dist/mermaid.min.js
+  - javascripts/mermaid-init.js
 extra_css:
   - styles.css
 docs_dir: docs
