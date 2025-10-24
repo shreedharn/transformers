@@ -104,20 +104,29 @@ graph LR
 RNN (Recurrent Neural Network):
 
 ```mermaid
-graph TD
-  A["x<sub>1</sub> (Input)"] --> B["RNN"]
-  B --> C["h<sub>1</sub> (Hidden State)"]
-  C --> D["y<sub>1</sub> (Output)"]
+graph LR
+    x0["h0 (Initial Hidden State)"]
+    x1["x1 (Input)"]
+    rnn1["RNN"]
+    h1["h1 (Hidden State)"]
+    y1["y1 (Output)"]
 
-  E["x<sub>2</sub> (Input)"] --> F["RNN"]
-  C -.->|"memory"| F
-  F --> G["h<sub>2</sub> (Hidden State)"]
-  G --> H["y<sub>2</sub> (Output)"]
+    x2["x2 (Input)"]
+    rnn2["RNN"]
+    h2["h2 (Hidden State)"]
+    y2["y2 (Output)"]
 
-  I["x<sub>3</sub> (Input)"] --> J["RNN"]
-  G -.->|"memory"| J
-  J --> K["h<sub>3</sub> (Hidden State)"]
-  K --> L["y<sub>3</sub> (Output)"]
+    %% Connections
+    x0 --> rnn1
+    x1 --> rnn1
+    rnn1 --> h1
+    h1 --> y1
+
+    h1 -. memory .-> rnn2
+    x2 --> rnn2
+    rnn2 --> h2
+    h2 --> y2
+
 ```
 
 - Processes sequences one element at a time
@@ -193,18 +202,19 @@ Before diving deeper into RNN implementation details, it's crucial to clarify a 
 ### Core Concepts: States vs Layers
 
 Hidden State: The internal representation at a specific point in time or processing step
+
 Hidden Layer: The architectural component (collection of neurons) that produces hidden states
 
 ### Key Distinctions
 
-#### Hidden Layers (Architecture)
+Hidden Layers (Architecture)
 
 - What: Physical neural network structure between input and output
 - Purpose: Transform data through learned parameters (weights and biases)
 - Persistence: Fixed architecture throughout training and inference
 - Example: A 128-neuron recurrent layer in an RNN
 
-#### Hidden States (Dynamic Representations)
+Hidden States (Dynamic Representations)
 
 - What: Actual vector values flowing through the network at any given moment
 - Purpose: Encode processed information at intermediate stages
