@@ -13,12 +13,12 @@
 <link href="../assets/stylesheets/main.e53b48f4.min.css" rel="stylesheet"/>
 <link href="../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
-<style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"JetBrains Mono"}</style>
 <link href="../styles.css" rel="stylesheet"/>
 <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
 </head>
-<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="default" dir="ltr">
+<body data-md-color-accent="deep-orange" data-md-color-primary="blue-grey" data-md-color-scheme="slate" dir="ltr">
 <input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" for="__drawer"></label>
@@ -29,7 +29,7 @@
 </div>
 <div data-md-component="announce">
 </div>
-<header class="md-header md-header--shadow" data-md-component="header">
+<header class="md-header" data-md-component="header">
 <nav aria-label="Header" class="md-header__inner md-grid">
 <a aria-label="Introduction to Transformers" class="md-header__button md-logo" data-md-component="logo" href=".." title="Introduction to Transformers">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
@@ -54,7 +54,14 @@
 </div>
 </div>
 <form class="md-header__option" data-md-component="palette">
-<input aria-hidden="true" class="md-option" data-md-color-accent="indigo" data-md-color-media="" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="deep-orange" data-md-color-media="" data-md-color-primary="blue-grey" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="deep-orange" data-md-color-media="" data-md-color-primary="blue-grey" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
 </form>
 <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
 <label class="md-header__button md-icon" for="__search">
@@ -74,6 +81,7 @@
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
 </button>
 </nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
 </form>
 <div class="md-search__output">
 <div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
@@ -90,12 +98,139 @@
 </nav>
 </header>
 <div class="md-container" data-md-component="container">
+<nav aria-label="Tabs" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../nn_intro/">
+        
+  
+  
+    
+  
+  Neural Network Introduction
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../mlp_intro/">
+        
+  
+  
+    
+  
+  Building Networks with MLP
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../rnn_intro/">
+        
+  
+  
+    
+  
+  Sequential Modeling with RNN
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../transformers_fundamentals/">
+        
+  
+  
+    
+  
+  Transformers Fundamentals
+
+      </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="./">
+        
+  
+  
+    
+  
+  Transformers Advanced
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../knowledge_store/">
+        
+  
+  
+    
+  
+  Knowledge Store
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../pytorch_ref/">
+          
+  
+  
+    
+  
+  References
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../glossary/">
+        
+  
+  
+    
+  
+  Glossary
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="..">
+        
+  
+  
+    
+  
+  README
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../LICENSE/">
+        
+  
+  
+    
+  
+  LICENSE
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../further/">
+        
+  
+  
+    
+  
+  Further
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
 <main class="md-main" data-md-component="main">
 <div class="md-main__inner md-grid">
 <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
 <div class="md-sidebar__scrollwrap">
 <div class="md-sidebar__inner">
-<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" data-md-level="0">
 <label class="md-nav__title" for="__drawer">
 <a aria-label="Introduction to Transformers" class="md-nav__button md-logo" data-md-component="logo" href=".." title="Introduction to Transformers">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
@@ -549,9 +684,9 @@
   </span>
 </a>
 </li>
-<li class="md-nav__item md-nav__item--section md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" id="__nav_7" type="checkbox"/>
-<label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_7" type="checkbox"/>
+<label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
 <span class="md-ellipsis">
     References
     
@@ -637,402 +772,6 @@
     Further
     
   </span>
-</a>
-</li>
-</ul>
-</nav>
-</div>
-</div>
-</div>
-<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
-<div class="md-sidebar__scrollwrap">
-<div class="md-sidebar__inner">
-<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
-<label class="md-nav__title" for="__toc">
-<span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#13-training-objectives-and-data-curriculum">
-<span class="md-ellipsis">
-      13. Training Objectives and Data Curriculum
-    </span>
-</a>
-<nav aria-label="13. Training Objectives and Data Curriculum" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#core-pre-training-objectives">
-<span class="md-ellipsis">
-      Core Pre-training Objectives
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#supervised-fine-tuning-and-instruction-tuning">
-<span class="md-ellipsis">
-      Supervised Fine-Tuning and Instruction Tuning
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#alignment-rlhf-and-beyond">
-<span class="md-ellipsis">
-      Alignment: RLHF and Beyond
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#data-curriculum-and-scaling-considerations">
-<span class="md-ellipsis">
-      Data Curriculum and Scaling Considerations
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#multi-task-learning-and-meta-learning">
-<span class="md-ellipsis">
-      Multi-Task Learning and Meta-Learning
-    </span>
-</a>
-</li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#14-training-backpropagation-flow">
-<span class="md-ellipsis">
-      14. Training: Backpropagation Flow
-    </span>
-</a>
-<nav aria-label="14. Training: Backpropagation Flow" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#-intuition-how-ai-models-learn-from-mistakes">
-<span class="md-ellipsis">
-      🎯 Intuition: How AI Models Learn from Mistakes
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#loss-computation">
-<span class="md-ellipsis">
-      Loss Computation
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#backward-pass-flow">
-<span class="md-ellipsis">
-      Backward Pass Flow
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#transformer-layer-backward-pass">
-<span class="md-ellipsis">
-      Transformer Layer Backward Pass
-    </span>
-</a>
-</li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#15-weight-updates-and-optimization">
-<span class="md-ellipsis">
-      15. Weight Updates and Optimization
-    </span>
-</a>
-<nav aria-label="15. Weight Updates and Optimization" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#adam-optimizer-mathematics">
-<span class="md-ellipsis">
-      Adam Optimizer Mathematics
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#learning-rate-scheduling">
-<span class="md-ellipsis">
-      Learning Rate Scheduling
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#gradient-clipping">
-<span class="md-ellipsis">
-      Gradient Clipping
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#parameter-update-flow">
-<span class="md-ellipsis">
-      Parameter Update Flow
-    </span>
-</a>
-</li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#16-parameter-efficient-fine-tuning-methods">
-<span class="md-ellipsis">
-      16. Parameter-Efficient Fine-Tuning Methods
-    </span>
-</a>
-<nav aria-label="16. Parameter-Efficient Fine-Tuning Methods" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#the-challenge-of-full-fine-tuning">
-<span class="md-ellipsis">
-      The Challenge of Full Fine-Tuning
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#low-rank-adaptation-lora">
-<span class="md-ellipsis">
-      Low-Rank Adaptation (LoRA)
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#qlora-quantized-base--low-rank-adapters">
-<span class="md-ellipsis">
-      QLoRA: Quantized Base + Low-Rank Adapters
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#other-parameter-efficient-methods">
-<span class="md-ellipsis">
-      Other Parameter-Efficient Methods
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#choosing-the-right-method">
-<span class="md-ellipsis">
-      Choosing the Right Method
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#training-best-practices">
-<span class="md-ellipsis">
-      Training Best Practices
-    </span>
-</a>
-</li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#17-quantization-for-practical-deployment">
-<span class="md-ellipsis">
-      17. Quantization for Practical Deployment
-    </span>
-</a>
-<nav aria-label="17. Quantization for Practical Deployment" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#the-precision-vs-efficiency-trade-off">
-<span class="md-ellipsis">
-      The Precision vs. Efficiency Trade-off
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#post-training-vs-quantization-aware-training">
-<span class="md-ellipsis">
-      Post-Training vs. Quantization-Aware Training
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#common-quantization-schemes">
-<span class="md-ellipsis">
-      Common Quantization Schemes
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#where-quantization-helps-most">
-<span class="md-ellipsis">
-      Where Quantization Helps Most
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#implementation-example">
-<span class="md-ellipsis">
-      Implementation Example
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#mixed-precision-strategies">
-<span class="md-ellipsis">
-      Mixed-Precision Strategies
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#deployment-considerations">
-<span class="md-ellipsis">
-      Deployment Considerations
-    </span>
-</a>
-</li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#18-evaluation-and-diagnostics">
-<span class="md-ellipsis">
-      18. Evaluation and Diagnostics
-    </span>
-</a>
-<nav aria-label="18. Evaluation and Diagnostics" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#intrinsic-vs-extrinsic-evaluation">
-<span class="md-ellipsis">
-      Intrinsic vs. Extrinsic Evaluation
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#long-context-evaluation">
-<span class="md-ellipsis">
-      Long-Context Evaluation
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#performance-metrics">
-<span class="md-ellipsis">
-      Performance Metrics
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#common-failure-modes-and-diagnostics">
-<span class="md-ellipsis">
-      Common Failure Modes and Diagnostics
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#debugging-checklist">
-<span class="md-ellipsis">
-      Debugging Checklist
-    </span>
-</a>
-</li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#19-complete-mathematical-summary">
-<span class="md-ellipsis">
-      19. Complete Mathematical Summary
-    </span>
-</a>
-<nav aria-label="19. Complete Mathematical Summary" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#forward-pass-equations">
-<span class="md-ellipsis">
-      Forward Pass Equations
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#training-equations">
-<span class="md-ellipsis">
-      Training Equations
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#key-computational-complexities">
-<span class="md-ellipsis">
-      Key Computational Complexities
-    </span>
-</a>
-</li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#20-summary-from-mathematical-foundations-to-practical-implementation">
-<span class="md-ellipsis">
-      20. Summary: From Mathematical Foundations to Practical Implementation
-    </span>
-</a>
-<nav aria-label="20. Summary: From Mathematical Foundations to Practical Implementation" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#core-architecture-components">
-<span class="md-ellipsis">
-      Core Architecture Components
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#architectural-variants-and-applications">
-<span class="md-ellipsis">
-      Architectural Variants and Applications
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#training-and-learning-dynamics">
-<span class="md-ellipsis">
-      Training and Learning Dynamics
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#practical-deployment-considerations">
-<span class="md-ellipsis">
-      Practical Deployment Considerations
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#key-mathematical-insights">
-<span class="md-ellipsis">
-      Key Mathematical Insights
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#future-directions-and-emerging-techniques">
-<span class="md-ellipsis">
-      Future Directions and Emerging Techniques
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#the-transformer-revolution">
-<span class="md-ellipsis">
-      The Transformer Revolution
-    </span>
-</a>
-</li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#prerequisites-review">
-<span class="md-ellipsis">
-      Prerequisites Review
-    </span>
 </a>
 </li>
 </ul>
@@ -1955,7 +1694,7 @@ Long Context: Techniques for handling sequences beyond traditional training leng
 <div class="md-dialog" data-md-component="dialog">
 <div class="md-dialog__inner md-typeset"></div>
 </div>
-<script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.top", "navigation.instant", "content.code.copy", "content.tabs.link", "toc.follow", "content.code.annotate", "content.diagrams", "content.mermaid"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.top", "navigation.instant", "navigation.tabs", "navigation.expand", "navigation.indexes", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.diagrams", "content.mermaid", "toc.follow", "toc.integrate", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
 <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
 <script src="../javascripts/mathjax-init.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
