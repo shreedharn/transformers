@@ -43,15 +43,24 @@
 .md-typeset pre, .md-typeset code{ font-size: .85em; }
 
 /* ===== MathJax sizing: both inline and display ===== */
+
 /* Display math (block equations) */
-.md-typeset mjx-container[display="true"]{ font-size: 85%; }
-mjx-container[jax="CHTML"][display="true"] {
+.md-typeset mjx-container[display="true"] {
+  font-size: 85%;
   text-align: left !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: block;
+  padding: 0.5em 0;
+  margin: 0;
+  max-width: 100%;
+  white-space: normal;
 }
 
 /* Inline math (formulas within text) */
 .md-typeset mjx-container:not([display="true"]) {
   font-size: 85%;
+  white-space: normal;
 }
 
 /* Additional fallback for all MathJax containers */
@@ -62,4 +71,29 @@ mjx-container[jax="CHTML"][display="true"] {
 /* Target MathJax elements more specifically */
 mjx-math {
   font-size: 0.85em !important;
+}
+
+/* Optional aesthetic: scrollbar for wide equations */
+mjx-container::-webkit-scrollbar {
+  height: 6px;
+}
+mjx-container::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 3px;
+}
+
+/* Optional: responsive control */
+@media (max-width: 800px) {
+  mjx-container[jax="CHTML"][display="true"] {
+    overflow-x: auto;
+    padding-bottom: 0.3em;
+  }
+}
+
+/* Optional: left-align math blocks within .math-block divs */
+.math-block {
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 0.5em 0;
+  text-align: left;
 }

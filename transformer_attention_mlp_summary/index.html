@@ -1,0 +1,1231 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.20" name="generator"/>
+<title>Transformer Attention, MLPs, Hidden States, RoPE, and Unembedding - Introduction to Transformers</title>
+<link href="../assets/stylesheets/main.e53b48f4.min.css" rel="stylesheet"/>
+<link href="../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+<link href="../styles.css" rel="stylesheet"/>
+<script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#transformer-attention-mlps-hidden-states-rope-and-unembedding">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="Introduction to Transformers" class="md-header__button md-logo" data-md-component="logo" href=".." title="Introduction to Transformers">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Introduction to Transformers
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Transformer Attention, MLPs, Hidden States, RoPE, and Unembedding
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-hidden="true" class="md-option" data-md-color-accent="indigo" data-md-color-media="" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Introduction to Transformers" class="md-nav__button md-logo" data-md-component="logo" href=".." title="Introduction to Transformers">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Introduction to Transformers
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../nn_intro/">
+<span class="md-ellipsis">
+    Neural Network Introduction
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../mlp_intro/">
+<span class="md-ellipsis">
+    Building Networks with MLP
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../rnn_intro/">
+<span class="md-ellipsis">
+    Sequential Modeling with RNN
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../transformers_fundamentals/">
+<span class="md-ellipsis">
+    Transformers Fundamentals
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../transformers_advanced/">
+<span class="md-ellipsis">
+    Transformers Advanced
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../knowledge_store/">
+<span class="md-ellipsis">
+    Knowledge Store
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_7" type="checkbox"/>
+<label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+<span class="md-ellipsis">
+    References
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_7_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_7">
+<span class="md-nav__icon md-icon"></span>
+            References
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../pytorch_ref/">
+<span class="md-ellipsis">
+    PyTorch Primer
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../transformers_math1/">
+<span class="md-ellipsis">
+    Mathematical Foundations 1
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../transformers_math2/">
+<span class="md-ellipsis">
+    Mathematical Foundations 2
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../math_quick_ref/">
+<span class="md-ellipsis">
+    Mathematical Quick Reference
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../history_quick_ref/">
+<span class="md-ellipsis">
+    Sequence Modeling History
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../glossary/">
+<span class="md-ellipsis">
+    Glossary
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="..">
+<span class="md-ellipsis">
+    README
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../LICENSE/">
+<span class="md-ellipsis">
+    LICENSE
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../further/">
+<span class="md-ellipsis">
+    Further
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#big-picture">
+<span class="md-ellipsis">
+      Big picture
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-token-embeddings-vs-hidden-states">
+<span class="md-ellipsis">
+      1) Token embeddings vs hidden states
+    </span>
+</a>
+<nav aria-label="1) Token embeddings vs hidden states" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#token-embedding">
+<span class="md-ellipsis">
+      Token embedding
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#hidden-state">
+<span class="md-ellipsis">
+      Hidden state
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#important-distinction">
+<span class="md-ellipsis">
+      Important distinction
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-what-attention-heads-do">
+<span class="md-ellipsis">
+      2) What attention heads do
+    </span>
+</a>
+<nav aria-label="2) What attention heads do" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-white-cat">
+<span class="md-ellipsis">
+      Example: white cat
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-what-the-mlp-does">
+<span class="md-ellipsis">
+      3) What the MLP does
+    </span>
+</a>
+<nav aria-label="3) What the MLP does" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#intuition">
+<span class="md-ellipsis">
+      Intuition
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-white-cat_1">
+<span class="md-ellipsis">
+      Example: white cat
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-why-mlp-is-needed-if-attention-already-transformed-the-vector">
+<span class="md-ellipsis">
+      4) Why MLP is needed if attention already transformed the vector
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-dot-products-in-transformers">
+<span class="md-ellipsis">
+      5) Dot products in transformers
+    </span>
+</a>
+<nav aria-label="5) Dot products in transformers" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#geometric-meaning">
+<span class="md-ellipsis">
+      Geometric meaning
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#in-attention">
+<span class="md-ellipsis">
+      In attention
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-white-cat_2">
+<span class="md-ellipsis">
+      Example: white cat
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6-vector-sums-and-additions-in-transformers">
+<span class="md-ellipsis">
+      6) Vector sums and additions in transformers
+    </span>
+</a>
+<nav aria-label="6) Vector sums and additions in transformers" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#a-weighted-sum-in-attention">
+<span class="md-ellipsis">
+      A) Weighted sum in attention
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#b-residual-connections">
+<span class="md-ellipsis">
+      B) Residual connections
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example-white-cat_3">
+<span class="md-ellipsis">
+      Example: white cat
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7-sequence-length-vs-context-window">
+<span class="md-ellipsis">
+      7) Sequence length vs context window
+    </span>
+</a>
+<nav aria-label="7) Sequence length vs context window" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sequence-length">
+<span class="md-ellipsis">
+      Sequence length
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#context-window">
+<span class="md-ellipsis">
+      Context window
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8-how-many-hidden-states-are-there-in-a-layer">
+<span class="md-ellipsis">
+      8) How many hidden states are there in a layer?
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9-multiple-attention-heads-vs-multiple-layers">
+<span class="md-ellipsis">
+      9) Multiple attention heads vs multiple layers
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#multiple-attention-heads">
+<span class="md-ellipsis">
+      Multiple attention heads
+    </span>
+</a>
+<nav aria-label="Multiple attention heads" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#heads-are-parallel-specialists">
+<span class="md-ellipsis">
+      Heads are parallel specialists
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#multiple-layers">
+<span class="md-ellipsis">
+      Multiple layers
+    </span>
+</a>
+<nav aria-label="Multiple layers" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compact-distinction">
+<span class="md-ellipsis">
+      Compact distinction
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10-is-the-representation-always-the-same-dimensionality">
+<span class="md-ellipsis">
+      10) Is the representation always the same dimensionality?
+    </span>
+</a>
+<nav aria-label="10) Is the representation always the same dimensionality?" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#but-inside-the-block-temporary-dimensions-can-differ">
+<span class="md-ellipsis">
+      But inside the block, temporary dimensions can differ
+    </span>
+</a>
+<nav aria-label="But inside the block, temporary dimensions can differ" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#attention-heads">
+<span class="md-ellipsis">
+      Attention heads
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mlp">
+<span class="md-ellipsis">
+      MLP
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11-rope-rotary-positional-embedding">
+<span class="md-ellipsis">
+      11) RoPE: Rotary Positional Embedding
+    </span>
+</a>
+<nav aria-label="11) RoPE: Rotary Positional Embedding" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#why-it-is-needed">
+<span class="md-ellipsis">
+      Why it is needed
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#what-it-does">
+<span class="md-ellipsis">
+      What it does
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#when-it-happens">
+<span class="md-ellipsis">
+      When it happens
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12-how-q-k-and-v-are-computed">
+<span class="md-ellipsis">
+      12) How Q, K, and V are computed
+    </span>
+</a>
+<nav aria-label="12) How Q, K, and V are computed" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#intuition_1">
+<span class="md-ellipsis">
+      Intuition
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#important-point">
+<span class="md-ellipsis">
+      Important point
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#13-what-are-b_q-b_k-b_v">
+<span class="md-ellipsis">
+      13) What are \(b_Q\), \(b_K\), \(b_V\)?
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#14-how-can-richer-features-fit-in-the-same-embedding-space">
+<span class="md-ellipsis">
+      14) How can richer features fit in the “same embedding space”?
+    </span>
+</a>
+<nav aria-label="14) How can richer features fit in the “same embedding space”?" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-answer">
+<span class="md-ellipsis">
+      The answer
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#better-mental-model">
+<span class="md-ellipsis">
+      Better mental model
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#why-this-is-possible">
+<span class="md-ellipsis">
+      Why this is possible
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#15-how-unembedding-works-if-the-final-hidden-state-is-very-different">
+<span class="md-ellipsis">
+      15) How unembedding works if the final hidden state is very different
+    </span>
+</a>
+<nav aria-label="15) How unembedding works if the final hidden state is very different" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#key-idea">
+<span class="md-ellipsis">
+      Key idea
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#example">
+<span class="md-ellipsis">
+      Example
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#16-end-to-end-miniature-walkthrough-white-cat">
+<span class="md-ellipsis">
+      16) End-to-end miniature walkthrough: white cat
+    </span>
+</a>
+<nav aria-label="16) End-to-end miniature walkthrough: white cat" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-1-embedding">
+<span class="md-ellipsis">
+      Step 1: Embedding
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-2-attention">
+<span class="md-ellipsis">
+      Step 2: Attention
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-3-residual-addition">
+<span class="md-ellipsis">
+      Step 3: Residual addition
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-4-mlp">
+<span class="md-ellipsis">
+      Step 4: MLP
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-5-residual-addition-again">
+<span class="md-ellipsis">
+      Step 5: Residual addition again
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#step-6-later-layers">
+<span class="md-ellipsis">
+      Step 6: Later layers
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#17-final-summary">
+<span class="md-ellipsis">
+      17) Final summary
+    </span>
+</a>
+<nav aria-label="17) Final summary" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#attention-heads_1">
+<span class="md-ellipsis">
+      Attention heads
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mlps">
+<span class="md-ellipsis">
+      MLPs
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dot-products">
+<span class="md-ellipsis">
+      Dot products
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#vector-additions">
+<span class="md-ellipsis">
+      Vector additions
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#hidden-states">
+<span class="md-ellipsis">
+      Hidden states
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#heads-vs-layers">
+<span class="md-ellipsis">
+      Heads vs layers
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rope">
+<span class="md-ellipsis">
+      RoPE
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#unembedding">
+<span class="md-ellipsis">
+      Unembedding
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#one-final-mental-model">
+<span class="md-ellipsis">
+      One final mental model
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="transformer-attention-mlps-hidden-states-rope-and-unembedding">Transformer Attention, MLPs, Hidden States, RoPE, and Unembedding<a class="headerlink" href="#transformer-attention-mlps-hidden-states-rope-and-unembedding" title="Permanent link">¶</a></h1>
+<h2 id="big-picture">Big picture<a class="headerlink" href="#big-picture" title="Permanent link">¶</a></h2>
+<p>A transformer block mainly does two different jobs:</p>
+<ol>
+<li><strong>Attention</strong> mixes information <strong>across tokens</strong>.</li>
+<li><strong>MLP</strong> computes new features <strong>within each token position</strong> after that context has been gathered.</li>
+</ol>
+<p>A useful slogan:</p>
+<ul>
+<li><strong>Attention = communication across positions</strong></li>
+<li><strong>MLP = computation within a position</strong></li>
+</ul>
+<hr/>
+<h2 id="1-token-embeddings-vs-hidden-states">1) Token embeddings vs hidden states<a class="headerlink" href="#1-token-embeddings-vs-hidden-states" title="Permanent link">¶</a></h2>
+<h3 id="token-embedding">Token embedding<a class="headerlink" href="#token-embedding" title="Permanent link">¶</a></h3>
+<p>The embedding layer maps each token ID to an initial vector:</p>
+<div class="arithmatex">\[
+x_i^{(0)} \in \mathbb{R}^{d_{model}}
+\]</div>
+<p>This is the model’s starting representation for a token.</p>
+<p>Examples of what an embedding loosely captures:
+- token identity
+- rough semantic similarity
+- lexical statistics</p>
+<h3 id="hidden-state">Hidden state<a class="headerlink" href="#hidden-state" title="Permanent link">¶</a></h3>
+<p>After attention and MLP layers start transforming the representation, the vector is no longer just a plain embedding. It becomes a <strong>hidden state</strong>.</p>
+<p>At layer <span class="arithmatex">\(\ell\)</span>, token <span class="arithmatex">\(i\)</span> has hidden state:</p>
+<div class="arithmatex">\[
+h_i^{(\ell)} \in \mathbb{R}^{d_{model}}
+\]</div>
+<p>This can encode much richer information, such as:
+- lexical meaning
+- syntax
+- semantic role
+- long-range dependencies
+- phrase structure
+- prediction-relevant features</p>
+<h3 id="important-distinction">Important distinction<a class="headerlink" href="#important-distinction" title="Permanent link">¶</a></h3>
+<p>The later hidden state usually has the <strong>same dimensionality</strong> as the embedding vector, but <strong>not the same interpretation</strong>.</p>
+<p>So the model is <strong>not</strong> forcing richer meaning to fit inside the original embedding semantics. Instead, it uses a fixed-width <strong>residual stream</strong> as an evolving workspace.</p>
+<hr/>
+<h2 id="2-what-attention-heads-do">2) What attention heads do<a class="headerlink" href="#2-what-attention-heads-do" title="Permanent link">¶</a></h2>
+<p>For each token, attention decides which other tokens matter.</p>
+<p>Very roughly:</p>
+<div class="arithmatex">\[
+\text{Attention}(x_i) = \sum_j \alpha_{ij} v_j
+\]</div>
+<p>where:
+- <span class="arithmatex">\(\alpha_{ij}\)</span> = how much token <span class="arithmatex">\(i\)</span> attends to token <span class="arithmatex">\(j\)</span>
+- <span class="arithmatex">\(v_j\)</span> = value vector from token <span class="arithmatex">\(j\)</span></p>
+<p>So attention is a form of <strong>content-dependent message passing</strong>.</p>
+<p>It helps answer questions like:
+- Which earlier token is the subject?
+- Which adjective modifies this noun?
+- Which earlier token does a pronoun refer to?
+- Which delimiter or bracket matters here?</p>
+<h3 id="example-white-cat">Example: <code>white cat</code><a class="headerlink" href="#example-white-cat" title="Permanent link">¶</a></h3>
+<p>Suppose attention has already run. At the <strong>cat</strong> position, the representation may now contain:
+- cat meaning
+- modified by white
+- noun phrase context
+- animal-related context</p>
+<p>Attention is what lets <strong>cat</strong> import information from <strong>white</strong>.</p>
+<hr/>
+<h2 id="3-what-the-mlp-does">3) What the MLP does<a class="headerlink" href="#3-what-the-mlp-does" title="Permanent link">¶</a></h2>
+<p>After attention, the MLP processes each token <strong>independently</strong>.</p>
+<p>Typical form:</p>
+<div class="arithmatex">\[
+\text{MLP}(x) = W_2\,\sigma(W_1x + b_1) + b_2
+\]</div>
+<p>This means the MLP:
+- does <strong>not</strong> look at other tokens directly
+- operates on the context-enriched vector at one position
+- computes new nonlinear features</p>
+<h3 id="intuition">Intuition<a class="headerlink" href="#intuition" title="Permanent link">¶</a></h3>
+<p>If attention tells the token where to look, the MLP decides what to compute from what was found.</p>
+<h3 id="example-white-cat_1">Example: <code>white cat</code><a class="headerlink" href="#example-white-cat_1" title="Permanent link">¶</a></h3>
+<p>If attention has already enriched the <strong>cat</strong> position with information from <strong>white</strong>, then the MLP can combine features like:
+- “cat”
+- “modified by adjective”
+- “adjective is white”</p>
+<p>into richer features such as:
+- “white-cat concept”
+- “animal with color attribute”
+- stronger noun-phrase structure features</p>
+<p>So:
+- <strong>Attention retrieves / mixes context</strong>
+- <strong>MLP synthesizes / transforms features</strong></p>
+<hr/>
+<h2 id="4-why-mlp-is-needed-if-attention-already-transformed-the-vector">4) Why MLP is needed if attention already transformed the vector<a class="headerlink" href="#4-why-mlp-is-needed-if-attention-already-transformed-the-vector" title="Permanent link">¶</a></h2>
+<p>Attention is great at:
+- selecting
+- routing
+- copying
+- aggregating information from other tokens</p>
+<p>But attention mainly forms weighted combinations of value vectors. The MLP adds something different:
+- nonlinear computation
+- feature synthesis
+- richer per-token transformations</p>
+<p>A good mental model:
+- <strong>Attention moves information</strong>
+- <strong>MLP processes information</strong></p>
+<hr/>
+<h2 id="5-dot-products-in-transformers">5) Dot products in transformers<a class="headerlink" href="#5-dot-products-in-transformers" title="Permanent link">¶</a></h2>
+<p>The dot product of two vectors <span class="arithmatex">\(a\)</span> and <span class="arithmatex">\(b\)</span>:</p>
+<div class="arithmatex">\[
+a \cdot b = \sum_k a_k b_k
+\]</div>
+<h3 id="geometric-meaning">Geometric meaning<a class="headerlink" href="#geometric-meaning" title="Permanent link">¶</a></h3>
+<p>It measures alignment:
+- large positive = similar direction
+- near zero = weakly related / orthogonal
+- negative = opposite direction</p>
+<h3 id="in-attention">In attention<a class="headerlink" href="#in-attention" title="Permanent link">¶</a></h3>
+<p>The key attention score is:</p>
+<div class="arithmatex">\[
+q_i \cdot k_j
+\]</div>
+<p>Interpretation:
+- <span class="arithmatex">\(q_i\)</span>: what token <span class="arithmatex">\(i\)</span> is looking for
+- <span class="arithmatex">\(k_j\)</span>: what token <span class="arithmatex">\(j\)</span> offers</p>
+<p>So the dot product acts like a <strong>compatibility score</strong>.</p>
+<h3 id="example-white-cat_2">Example: <code>white cat</code><a class="headerlink" href="#example-white-cat_2" title="Permanent link">¶</a></h3>
+<p>At the <strong>cat</strong> position, the query may strongly match the <strong>white</strong> key if the model has learned that adjective-noun relations matter.</p>
+<p>Then <strong>cat attends to white</strong>.</p>
+<hr/>
+<h2 id="6-vector-sums-and-additions-in-transformers">6) Vector sums and additions in transformers<a class="headerlink" href="#6-vector-sums-and-additions-in-transformers" title="Permanent link">¶</a></h2>
+<p>Vector addition is used heavily in transformers.</p>
+<h3 id="a-weighted-sum-in-attention">A) Weighted sum in attention<a class="headerlink" href="#a-weighted-sum-in-attention" title="Permanent link">¶</a></h3>
+<p>After attention weights are computed, the output is a weighted sum of values:</p>
+<div class="arithmatex">\[
+\sum_j \alpha_{ij} v_j
+\]</div>
+<p>This combines information from relevant tokens.</p>
+<h3 id="b-residual-connections">B) Residual connections<a class="headerlink" href="#b-residual-connections" title="Permanent link">¶</a></h3>
+<p>Transformers usually update the hidden state like this:</p>
+<div class="arithmatex">\[
+x \leftarrow x + \text{Attention}(x)
+\]</div>
+<div class="arithmatex">\[
+x \leftarrow x + \text{MLP}(x)
+\]</div>
+<p>This means:
+- keep the current representation
+- add a learned update</p>
+<h3 id="example-white-cat_3">Example: <code>white cat</code><a class="headerlink" href="#example-white-cat_3" title="Permanent link">¶</a></h3>
+<p>After attention, the <strong>cat</strong> representation contains white-related information.
+The MLP then computes another update from that enriched representation.
+Because of the residual connection, the context-enriched representation is <strong>carried forward</strong>, not discarded.</p>
+<p>So the <code>white cat</code> information is not typically lost after the MLP. It is preserved and refined.</p>
+<hr/>
+<h2 id="7-sequence-length-vs-context-window">7) Sequence length vs context window<a class="headerlink" href="#7-sequence-length-vs-context-window" title="Permanent link">¶</a></h2>
+<h3 id="sequence-length">Sequence length<a class="headerlink" href="#sequence-length" title="Permanent link">¶</a></h3>
+<p>How many tokens are in the actual current input.</p>
+<h3 id="context-window">Context window<a class="headerlink" href="#context-window" title="Permanent link">¶</a></h3>
+<p>The maximum number of tokens the model can handle.</p>
+<p>So:</p>
+<div class="arithmatex">\[
+\text{sequence length} \le \text{context window length}
+\]</div>
+<p>Example:
+- model supports 8192 tokens max
+- current prompt has 500 tokens
+- sequence length = 500
+- context window = 8192</p>
+<hr/>
+<h2 id="8-how-many-hidden-states-are-there-in-a-layer">8) How many hidden states are there in a layer?<a class="headerlink" href="#8-how-many-hidden-states-are-there-in-a-layer" title="Permanent link">¶</a></h2>
+<p>If the sequence length is <span class="arithmatex">\(T\)</span>, then a layer has <strong><span class="arithmatex">\(T\)</span> hidden states</strong>: one per token position.</p>
+<p>The whole layer can be viewed as:</p>
+<div class="arithmatex">\[
+H^{(\ell)} \in \mathbb{R}^{T \times d_{model}}
+\]</div>
+<p>where:
+- one row = one token’s hidden state
+- one layer = all token representations at that depth</p>
+<hr/>
+<h2 id="9-multiple-attention-heads-vs-multiple-layers">9) Multiple attention heads vs multiple layers<a class="headerlink" href="#9-multiple-attention-heads-vs-multiple-layers" title="Permanent link">¶</a></h2>
+<h2 id="multiple-attention-heads">Multiple attention heads<a class="headerlink" href="#multiple-attention-heads" title="Permanent link">¶</a></h2>
+<p>Heads are <strong>parallel</strong> attention mechanisms inside one layer.</p>
+<p>Each head:
+- sees the same input hidden states
+- learns different attention patterns
+- extracts a different type of relationship</p>
+<p>Examples of possible head behavior:
+- adjective–noun relations
+- subject–verb agreement
+- punctuation boundaries
+- coreference</p>
+<h3 id="heads-are-parallel-specialists">Heads are parallel specialists<a class="headerlink" href="#heads-are-parallel-specialists" title="Permanent link">¶</a></h3>
+<p>They work at the same depth and then their outputs are combined.</p>
+<h2 id="multiple-layers">Multiple layers<a class="headerlink" href="#multiple-layers" title="Permanent link">¶</a></h2>
+<p>Layers are <strong>sequential stages of processing</strong>.</p>
+<p>Layer 1 produces hidden states.
+Layer 2 transforms those hidden states further.
+Layer 3 does more, and so on.</p>
+<p>A rough intuition:
+- earlier layers: local and syntactic patterns
+- middle layers: phrase-level and relational patterns
+- later layers: more abstract and prediction-relevant features</p>
+<h3 id="compact-distinction">Compact distinction<a class="headerlink" href="#compact-distinction" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Heads = parallel views within one layer</strong></li>
+<li><strong>Layers = depth over multiple stages</strong></li>
+</ul>
+<hr/>
+<h2 id="10-is-the-representation-always-the-same-dimensionality">10) Is the representation always the same dimensionality?<a class="headerlink" href="#10-is-the-representation-always-the-same-dimensionality" title="Permanent link">¶</a></h2>
+<p>Usually yes in the residual stream.</p>
+<p>If the model dimension is <span class="arithmatex">\(d_{model}\)</span>, then the token representation passed from layer to layer stays in:</p>
+<div class="arithmatex">\[
+\mathbb{R}^{d_{model}}
+\]</div>
+<p>This is necessary because of residual additions.</p>
+<h3 id="but-inside-the-block-temporary-dimensions-can-differ">But inside the block, temporary dimensions can differ<a class="headerlink" href="#but-inside-the-block-temporary-dimensions-can-differ" title="Permanent link">¶</a></h3>
+<h4 id="attention-heads">Attention heads<a class="headerlink" href="#attention-heads" title="Permanent link">¶</a></h4>
+<p>Each head often uses a smaller internal dimension:</p>
+<div class="arithmatex">\[
+d_{model} = h \cdot d_{head}
+\]</div>
+<p>where:
+- <span class="arithmatex">\(h\)</span> = number of heads
+- <span class="arithmatex">\(d_{head}\)</span> = dimension per head</p>
+<h4 id="mlp">MLP<a class="headerlink" href="#mlp" title="Permanent link">¶</a></h4>
+<p>The MLP often expands and contracts the representation:</p>
+<div class="arithmatex">\[
+\mathbb{R}^{d_{model}} \to \mathbb{R}^{d_{ff}} \to \mathbb{R}^{d_{model}}
+\]</div>
+<p>where <span class="arithmatex">\(d_{ff}\)</span> is usually larger.</p>
+<p>So:
+- <strong>residual stream dimension stays fixed</strong>
+- <strong>internal working dimensions can change temporarily</strong></p>
+<hr/>
+<h2 id="11-rope-rotary-positional-embedding">11) RoPE: Rotary Positional Embedding<a class="headerlink" href="#11-rope-rotary-positional-embedding" title="Permanent link">¶</a></h2>
+<p>RoPE is a positional encoding method that injects position information into attention.</p>
+<h3 id="why-it-is-needed">Why it is needed<a class="headerlink" href="#why-it-is-needed" title="Permanent link">¶</a></h3>
+<p>Attention by itself does not know token order.
+RoPE makes attention sensitive to position and relative distance.</p>
+<h3 id="what-it-does">What it does<a class="headerlink" href="#what-it-does" title="Permanent link">¶</a></h3>
+<p>Instead of adding a separate position vector to the input embedding, RoPE rotates parts of the query and key vectors by position-dependent angles.</p>
+<h3 id="when-it-happens">When it happens<a class="headerlink" href="#when-it-happens" title="Permanent link">¶</a></h3>
+<p>RoPE is applied:
+- <strong>after Q and K are computed</strong>
+- <strong>before the attention dot products are computed</strong></p>
+<p>So the flow is:
+1. hidden states <span class="arithmatex">\(x_i\)</span>
+2. compute <span class="arithmatex">\(q_i, k_i, v_i\)</span>
+3. apply RoPE to <span class="arithmatex">\(q_i\)</span> and <span class="arithmatex">\(k_i\)</span>
+4. compute attention scores using the rotated Q and K</p>
+<p>Usually RoPE is <strong>not</strong> applied to V.</p>
+<hr/>
+<h2 id="12-how-q-k-and-v-are-computed">12) How Q, K, and V are computed<a class="headerlink" href="#12-how-q-k-and-v-are-computed" title="Permanent link">¶</a></h2>
+<p>At a given layer, each token has hidden state:</p>
+<div class="arithmatex">\[
+x_i \in \mathbb{R}^{d_{model}}
+\]</div>
+<p>Then the model applies three learned linear projections:</p>
+<p>[
+q_i = W_Q x_i + b_Q
+]
+[
+k_i = W_K x_i + b_K
+]
+[
+v_i = W_V x_i + b_V
+]</p>
+<p>These matrices are learned during training.</p>
+<h3 id="intuition_1">Intuition<a class="headerlink" href="#intuition_1" title="Permanent link">¶</a></h3>
+<p>The same hidden state is transformed into three different roles:
+- <strong>Q</strong>: what am I looking for?
+- <strong>K</strong>: what do I contain?
+- <strong>V</strong>: what content should be passed along if attended to?</p>
+<h3 id="important-point">Important point<a class="headerlink" href="#important-point" title="Permanent link">¶</a></h3>
+<p>The model is not learning fixed queries or keys per token string. It is learning projection rules.
+So the same token can produce different Q/K/V in different contexts because its hidden state changes with context.</p>
+<hr/>
+<h2 id="13-what-are-b_q-b_k-b_v">13) What are <span class="arithmatex">\(b_Q\)</span>, <span class="arithmatex">\(b_K\)</span>, <span class="arithmatex">\(b_V\)</span>?<a class="headerlink" href="#13-what-are-b_q-b_k-b_v" title="Permanent link">¶</a></h2>
+<p>These are bias vectors.</p>
+<p>Example:</p>
+<div class="arithmatex">\[
+q_i = W_Q x_i + b_Q
+\]</div>
+<p>The bias shifts the output by a learned offset after the matrix multiplication.</p>
+<p>Conceptually:
+- the weight matrix mixes input features
+- the bias adds a baseline offset per output dimension</p>
+<p>Some transformer implementations include these biases; some omit them.</p>
+<hr/>
+<h2 id="14-how-can-richer-features-fit-in-the-same-embedding-space">14) How can richer features fit in the “same embedding space”?<a class="headerlink" href="#14-how-can-richer-features-fit-in-the-same-embedding-space" title="Permanent link">¶</a></h2>
+<p>This was a key conceptual question.</p>
+<h3 id="the-answer">The answer<a class="headerlink" href="#the-answer" title="Permanent link">¶</a></h3>
+<p>The later hidden states are <strong>not constrained to preserve the original embedding interpretation</strong>. They only preserve the <strong>same dimensionality</strong>.</p>
+<p>So the later vector is not “a token embedding plus extra info.”
+It is an evolving hidden state in a shared fixed-width space.</p>
+<h3 id="better-mental-model">Better mental model<a class="headerlink" href="#better-mental-model" title="Permanent link">¶</a></h3>
+<p>Do <strong>not</strong> think:
+- the original embedding space stays semantically fixed and richer features get squeezed into it</p>
+<p>Instead think:
+- the model uses a fixed-width hidden workspace
+- each layer rewrites the representation into something more useful
+- later layers can read and transform that representation because they were trained to do so</p>
+<h3 id="why-this-is-possible">Why this is possible<a class="headerlink" href="#why-this-is-possible" title="Permanent link">¶</a></h3>
+<p>Because neural representations are distributed. Many overlapping features can be encoded in patterns across dimensions.</p>
+<hr/>
+<h2 id="15-how-unembedding-works-if-the-final-hidden-state-is-very-different">15) How unembedding works if the final hidden state is very different<a class="headerlink" href="#15-how-unembedding-works-if-the-final-hidden-state-is-very-different" title="Permanent link">¶</a></h2>
+<p>At the end of the transformer, the model has a final hidden state:</p>
+<div class="arithmatex">\[
+h \in \mathbb{R}^{d_{model}}
+\]</div>
+<p>This is a contextual, prediction-oriented representation.</p>
+<p>The unembedding maps it to logits over the vocabulary:</p>
+<div class="arithmatex">\[
+\text{logits} = W_U h + b
+\]</div>
+<p>where:
+- <span class="arithmatex">\(W_U \in \mathbb{R}^{|V| \times d_{model}}\)</span>
+- <span class="arithmatex">\(|V|\)</span> = vocabulary size</p>
+<h3 id="key-idea">Key idea<a class="headerlink" href="#key-idea" title="Permanent link">¶</a></h3>
+<p>The unembedding is <strong>not</strong> asking:</p>
+<blockquote>
+<p>Does the final hidden state look like the original embedding of a token?</p>
+</blockquote>
+<p>It is asking:</p>
+<blockquote>
+<p>How much evidence does this hidden state provide for each possible next token?</p>
+</blockquote>
+<p>Each row of <span class="arithmatex">\(W_U\)</span> is like a detector direction for one vocabulary token.</p>
+<p>For token <span class="arithmatex">\(t\)</span>:</p>
+<div class="arithmatex">\[
+\text{logit}_t = w_t^\top h + b_t
+\]</div>
+<p>So if the hidden state contains the right features, the corresponding output token gets a high score.</p>
+<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">¶</a></h3>
+<p>If the context is:
+- <code>The white cat drank some</code></p>
+<p>then the final hidden state might encode features such as:
+- noun likely next
+- liquid likely
+- semantically plausible continuation</p>
+<p>Then the unembedding may score:
+- <code>milk</code> high
+- <code>water</code> somewhat high
+- <code>keyboard</code> low</p>
+<p>So unembedding is a learned <strong>readout from hidden-state space to token scores</strong>.</p>
+<hr/>
+<h2 id="16-end-to-end-miniature-walkthrough-white-cat">16) End-to-end miniature walkthrough: <code>white cat</code><a class="headerlink" href="#16-end-to-end-miniature-walkthrough-white-cat" title="Permanent link">¶</a></h2>
+<h3 id="step-1-embedding">Step 1: Embedding<a class="headerlink" href="#step-1-embedding" title="Permanent link">¶</a></h3>
+<p><code>white</code> and <code>cat</code> start as token embeddings.</p>
+<h3 id="step-2-attention">Step 2: Attention<a class="headerlink" href="#step-2-attention" title="Permanent link">¶</a></h3>
+<p>At the <strong>cat</strong> position, the query may match the <strong>white</strong> key.
+That gives a useful attention weight.
+The attention output becomes a weighted sum of values, so the <code>cat</code> position receives modifier information from <code>white</code>.</p>
+<h3 id="step-3-residual-addition">Step 3: Residual addition<a class="headerlink" href="#step-3-residual-addition" title="Permanent link">¶</a></h3>
+<p>The attention update is added to the existing <code>cat</code> representation, so the token now reflects something like:
+- cat
+- modified by white
+- noun phrase context</p>
+<h3 id="step-4-mlp">Step 4: MLP<a class="headerlink" href="#step-4-mlp" title="Permanent link">¶</a></h3>
+<p>The MLP reads that enriched representation and computes new nonlinear features, such as:
+- “white-cat concept”
+- stronger entity or phrase-level structure</p>
+<h3 id="step-5-residual-addition-again">Step 5: Residual addition again<a class="headerlink" href="#step-5-residual-addition-again" title="Permanent link">¶</a></h3>
+<p>The MLP output is added back, so the <code>white cat</code> information is preserved and refined.</p>
+<h3 id="step-6-later-layers">Step 6: Later layers<a class="headerlink" href="#step-6-later-layers" title="Permanent link">¶</a></h3>
+<p>Further layers may use that enriched state to reason about syntax, semantics, or next-token prediction.</p>
+<hr/>
+<h2 id="17-final-summary">17) Final summary<a class="headerlink" href="#17-final-summary" title="Permanent link">¶</a></h2>
+<h3 id="attention-heads_1">Attention heads<a class="headerlink" href="#attention-heads_1" title="Permanent link">¶</a></h3>
+<ul>
+<li>Mix information across tokens</li>
+<li>Use dot products for relevance</li>
+<li>Use weighted sums to gather context</li>
+</ul>
+<h3 id="mlps">MLPs<a class="headerlink" href="#mlps" title="Permanent link">¶</a></h3>
+<ul>
+<li>Process each token independently after attention</li>
+<li>Compute nonlinear feature transformations</li>
+<li>Build richer abstractions from the context-enriched state</li>
+</ul>
+<h3 id="dot-products">Dot products<a class="headerlink" href="#dot-products" title="Permanent link">¶</a></h3>
+<ul>
+<li>Measure alignment / compatibility</li>
+<li>In attention: query–key matching</li>
+</ul>
+<h3 id="vector-additions">Vector additions<a class="headerlink" href="#vector-additions" title="Permanent link">¶</a></h3>
+<ul>
+<li>Combine updates with existing state</li>
+<li>Enable residual learning</li>
+<li>Preserve and refine earlier information</li>
+</ul>
+<h3 id="hidden-states">Hidden states<a class="headerlink" href="#hidden-states" title="Permanent link">¶</a></h3>
+<ul>
+<li>One per token per layer</li>
+<li>Same dimensionality as the model width</li>
+<li>Much richer than raw embeddings</li>
+</ul>
+<h3 id="heads-vs-layers">Heads vs layers<a class="headerlink" href="#heads-vs-layers" title="Permanent link">¶</a></h3>
+<ul>
+<li>Heads: parallel specialists inside one layer</li>
+<li>Layers: sequential stages of refinement</li>
+</ul>
+<h3 id="rope">RoPE<a class="headerlink" href="#rope" title="Permanent link">¶</a></h3>
+<ul>
+<li>Injects positional information into attention</li>
+<li>Applied to Q and K after projection, before attention scores</li>
+</ul>
+<h3 id="unembedding">Unembedding<a class="headerlink" href="#unembedding" title="Permanent link">¶</a></h3>
+<ul>
+<li>Reads final hidden states into token logits</li>
+<li>Does not require the final hidden state to resemble the original token embedding</li>
+</ul>
+<hr/>
+<h2 id="one-final-mental-model">One final mental model<a class="headerlink" href="#one-final-mental-model" title="Permanent link">¶</a></h2>
+<p>A transformer uses a fixed-width <strong>residual stream</strong> as an evolving workspace.</p>
+<ul>
+<li><strong>Embeddings</strong> initialize the workspace</li>
+<li><strong>Attention</strong> moves information across positions</li>
+<li><strong>MLPs</strong> compute richer features within each position</li>
+<li><strong>Residual addition</strong> carries information forward while refining it</li>
+<li><strong>Unembedding</strong> reads the final hidden state and converts it into next-token scores</li>
+</ul>
+<p>So the model is not preserving a static embedding meaning from start to finish. It is repeatedly rewriting a same-width hidden representation into something more contextually useful.</p>
+</article>
+</div>
+<script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.top", "navigation.instant", "content.code.copy", "content.tabs.link", "toc.follow", "content.code.annotate", "content.diagrams", "content.mermaid"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+<script src="../javascripts/mathjax-init.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../javascripts/mathjax-refresh.js"></script>
+<script src="https://unpkg.com/mermaid@10.2.4/dist/mermaid.min.js"></script>
+<script src="../javascripts/mermaid-init.js"></script>
+</body>
+</html>

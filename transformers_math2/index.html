@@ -1,1484 +1,910 @@
 
-<!doctype html>
-<html lang="en" class="no-js">
-  <head>
-    
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width,initial-scale=1">
-      
-      
-      
-      
-        <link rel="prev" href="../transformers_math1/">
-      
-      
-        <link rel="next" href="../math_quick_ref/">
-      
-      
-      <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
-    
-    
-      
-        <title>Mathematical Foundations 2 - Introduction to Transformers</title>
-      
-    
-    
-      <link rel="stylesheet" href="../assets/stylesheets/main.e53b48f4.min.css">
-      
-        
-        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
-      
-      
+<!DOCTYPE html>
 
-
-    
-    
-      
-    
-    
-      
-        
-        
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
-      
-    
-    
-      <link rel="stylesheet" href="../styles.css">
-    
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
-    
-      
-
-    
-    
-    
-  </head>
-  
-  
-    
-    
-      
-    
-    
-    
-    
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
-  
-    
-    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
-    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
-    <label class="md-overlay" for="__drawer"></label>
-    <div data-md-component="skip">
-      
-        
-        <a href="#the-mathematics-of-transformers-from-first-principles-to-practice" class="md-skip">
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../transformers_math1/" rel="prev"/>
+<link href="../math_quick_ref/" rel="next"/>
+<link href="../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.20" name="generator"/>
+<title>Mathematical Foundations 2 - Introduction to Transformers</title>
+<link href="../assets/stylesheets/main.e53b48f4.min.css" rel="stylesheet"/>
+<link href="../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+<link href="../styles.css" rel="stylesheet"/>
+<script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#the-mathematics-of-transformers-from-first-principles-to-practice">
           Skip to content
         </a>
-      
-    </div>
-    <div data-md-component="announce">
-      
-    </div>
-    
-    
-      
-
-  
-
+</div>
+<div data-md-component="announce">
+</div>
 <header class="md-header md-header--shadow" data-md-component="header">
-  <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Introduction to Transformers" class="md-header__button md-logo" aria-label="Introduction to Transformers" data-md-component="logo">
-      
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
-
-    </a>
-    <label class="md-header__button md-icon" for="__drawer">
-      
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
-    </label>
-    <div class="md-header__title" data-md-component="header-title">
-      <div class="md-header__ellipsis">
-        <div class="md-header__topic">
-          <span class="md-ellipsis">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="Introduction to Transformers" class="md-header__button md-logo" data-md-component="logo" href=".." title="Introduction to Transformers">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
             Introduction to Transformers
           </span>
-        </div>
-        <div class="md-header__topic" data-md-component="header-topic">
-          <span class="md-ellipsis">
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
             
               Mathematical Foundations 2
             
           </span>
-        </div>
-      </div>
-    </div>
-    
-      
-        <form class="md-header__option" data-md-component="palette">
-  
-    
-    
-    
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
-    
-  
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-hidden="true" class="md-option" data-md-color-accent="indigo" data-md-color-media="" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
 </form>
-      
-    
-    
-      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
-    
-    
-    
-      
-      
-        <label class="md-header__button md-icon" for="__search">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
-        </label>
-        <div class="md-search" data-md-component="search" role="dialog">
-  <label class="md-search__overlay" for="__search"></label>
-  <div class="md-search__inner" role="search">
-    <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
-      <label class="md-search__icon md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-      </label>
-      <nav class="md-search__options" aria-label="Search">
-        
-        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-        </button>
-      </nav>
-      
-    </form>
-    <div class="md-search__output">
-      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="search-result">
-          <div class="md-search-result__meta">
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
             Initializing search
           </div>
-          <ol class="md-search-result__list" role="presentation"></ol>
-        </div>
-      </div>
-    </div>
-  </div>
+<ol class="md-search-result__list" role="presentation"></ol>
 </div>
-      
-    
-    
-  </nav>
-  
+</div>
+</div>
+</div>
+</div>
+</nav>
 </header>
-    
-    <div class="md-container" data-md-component="container">
-      
-      
-        
-          
-        
-      
-      <main class="md-main" data-md-component="main">
-        <div class="md-main__inner md-grid">
-          
-            
-              
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-
-
-
-<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
-  <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Introduction to Transformers" class="md-nav__button md-logo" aria-label="Introduction to Transformers" data-md-component="logo">
-      
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
-
-    </a>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Introduction to Transformers" class="md-nav__button md-logo" data-md-component="logo" href=".." title="Introduction to Transformers">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
     Introduction to Transformers
   </label>
-  
-  <ul class="md-nav__list" data-md-scrollfix>
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../nn_intro/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../nn_intro/">
+<span class="md-ellipsis">
     Neural Network Introduction
     
   </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../mlp_intro/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../mlp_intro/">
+<span class="md-ellipsis">
     Building Networks with MLP
     
   </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../rnn_intro/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../rnn_intro/">
+<span class="md-ellipsis">
     Sequential Modeling with RNN
     
   </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../transformers_fundamentals/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../transformers_fundamentals/">
+<span class="md-ellipsis">
     Transformers Fundamentals
     
   </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../transformers_advanced/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../transformers_advanced/">
+<span class="md-ellipsis">
     Transformers Advanced
     
   </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../knowledge_store/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../knowledge_store/">
+<span class="md-ellipsis">
     Knowledge Store
     
   </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-    
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_7" type="checkbox"/>
+<label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+<span class="md-ellipsis">
     References
     
   </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_7">
-            <span class="md-nav__icon md-icon"></span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_7_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_7">
+<span class="md-nav__icon md-icon"></span>
             References
           </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../pytorch_ref/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../pytorch_ref/">
+<span class="md-ellipsis">
     PyTorch Primer
     
   </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../transformers_math1/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../transformers_math1/">
+<span class="md-ellipsis">
     Mathematical Foundations 1
     
   </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
     Mathematical Foundations 2
     
   </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
     Mathematical Foundations 2
     
   </span>
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
       Table of contents
     </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#part-2-advanced-concepts-and-scaling" class="md-nav__link">
-    <span class="md-ellipsis">
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#part-2-advanced-concepts-and-scaling">
+<span class="md-ellipsis">
       Part 2: Advanced Concepts and Scaling
     </span>
-  </a>
-  
+</a>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#overview">
+<span class="md-ellipsis">
       Overview
     </span>
-  </a>
-  
+</a>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#8-practical-numerics--implementation-notes" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8-practical-numerics--implementation-notes">
+<span class="md-ellipsis">
       8. Practical Numerics &amp; Implementation Notes
     </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="8. Practical Numerics &amp; Implementation Notes">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#81-initialization-strategies" class="md-nav__link">
-    <span class="md-ellipsis">
+</a>
+<nav aria-label="8. Practical Numerics &amp; Implementation Notes" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#81-initialization-strategies">
+<span class="md-ellipsis">
       8.1 Initialization Strategies
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#82-mixed-precision-training" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#82-mixed-precision-training">
+<span class="md-ellipsis">
       8.2 Mixed Precision Training
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#83-gradient-clipping" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#83-gradient-clipping">
+<span class="md-ellipsis">
       8.3 Gradient Clipping
     </span>
-  </a>
-  
+</a>
 </li>
-        
-      </ul>
-    </nav>
-  
+</ul>
+</nav>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#9-optimization-for-deep-networks" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9-optimization-for-deep-networks">
+<span class="md-ellipsis">
       9. Optimization for Deep Networks
     </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="9. Optimization for Deep Networks">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#91-from-sgd-to-adam" class="md-nav__link">
-    <span class="md-ellipsis">
+</a>
+<nav aria-label="9. Optimization for Deep Networks" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#91-from-sgd-to-adam">
+<span class="md-ellipsis">
       9.1 From SGD to Adam
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#92-advanced-optimizers" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#92-advanced-optimizers">
+<span class="md-ellipsis">
       9.2 Advanced Optimizers
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#93-learning-rate-schedules" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#93-learning-rate-schedules">
+<span class="md-ellipsis">
       9.3 Learning Rate Schedules
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#94-gradient-clipping" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#94-gradient-clipping">
+<span class="md-ellipsis">
       9.4 Gradient Clipping
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#95-numerical-stability" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#95-numerical-stability">
+<span class="md-ellipsis">
       9.5 Numerical Stability
     </span>
-  </a>
-  
+</a>
 </li>
-        
-      </ul>
-    </nav>
-  
+</ul>
+</nav>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#10-efficient-attention--scaling" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10-efficient-attention--scaling">
+<span class="md-ellipsis">
       10. Efficient Attention &amp; Scaling
     </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="10. Efficient Attention &amp; Scaling">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#101-complexity-analysis" class="md-nav__link">
-    <span class="md-ellipsis">
+</a>
+<nav aria-label="10. Efficient Attention &amp; Scaling" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#101-complexity-analysis">
+<span class="md-ellipsis">
       10.1 Complexity Analysis
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#102-flashattention-memory-efficient-attention" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#102-flashattention-memory-efficient-attention">
+<span class="md-ellipsis">
       10.2 FlashAttention: Memory-Efficient Attention
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#103-multi-query-and-grouped-query-attention" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#103-multi-query-and-grouped-query-attention">
+<span class="md-ellipsis">
       10.3 Multi-Query and Grouped-Query Attention
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#104-kv-caching-for-autoregressive-generation" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#104-kv-caching-for-autoregressive-generation">
+<span class="md-ellipsis">
       10.4 KV Caching for Autoregressive Generation
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#105-linear-attention-approximations" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#105-linear-attention-approximations">
+<span class="md-ellipsis">
       10.5 Linear Attention Approximations
     </span>
-  </a>
-  
+</a>
 </li>
-        
-      </ul>
-    </nav>
-  
+</ul>
+</nav>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#11-regularization-generalization-and-calibration" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11-regularization-generalization-and-calibration">
+<span class="md-ellipsis">
       11. Regularization, Generalization, and Calibration
     </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="11. Regularization, Generalization, and Calibration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#111-dropout-in-transformers" class="md-nav__link">
-    <span class="md-ellipsis">
+</a>
+<nav aria-label="11. Regularization, Generalization, and Calibration" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#111-dropout-in-transformers">
+<span class="md-ellipsis">
       11.1 Dropout in Transformers
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#112-evaluation-and-calibration" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#112-evaluation-and-calibration">
+<span class="md-ellipsis">
       11.2 Evaluation and Calibration
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#113-advanced-tokenization" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#113-advanced-tokenization">
+<span class="md-ellipsis">
       11.3 Advanced Tokenization
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#114-label-smoothing" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#114-label-smoothing">
+<span class="md-ellipsis">
       11.4 Label Smoothing
     </span>
-  </a>
-  
+</a>
 </li>
-        
-      </ul>
-    </nav>
-  
+</ul>
+</nav>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#14-common-pitfalls--misconceptions" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#14-common-pitfalls--misconceptions">
+<span class="md-ellipsis">
       14. Common Pitfalls &amp; Misconceptions
     </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="14. Common Pitfalls &amp; Misconceptions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#141-high-dimensional-distance-misconceptions" class="md-nav__link">
-    <span class="md-ellipsis">
+</a>
+<nav aria-label="14. Common Pitfalls &amp; Misconceptions" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#141-high-dimensional-distance-misconceptions">
+<span class="md-ellipsis">
       14.1 High-Dimensional Distance Misconceptions
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#142-attention-scaling-mistakes" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#142-attention-scaling-mistakes">
+<span class="md-ellipsis">
       14.2 Attention Scaling Mistakes
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#143-layernorm-placement" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#143-layernorm-placement">
+<span class="md-ellipsis">
       14.3 LayerNorm Placement
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#144-softmax-temperature-misuse" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#144-softmax-temperature-misuse">
+<span class="md-ellipsis">
       14.4 Softmax Temperature Misuse
     </span>
-  </a>
-  
+</a>
 </li>
-        
-      </ul>
-    </nav>
-  
+</ul>
+</nav>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#15-summary--what-to-learn-next" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#15-summary--what-to-learn-next">
+<span class="md-ellipsis">
       15. Summary &amp; What to Learn Next
     </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="15. Summary &amp; What to Learn Next">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#151-key-mathematical-insights" class="md-nav__link">
-    <span class="md-ellipsis">
+</a>
+<nav aria-label="15. Summary &amp; What to Learn Next" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#151-key-mathematical-insights">
+<span class="md-ellipsis">
       15.1 Key Mathematical Insights
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#152-advanced-techniques-covered" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#152-advanced-techniques-covered">
+<span class="md-ellipsis">
       15.2 Advanced Techniques Covered
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#153-next-steps" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#153-next-steps">
+<span class="md-ellipsis">
       15.3 Next Steps
     </span>
-  </a>
-  
+</a>
 </li>
-        
-      </ul>
-    </nav>
-  
+</ul>
+</nav>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#connection-to-part-1" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#connection-to-part-1">
+<span class="md-ellipsis">
       Connection to Part 1
     </span>
-  </a>
-  
+</a>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#further-reading" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#further-reading">
+<span class="md-ellipsis">
       Further Reading
     </span>
-  </a>
-  
+</a>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#appendix-a-symbolshape-reference" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#appendix-a-symbolshape-reference">
+<span class="md-ellipsis">
       Appendix A: Symbol/Shape Reference
     </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Appendix A: Symbol/Shape Reference">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#single-head-attention-shapes" class="md-nav__link">
-    <span class="md-ellipsis">
+</a>
+<nav aria-label="Appendix A: Symbol/Shape Reference" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#single-head-attention-shapes">
+<span class="md-ellipsis">
       Single-Head Attention Shapes
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#multi-head--batched-shapes" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#multi-head--batched-shapes">
+<span class="md-ellipsis">
       Multi-Head &amp; Batched Shapes
     </span>
-  </a>
-  
+</a>
 </li>
-        
-      </ul>
-    </nav>
-  
+</ul>
+</nav>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#appendix-b-key-derivations" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#appendix-b-key-derivations">
+<span class="md-ellipsis">
       Appendix B: Key Derivations
     </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Appendix B: Key Derivations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#b1-softmax-gradient" class="md-nav__link">
-    <span class="md-ellipsis">
+</a>
+<nav aria-label="Appendix B: Key Derivations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#b1-softmax-gradient">
+<span class="md-ellipsis">
       B.1 Softmax Gradient
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#b2-matrix-calculus-identities" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#b2-matrix-calculus-identities">
+<span class="md-ellipsis">
       B.2 Matrix Calculus Identities
     </span>
-  </a>
-  
+</a>
 </li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
+</ul>
 </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../math_quick_ref/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../math_quick_ref/">
+<span class="md-ellipsis">
     Mathematical Quick Reference
     
   </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../history_quick_ref/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../history_quick_ref/">
+<span class="md-ellipsis">
     Sequence Modeling History
     
   </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../glossary/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../glossary/">
+<span class="md-ellipsis">
     Glossary
     
   </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="..">
+<span class="md-ellipsis">
     README
     
   </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../LICENSE/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../LICENSE/">
+<span class="md-ellipsis">
     LICENSE
     
   </span>
-  
-
-      </a>
-    </li>
-  
-
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../further/">
+<span class="md-ellipsis">
+    Further
     
-  </ul>
+  </span>
+</a>
+</li>
+</ul>
 </nav>
-                  </div>
-                </div>
-              </div>
-            
-            
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
       Table of contents
     </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#part-2-advanced-concepts-and-scaling" class="md-nav__link">
-    <span class="md-ellipsis">
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#part-2-advanced-concepts-and-scaling">
+<span class="md-ellipsis">
       Part 2: Advanced Concepts and Scaling
     </span>
-  </a>
-  
+</a>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#overview">
+<span class="md-ellipsis">
       Overview
     </span>
-  </a>
-  
+</a>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#8-practical-numerics--implementation-notes" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8-practical-numerics--implementation-notes">
+<span class="md-ellipsis">
       8. Practical Numerics &amp; Implementation Notes
     </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="8. Practical Numerics &amp; Implementation Notes">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#81-initialization-strategies" class="md-nav__link">
-    <span class="md-ellipsis">
+</a>
+<nav aria-label="8. Practical Numerics &amp; Implementation Notes" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#81-initialization-strategies">
+<span class="md-ellipsis">
       8.1 Initialization Strategies
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#82-mixed-precision-training" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#82-mixed-precision-training">
+<span class="md-ellipsis">
       8.2 Mixed Precision Training
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#83-gradient-clipping" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#83-gradient-clipping">
+<span class="md-ellipsis">
       8.3 Gradient Clipping
     </span>
-  </a>
-  
+</a>
 </li>
-        
-      </ul>
-    </nav>
-  
+</ul>
+</nav>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#9-optimization-for-deep-networks" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9-optimization-for-deep-networks">
+<span class="md-ellipsis">
       9. Optimization for Deep Networks
     </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="9. Optimization for Deep Networks">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#91-from-sgd-to-adam" class="md-nav__link">
-    <span class="md-ellipsis">
+</a>
+<nav aria-label="9. Optimization for Deep Networks" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#91-from-sgd-to-adam">
+<span class="md-ellipsis">
       9.1 From SGD to Adam
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#92-advanced-optimizers" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#92-advanced-optimizers">
+<span class="md-ellipsis">
       9.2 Advanced Optimizers
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#93-learning-rate-schedules" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#93-learning-rate-schedules">
+<span class="md-ellipsis">
       9.3 Learning Rate Schedules
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#94-gradient-clipping" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#94-gradient-clipping">
+<span class="md-ellipsis">
       9.4 Gradient Clipping
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#95-numerical-stability" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#95-numerical-stability">
+<span class="md-ellipsis">
       9.5 Numerical Stability
     </span>
-  </a>
-  
+</a>
 </li>
-        
-      </ul>
-    </nav>
-  
+</ul>
+</nav>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#10-efficient-attention--scaling" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10-efficient-attention--scaling">
+<span class="md-ellipsis">
       10. Efficient Attention &amp; Scaling
     </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="10. Efficient Attention &amp; Scaling">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#101-complexity-analysis" class="md-nav__link">
-    <span class="md-ellipsis">
+</a>
+<nav aria-label="10. Efficient Attention &amp; Scaling" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#101-complexity-analysis">
+<span class="md-ellipsis">
       10.1 Complexity Analysis
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#102-flashattention-memory-efficient-attention" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#102-flashattention-memory-efficient-attention">
+<span class="md-ellipsis">
       10.2 FlashAttention: Memory-Efficient Attention
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#103-multi-query-and-grouped-query-attention" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#103-multi-query-and-grouped-query-attention">
+<span class="md-ellipsis">
       10.3 Multi-Query and Grouped-Query Attention
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#104-kv-caching-for-autoregressive-generation" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#104-kv-caching-for-autoregressive-generation">
+<span class="md-ellipsis">
       10.4 KV Caching for Autoregressive Generation
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#105-linear-attention-approximations" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#105-linear-attention-approximations">
+<span class="md-ellipsis">
       10.5 Linear Attention Approximations
     </span>
-  </a>
-  
+</a>
 </li>
-        
-      </ul>
-    </nav>
-  
+</ul>
+</nav>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#11-regularization-generalization-and-calibration" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11-regularization-generalization-and-calibration">
+<span class="md-ellipsis">
       11. Regularization, Generalization, and Calibration
     </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="11. Regularization, Generalization, and Calibration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#111-dropout-in-transformers" class="md-nav__link">
-    <span class="md-ellipsis">
+</a>
+<nav aria-label="11. Regularization, Generalization, and Calibration" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#111-dropout-in-transformers">
+<span class="md-ellipsis">
       11.1 Dropout in Transformers
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#112-evaluation-and-calibration" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#112-evaluation-and-calibration">
+<span class="md-ellipsis">
       11.2 Evaluation and Calibration
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#113-advanced-tokenization" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#113-advanced-tokenization">
+<span class="md-ellipsis">
       11.3 Advanced Tokenization
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#114-label-smoothing" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#114-label-smoothing">
+<span class="md-ellipsis">
       11.4 Label Smoothing
     </span>
-  </a>
-  
+</a>
 </li>
-        
-      </ul>
-    </nav>
-  
+</ul>
+</nav>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#14-common-pitfalls--misconceptions" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#14-common-pitfalls--misconceptions">
+<span class="md-ellipsis">
       14. Common Pitfalls &amp; Misconceptions
     </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="14. Common Pitfalls &amp; Misconceptions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#141-high-dimensional-distance-misconceptions" class="md-nav__link">
-    <span class="md-ellipsis">
+</a>
+<nav aria-label="14. Common Pitfalls &amp; Misconceptions" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#141-high-dimensional-distance-misconceptions">
+<span class="md-ellipsis">
       14.1 High-Dimensional Distance Misconceptions
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#142-attention-scaling-mistakes" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#142-attention-scaling-mistakes">
+<span class="md-ellipsis">
       14.2 Attention Scaling Mistakes
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#143-layernorm-placement" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#143-layernorm-placement">
+<span class="md-ellipsis">
       14.3 LayerNorm Placement
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#144-softmax-temperature-misuse" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#144-softmax-temperature-misuse">
+<span class="md-ellipsis">
       14.4 Softmax Temperature Misuse
     </span>
-  </a>
-  
+</a>
 </li>
-        
-      </ul>
-    </nav>
-  
+</ul>
+</nav>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#15-summary--what-to-learn-next" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#15-summary--what-to-learn-next">
+<span class="md-ellipsis">
       15. Summary &amp; What to Learn Next
     </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="15. Summary &amp; What to Learn Next">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#151-key-mathematical-insights" class="md-nav__link">
-    <span class="md-ellipsis">
+</a>
+<nav aria-label="15. Summary &amp; What to Learn Next" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#151-key-mathematical-insights">
+<span class="md-ellipsis">
       15.1 Key Mathematical Insights
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#152-advanced-techniques-covered" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#152-advanced-techniques-covered">
+<span class="md-ellipsis">
       15.2 Advanced Techniques Covered
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#153-next-steps" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#153-next-steps">
+<span class="md-ellipsis">
       15.3 Next Steps
     </span>
-  </a>
-  
+</a>
 </li>
-        
-      </ul>
-    </nav>
-  
+</ul>
+</nav>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#connection-to-part-1" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#connection-to-part-1">
+<span class="md-ellipsis">
       Connection to Part 1
     </span>
-  </a>
-  
+</a>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#further-reading" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#further-reading">
+<span class="md-ellipsis">
       Further Reading
     </span>
-  </a>
-  
+</a>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#appendix-a-symbolshape-reference" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#appendix-a-symbolshape-reference">
+<span class="md-ellipsis">
       Appendix A: Symbol/Shape Reference
     </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Appendix A: Symbol/Shape Reference">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#single-head-attention-shapes" class="md-nav__link">
-    <span class="md-ellipsis">
+</a>
+<nav aria-label="Appendix A: Symbol/Shape Reference" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#single-head-attention-shapes">
+<span class="md-ellipsis">
       Single-Head Attention Shapes
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#multi-head--batched-shapes" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#multi-head--batched-shapes">
+<span class="md-ellipsis">
       Multi-Head &amp; Batched Shapes
     </span>
-  </a>
-  
+</a>
 </li>
-        
-      </ul>
-    </nav>
-  
+</ul>
+</nav>
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#appendix-b-key-derivations" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#appendix-b-key-derivations">
+<span class="md-ellipsis">
       Appendix B: Key Derivations
     </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Appendix B: Key Derivations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#b1-softmax-gradient" class="md-nav__link">
-    <span class="md-ellipsis">
+</a>
+<nav aria-label="Appendix B: Key Derivations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#b1-softmax-gradient">
+<span class="md-ellipsis">
       B.1 Softmax Gradient
     </span>
-  </a>
-  
+</a>
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#b2-matrix-calculus-identities" class="md-nav__link">
-    <span class="md-ellipsis">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#b2-matrix-calculus-identities">
+<span class="md-ellipsis">
       B.2 Matrix Calculus Identities
     </span>
-  </a>
-  
+</a>
 </li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
+</ul>
 </nav>
-                  </div>
-                </div>
-              </div>
-            
-          
-          
-            <div class="md-content" data-md-component="content">
-              <article class="md-content__inner md-typeset">
-                
-                  
-
-
-
-<h1 id="the-mathematics-of-transformers-from-first-principles-to-practice">The Mathematics of Transformers: From First Principles to Practice<a class="headerlink" href="#the-mathematics-of-transformers-from-first-principles-to-practice" title="Permanent link">&para;</a></h1>
-<h2 id="part-2-advanced-concepts-and-scaling">Part 2: Advanced Concepts and Scaling<a class="headerlink" href="#part-2-advanced-concepts-and-scaling" title="Permanent link">&para;</a></h2>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="the-mathematics-of-transformers-from-first-principles-to-practice">The Mathematics of Transformers: From First Principles to Practice<a class="headerlink" href="#the-mathematics-of-transformers-from-first-principles-to-practice" title="Permanent link">¶</a></h1>
+<h2 id="part-2-advanced-concepts-and-scaling">Part 2: Advanced Concepts and Scaling<a class="headerlink" href="#part-2-advanced-concepts-and-scaling" title="Permanent link">¶</a></h2>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">¶</a></h2>
 <p>This second part builds upon the foundational concepts from <a href="../transformers_math1/">Part 1: Building Intuition and Core Concepts</a> to cover advanced topics essential for implementing and scaling Transformer models in practice. Here we focus on optimization techniques, training stability, efficient attention implementations, and the mathematical considerations needed for real-world large models.</p>
 <p>Prerequisites: We assume you've completed Part 1, which covers mathematical preliminaries, basic neural networks, attention mechanisms, multi-head attention, and Transformer blocks. If you haven't read Part 1 yet, please start there for the foundational understanding.</p>
 <p>What You'll Learn:</p>
@@ -1500,26 +926,32 @@
 <li><a href="../transformers_math1/">Part 1: Building Intuition and Core Concepts</a></li>
 <li><a href="../glossary/">Glossary</a> - Comprehensive terms and definitions</li>
 </ul>
-<h2 id="8-practical-numerics--implementation-notes">8. Practical Numerics &amp; Implementation Notes<a class="headerlink" href="#8-practical-numerics--implementation-notes" title="Permanent link">&para;</a></h2>
-<h3 id="81-initialization-strategies">8.1 Initialization Strategies<a class="headerlink" href="#81-initialization-strategies" title="Permanent link">&para;</a></h3>
+<h2 id="8-practical-numerics--implementation-notes">8. Practical Numerics &amp; Implementation Notes<a class="headerlink" href="#8-practical-numerics--implementation-notes" title="Permanent link">¶</a></h2>
+<h3 id="81-initialization-strategies">8.1 Initialization Strategies<a class="headerlink" href="#81-initialization-strategies" title="Permanent link">¶</a></h3>
 <p>Xavier/Glorot for Linear Layers:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>W \sim \mathcal{N}\left(0, \frac{2}{n_{\text{in}} + n_{\text{out}}}\right) \quad (49)
-</code></pre></div></p>
+$$
+{\textstyle
+\begin{aligned}
+W \sim \mathcal{N}\left(0, \frac{2}{n_{\text{in}} + n_{\text{out}}}\right) \quad (49)
+\end{aligned}
+}
+$$</p>
 <p>Attention-Specific: Initialize query/key projections with smaller variance to prevent attention collapse (overly peaked attention distributions).</p>
-<h3 id="82-mixed-precision-training">8.2 Mixed Precision Training<a class="headerlink" href="#82-mixed-precision-training" title="Permanent link">&para;</a></h3>
+<h3 id="82-mixed-precision-training">8.2 Mixed Precision Training<a class="headerlink" href="#82-mixed-precision-training" title="Permanent link">¶</a></h3>
 <p>FP16 Forward, FP32 Gradients: Use half precision for speed, full precision for numerical stability:
 💻 Implementation Example: For Automatic Mixed Precision implementation, see <a href="./pynb/math_ref/optimization.ipynb">Optimization Notebook</a></p>
-<h3 id="83-gradient-clipping">8.3 Gradient Clipping<a class="headerlink" href="#83-gradient-clipping" title="Permanent link">&para;</a></h3>
+<h3 id="83-gradient-clipping">8.3 Gradient Clipping<a class="headerlink" href="#83-gradient-clipping" title="Permanent link">¶</a></h3>
 <p>Global Norm Clipping: As detailed in equation (11), we clip gradients to prevent explosive updates.</p>
-<h2 id="9-optimization-for-deep-networks">9. Optimization for Deep Networks<a class="headerlink" href="#9-optimization-for-deep-networks" title="Permanent link">&para;</a></h2>
-<h3 id="91-from-sgd-to-adam">9.1 From SGD to Adam<a class="headerlink" href="#91-from-sgd-to-adam" title="Permanent link">&para;</a></h3>
+<h2 id="9-optimization-for-deep-networks">9. Optimization for Deep Networks<a class="headerlink" href="#9-optimization-for-deep-networks" title="Permanent link">¶</a></h2>
+<h3 id="91-from-sgd-to-adam">9.1 From SGD to Adam<a class="headerlink" href="#91-from-sgd-to-adam" title="Permanent link">¶</a></h3>
 <p>📚 Quick Reference: See <a href="../math_quick_ref/#mathematical-quick-reference-for-neural-networks">Adam Optimizer</a> and <a href="../math_quick_ref/#mathematical-quick-reference-for-neural-networks">Gradient Descent</a> in the mathematical reference table.</p>
-<p>SGD with Momentum:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>\begin{align}
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>\mathbf{v}_t &amp;= \beta \mathbf{v}_{t-1} + (1-\beta) \nabla_\theta \mathcal{L} \quad (5)\\
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>\theta_t &amp;= \theta_{t-1} - \eta \mathbf{v}_t \quad (6)
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>\end{align}
-</code></pre></div></p>
+<p>SGD with Momentum:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\mathbf{v}_t &amp;= \beta \mathbf{v}_{t-1} + (1-\beta) \nabla_\theta \mathcal{L} \quad (5)\\
+\theta_t &amp;= \theta_{t-1} - \eta \mathbf{v}_t \quad (6)
+\end{aligned}
+\]</div>
 <p>What momentum does: Like a ball rolling down a hill. Instead of just following the current slope (gradient), momentum keeps some memory of where you were going before. This helps you:</p>
 <ul>
 <li>Roll through small bumps (escape local minima)</li>
@@ -1528,58 +960,103 @@
 </ul>
 <p>Bowling ball analogy: A heavy bowling ball doesn't stop immediately when it hits a small bump - it uses its momentum to keep rolling toward the pins (optimal solution).</p>
 <p>Understanding the formula:</p>
-<ul>
-<li>$\mathbf{v}_t$: Current \"velocity\" (combination of current gradient + previous velocity)</li>
-<li>$\beta \approx 0.9$: How much previous velocity to keep (90%)  </li>
-<li>$(1-\beta) = 0.1$: How much current gradient to use (10%)</li>
-<li>$\eta$: Learning rate (step size)</li>
-</ul>
-<p>Adam Optimizer: Combines momentum with adaptive learning rates:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>\begin{align}
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>\mathbf{m}_t &amp;= \beta_1 \mathbf{m}_{t-1} + (1-\beta_1) \nabla_\theta \mathcal{L} \quad (7)\\
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>\mathbf{v}_t &amp;= \beta_2 \mathbf{v}_{t-1} + (1-\beta_2) (\nabla_\theta \mathcal{L})^2 \quad (8)\\
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>\theta_t &amp;= \theta_{t-1} - \eta \frac{\hat{\mathbf{m}}_t}{\sqrt{\hat{\mathbf{v}}_t} + \epsilon} \quad (9)
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>\end{align}
-</code></pre></div></p>
-<p>where $\hat{\mathbf{m}}_t$, $\hat{\mathbf{v}}_t$ are bias-corrected estimates.</p>
+<div class="arithmatex">\[
+{\textstyle
+\begin{aligned}
+\mathbf{v}_t \quad &amp; : \text{ Current "velocity" (combination of current gradient + previous velocity)} \newline
+\beta \approx 0.9 \quad &amp; : \text{ How much previous velocity to keep 90% } \newline
+(1 - \beta) = 0.1 \quad &amp; : \text{ How much current gradient to use 10% } \newline
+\eta \quad &amp; : \text{ Learning rate (step size)}
+\end{aligned}
+}
+\]</div>
+<p>Adam Optimizer: Combines momentum with adaptive learning rates:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\mathbf{m}_t &amp;= \beta_1 \mathbf{m}_{t-1} + (1-\beta_1) \nabla_\theta \mathcal{L} \quad (7)\\
+\mathbf{v}_t &amp;= \beta_2 \mathbf{v}_{t-1} + (1-\beta_2) (\nabla_\theta \mathcal{L})^2 \quad (8)\\
+\theta_t &amp;= \theta_{t-1} - \eta \frac{\hat{\mathbf{m}}_t}{\sqrt{\hat{\mathbf{v}}_t} + \epsilon} \quad (9)
+\end{aligned}
+\]</div>
+<p>with bias-corrected estimates defined as:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\hat{\mathbf{m}}_t, \hat{\mathbf{v}}_t \quad \text{(bias-corrected first and second moment estimates)}
+\end{aligned}
+\]</div>
 <p>What Adam does - explained simply:</p>
 <p>Adam is like having a smart GPS that adjusts your driving based on two things:</p>
-<ol>
-<li>$\mathbf{m}_t$ (momentum): "Which direction have we been going lately?" - Like momentum, but with exponential averaging</li>
-<li>$\mathbf{v}_t$ (second moment): "How bumpy has the road been?" - Tracks how much the gradients have been changing</li>
-</ol>
+<div class="arithmatex">\[
+{\textstyle
+\begin{aligned}
+\text{1. } \mathbf{m}_t \text{ (momentum):} \quad &amp;\text{"Which direction have we been going lately?" - Like momentum, but with exponential averaging} \newline
+\text{2. } \mathbf{v}_t \text{ (second moment):} \quad &amp;\text{"How bumpy has the road been?" - Tracks how much the gradients have been changing}
+\end{aligned}
+}
+\]</div>
 <p>The key insight: If the road has been very bumpy (high variance in gradients), take smaller steps. If it's been smooth and consistent, you can take bigger steps.</p>
 <p>Breaking down the symbols:</p>
-<ul>
-<li>$\beta_1 \approx 0.9$: How much to remember from previous direction (90%)</li>
-<li>$\beta_2 \approx 0.999$: How much to remember from previous bumpiness (99.9%) </li>
-<li>$\epsilon \approx 10^{-8}$: Tiny number to prevent division by zero</li>
-<li>$\hat{\mathbf{m}}_t$, $\hat{\mathbf{v}}_t$: Bias-corrected estimates (explained below)</li>
-</ul>
-<p>Bias correction intuition: At the beginning, $\mathbf{m}_0 = \mathbf{v}_0 = 0$, so the averages are biased toward zero. We correct for this by dividing by $(1-\beta^t)$, which starts small and approaches 1.</p>
+<div class="arithmatex">\[
+{\textstyle
+\begin{aligned}
+\beta_1 \approx 0.9 \quad &amp;: \text{ How much to remember from previous direction (90\%)} \newline
+\beta_2 \approx 0.999 \quad &amp;: \text{ How much to remember from previous bumpiness (99.9\%)} \newline
+\epsilon \approx 10^{-8} \quad &amp;: \text{ Tiny number to prevent division by zero} \newline
+\hat{\mathbf{m}}_t, \hat{\mathbf{v}}_t \quad &amp;: \text{ Bias-corrected estimates (explained below)}
+\end{aligned}
+}
+\]</div>
+<p>Bias correction intuition: At the beginning, the moment estimates are initialized to zero, creating a bias. The correction mechanism addresses this:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\mathbf{m}_0 = \mathbf{v}_0 &amp;= 0 \quad \text{(initial bias toward zero)} \newline
+\text{Correction factor:} \quad &amp;(1-\beta^t) \quad \text{(starts small and approaches 1)}
+\end{aligned}
+\]</div>
 <p>Car analogy: Adam is like cruise control that:</p>
 <ul>
 <li>Remembers which direction you've been driving (momentum)</li>
 <li>Adjusts speed based on road conditions (adaptive learning rate)</li>
 <li>Starts cautiously but gets more confident over time (bias correction)</li>
 </ul>
-<h3 id="92-advanced-optimizers">9.2 Advanced Optimizers<a class="headerlink" href="#92-advanced-optimizers" title="Permanent link">&para;</a></h3>
+<h3 id="92-advanced-optimizers">9.2 Advanced Optimizers<a class="headerlink" href="#92-advanced-optimizers" title="Permanent link">¶</a></h3>
 <p>AdamW vs Adam: AdamW decouples weight decay from gradient-based updates:</p>
-<p>Adam with L2 regularization:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>\theta_t = \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon} - \eta \lambda \theta_{t-1}
-</code></pre></div></p>
+<p>Adam with L2 regularization:</p>
+<div class="arithmatex">\[
+{\textstyle
+\begin{aligned}
+\theta_t = \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon} - \eta \lambda \theta_{t-1}
+\end{aligned}
+}
+\]</div>
 <p>AdamW (decoupled weight decay):
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>\theta_t = (1 - \eta \lambda) \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}
-</code></pre></div></p>
+$$
+{\textstyle
+\begin{aligned}
+\theta_t = (1 - \eta \lambda) \theta_{t-1} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}
+\end{aligned}
+}
+$$</p>
 <p>Why AdamW is better: Weight decay is applied regardless of gradient magnitude, leading to better generalization.</p>
-<p>$\beta_2$ Warmup: Start with high $\beta_2$ (e.g., 0.99) and gradually decrease to final value (e.g., 0.999) over first few thousand steps. Helps with training stability.</p>
+<p>Beta-2 Warmup: Gradually adjust the second moment decay parameter for improved training stability:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\beta_2^{\text{initial}} &amp;\approx 0.99 \quad \text{(high initial value)} \newline
+\beta_2^{\text{final}} &amp;\approx 0.999 \quad \text{(gradually decrease over first few thousand steps)}
+\end{aligned}
+\]</div>
 <p>Gradient Accumulation: Simulate larger batch sizes:
 💻 Implementation Example: For gradient accumulation implementation, see <a href="./pynb/math_ref/optimization.ipynb">Optimization Notebook</a></p>
-<h3 id="93-learning-rate-schedules">9.3 Learning Rate Schedules<a class="headerlink" href="#93-learning-rate-schedules" title="Permanent link">&para;</a></h3>
+<h3 id="93-learning-rate-schedules">9.3 Learning Rate Schedules<a class="headerlink" href="#93-learning-rate-schedules" title="Permanent link">¶</a></h3>
 <p>Why do we need schedules? Think of learning to drive: you start slow in the parking lot (warmup), drive at normal speed on the highway (main training), then slow down carefully when approaching your destination (decay).</p>
 <p>Warmup: Gradually increase learning rate to avoid early instability:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>\eta_t = \eta_{\text{max}} \cdot \min\left(\frac{t}{T_{\text{warmup}}}, 1\right) \quad (10)
-</code></pre></div></p>
+$$
+{\textstyle
+\begin{aligned}
+\eta_t = \eta_{\text{max}} \cdot \min\left(\frac{t}{T_{\text{warmup}}}, 1\right) \quad (10)
+\end{aligned}
+}
+$$</p>
 <p>Why warmup works:</p>
 <ul>
 <li>Early training is chaotic: Random initial weights create wild gradients</li>
@@ -1595,134 +1072,270 @@
 <li>Mathematical smoothness: Cosine provides a natural, smooth curve from 1 to 0</li>
 </ul>
 <p>Formula:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>\eta_t = \eta_{\text{max}} \cdot 0.5 \left(1 + \cos\left(\pi \cdot \frac{t - T_{\text{warmup}}}{T_{\text{total}} - T_{\text{warmup}}}\right)\right)
-</code></pre></div></p>
+$$
+{\textstyle
+\begin{aligned}
+\eta_t = \eta_{\text{max}} \cdot 0.5 \left(1 + \cos\left(\pi \cdot \frac{t - T_{\text{warmup}}}{T_{\text{total}} - T_{\text{warmup}}}\right)\right)
+\end{aligned}
+}
+$$</p>
 <p>Real-world analogy: Like landing an airplane - you approach fast, then gradually slow down for a smooth landing, not a crash.</p>
 <p>Original Transformer Schedule: Combines warmup with inverse square root decay:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>\eta_t = d_{\text{model}}^{-0.5} \cdot \min(t^{-0.5}, t \cdot T_{\text{warmup}}^{-1.5})
-</code></pre></div></p>
+$$
+{\textstyle
+\begin{aligned}
+\eta_t = d_{\text{model}}^{-0.5} \cdot \min(t^{-0.5}, t \cdot T_{\text{warmup}}^{-1.5})
+\end{aligned}
+}
+$$</p>
 <p>When to use cosine vs original: Cosine for fine-tuning and shorter training; original schedule for training from scratch with very large models.</p>
-<h3 id="94-gradient-clipping">9.4 Gradient Clipping<a class="headerlink" href="#94-gradient-clipping" title="Permanent link">&para;</a></h3>
+<h3 id="94-gradient-clipping">9.4 Gradient Clipping<a class="headerlink" href="#94-gradient-clipping" title="Permanent link">¶</a></h3>
 <p>The Problem: Sometimes gradients become extremely large (exploding gradients), causing the model to make huge, destructive updates.</p>
 <p>The Solution: Clip (limit) the gradients to a maximum norm.</p>
 <p>Global Norm Clipping:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>\tilde{g} = \min\left(1, \frac{c}{\|\mathbf{g}\|_2}\right) \mathbf{g} \quad (11)
-</code></pre></div></p>
+$$
+{\textstyle
+\begin{aligned}
+\tilde{g} = \min\left(1, \frac{c}{|\mathbf{g}|_2}\right) \mathbf{g} \quad (11)
+\end{aligned}
+}
+$$</p>
 <p>What this does intuitively:</p>
-<ul>
-<li>Calculate the total "size" of all gradients combined: $|\mathbf{g}|_2$</li>
-<li>If this size exceeds our limit $c$, scale all gradients down proportionally</li>
-<li>If it's within the limit, leave gradients unchanged</li>
-</ul>
+<div class="arithmatex">\[
+{\textstyle
+\begin{aligned}
+&amp;\text{Calculate the total "size" of all gradients combined: } \|\mathbf{g}\|_2 \newline
+&amp;\text{If this size exceeds our limit } c\text{, scale all gradients down proportionally} \newline
+&amp;\text{If it's within the limit, leave gradients unchanged}
+\end{aligned}
+}
+\]</div>
 <p>Speedometer analogy: Like a speed limiter in a car. If you try to go 120 mph but the limit is 65 mph, it scales your speed down to 65 mph while keeping you in the same direction.</p>
 <p>Why proportional scaling? We want to keep the relative direction of updates the same, just make them smaller. It's like turning down the volume on music - all frequencies get reduced equally.</p>
 <p>Example:</p>
-<ul>
-<li>Your gradients total to norm 50, but your clip value is 5</li>
-<li>Scaling factor: $\min(1, 5/50) = 0.1$  </li>
-<li>All gradients get multiplied by 0.1 (reduced to 10% of original size)</li>
-</ul>
-<h3 id="95-numerical-stability">9.5 Numerical Stability<a class="headerlink" href="#95-numerical-stability" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[
+{\textstyle
+\begin{aligned}
+&amp;\text{Your gradients total to norm 50, but your clip value is 5} \newline
+&amp;\text{Scaling factor: } \min(1, 5/50) = 0.1 \newline
+&amp;\text{All gradients get multiplied by 0.1 reduced to 10% of original size}
+\end{aligned}
+}
+\]</div>
+<h3 id="95-numerical-stability">9.5 Numerical Stability<a class="headerlink" href="#95-numerical-stability" title="Permanent link">¶</a></h3>
 <p>Log-Sum-Exp Trick: For numerical stability in softmax:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>\log\left(\sum_{i=1}^n e^{x_i}\right) = c + \log\left(\sum_{i=1}^n e^{x_i - c}\right) \quad (12)
-</code></pre></div></p>
-<p>where $c = \max_i x_i$ prevents overflow.</p>
-<h2 id="10-efficient-attention--scaling">10. Efficient Attention &amp; Scaling<a class="headerlink" href="#10-efficient-attention--scaling" title="Permanent link">&para;</a></h2>
-<h3 id="101-complexity-analysis">10.1 Complexity Analysis<a class="headerlink" href="#101-complexity-analysis" title="Permanent link">&para;</a></h3>
+$$
+{\textstyle
+\begin{aligned}
+\log\left(\sum_{i=1}^n e^{x_i}\right) = c + \log\left(\sum_{i=1}^n e^{x_i - c}\right) \quad (12)
+\end{aligned}
+}
+$$</p>
+<p>with the stabilization parameter preventing numerical overflow:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+c = \max_i x_i \quad \text{(maximum value for numerical stability)}
+\end{aligned}
+\]</div>
+<h2 id="10-efficient-attention--scaling">10. Efficient Attention &amp; Scaling<a class="headerlink" href="#10-efficient-attention--scaling" title="Permanent link">¶</a></h2>
+<h3 id="101-complexity-analysis">10.1 Complexity Analysis<a class="headerlink" href="#101-complexity-analysis" title="Permanent link">¶</a></h3>
 <p>Standard Attention Complexity:</p>
-<ul>
-<li>Time: $O(n^2 d)$ for sequence length $n$, model dimension $d$</li>
-<li>Space: $O(n^2 + nd)$ for attention matrix and activations</li>
-</ul>
-<p>Memory Bottleneck: Attention matrix $A \in \mathbb{R}^{n \times n}$ dominates memory usage for long sequences.</p>
+<div class="arithmatex">\[
+{\textstyle
+\begin{aligned}
+\text{Time:} \quad &amp;O(n^2 d) \text{ for sequence length } n, \text{ model dimension } d \newline
+\text{Space:} \quad &amp;O(n^2 + nd) \text{ for attention matrix and activations}
+\end{aligned}
+}
+\]</div>
+<p>Memory Bottleneck: The attention matrix dominates memory usage for long sequences:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+A \in \mathbb{R}^{n \times n} \quad \text{(quadratic memory requirement)}
+\end{aligned}
+\]</div>
 <p>Detailed Complexity Breakdown:</p>
-<ol>
-<li>QK^T computation: $O(n^2 d)$ time, $O(n^2)$ space</li>
-<li>Softmax normalization: $O(n^2)$ time and space</li>
-<li>Attention-Value multiplication: $O(n^2 d)$ time, $O(nd)$ space</li>
-<li>Total: $O(n^2 d)$ time, $O(n^2 + nd)$ space</li>
-</ol>
+<div class="arithmatex">\[
+{\textstyle
+\begin{aligned}
+\text{1. QK}^T \text{ computation:} \quad &amp;O(n^2 d) \text{ time, } O(n^2) \text{ space} \newline
+\text{2. Softmax normalization:} \quad &amp;O(n^2) \text{ time and space} \newline
+\text{3. Attention-Value multiplication:} \quad &amp;O(n^2 d) \text{ time, } O(nd) \text{ space} \newline
+\text{4. Total:} \quad &amp;O(n^2 d) \text{ time, } O(n^2 + nd) \text{ space}
+\end{aligned}
+}
+\]</div>
 <p>Scaling Challenges:</p>
 <ul>
 <li>Quadratic scaling limits practical sequence lengths</li>
 <li>Memory requirements grow quadratically with sequence length</li>
 <li>Computational cost increases quadratically even with parallelization</li>
 </ul>
-<h3 id="102-flashattention-memory-efficient-attention">10.2 FlashAttention: Memory-Efficient Attention<a class="headerlink" href="#102-flashattention-memory-efficient-attention" title="Permanent link">&para;</a></h3>
-<p>Core Idea: Compute attention without materializing the full $n \times n$ attention matrix.</p>
+<h3 id="102-flashattention-memory-efficient-attention">10.2 FlashAttention: Memory-Efficient Attention<a class="headerlink" href="#102-flashattention-memory-efficient-attention" title="Permanent link">¶</a></h3>
+<p>Core Idea: Compute attention without materializing the full attention matrix:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+n \times n \text{ attention matrix} \quad \text{(avoided through tiling)}
+\end{aligned}
+\]</div>
 <p>Tiling Strategy:</p>
-<ol>
-<li>Divide $Q$, $K$, $V$ into blocks</li>
-<li>Compute attention scores block by block</li>
-<li>Use online softmax to maintain numerical stability</li>
-<li>Accumulate results without storing intermediate attention weights</li>
-</ol>
-<p>Memory Reduction: From $O(n^2)$ to $O(n)$ memory complexity for the attention computation.</p>
+<div class="arithmatex">\[
+{\textstyle
+\begin{aligned}
+\text{1. Divide } Q, K, V \text{ into blocks} \newline
+\text{2. Compute attention scores block by block} \newline
+\text{3. Use online softmax to maintain numerical stability} \newline
+\text{4. Accumulate results without storing intermediate attention weights}
+\end{aligned}
+}
+\]</div>
+<p>Memory Reduction: FlashAttention achieves significant memory savings:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\text{Standard:} \quad &amp;O(n^2) \text{ memory} \newline
+\text{FlashAttention:} \quad &amp;O(n) \text{ memory}
+\end{aligned}
+\]</div>
 <p>Speed Improvement: Better GPU utilization through reduced memory bandwidth requirements.</p>
 <p>Key Insight: Trade computational redundancy for memory efficiency - recompute rather than store.</p>
-<h3 id="103-multi-query-and-grouped-query-attention">10.3 Multi-Query and Grouped-Query Attention<a class="headerlink" href="#103-multi-query-and-grouped-query-attention" title="Permanent link">&para;</a></h3>
+<h3 id="103-multi-query-and-grouped-query-attention">10.3 Multi-Query and Grouped-Query Attention<a class="headerlink" href="#103-multi-query-and-grouped-query-attention" title="Permanent link">¶</a></h3>
 <p>Multi-Query Attention (MQA): Share key and value projections across heads:</p>
-<ul>
-<li>Queries: $Q \in \mathbb{R}^{B \times H \times n \times d_k}$ (per-head)</li>
-<li>Keys/Values: $K, V \in \mathbb{R}^{B \times 1 \times n \times d_k}$ (shared)</li>
-</ul>
+<div class="arithmatex">\[
+{\textstyle
+\begin{aligned}
+\text{Queries:} \quad &amp;Q \in \mathbb{R}^{B \times H \times n \times d_k} \text{ (per-head)} \newline
+\text{Keys/Values:} \quad &amp;K, V \in \mathbb{R}^{B \times 1 \times n \times d_k} \text{ (shared)}
+\end{aligned}
+}
+\]</div>
 <p>Grouped-Query Attention (GQA): Intermediate approach - group heads:</p>
-<ul>
-<li>Divide $H$ heads into $G$ groups</li>
-<li>Each group shares K, V projections</li>
-<li>Reduces KV cache size by factor $H/G$</li>
-</ul>
+<div class="arithmatex">\[
+{\textstyle
+\begin{aligned}
+&amp;\text{Divide } H \text{ heads into } G \text{ groups} \newline
+&amp;\text{Each group shares K, V projections} \newline
+&amp;\text{Reduces KV cache size by factor } H/G
+\end{aligned}
+}
+\]</div>
 <p>KV Cache Memory Analysis:</p>
-<ul>
-<li>Standard MHA: $2 \cdot B \cdot H \cdot n \cdot d_k$ parameters</li>
-<li>MQA: $2 \cdot B \cdot 1 \cdot n \cdot d_k$ parameters (H× reduction)</li>
-<li>GQA: $2 \cdot B \cdot G \cdot n \cdot d_k$ parameters</li>
-</ul>
+<div class="arithmatex">\[
+{\textstyle
+\begin{aligned}
+\text{Standard MHA:} \quad &amp;2 \cdot B \cdot H \cdot n \cdot d_k \text{ parameters} \newline
+\text{MQA:} \quad &amp;2 \cdot B \cdot 1 \cdot n \cdot d_k \text{ parameters (H× reduction)} \newline
+\text{GQA:} \quad &amp;2 \cdot B \cdot G \cdot n \cdot d_k \text{ parameters}
+\end{aligned}
+}
+\]</div>
 <p>Quantization: Reduce memory further with int8/fp16 KV cache storage.</p>
-<h3 id="104-kv-caching-for-autoregressive-generation">10.4 KV Caching for Autoregressive Generation<a class="headerlink" href="#104-kv-caching-for-autoregressive-generation" title="Permanent link">&para;</a></h3>
+<h3 id="104-kv-caching-for-autoregressive-generation">10.4 KV Caching for Autoregressive Generation<a class="headerlink" href="#104-kv-caching-for-autoregressive-generation" title="Permanent link">¶</a></h3>
 <p>Key Insight: During generation, keys and values for previous tokens don't change.</p>
 <p>Cache Update:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>K_{\text{cache}} \gets \mathrm{concat}(K_{\text{cache}},\ k_{\text{new}}) \tag{42}
-</code></pre></div>
-<ul>
-<li>$K_{\text{cache}}$: Cached keys from previous tokens.</li>
-<li>$V_{\text{cache}}$: Cached values from previous tokens.</li>
-<li>$k_{\text{new}}, v_{\text{new}}$: Key and value for the new token.</li>
-<li>$q_{\text{new}}$: Query for the new token.</li>
-</ul>
+<div class="arithmatex">\[
+\begin{aligned}
+K_{\text{cache}} \gets \mathrm{concat}(K_{\text{cache}},\ k_{\text{new}}) \quad (42)
+\end{aligned}
+\]</div>
+<div class="arithmatex">\[
+{\textstyle
+\begin{aligned}
+K_{\text{cache}} \quad &amp;: \text{ Cached keys from previous tokens.} \newline
+V_{\text{cache}} \quad &amp;: \text{ Cached values from previous tokens.} \newline
+k_{\text{new}}, v_{\text{new}} \quad &amp;: \text{ Key and value for the new token.} \newline
+q_{\text{new}} \quad &amp;: \text{ Query for the new token.}
+\end{aligned}
+}
+\]</div>
 <p>At each generation step, append the new key and value to the cache, then compute attention using the full cache.</p>
-<p>Memory Trade-off: Cache size grows as $O(nd)$ but eliminates $O(n^2)$ recomputation.</p>
+<p>Memory Trade-off: KV caching balances memory and computation:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\text{Cache growth:} \quad &amp;O(nd) \text{ memory} \newline
+\text{Recomputation saved:} \quad &amp;O(n^2) \text{ operations eliminated}
+\end{aligned}
+\]</div>
 <p>💻 Implementation Example: For KV Cache implementation, see <a href="./pynb/math_ref/advanced_concepts.ipynb">Advanced Concepts Notebook</a></p>
-<h3 id="105-linear-attention-approximations">10.5 Linear Attention Approximations<a class="headerlink" href="#105-linear-attention-approximations" title="Permanent link">&para;</a></h3>
-<p>Kernel Method View: Approximate $\text{softmax}(\mathbf{q}^T\mathbf{k})$ with $\phi(\mathbf{q})^T \phi(\mathbf{k})$ for feature map $\phi$.</p>
+<h3 id="105-linear-attention-approximations">10.5 Linear Attention Approximations<a class="headerlink" href="#105-linear-attention-approximations" title="Permanent link">¶</a></h3>
+<p>Kernel Method View: Use feature maps to approximate softmax attention:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\text{Original:} \quad &amp;\text{softmax}(\mathbf{q}^T\mathbf{k}) \newline
+\text{Approximation:} \quad &amp;\phi(\mathbf{q})^T \phi(\mathbf{k}) \quad \text{(feature map } \phi\text{)}
+\end{aligned}
+\]</div>
 <p>Linear Attention:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>\text{LinAttn}(Q,K,V) = \frac{\phi(Q)(\phi(K)^T V)}{\phi(Q)(\phi(K)^T \mathbf{1})} \quad (45)
-</code></pre></div></p>
-<p>Complexity Reduction: Reduces from $O(n^2 d)$ to $O(nd^2)$ when $d &lt; n$.</p>
-<h2 id="11-regularization-generalization-and-calibration">11. Regularization, Generalization, and Calibration<a class="headerlink" href="#11-regularization-generalization-and-calibration" title="Permanent link">&para;</a></h2>
-<h3 id="111-dropout-in-transformers">11.1 Dropout in Transformers<a class="headerlink" href="#111-dropout-in-transformers" title="Permanent link">&para;</a></h3>
+$$
+{\textstyle
+\begin{aligned}
+\text{LinAttn}(Q,K,V) = \frac{\phi(Q)(\phi(K)^T V)}{\phi(Q)(\phi(K)^T \mathbf{1})} \quad (45)
+\end{aligned}
+}
+$$</p>
+<p>Complexity Reduction: Linear attention improves computational complexity:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\text{Standard:} \quad &amp;O(n^2 d) \newline
+\text{Linear:} \quad &amp;O(nd^2) \quad \text{(beneficial when } d &lt; n\text{)}
+\end{aligned}
+\]</div>
+<h2 id="11-regularization-generalization-and-calibration">11. Regularization, Generalization, and Calibration<a class="headerlink" href="#11-regularization-generalization-and-calibration" title="Permanent link">¶</a></h2>
+<h3 id="111-dropout-in-transformers">11.1 Dropout in Transformers<a class="headerlink" href="#111-dropout-in-transformers" title="Permanent link">¶</a></h3>
 <p>Attention Dropout: Applied to attention weights:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>A_{\text{dropped}} = \text{Dropout}(\text{softmax}(QK^T/\sqrt{d_k})) \quad (46)
-</code></pre></div></p>
+$$
+{\textstyle
+\begin{aligned}
+A_{\text{dropped}} = \text{Dropout}(\text{softmax}(QK^T/\sqrt{d_k})) \quad (46)
+\end{aligned}
+}
+$$</p>
 <p>FFN Dropout: Applied after first linear transformation:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>\text{FFN}(\mathbf{x}) = W_2 \cdot \text{Dropout}(\text{GELU}(W_1 \mathbf{x})) \quad (47)
-</code></pre></div></p>
-<h3 id="112-evaluation-and-calibration">11.2 Evaluation and Calibration<a class="headerlink" href="#112-evaluation-and-calibration" title="Permanent link">&para;</a></h3>
+$$
+{\textstyle
+\begin{aligned}
+\text{FFN}(\mathbf{x}) = W_2 \cdot \text{Dropout}(\text{GELU}(W_1 \mathbf{x})) \quad (47)
+\end{aligned}
+}
+$$</p>
+<h3 id="112-evaluation-and-calibration">11.2 Evaluation and Calibration<a class="headerlink" href="#112-evaluation-and-calibration" title="Permanent link">¶</a></h3>
 <p>Expected Calibration Error (ECE): Measures how well predicted probabilities match actual outcomes:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>\text{ECE} = \sum_{m=1}^M \frac{|B_m|}{n} |\text{acc}(B_m) - \text{conf}(B_m)|
-</code></pre></div>
-where $B_m$ are probability bins, $\text{acc}$ is accuracy, $\text{conf}$ is confidence.</p>
+$$
+{\textstyle
+\begin{aligned}
+\text{ECE} = \sum_{m=1}^M \frac{|B_m|}{n} |\text{acc}(B_m) - \text{conf}(B_m)|
+\end{aligned}
+}
+$$</p>
+<p>with the following components:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+B_m &amp;: \text{Probability bins} \newline
+\text{acc}(B_m) &amp;: \text{Accuracy in bin } m \newline
+\text{conf}(B_m) &amp;: \text{Confidence in bin } m
+\end{aligned}
+\]</div>
 <p>Temperature Scaling: Post-training calibration method:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>P_{\text{cal}}(y|x) = \text{softmax}(\mathbf{z}/T)
-</code></pre></div>
-where $T &gt; 1$ makes predictions less confident, $T &lt; 1$ more confident.</p>
+$$
+{\textstyle
+\begin{aligned}
+P_{\text{cal}}(y|x) = \text{softmax}(\mathbf{z}/T)
+\end{aligned}
+}
+$$</p>
+<p>with temperature parameter controlling confidence:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+T &gt; 1 &amp;: \text{Less confident predictions (smoother distribution)} \newline
+T &lt; 1 &amp;: \text{More confident predictions (sharper distribution)}
+\end{aligned}
+\]</div>
 <p>Perplexity Dependence on Tokenizer: PPL comparisons only valid with same tokenizer. Different tokenizers create different sequence lengths and vocabulary sizes.</p>
 <p>Example: "hello world" might be:</p>
 <ul>
 <li>GPT tokenizer: ["hel", "lo", " wor", "ld"] (4 tokens)</li>
 <li>Character-level: ["h", "e", "l", "l", "o", " ", "w", "o", "r", "l", "d"] (11 tokens)</li>
 </ul>
-<h3 id="113-advanced-tokenization">11.3 Advanced Tokenization<a class="headerlink" href="#113-advanced-tokenization" title="Permanent link">&para;</a></h3>
+<h3 id="113-advanced-tokenization">11.3 Advanced Tokenization<a class="headerlink" href="#113-advanced-tokenization" title="Permanent link">¶</a></h3>
 <p>Byte-Level BPE vs Unigram:</p>
 <ul>
 <li>BPE: Greedily merges frequent character pairs, handles any Unicode</li>
@@ -1736,236 +1349,257 @@ where $T &gt; 1$ makes predictions less confident, $T &lt; 1$ more confident.</p
 </ul>
 <p>Embedding/LM-Head Tying Caveats:
 When sharing weights, ensure shape compatibility:</p>
-<ul>
-<li>Embedding: $E \in \mathbb{R}^{V \times d_{\text{model}}}$</li>
-<li>LM head: needs $\mathbb{R}^{d_{\text{model}} \times V}$</li>
-<li>Solution: Use $E^T$ for output projection (as shown in equation 40)</li>
-</ul>
-<h3 id="114-label-smoothing">11.4 Label Smoothing<a class="headerlink" href="#114-label-smoothing" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[
+{\textstyle
+\begin{aligned}
+\text{Embedding:} \quad &amp;E \in \mathbb{R}^{V \times d_{\text{model}}} \newline
+\text{LM head: needs} \quad &amp;\mathbb{R}^{d_{\text{model}} \times V} \newline
+\text{Solution: Use } E^T \text{ for output projection (as shown in equation 40)}
+\end{aligned}
+}
+\]</div>
+<h3 id="114-label-smoothing">11.4 Label Smoothing<a class="headerlink" href="#114-label-smoothing" title="Permanent link">¶</a></h3>
 <p>Smooth Labels: Replace one-hot targets with:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>y_{\text{smooth}} = (1-\alpha) y_{\text{true}} + \frac{\alpha}{V} \mathbf{1} \quad (48)
-</code></pre></div></p>
+$$
+{\textstyle
+\begin{aligned}
+y_{\text{smooth}} = (1-\alpha) y_{\text{true}} + \frac{\alpha}{V} \mathbf{1} \quad (48)
+\end{aligned}
+}
+$$</p>
 <p>Effect on Gradients: Prevents overconfident predictions and improves calibration.</p>
-<h2 id="14-common-pitfalls--misconceptions">14. Common Pitfalls &amp; Misconceptions<a class="headerlink" href="#14-common-pitfalls--misconceptions" title="Permanent link">&para;</a></h2>
-<h3 id="141-high-dimensional-distance-misconceptions">14.1 High-Dimensional Distance Misconceptions<a class="headerlink" href="#141-high-dimensional-distance-misconceptions" title="Permanent link">&para;</a></h3>
-<p>Pitfall: Using Euclidean distance instead of cosine similarity in high dimensions.
-Fix: In $d &gt; 100$, most vectors are approximately orthogonal, making cosine similarity more discriminative.</p>
-<h3 id="142-attention-scaling-mistakes">14.2 Attention Scaling Mistakes<a class="headerlink" href="#142-attention-scaling-mistakes" title="Permanent link">&para;</a></h3>
-<p>Pitfall: Forgetting $1/\sqrt{d_k}$ scaling or using wrong dimension.
-Symptom: Attention weights become too peaked, leading to poor gradients.
-Fix: Always scale by $\sqrt{d_k}$ where $d_k$ is the key dimension. Note that $d_k=d_{\text{model}}/h$ under common implementations.</p>
-<h3 id="143-layernorm-placement">14.3 LayerNorm Placement<a class="headerlink" href="#143-layernorm-placement" title="Permanent link">&para;</a></h3>
+<h2 id="14-common-pitfalls--misconceptions">14. Common Pitfalls &amp; Misconceptions<a class="headerlink" href="#14-common-pitfalls--misconceptions" title="Permanent link">¶</a></h2>
+<h3 id="141-high-dimensional-distance-misconceptions">14.1 High-Dimensional Distance Misconceptions<a class="headerlink" href="#141-high-dimensional-distance-misconceptions" title="Permanent link">¶</a></h3>
+<p>Pitfall: Using Euclidean distance instead of cosine similarity in high dimensions.</p>
+<p>Fix: In high-dimensional spaces, cosine similarity is more discriminative:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+d &gt; 100 \quad \text{(most vectors are approximately orthogonal)}
+\end{aligned}
+\]</div>
+<h3 id="142-attention-scaling-mistakes">14.2 Attention Scaling Mistakes<a class="headerlink" href="#142-attention-scaling-mistakes" title="Permanent link">¶</a></h3>
+<p>Pitfall: Forgetting the proper scaling factor or using wrong dimension.</p>
+<p>Symptom: Attention weights become too peaked, leading to poor gradients.</p>
+<p>Fix: Always apply the correct scaling:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\text{Scaling factor:} \quad &amp;1/\sqrt{d_k} \newline
+\text{Key dimension:} \quad &amp;d_k = d_{\text{model}}/h \quad \text{(common implementation)}
+\end{aligned}
+\]</div>
+<h3 id="143-layernorm-placement">14.3 LayerNorm Placement<a class="headerlink" href="#143-layernorm-placement" title="Permanent link">¶</a></h3>
 <p>Pitfall: Using post-LayerNorm (original) instead of pre-LayerNorm (modern).
 Issue: Post-LN can lead to training instability in deep models.
 Modern Practice: Apply LayerNorm before attention and FFN blocks.</p>
-<h3 id="144-softmax-temperature-misuse">14.4 Softmax Temperature Misuse<a class="headerlink" href="#144-softmax-temperature-misuse" title="Permanent link">&para;</a></h3>
-<p>Pitfall: Applying temperature scaling inconsistently.
-Correct Usage: Temperature $\tau$ in $\text{softmax}(\mathbf{z}/\tau)$ controls sharpness:</p>
-<ul>
-<li>$\tau &gt; 1$: Smoother distribution</li>
-<li>$\tau &lt; 1$: Sharper distribution</li>
-</ul>
-<h2 id="15-summary--what-to-learn-next">15. Summary &amp; What to Learn Next<a class="headerlink" href="#15-summary--what-to-learn-next" title="Permanent link">&para;</a></h2>
-<h3 id="151-key-mathematical-insights">15.1 Key Mathematical Insights<a class="headerlink" href="#151-key-mathematical-insights" title="Permanent link">&para;</a></h3>
-<ol>
-<li>Attention as Similarity Search: Q/K/V framework emerges naturally from maximum inner product search</li>
-<li>Scaling Laws: $1/\sqrt{d_k}$ scaling prevents attention collapse (overly peaked distributions) in high dimensions  </li>
-<li>Residual Connections: Enable gradient flow through deep networks via skip connections</li>
-<li>Multi-Head Architecture: Parallel subspace projections enable diverse attention patterns</li>
-</ol>
-<h3 id="152-advanced-techniques-covered">15.2 Advanced Techniques Covered<a class="headerlink" href="#152-advanced-techniques-covered" title="Permanent link">&para;</a></h3>
+<h3 id="144-softmax-temperature-misuse">14.4 Softmax Temperature Misuse<a class="headerlink" href="#144-softmax-temperature-misuse" title="Permanent link">¶</a></h3>
+<p>Pitfall: Applying temperature scaling inconsistently.</p>
+<p>Correct Usage: Use temperature parameter to control distribution sharpness:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\text{softmax}(\mathbf{z}/\tau) \quad \text{where } \tau \text{ controls sharpness}
+\end{aligned}
+\]</div>
+<div class="arithmatex">\[
+{\textstyle
+\begin{aligned}
+\tau &gt; 1 \quad &amp;: \text{ Smoother distribution} \newline
+\tau &lt; 1 \quad &amp;: \text{ Sharper distribution}
+\end{aligned}
+}
+\]</div>
+<h2 id="15-summary--what-to-learn-next">15. Summary &amp; What to Learn Next<a class="headerlink" href="#15-summary--what-to-learn-next" title="Permanent link">¶</a></h2>
+<h3 id="151-key-mathematical-insights">15.1 Key Mathematical Insights<a class="headerlink" href="#151-key-mathematical-insights" title="Permanent link">¶</a></h3>
+<div class="arithmatex">\[
+{\textstyle
+\begin{aligned}
+\text{1. Attention as Similarity Search:} \quad &amp;\text{Q/K/V framework emerges naturally from maximum inner product search} \newline
+\text{2. Scaling Laws:} \quad &amp;1/\sqrt{d_k} \text{ scaling prevents attention collapse (overly peaked distributions) in high dimensions} \newline
+\text{3. Residual Connections:} \quad &amp;\text{Enable gradient flow through deep networks via skip connections} \newline
+\text{4. Multi-Head Architecture:} \quad &amp;\text{Parallel subspace projections enable diverse attention patterns}
+\end{aligned}
+}
+\]</div>
+<h3 id="152-advanced-techniques-covered">15.2 Advanced Techniques Covered<a class="headerlink" href="#152-advanced-techniques-covered" title="Permanent link">¶</a></h3>
 <ol>
 <li>Optimization: SGD momentum, Adam, AdamW with proper learning rate schedules</li>
 <li>Efficiency: FlashAttention, Multi-Query/Grouped-Query Attention, KV caching</li>
 <li>Regularization: Dropout, label smoothing, calibration techniques</li>
 <li>Numerical Stability: Gradient clipping, mixed precision, proper initialization</li>
 </ol>
-<h3 id="153-next-steps">15.3 Next Steps<a class="headerlink" href="#153-next-steps" title="Permanent link">&para;</a></h3>
+<h3 id="153-next-steps">15.3 Next Steps<a class="headerlink" href="#153-next-steps" title="Permanent link">¶</a></h3>
 <p>Scaling Laws: Study how performance scales with model size, data, and compute (Kaplan et al., 2020)</p>
 <p>Parameter-Efficient Fine-Tuning: LoRA, adapters, and other methods for efficient adaptation</p>
 <p>Retrieval-Augmented Models: Combining parametric knowledge with external memory</p>
 <p>Advanced Architectures: Mixture of Experts, sparse attention patterns, and alternative architectures</p>
-<hr />
-<h2 id="connection-to-part-1">Connection to Part 1<a class="headerlink" href="#connection-to-part-1" title="Permanent link">&para;</a></h2>
+<hr/>
+<h2 id="connection-to-part-1">Connection to Part 1<a class="headerlink" href="#connection-to-part-1" title="Permanent link">¶</a></h2>
 <p>This tutorial builds directly on the foundations established in <a href="../transformers_math1/">Part 1: Building Intuition and Core Concepts</a>. Together, these two parts provide a complete mathematical understanding of Transformer architectures, from basic principles through advanced implementation considerations.</p>
 <p>If you haven't already, we highly recommend reading Part 1 first to build the necessary intuition before diving into these advanced topics.</p>
-<hr />
-<h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
-<p>Core Papers:
-[1] Vaswani, A., et al. "Attention is all you need." <em>Advances in Neural Information Processing Systems</em>, 2017.
-[2] Devlin, J., et al. "BERT: Pre-training of deep bidirectional transformers for language understanding." <em>NAACL-HLT</em>, 2019.
-[3] Brown, T., et al. "Language models are few-shot learners." <em>Advances in Neural Information Processing Systems</em>, 2020.</p>
-<p>Mathematical Foundations:
-[4] Kaplan, J., et al. "Scaling laws for neural language models." <em>arXiv preprint arXiv:2001.08361</em>, 2020.
-[5] Su, J., et al. "RoFormer: Enhanced transformer with rotary position embedding." <em>arXiv preprint arXiv:2104.09864</em>, 2021.</p>
-<p>Efficiency &amp; Scaling:
-[6] Dao, T., et al. "FlashAttention: Fast and memory-efficient exact attention with IO-awareness." <em>Advances in Neural Information Processing Systems</em>, 2022.
-[7] Shazeer, N. "Fast transformer decoding: One write-head is all you need." <em>arXiv preprint arXiv:1911.02150</em>, 2019.</p>
-<p>Training &amp; Optimization:
-[8] Loshchilov, I., &amp; Hutter, F. "Decoupled weight decay regularization." <em>ICLR</em>, 2019.
-[9] Xiong, R., et al. "On layer normalization in the transformer architecture." <em>ICML</em>, 2020.
-[10] Press, O., &amp; Wolf, L. "Using the output embedding to improve language models." <em>EACL</em>, 2017.</p>
-<hr />
-<h2 id="appendix-a-symbolshape-reference">Appendix A: Symbol/Shape Reference<a class="headerlink" href="#appendix-a-symbolshape-reference" title="Permanent link">&para;</a></h2>
-<h3 id="single-head-attention-shapes">Single-Head Attention Shapes<a class="headerlink" href="#single-head-attention-shapes" title="Permanent link">&para;</a></h3>
+<hr/>
+<h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">¶</a></h2>
+<p>For a comprehensive collection of all papers referenced in this tutorial and additional resources, see <strong><a href="../further/">Further Reading</a></strong>.</p>
+<p>Key papers referenced in this Part 2:</p>
+<p><strong>Optimization:</strong>
+- Loshchilov &amp; Hutter (2019) - AdamW optimizer
+- Kaplan et al. (2020) - Scaling laws</p>
+<p><strong>Efficiency:</strong>
+- Dao et al. (2022) - FlashAttention
+- Shazeer (2019) - Multi-query attention</p>
+<p><strong>Architecture:</strong>
+- Vaswani et al. (2017) - Original transformer
+- Xiong et al. (2020) - LayerNorm placement
+- Press &amp; Wolf (2017) - Weight tying</p>
+<hr/>
+<h2 id="appendix-a-symbolshape-reference">Appendix A: Symbol/Shape Reference<a class="headerlink" href="#appendix-a-symbolshape-reference" title="Permanent link">¶</a></h2>
+<h3 id="single-head-attention-shapes">Single-Head Attention Shapes<a class="headerlink" href="#single-head-attention-shapes" title="Permanent link">¶</a></h3>
 <table>
 <thead>
 <tr>
-<th>Symbol</th>
-<th>Meaning</th>
-<th>Typical Shape</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Meaning</th>
+<th style="text-align: left;">Typical Shape</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>$Q, K, V$</td>
-<td>Query, Key, Value matrices</td>
-<td>$[n \times d_k], [n \times d_k], [n \times d_v]$</td>
+<td style="text-align: left;"><span class="arithmatex">\(Q, K, V\)</span></td>
+<td style="text-align: left;">Query, Key, Value matrices</td>
+<td style="text-align: left;"><span class="arithmatex">\([n \times d_k], [n \times d_k], [n \times d_v]\)</span></td>
 </tr>
 <tr>
-<td>$n$</td>
-<td>Sequence length</td>
-<td>Scalar</td>
+<td style="text-align: left;"><span class="arithmatex">\(n\)</span></td>
+<td style="text-align: left;">Sequence length</td>
+<td style="text-align: left;">Scalar</td>
 </tr>
 <tr>
-<td>$d_{\text{model}}$</td>
-<td>Model dimension</td>
-<td>Scalar (512, 768, 1024, etc.)</td>
+<td style="text-align: left;"><span class="arithmatex">\(d_{\text{model}}\)</span></td>
+<td style="text-align: left;">Model dimension</td>
+<td style="text-align: left;">Scalar (512, 768, 1024, etc.)</td>
 </tr>
 <tr>
-<td>$d_k, d_v$</td>
-<td>Key, value dimensions</td>
-<td>Usually $d_{\text{model}}/h$</td>
+<td style="text-align: left;"><span class="arithmatex">\(d_k, d_v\)</span></td>
+<td style="text-align: left;">Key, value dimensions</td>
+<td style="text-align: left;">Usually <span class="arithmatex">\(d_{\text{model}}/h\)</span></td>
 </tr>
 <tr>
-<td>$h$</td>
-<td>Number of attention heads</td>
-<td>Scalar (8, 12, 16, etc.)</td>
+<td style="text-align: left;"><span class="arithmatex">\(h\)</span></td>
+<td style="text-align: left;">Number of attention heads</td>
+<td style="text-align: left;">Scalar (8, 12, 16, etc.)</td>
 </tr>
 </tbody>
 </table>
-<h3 id="multi-head--batched-shapes">Multi-Head &amp; Batched Shapes<a class="headerlink" href="#multi-head--batched-shapes" title="Permanent link">&para;</a></h3>
+<h3 id="multi-head--batched-shapes">Multi-Head &amp; Batched Shapes<a class="headerlink" href="#multi-head--batched-shapes" title="Permanent link">¶</a></h3>
 <table>
 <thead>
 <tr>
-<th>Symbol</th>
-<th>Meaning</th>
-<th>Batched Multi-Head Shape</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Meaning</th>
+<th style="text-align: left;">Batched Multi-Head Shape</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>$Q, K, V$</td>
-<td>Projected queries, keys, values</td>
-<td>$[B, H, n, d_k], [B, H, n, d_k], [B, H, n, d_v]$</td>
+<td style="text-align: left;"><span class="arithmatex">\(Q, K, V\)</span></td>
+<td style="text-align: left;">Projected queries, keys, values</td>
+<td style="text-align: left;"><span class="arithmatex">\([B, H, n, d_k], [B, H, n, d_k], [B, H, n, d_v]\)</span></td>
 </tr>
 <tr>
-<td>$A$</td>
-<td>Attention weights matrix</td>
-<td>$[B, H, n, n]$</td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{Attn}\)</span></td>
+<td style="text-align: left;">Attention weights matrix</td>
+<td style="text-align: left;"><span class="arithmatex">\([B, H, n, n]\)</span></td>
 </tr>
 <tr>
-<td>$O$</td>
-<td>Attention output (pre-concat)</td>
-<td>$[B, H, n, d_v]$</td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{Output}_{\text{pre}}\)</span></td>
+<td style="text-align: left;">Attention output (pre-concat)</td>
+<td style="text-align: left;"><span class="arithmatex">\([B, H, n, d_v]\)</span></td>
 </tr>
 <tr>
-<td>$O_{\text{proj}}$</td>
-<td>Final output (post-concat)</td>
-<td>$[B, n, d_{\text{model}}]$</td>
+<td style="text-align: left;"><span class="arithmatex">\(\text{Output}_{\text{proj}}\)</span></td>
+<td style="text-align: left;">Final output (post-concat)</td>
+<td style="text-align: left;"><span class="arithmatex">\([B, n, d_{\text{model}}]\)</span></td>
 </tr>
 <tr>
-<td>$W^Q, W^K, W^V$</td>
-<td>Attention projection matrices</td>
-<td>$[d_{\text{model}} \times d_k]$ per head</td>
+<td style="text-align: left;"><span class="arithmatex">\(W^Q, W^K, W^V, W^{\text{proj}}\)</span></td>
+<td style="text-align: left;">Attention projection matrices</td>
+<td style="text-align: left;"><span class="arithmatex">\([d_{\text{model}} \times d_k]\)</span> per head</td>
 </tr>
 <tr>
-<td>$W^O$</td>
-<td>Output projection</td>
-<td>$[d_{\text{model}} \times d_{\text{model}}]$</td>
+<td style="text-align: left;"><span class="arithmatex">\(W^O\)</span></td>
+<td style="text-align: left;">Output projection</td>
+<td style="text-align: left;"><span class="arithmatex">\([d_{\text{model}} \times d_{\text{model}}]\)</span></td>
 </tr>
 </tbody>
 </table>
-<p>Convention: $B$ = batch size, $H$ = number of heads, $n$ = sequence length, $d_k = d_v = d_{\text{model}}/H$</p>
-<h2 id="appendix-b-key-derivations">Appendix B: Key Derivations<a class="headerlink" href="#appendix-b-key-derivations" title="Permanent link">&para;</a></h2>
-<h3 id="b1-softmax-gradient">B.1 Softmax Gradient<a class="headerlink" href="#b1-softmax-gradient" title="Permanent link">&para;</a></h3>
-<p>For $p_i = \frac{e^{z_i}}{\sum_j e^{z_j}}$:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>\frac{\partial p_i}{\partial z_j} = \begin{cases}
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>p_i(1 - p_i) &amp; \text{if } i = j \\
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>-p_i p_j &amp; \text{if } i \neq j
-<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>\end{cases} = p_i(\delta_{ij} - p_j)
-</code></pre></div>
-<h3 id="b2-matrix-calculus-identities">B.2 Matrix Calculus Identities<a class="headerlink" href="#b2-matrix-calculus-identities" title="Permanent link">&para;</a></h3>
-<p>Trace-Vec Identity: $\text{tr}(AB) = \text{vec}(A^T)^T \text{vec}(B)$</p>
-<p>Kronecker Product: $\text{vec}(AXB) = (B^T \otimes A)\text{vec}(X)$</p>
-<p>Chain Rule for Matrices: $\frac{\partial f}{\partial X} = \sum_Y \frac{\partial f}{\partial Y} \frac{\partial Y}{\partial X}$</p>
-
-
-
-
-
-
-
-
-
-
-
-
-                
-              </article>
-            </div>
-          
-          
-  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
-
+<p>Convention:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+B &amp;: \text{Batch size} \newline
+H &amp;: \text{Number of heads} \newline
+n &amp;: \text{Sequence length} \newline
+d_k = d_v &amp;= d_{\text{model}}/H
+\end{aligned}
+\]</div>
+<h2 id="appendix-b-key-derivations">Appendix B: Key Derivations<a class="headerlink" href="#appendix-b-key-derivations" title="Permanent link">¶</a></h2>
+<h3 id="b1-softmax-gradient">B.1 Softmax Gradient<a class="headerlink" href="#b1-softmax-gradient" title="Permanent link">¶</a></h3>
+<p>For the softmax probability:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+p_i = \frac{e^{z_i}}{\sum_j e^{z_j}}
+\end{aligned}
+\]</div>
+<p>The gradient is:</p>
+<div class="arithmatex">\[
+{\textstyle
+\begin{aligned}
+\frac{\partial p_i}{\partial z_j} = \begin{cases}
+p_i(1 - p_i) &amp; \text{if } i = j \\
+-p_i p_j &amp; \text{if } i \neq j
+\end{cases} = p_i(\delta_{ij} - p_j)
+\end{aligned}
+}
+\]</div>
+<h3 id="b2-matrix-calculus-identities">B.2 Matrix Calculus Identities<a class="headerlink" href="#b2-matrix-calculus-identities" title="Permanent link">¶</a></h3>
+<div class="arithmatex">\[
+\begin{aligned}
+\text{Trace-Vec Identity:} \quad &amp;\text{tr}(AB) = \text{vec}(A^T)^T \text{vec}(B) \newline
+\text{Kronecker Product:} \quad &amp;\text{vec}(AXB) = (B^T \otimes A)\text{vec}(X) \newline
+\text{Chain Rule for Matrices:} \quad &amp;\frac{\partial f}{\partial X} = \sum_Y \frac{\partial f}{\partial Y} \frac{\partial Y}{\partial X}
+\end{aligned}
+\]</div>
+</article>
+</div>
+<script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
-        </div>
-        
-          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
   Back to top
 </button>
-        
-      </main>
-      
-        <footer class="md-footer">
-  
-  <div class="md-footer-meta md-typeset">
-    <div class="md-footer-meta__inner md-grid">
-      <div class="md-copyright">
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
   
   
     Made with
-    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
       Material for MkDocs
     </a>
-  
 </div>
-      
-    </div>
-  </div>
+</div>
+</div>
 </footer>
-      
-    </div>
-    <div class="md-dialog" data-md-component="dialog">
-      <div class="md-dialog__inner md-typeset"></div>
-    </div>
-    
-    
-    
-      
-      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.top", "navigation.instant", "content.code.copy", "content.tabs.link", "toc.follow"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
-    
-    
-      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
-      
-        <script src="../javascripts/mathjax-init.js"></script>
-      
-        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-      
-        <script src="../javascripts/mathjax-refresh.js"></script>
-      
-    
-  </body>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.top", "navigation.instant", "content.code.copy", "content.tabs.link", "toc.follow", "content.code.annotate", "content.diagrams", "content.mermaid"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+<script src="../javascripts/mathjax-init.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="../javascripts/mathjax-refresh.js"></script>
+<script src="https://unpkg.com/mermaid@10.2.4/dist/mermaid.min.js"></script>
+<script src="../javascripts/mermaid-init.js"></script>
+</body>
 </html>
