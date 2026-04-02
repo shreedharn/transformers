@@ -191,6 +191,7 @@ $$
 &\text{representing learned embeddings}
 \end{aligned}
 $$
+
 - 12 layers: Hierarchical representation learning through stacked transformer blocks
 - 50,000 words: Vocabulary size determining output distribution dimensionality
 
@@ -345,6 +346,32 @@ Representational Advantages:
 
 Position encoding addresses the permutation-invariance of attention mechanisms by injecting sequential order information into the representation space.
 
+### Token Embeddings vs. Hidden States
+
+There is an important distinction between a token's initial embedding and the hidden states produced by transformer layers — one that matters for understanding what the model is actually computing.
+
+The embedding layer maps each token ID to a starting vector:
+
+$$
+\begin{aligned}
+x_i^{(0)} \in \mathbb{R}^{d_{\text{model}}}
+\end{aligned}
+$$
+
+This initial vector loosely encodes token identity, rough semantic similarity, and lexical statistics. It is the model's first guess at meaning before any context has been processed.
+
+Once attention and MLP layers begin transforming this representation, the vector becomes a **hidden state** — something far richer. At layer $$\ell$$, token $$i$$ carries:
+
+$$
+\begin{aligned}
+h_i^{(\ell)} \in \mathbb{R}^{d_{\text{model}}}
+\end{aligned}
+$$
+
+This hidden state can encode lexical meaning, syntax, semantic role, long-range dependencies, and prediction-relevant features — all simultaneously, in the same fixed number of dimensions.
+
+The key conceptual point: hidden states have the **same dimensionality** as token embeddings, but not the same interpretation. The model does not try to squeeze richer meaning into the original embedding semantics. Instead, it treats the fixed-width vector as an evolving workspace, repeatedly rewriting it into a more useful representation as computation progresses through the layers.
+
 ### Embedding Computation Pipeline
 
 Token Embedding Lookup:
@@ -472,6 +499,12 @@ Layer-wise Functionality:
 2. Feed-forward sublayer: Applies position-wise transformations to individual token representations
 3. Residual connections: Preserve gradient flow and enable identity mappings
 4. Layer normalization: Stabilizes training dynamics and accelerates convergence
+
+The two sublayers inside each block have a clean division of labor that is worth internalizing as a mental model:
+
+**Attention = communication across positions** — it decides which other tokens matter and gathers information from them via content-dependent message passing. Questions like "which earlier token is the subject?", "which adjective modifies this noun?", or "what does this pronoun refer to?" are all answered by attention.
+
+**MLP = computation within a position** — after attention has enriched a token's representation with context from elsewhere in the sequence, the MLP processes that enriched vector independently (without looking at other tokens) and computes new nonlinear features. If attention retrieves and mixes context, the MLP synthesizes and transforms it.
 
 Representational Hierarchy: Empirical analysis suggests progressive abstraction:
 
@@ -661,6 +694,17 @@ Position Encoding Variants:
 - ALiBi (Attention with Linear Biases): Adds position-based linear bias to attention scores
 - Learned vs. Sinusoidal: Trainable position vectors vs. fixed mathematical functions
 
+**RoPE in depth:** Rotary Position Embedding is the positional encoding used by most modern decoder-only models (LLaMA, Mistral, Gemma, etc.). The core idea is that instead of adding a separate position vector to the input embedding, RoPE injects position information directly into the attention computation by rotating the query and key vectors by position-dependent angles.
+
+Critically, RoPE is applied at a specific point in the attention pipeline:
+
+1. Compute hidden states for each token
+2. Project each hidden state into query and key vectors via learned weight matrices
+3. **Apply RoPE rotations to the query and key vectors**
+4. Compute attention scores using the rotated queries and keys
+
+RoPE is **not** applied to the value vectors. This placement means position information enters the model through the compatibility scores (dot products between queries and keys), while value content remains position-free. A useful consequence is that the dot product between a rotated query and a rotated key naturally encodes the relative distance between positions, giving the model an implicit sense of "how far apart are these tokens?"
+
 ### Choosing the Right Architecture
 
 For Understanding Tasks: Use encoder-only (BERT-style)
@@ -740,14 +784,24 @@ $$
 
 Step 1: Linear Projections
 
+At each layer, every token's hidden state is projected into three distinct roles through learned linear transformations:
+
 $$
 \begin{aligned}
 \text{Input:} \quad X &\in \mathbb{R}^{n \times d\_{\text{model}}} : \text{Input sequence representations} \newline
-\text{Query projections:} \quad Q &= XW^Q \in \mathbb{R}^{n \times d\_{\text{model}}} \newline
-\text{Key projections:} \quad K &= XW^K \in \mathbb{R}^{n \times d\_{\text{model}}} \newline
-\text{Value projections:} \quad V &= XW^V \in \mathbb{R}^{n \times d\_{\text{model}}}
+\text{Query projections:} \quad Q &= XW^Q + b_Q \in \mathbb{R}^{n \times d\_{\text{model}}} \newline
+\text{Key projections:} \quad K &= XW^K + b_K \in \mathbb{R}^{n \times d\_{\text{model}}} \newline
+\text{Value projections:} \quad V &= XW^V + b_V \in \mathbb{R}^{n \times d\_{\text{model}}}
 \end{aligned}
 $$
+
+The bias terms $$b_Q$$, $$b_K$$, $$b_V$$ add a learned offset after each matrix multiplication, shifting the output independently of the input. Some modern implementations omit these biases (particularly for Q and K), but conceptually the weight matrix mixes input features while the bias adds a baseline offset per output dimension. The important thing is that the same hidden state is transformed into three different roles through three different learned projections:
+
+- **Q (Query):** what is this token looking for?
+- **K (Key):** what does this token contain?
+- **V (Value):** what content should be passed along if attended to?
+
+Because the hidden state changes with context, the same token string can produce different Q/K/V vectors in different contexts — the model learns projection rules, not fixed queries per token type.
 
 Step 2: Multi-Head Reshaping
 
@@ -880,10 +934,6 @@ Computational Complexity Analysis:
 
 Tensor Shapes with Standard Convention:
 A common convention is to use shapes like `[batch\_\1ize, num\_\1eads, seq\_\1en, head\_\1im]`. For simplicity, we omit the batch dimension.
-
-$$
-
-
 
 $$
 
@@ -1245,7 +1295,9 @@ $$
 \end{aligned}
 $$
 
-Step 2: Language Model Head
+Step 2: Language Model Head (Unembedding)
+
+The unembedding layer maps the final hidden state to a score for each vocabulary token:
 
 $$
 \begin{aligned}
@@ -1254,6 +1306,16 @@ $$
 \text{Weight tying:} \quad W\_{\text{lm}} &= E^T \text{ (often use transpose of embedding matrix)}
 \end{aligned}
 $$
+
+A common misconception here: the unembedding is **not** asking "does the final hidden state look like the original embedding of some token?" It is asking "how much evidence does this hidden state provide for each possible next token?" Each row of $$W\_{\text{lm}}$$ is a learned detector direction for one vocabulary item. For token $$t$$, the score is:
+
+$$
+\begin{aligned}
+\text{logit}_t = w_t^\top h_{\text{last}} + b_t
+\end{aligned}
+$$
+
+So if the hidden state contains the right features, the corresponding token gets a high score — regardless of whether those features resemble the token's original embedding. For instance, if the context is "The white cat drank some", the final hidden state may encode features like "noun likely next" and "liquid likely", causing the unembedding to score `milk` and `water` highly and `keyboard` low. The unembedding is a learned readout from hidden-state space to token scores, not a similarity search in the original embedding space.
 
 Step 3: Temperature Scaling
 
@@ -1365,7 +1427,34 @@ p &\in [0.9, 0.95] : \text{Typical range for balancing quality and diversity}
 \end{aligned}
 $$
 
-Beam Search: For deterministic high-quality generation, maintains top-$$b$$ hypotheses at each step
+Beam Search: For deterministic high-quality generation, maintains top-b hypotheses at each step.
+
+---
+
+## The Residual Stream: A Unifying Mental Model
+
+Before moving on, it's worth stepping back to see how all these components fit together. The clearest way to think about a transformer is as a fixed-width **residual stream** that serves as an evolving workspace.
+
+Every token starts with an embedding that initializes its slot in the stream. Then, layer by layer, attention and MLP operations read from this stream and write updates back into it via residual addition:
+
+$$
+\begin{aligned}
+x &\leftarrow x + \text{Attention}(x) \newline
+x &\leftarrow x + \text{MLP}(x)
+\end{aligned}
+$$
+
+This means the current representation is always preserved and incrementally refined — earlier context is not discarded, it is carried forward. The attention output is added to the existing token representation, so the token now reflects both what it was before and what it learned from other tokens. The MLP output is then added on top of that enriched state.
+
+The roles of each component in this picture are:
+
+- **Embeddings** initialize the workspace for each token
+- **Attention** moves information across positions — it writes context from other tokens into each token's slot
+- **MLPs** compute richer features within each position — they synthesize and transform what attention gathered
+- **Residual addition** carries information forward while allowing each layer to refine it
+- **Unembedding** reads the final state of the last-position slot and converts it into next-token scores
+
+The model never preserves a static embedding meaning from start to finish. It repeatedly rewrites the same-width representation into something more contextually useful, eventually producing a prediction-oriented state that the unembedding can read out as token probabilities.
 
 ---
 
