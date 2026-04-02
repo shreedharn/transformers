@@ -11,6 +11,7 @@ window.MathJax = {
     displayIndent: "0",
     linebreaks: { automatic: true, width: "container" },
     adaptiveCSS: false,
+    mtextInheritFont: true,
   },
   svg: {
     displayAlign: "left",

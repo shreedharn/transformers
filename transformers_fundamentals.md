@@ -102,7 +102,7 @@ Solution: Add positional information to input embeddings:
 
 $$
 \begin{aligned}
-\text{input} = \text{token\_embedding} + \text{positional\_encoding}
+\text{input} = \text{token_embedding} + \text{positional_encoding}
 \end{aligned}
 $$
 
